@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- The DOCTYPE declaration above will set the     -->
+<!-- browser's rendering engine into                -->
+<!-- "Standards Mode". Replacing this declaration   -->
+<!-- with a "Quirks Mode" doctype is not supported. -->
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <!--                                                               -->
+    <!-- Consider inlining CSS to reduce the number of requested files -->
+    <!--                                                               -->
+    <!-- <link type="text/css" rel="stylesheet" href="ExtGWT/css/gxt-all.css"> -->
+    <link type="text/css" rel="stylesheet" href="XDS-MetadataEditor.css">
+    <!-- ----------- Conditional CSS that optimizes display for actual browser viewport size ----------- -->
+    <!-- See here for more info on how to edit: http://css-tricks.com/resolution-specific-stylesheets/ -->
+    <link rel='stylesheet' media='screen and (max-width: 1500px)' href='laptop.css' />
+    <link rel='stylesheet' media='screen and (min-width: 1501px)' href='desktop.css' />
+
+    <!--                                           -->
+    <!-- Any title is fine                         -->
+    <!--                                           -->
+    <title>XDS Metadata Editor</title>
+
+    <!--                                           -->
+    <!-- This script loads your compiled module.   -->
+    <!-- If you add any GWT meta tags, they must   -->
+    <!-- be added before this line.                -->
+    <!--                                           -->
+    <script type="text/javascript" language="javascript" src="xdseditor/xdseditor.nocache.js"></script>
+</head>
+
+<!--                                           -->
+<!-- The body can have arbitrary html, or      -->
+<!-- you can leave the body empty if you want  -->
+<!-- to create a completely dynamic UI.        -->
+<!--                                           -->
+<body leftmargin="0" topmargin=0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight=0">
+
+<!-- OPTIONAL: include this if you want history support -->
+<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+
+<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+<noscript>
+    <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+        Your web browser must have JavaScript enabled
+        in order for this application to display correctly.
+    </div>
+</noscript>
+
+<!--   <table width="100%" >
+       <tr>
+           <th rowspan="2" width="300" height="90">
+               <img src="images/Logo.png" alt="no picture" />
+           </th>
+           <td align="center" valign="middle"><span class="title">Document Entry Editor</span></td>
+       </tr>
+        <tr>
+           <td align="center" valign="middle">
+               <a href="">Help</a>
+           </td>
+       </tr>
+   </table>-->
+<header id='appheader'>
+    <div id='apptitle'>XDS Metadata Editor</div>
+    <div id='appversion'>Version 1.0.0 &beta;</div>
+    <div id='appsubtitle'>IHE USA Cleveland Connectathon Jan. 2015</div>
+</header>
+
+<div id="editorAppContainer"></div>
+
+</body>
+</html>
