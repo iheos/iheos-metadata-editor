@@ -1,0 +1,62 @@
+/*
+This is a CSS file intended as a complement to the main XDS-MetadataEditor.css stylesheet for the Xdstools3
+application. It provides CSS properties for larger screens such as desktops.
+
+See the loading condition dependent on the size of the viewport, inside XDS-MetadataEditor.html.
+*/
+
+
+/* ----------- Main title header ----------- */
+
+
+/* Large dark blue bar */
+#appheader {
+    float: none;
+    font-family: Verdana;
+    font-weight: 700;
+    background-color: #021a4c;
+    margin: 0px;
+    padding:10px;
+    padding-left:20px;
+}
+/* Main app title. Ex: Document Sharing Toolkit */
+#apptitle {
+    margin-bottom: 5px;
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 32px;
+    color: #F3C60D;
+}
+/* Yellow subtitle inside dark blue bar. */
+#appsubtitle {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #fc0;
+    text-shadow: none;
+}
+/* Version of the application, at the right side of the dark blue bar */
+#appversion{
+    font-size: 14px;
+    margin-left: 10px;
+    color: #fc0;
+    text-shadow: none;
+    float:right;
+    padding-top:45px;
+    padding-right:20px;
+}
+
+
+/* ----------- Navigation bar (yellow menu bar) ----------- */
+
+.navbar {
+    font-size: 14px;
+    height: 36px;
+}
+/* padding around menu titles */
+nav ul li a {
+    padding: 10px 15px;
+}
+/* different padding for the buttons on the right because the icons already make them taller */
+.right-side-button{
+    padding: 9px 15px;
+}
