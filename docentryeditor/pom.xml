@@ -218,12 +218,12 @@
                     </additionalClasspathElements>
                     <useManifestOnlyJar>false</useManifestOnlyJar>
                     <forkMode>always</forkMode>
-                    <systemProperties>
-                        <property>
-                            <name>gwt.args</name>
-                            <value>-war ${webappDirectory}</value>
-                        </property>
-                    </systemProperties>
+                    <!--<systemProperties>-->
+                        <!--<property>-->
+                            <!--<name>gwt.args</name>-->
+                            <!--<value>-war ${webappDirectory}</value>-->
+                        <!--</property>-->
+                    <!--</systemProperties>-->
                 </configuration>
             </plugin>
 
