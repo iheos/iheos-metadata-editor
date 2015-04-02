@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.client.editor.ListStoreEditor;
+import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
@@ -15,7 +16,6 @@ import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.form.validator.RegExValidator;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.AuthorWidgets.AuthorsListEditorWidget;
-import gov.nist.hit.ds.docentryeditor.client.editor.widgets.CodedTermWidgets.CodedTermEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.CodedTermWidgets.PredefinedCodedTermComboBox;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorToolbar;
@@ -28,6 +28,7 @@ import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidge
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.UuidFormatClientValidator;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
+import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
@@ -83,6 +84,8 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
     private EditorToolbar editorTopToolbar;
     @Inject
     private EditorToolbar editorBottomToolbar;
+    private TextButton populateTopButton =new TextButton("Populate");
+    private TextButton populateBottomButton =new TextButton("Populate");
 
     /**
      * This is the abstract method implementation that builds a collection of objects
@@ -125,6 +128,10 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
 
         requiredFieldsContainer.add(requiredFields);
         optionalFieldsContainer.add(optionalFields);
+
+        populateTopButton.setIcon(AppImages.INSTANCE.pen());
+        populateTopButton.setToolTip("Populate the submission set editor form with test data.");
+        editorTopToolbar.addButton(populateTopButton);
 
         // Adding required and optional fields panels to the main container of editor view.
         container.add(editorTopToolbar, new VerticalLayoutContainer.VerticalLayoutData(-1,30));
@@ -196,6 +203,9 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         setWidgetsInfo();
 
         // Bottom toolbar container.
+        populateBottomButton.setIcon(AppImages.INSTANCE.pen());
+        populateBottomButton.setToolTip("Populate the submission set editor form with test data.");
+        editorBottomToolbar.addButton(populateBottomButton);
         SimpleContainer bottomToolbarContainer = new SimpleContainer();
         bottomToolbarContainer.setHeight(35);
         bottomToolbarContainer.add(editorBottomToolbar);
@@ -236,6 +246,14 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         };
         editorTopToolbar.addCancelHandler(cancelHandler);
         editorBottomToolbar.addCancelHandler(cancelHandler);
+        SelectEvent.SelectHandler populateHandler = new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent selectEvent) {
+                presenter.populate();
+            }
+        };
+        populateBottomButton.addSelectHandler(populateHandler);
+        populateTopButton.addSelectHandler(populateHandler);
     }
 
     public void refreshGridButtonsDisplay() {

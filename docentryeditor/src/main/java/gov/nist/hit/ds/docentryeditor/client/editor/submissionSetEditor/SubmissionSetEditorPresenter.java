@@ -2,6 +2,7 @@ package gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
@@ -10,6 +11,7 @@ import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsSubmissionSetEven
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 import gov.nist.hit.ds.ebMetadata.Metadata;
 
@@ -57,6 +59,16 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
                 model = event.getSumissionSet();
                 initDriver(model);
                 getView().authors.editNewAuthor();
+            }
+        });
+        // this event tells the presenter the application Place is about to change.
+        getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
+            @Override
+            public void onPlaceChange(PlaceChangeEvent placeChangeEvent) {
+                // auto save on Place change.
+                logger.info("Submission set metadata auto save on Place change.");
+                final XdsSubmissionSet tmp = editorDriver.flush();
+                model=tmp;
             }
         });
     }
@@ -123,6 +135,15 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
      */
     public XdsSubmissionSet getModel(){
         return model;
+    }
+
+    /**
+     * This method populate the submission set editor form with test data.
+     */
+    public void populate() {
+        model.populate();
+        initDriver(model);
+        getView().authors.editNewAuthor();
     }
 
     /**

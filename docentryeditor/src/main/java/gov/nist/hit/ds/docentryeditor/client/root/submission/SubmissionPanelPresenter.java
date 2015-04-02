@@ -2,7 +2,6 @@ package gov.nist.hit.ds.docentryeditor.client.root.submission;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceController;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -99,7 +98,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         ((MetadataEditorEventBus) getEventBus()).addXdsEditorLoadedEventtHandler(new XdsEditorLoadedEvent.XdsEditorLoadedEventHandler() {
             @Override
             public void onXdsEditorLoaded(XdsEditorLoadedEvent event) {
-                logger.info("... receive Doc. Entry Editor loaded event.");
+                logger.info("... receive Editor loaded event.");
                 if (currentlyEdited != null) {
                     // if a doc. entry is currently under edition, an event is fired to transfer it to the editor.
                     if (currentlyEdited.getModel() instanceof XdsDocumentEntry) {
@@ -109,11 +108,15 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                         ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsSubmissionSetEvent((XdsSubmissionSet) currentlyEdited.getModel());
                     }
                 } else {
-                    // if no doc. entry is currently under edition, it means the app (editor view) has been loaded from
-                    // by its URL from the browser navigation bar (external link).
-                    logger.info("No Document Entry in Submission Set");
-                    // a new doc. entry is create in the submission tree.
-                    createNewDocumentEntry();
+                    if (placeController.getWhere() instanceof SubmissionSetEditorPlace){
+                        view.getTree().getSelectionModel().select(submissionSetTreeNode,false);
+                    }else {
+                        // if no doc. entry is currently under edition, it means the app (editor view) has been loaded from
+                        // by its URL from the browser navigation bar (external link).
+                        logger.info("No Document Entry in Submission Set");
+                        // a new doc. entry is create in the submission tree.
+                        createNewDocumentEntry();
+                    }
                 }
             }
         });
@@ -138,6 +141,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * a root node (an empty submission set) to the tree.
      */
     public void initSubmissionSet() {
+        submissionSetTreeNode.setModel(new XdsSubmissionSet());
         if (view.getTreeStore().getAll().isEmpty()) {
             view.getTreeStore().add(submissionSetTreeNode);
         }
@@ -163,6 +167,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * @param selectedItem selected tree node
      */
     public void loadSelectedEntryEditor(SubmissionMenuData selectedItem) {
+        ((MetadataEditorEventBus) eventBus).firePlaceChangeEvent();
         currentlyEdited = selectedItem;
         startEditing();
     }

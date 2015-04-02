@@ -26,6 +26,7 @@ public class XdsSubmissionSet extends XdsModelElement implements Serializable {
      * The lifecycle status of the SubmissionSet.
      * [Optional] regardless the standard (XDS DS, XDS DR, XDM MC, XDR DS, XDR MS).
      */
+    // TODO replace by a enum
     private String256 availabilityStatus;
 
     /**
@@ -229,6 +230,37 @@ public class XdsSubmissionSet extends XdsModelElement implements Serializable {
     }
     //-------------------------/\ GETTERS & SETTERS /\--------------------------//
     //////////////////////////////////////////////////////////////////////////////
+
+    public void populate(){
+        entryUUID.setString("SubmissionSet01");
+        uniqueId.setValue(new OID(new String256("2009.9.1.2456")));
+        sourceId.setValue(new OID(new String256("1.3.6.1.4.1.21367.2009.1.2.1")));
+        patientId.setValue(new String256("6578946^^^&1.3.6.1.4.1.21367.2005.3.7&ISO"));
+        contentTypeCode=new CodedTerm("11502-2","LABORATORY REPORT.TOTAL","2.16.840.1.113883.6.1");
+        availabilityStatus.setString("urn:oasis:names:tc:ebxml-regrep:StatusType:Approved");
+        homeCommunityId.setString("urn:oid:1.2.3");
+        Author author1=new Author();
+        author1.setAuthorPerson(new String256("Jack Scelere"));
+        author1.getAuthorInstitutions().add(new String256("Cleveland Clinic"));
+        author1.getAuthorInstitutions().add(new String256("Parma Community"));
+        author1.getAuthorRoles().add(new String256("attending"));
+        author1.getAuthorSpecialties().add(new String256("Orthopedic"));
+        Author author2=new Author();
+        author2.setAuthorPerson(new String256("D12398^Doe^John^^^^^^&1.2.3.4.5.6.7.8.9.1789.45.1&ISO"));
+        author2.getAuthorInstitutions().add(new String256("Cleveland Clinic^^^^^^^^^1.2.3.4.5.6.7.8.9.1789.45"));
+        author2.getAuthorInstitutions().add(new String256("Berea Community"));
+        author2.getAuthorRoles().add(new String256("Primary Surgeon"));
+        author2.getAuthorSpecialties().add(new String256("Orthopedic"));
+        authors.add(author1);
+        authors.add(author2);
+        intendedRecipient.getValues().add(new String256("SomeHospital^^^^^^^^^1.2.3.9.1789.45|^Wel^Marcus^^^Dr^MD|^^Internet^mwel@healthcare.example.org"));
+        intendedRecipient.getValues().add(new String256("Some Hospital^^^^^^^^^1.2.3.9.1789.45|^Peirre^LaPointe^^^Dr^MD"));
+        intendedRecipient.getValues().add(new String256("|12345^LaShawn^James^^Dr^MD"));
+        intendedRecipient.getValues().add(new String256("MainHospital^^^^^^^^^1.2.3.4.5.6.7.8.9.1789.2364"));
+        intendedRecipient.getValues().add(new String256("||^^Internet^dr.oz@healthcare.example.org"));
+        title.add(new InternationalString(LanguageCode.ENGLISH_UNITED_STATES, new String256("Example Submission Set Title")));
+        comments.add(new InternationalString(LanguageCode.ENGLISH_UNITED_STATES, new String256("comment associated with SubmissionSet")));
+    }
 
     @Override
     public String toString() {
