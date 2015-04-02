@@ -2,6 +2,7 @@ package gov.nist.hit.ds.docentryeditor.client.editor.documentEntryEditor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -78,13 +79,16 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
                 getView().authors.editNewAuthor();
             }
         });
-        /*((MetadataEditorEventBus) getEventBus()).addSaveFileEventHandler(new SaveFileEvent.SaveFileEventHandler() {
-
+        // this event tells the presenter the application Place is about to change.
+        getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
             @Override
-            public void onFileSave(SaveFileEvent event) {
-                doSave();
+            public void onPlaceChange(PlaceChangeEvent placeChangeEvent) {
+                // auto save on Place change.
+                logger.info("Document Entry auto save on Place change.");
+                final XdsDocumentEntry tmp = editorDriver.flush();
+                model=tmp;
             }
-        });*/
+        });
     }
 
     /**

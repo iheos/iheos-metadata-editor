@@ -28,7 +28,7 @@ public class SaveCurrentlyEditedMetadataEvent extends GwtEvent<SaveCurrentlyEdit
 		handler.onSaveCurrentlyEditedDocumentEvent(this);
 	}
 
-    public XdsModelElement getDocumentEntry(){
+    public XdsModelElement getMetadataModel(){
         return documentEntry;
     }
 }

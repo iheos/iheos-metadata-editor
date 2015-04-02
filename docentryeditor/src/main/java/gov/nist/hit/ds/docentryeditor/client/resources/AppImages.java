@@ -10,6 +10,27 @@ import com.google.gwt.resources.client.ImageResource;
 public interface AppImages extends ClientBundle {
     AppImages INSTANCE = GWT.create(AppImages.class);
 
+    @Source("baseResources/file.png")
+    ImageResource file();
+
+    @Source("baseResources/file-plus.png")
+    ImageResource filePlus();
+
+    @Source("baseResources/folder-32.png")
+    ImageResource folder();
+
+    @Source("baseResources/prefilled.png")
+    ImageResource preFilled();
+
+    @Source("baseResources/Warning-128.png")
+    ImageResource warning();
+
+    @Source("baseResources/load-file.png")
+    ImageResource loadFile();
+
+    @Source("baseResources/load-file-16.png")
+    ImageResource loadFile12px();
+
     @Source("baseResources/add.gif")
     ImageResource add();
 
@@ -26,40 +47,22 @@ public interface AppImages extends ClientBundle {
     @Source("baseResources/comment.png")
     ImageResource help();
 
-    @Source("baseResources/file.png")
-    ImageResource file();
-
     @Source("baseResources/save-disk.png")
     ImageResource save();
-
-    @Source("baseResources/save-2.png")
-    ImageResource saveBW();
-
-    @Source("baseResources/Warning-128.png")
-    ImageResource warning();
-
-    @Source("baseResources/home.png")
-    ImageResource home();
-
-    @Source("baseResources/folder-32.png")
-    ImageResource folder();
-
-    @Source("baseResources/file-plus.png")
-    ImageResource filePlus();
-
-    @Source("baseResources/prefilled.png")
-    ImageResource preFilled();
-
-    @Source("baseResources/load-file.png")
-    ImageResource loadFile();
-
-    @Source("baseResources/load-file-16.png")
-    ImageResource loadFile12px();
 
     @Source("baseResources/refresh.gif")
     ImageResource refresh();
 
+    @Source("baseResources/home.png")
+    ImageResource home();
+
+    @Source("baseResources/save-2.png")
+    ImageResource saveBW();
+
     @Source("baseResources/back-16.png")
     ImageResource back();
+
+    @Source("baseResources/pen.png")
+    ImageResource pen();
 
 }

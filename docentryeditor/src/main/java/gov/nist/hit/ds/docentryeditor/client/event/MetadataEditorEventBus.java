@@ -1,5 +1,7 @@
 package gov.nist.hit.ds.docentryeditor.client.event;
 
+import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent.NewFileLoadedHandler;
@@ -145,5 +147,21 @@ public class MetadataEditorEventBus extends SimpleEventBus {
      */
     public void fireCreateNewDocEntryEvent(XdsDocumentEntry documentEntry) {
         fireEvent(new CreateNewDocEntryEvent(documentEntry));
+    }
+
+    /**
+     * Notify the view is about to change Place.
+     */
+    public void firePlaceChangeEvent() {
+        fireEvent(new ChangePlaceEvent());
+    }
+
+    /**
+     * This method adds an handler that will handle actions required before a Place Change.
+     * @param handler
+     * @return
+     */
+    public HandlerRegistration addPlaceChangeEventHandler(ChangePlaceEvent.ChangePlaceEventHandler handler){
+        return addHandler(ChangePlaceEvent.TYPE,handler);
     }
 }

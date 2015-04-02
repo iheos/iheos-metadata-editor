@@ -201,6 +201,16 @@
             <artifactId>axiom-api</artifactId>
             <version>1.2.14</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-impl</artifactId>
+            <version>1.2.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-dom</artifactId>
+            <version>1.2.10</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>docentryeditor</finalName>
