@@ -44,3 +44,6 @@ build/
 
 # Custom test scripts
 *test.bat
+syntax: glob
+docentryeditor/war/*
+docentryeditor/files/*
