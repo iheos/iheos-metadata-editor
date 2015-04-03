@@ -47,3 +47,4 @@ build/
 syntax: glob
 docentryeditor/war/*
 docentryeditor/files/*
+release.properties
