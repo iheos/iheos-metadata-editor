@@ -24,6 +24,17 @@
         <module>docentryeditor-standalone</module>
     </modules>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>internal-nist-repo-snapshots</id>
+            <url>http://vm-070.nist.gov:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>internal-nist-repo-releases</id>
+            <url>http://vm-070.nist.gov:8081/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <!-- Maven Release plugin -->

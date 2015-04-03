@@ -38,17 +38,6 @@
         </repository>
     </repositories>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>internal-nist-repo-snapshots</id>
-            <url>http://vm-070.nist.gov:8081/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>internal-nist-repo-releases</id>
-            <url>http://vm-070.nist.gov:8081/nexus/content/repositories/releases/</url>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
