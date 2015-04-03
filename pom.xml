@@ -25,6 +25,7 @@
         <module>docentryeditor-integ</module>
         <module>docentryeditor-standalone</module>
     </modules>
+
     <build>
         <plugins>
             <!-- Maven Release plugin -->
