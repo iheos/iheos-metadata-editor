@@ -70,7 +70,7 @@
     </profiles>
 
     <scm>
-        <developerConnection>scm:hg:hg clone https://oherrmann@bitbucket.org/oherrmann/xds-metadata-editor/branch/release/</developerConnection>
+        <developerConnection>scm:hg:https://bitbucket.org/oherrmann/xds-metadata-editor/branch/release</developerConnection>
         <tag>v1.0.0b</tag>
     </scm>
 </project>
