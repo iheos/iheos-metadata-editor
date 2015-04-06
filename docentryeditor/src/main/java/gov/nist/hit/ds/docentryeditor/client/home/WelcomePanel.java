@@ -47,7 +47,7 @@ public class WelcomePanel extends VerticalLayoutContainer {
      * Method that builds the widget.
      */
 	private void buildUI() {
-// set container's parameters
+        // set container's parameters
 		this.setStyleName("padding-10");
 		setBorders(false);
 
@@ -73,7 +73,6 @@ public class WelcomePanel extends VerticalLayoutContainer {
 		loadPreFilledDocEntryBtn.setIcon(AppImages.INSTANCE.preFilled());
 		loadPreFilledDocEntryBtn.setIconAlign(ButtonCell.IconAlign.TOP);
 		// temporary disable new folder btn until it s implemented.
-//		loadPreFilledDocEntryBtn.disable();
 		loadDocEntryFileBtn = new ToggleButton("Upload doc. entry");
 		loadDocEntryFileBtn.setIcon(AppImages.INSTANCE.loadFile());
 		loadDocEntryFileBtn.setIconAlign(ButtonCell.IconAlign.TOP);
@@ -91,7 +90,7 @@ public class WelcomePanel extends VerticalLayoutContainer {
 				"<ul><li>The functionalities Folder and Association are not implemented yet.</li>" +
 				"</ul>");
 
-//		this.add(htmlWelcome);
+        //		this.add(htmlWelcome);
 		this.add(htmlExplanationTitle);
 		this.add(htmlExplanation);
 		this.add(buttonsHContainer, new VerticalLayoutData(1, -1));

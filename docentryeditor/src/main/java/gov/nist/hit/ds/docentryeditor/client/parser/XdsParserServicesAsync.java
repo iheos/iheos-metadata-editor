@@ -1,7 +1,6 @@
 package gov.nist.hit.ds.docentryeditor.client.parser;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 
 /**

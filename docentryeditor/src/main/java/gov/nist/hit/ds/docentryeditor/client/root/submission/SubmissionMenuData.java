@@ -6,8 +6,6 @@ import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
-import gov.nist.hit.ds.docentryeditor.shared.model.ModelElement;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsModelElement;
 
 /**

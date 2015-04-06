@@ -10,7 +10,6 @@ import gov.nist.hit.ds.docentryeditor.client.editor.properties.String256Properti
 import gov.nist.hit.ds.docentryeditor.client.generics.GenericEditableListView;
 import gov.nist.hit.ds.docentryeditor.client.generics.GridModelFactory;
 import gov.nist.hit.ds.docentryeditor.client.widgets.BoundedTextField;
-import gov.nist.hit.ds.docentryeditor.shared.model.DTM;
 import gov.nist.hit.ds.docentryeditor.shared.model.NameValueString256;
 import gov.nist.hit.ds.docentryeditor.shared.model.String256;
 

@@ -2,9 +2,7 @@ package gov.nist.hit.ds.docentryeditor.client.event;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.web.bindery.event.shared.Event;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 
 /**
  * This is a GwtEvent to request the creation of a new empty document entry.

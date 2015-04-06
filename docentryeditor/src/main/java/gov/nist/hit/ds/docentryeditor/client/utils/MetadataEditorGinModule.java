@@ -29,7 +29,11 @@ public class MetadataEditorGinModule extends AbstractGinModule {
         bind(MetadataEditorAppView.class).in(Singleton.class);
     }
 
-    // Provider for MetadataEditorRequestFactory
+    /**
+     * This method instantiate and return for MetadataEditorRequestFactory
+     *
+     * @return Provider for MetadataEditorRequestFactory
+     */
     @Provides
     MetadataEditorRequestFactory provideMetadataEditorRequestFactory() {
         MetadataEditorRequestFactory requestFactory = GWT.create(MetadataEditorRequestFactory.class);
@@ -37,7 +41,7 @@ public class MetadataEditorGinModule extends AbstractGinModule {
         return requestFactory;
     }
 
-    // Provider for PlaceController
+    /** Provider for PlaceController */
     public static class PlaceControllerProvider implements Provider<PlaceController> {
         @Inject
         MetadataEditorEventBus eventBus;

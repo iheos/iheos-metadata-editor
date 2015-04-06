@@ -3,27 +3,13 @@ package gov.nist.hit.ds.docentryeditor.client.editor.documentEntryEditor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.place.shared.PlaceChangeEvent;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.web.bindery.requestfactory.shared.Receiver;
-import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
-import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
-import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorRequestFactory;
 import gov.nist.hit.ds.docentryeditor.client.event.*;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 
-import javax.inject.Inject;
 import java.util.logging.Logger;
 
 /**

@@ -11,7 +11,7 @@ import java.util.List;
  *
  * Created by onh2 on 2/24/2015.
  */
-public class XdsSubmissionSet extends XdsModelElement implements Serializable {
+public class XdsSubmissionSet  implements XdsModelElement,Serializable {
     /**
      * The humans and/or machines that created the submission set.
      * This attribute contains the subattributes:
@@ -278,5 +278,28 @@ public class XdsSubmissionSet extends XdsModelElement implements Serializable {
                 ", title=" + title +
                 ", uniqueId=" + uniqueId +
                 '}';
+    }
+
+    @Override
+    public boolean verify() {
+        return true;
+    }
+
+    @Override
+    public XdsSubmissionSet clone() {
+        XdsSubmissionSet subSet=new XdsSubmissionSet();
+        subSet.setContentTypeCode(this.getContentTypeCode());
+        subSet.setSubmissionTime(this.getSubmissionTime());
+        subSet.setHomeCommunityId(this.getHomeCommunityId());
+        subSet.setUniqueId(this.getUniqueId());
+        subSet.setAuthors(this.getAuthors());
+        subSet.setAvailabilityStatus(this.getAvailabilityStatus());
+        subSet.setComments(this.getComments());
+        subSet.setEntryUUID(this.getEntryUUID());
+        subSet.setIntendedRecipient(this.getIntendedRecipient());
+        subSet.setPatientId(this.getPatientId());
+        subSet.setSourceId(this.getSourceId());
+        subSet.setTitle(this.getTitle());
+        return subSet;
     }
 }

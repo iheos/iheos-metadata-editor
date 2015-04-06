@@ -115,11 +115,8 @@ public class IdentifierString256 implements ModelElement, Serializable {
      */
     @Override
     public boolean verify() throws String256Exception {
-        // FIXME I don't understand the purpose of this code
-        boolean answer = true;
-        answer = value.verify();
-        answer = idType.verify();
-        return answer;
+        // TODO
+        return true;
     }
 
     @Override
@@ -143,7 +140,7 @@ public class IdentifierString256 implements ModelElement, Serializable {
         return true;
     }
 
-    public IdentifierString256 copy() {
-        return new IdentifierString256(this.value.copy(),this.getIdType().copy());
+    public IdentifierString256 clone() {
+        return new IdentifierString256(this.value.clone(),this.getIdType().clone());
     }
 }

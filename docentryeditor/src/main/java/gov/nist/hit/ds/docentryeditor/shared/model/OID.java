@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @see XdsDocumentEntry class DocumentModel
  * @see ModelElement class ModelElement
  */
-public class OID /*extends String256*/ implements ModelElement, Serializable {
+public class OID implements ModelElement, Serializable {
 
     private static final long serialVersionUID = -7932949245243225415L;
     /**
@@ -113,7 +113,7 @@ public class OID /*extends String256*/ implements ModelElement, Serializable {
         return true;
     }
 
-    public OID copy() {
-        return new OID(this.oid.copy());
+    public OID clone() {
+        return new OID(this.oid.clone());
     }
 }

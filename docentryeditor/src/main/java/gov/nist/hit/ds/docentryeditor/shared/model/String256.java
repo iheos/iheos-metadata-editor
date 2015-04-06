@@ -54,15 +54,6 @@ public class String256 implements Serializable {
         }
     }
 
-    @Deprecated
-    public boolean verify(String str) throws String256Exception {
-        if (str.length() > 256) {
-            throw new String256Exception();
-        } else {
-            return true;
-        }
-    }
-
     /**
      * <p>
      * <b>Method verify</b></br> This method verify if the String contains less
@@ -118,7 +109,7 @@ public class String256 implements Serializable {
         return true;
     }
 
-    public String256 copy() {
+    public String256 clone() {
        return new String256(new String(this.string));
     }
 }

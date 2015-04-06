@@ -97,8 +97,6 @@ public class DTM implements ModelElement, Serializable {
      */
     @Override
     public boolean verify() throws String256Exception {
-//		if (dtm.getString().length() < 13) {
-//			if (dtm.getString().matches("[0-9]*")) {
         if (dtm.toString().length() < 13) {
             if (dtm.toString().matches("[0-9]*")) {
                 return true;
@@ -107,7 +105,7 @@ public class DTM implements ModelElement, Serializable {
         return false;
     }
 
-    public DTM copy() {
+    public DTM clone() {
         return new DTM(new Date(this.dtm.getTime()));
     }
 }

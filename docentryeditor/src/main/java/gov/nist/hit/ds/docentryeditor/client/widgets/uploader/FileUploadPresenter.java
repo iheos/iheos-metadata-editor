@@ -5,7 +5,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
 import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsDocumentEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;

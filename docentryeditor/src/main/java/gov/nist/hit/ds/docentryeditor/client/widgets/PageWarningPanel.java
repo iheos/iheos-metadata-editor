@@ -2,7 +2,6 @@ package gov.nist.hit.ds.docentryeditor.client.widgets;
 
 import com.google.gwt.user.client.ui.Image;
 import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
