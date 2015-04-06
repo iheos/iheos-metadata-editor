@@ -124,7 +124,7 @@ public class InternationalString implements ModelElement, Serializable {
         return true;
     }
 
-    public InternationalString copy() {
-        return new InternationalString(this.langCode,this.value.copy());
+    public InternationalString clone() {
+        return new InternationalString(this.langCode,this.value.clone());
     }
 }

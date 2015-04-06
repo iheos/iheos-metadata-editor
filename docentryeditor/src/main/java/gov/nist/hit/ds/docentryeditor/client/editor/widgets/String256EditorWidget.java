@@ -1,11 +1,9 @@
 package gov.nist.hit.ds.docentryeditor.client.editor.widgets;
 
 import com.google.gwt.editor.client.Editor;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.form.Field;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.widgets.BoundedTextField;

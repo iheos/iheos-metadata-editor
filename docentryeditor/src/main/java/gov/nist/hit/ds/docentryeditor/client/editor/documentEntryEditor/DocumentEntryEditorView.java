@@ -56,8 +56,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     @Inject
     String256EditorWidget hash;
     @Inject
-    String256EditorWidget fileName;
-    @Inject
     String256EditorWidget uri;
     @Inject
     LanguageCodeComboBox languageCode;
@@ -126,7 +124,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     protected Map<String, Widget> getPathToWidgetsMap() {
         Map<String, Widget> map = new HashMap<String, Widget>();
         map.put("id", id);
-        map.put("fileName", fileName);
         map.put("hash", hash);
         map.put("patientID", patientID);
         map.put("uniqueId", uniqueId);
@@ -168,8 +165,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // /////////////////////////////////////
         // ID Field (required)
         EditorFieldLabel idLabel = new EditorFieldLabel(id, "Entry UUID");
-        // Filename field
-        EditorFieldLabel filenameLabel = new EditorFieldLabel(fileName, "File name");
         // Hash Field (required)
         EditorFieldLabel hashLabel = new EditorFieldLabel(hash, "Hash");
         // Language Code Field (required)
@@ -203,7 +198,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // --- Adding REQUIRED simple fields labels to containers
         // ////////////////////////////////////////////////////
         VerticalLayoutContainer simpleRequiredFieldsContainer = new VerticalLayoutContainer();
-        simpleRequiredFieldsContainer.add(filenameLabel, new VerticalLayoutData(1, -1));
         simpleRequiredFieldsContainer.add(idLabel, new VerticalLayoutData(1, -1));
         simpleRequiredFieldsContainer.add(uniqueIdLabel, new VerticalLayoutData(1, -1));
         simpleRequiredFieldsContainer.add(patientIdLabel, new VerticalLayoutData(1, -1));
@@ -460,10 +454,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
                 "This short list of codes is provided to be used as “key words” for certain " +
                 "types of queries. If present, shall have one or more values. Code multiple " +
                 "values by creating multiple classification objects."));
-        // filename
-        fileName.setEmptyText("Metadata filename (with file extension)");
-        fileName.setToolTipConfig(new ToolTipConfig("Metadata file name (with extension)", "This is the name of the metadata file which will be generated. <br/>For example: xds-metadata.xml"));
-        fileName.setAllowBlank(false);
         // format code
         formatCode.setEmptyText("Select a format...");
         formatCode.clear();

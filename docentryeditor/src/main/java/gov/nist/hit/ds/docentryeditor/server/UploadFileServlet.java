@@ -15,9 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
-import gov.nist.hit.ds.ebMetadata.Metadata;
-import gov.nist.hit.ds.ebMetadata.MetadataParser;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;

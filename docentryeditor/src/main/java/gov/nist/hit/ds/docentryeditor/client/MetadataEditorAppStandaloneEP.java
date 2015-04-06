@@ -1,10 +1,7 @@
 package gov.nist.hit.ds.docentryeditor.client;
 
-/* Imports */
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 
 import java.util.logging.Logger;
 
@@ -21,7 +18,6 @@ public class MetadataEditorAppStandaloneEP implements EntryPoint {
     public void onModuleLoad() {
         RootLayoutPanel.get(/*"editorAppContainer"*/).add(new MetadataEditorApp().asWidget());
         //  RootPanel.get("editorAppContainer").add(new MetadataEditorApp().asWidget());
-        //  RootLayoutPanel.get().add(activityPanel);
         logger.info("Application Started!");
     }
 

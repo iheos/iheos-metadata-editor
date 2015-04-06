@@ -35,10 +35,7 @@ import java.util.logging.Logger;
  * {@link #addColumnEditorConfig(ColumnConfig, Field) addColumnEditorConfig}
  * should be called.
  * <p/>
- * <br/>
- * <br/>
  * Example:
- * <p/>
  * <p/>
  * <pre>
  * <code>
@@ -66,7 +63,7 @@ import java.util.logging.Logger;
  * </code>
  * </pre>
  *
- * @see Grid <p/>
+ * @see Grid
  * Created by onh2 on 6/10/2014.
  */
 public abstract class GenericEditableGrid<M> extends Grid<M> {

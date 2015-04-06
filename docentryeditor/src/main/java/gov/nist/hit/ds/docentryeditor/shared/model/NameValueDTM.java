@@ -98,8 +98,6 @@ public class NameValueDTM implements ModelElement, Serializable {
         return answer;
     }
 
-    // abstract public AssertionGroup validateValueType(String256 value);
-
     /**
      * <p>
      * <b>Method verify</b> <br>
@@ -113,14 +111,8 @@ public class NameValueDTM implements ModelElement, Serializable {
      */
     @Override
     public boolean verify() throws String256Exception {
-        // FIXME I don't understand the purpose of this code
-        boolean answer = true;
-        answer = name.verify();
-
-        for (DTM t : values) {
-            answer = t.verify();
-        }
-        return answer;
+        // TODO
+        return true;
     }
 
     @Override
@@ -150,11 +142,11 @@ public class NameValueDTM implements ModelElement, Serializable {
                 '}';
     }
 
-    public NameValueDTM copy() {
+    public NameValueDTM clone() {
         NameValueDTM cp = new NameValueDTM();
-        cp.setName(this.name.copy());
+        cp.setName(this.name.clone());
         for(DTM vcp : this.values) {
-            cp.getValues().set(0,vcp.copy());
+            cp.getValues().set(0,vcp.clone());
         }
         return cp;
     }

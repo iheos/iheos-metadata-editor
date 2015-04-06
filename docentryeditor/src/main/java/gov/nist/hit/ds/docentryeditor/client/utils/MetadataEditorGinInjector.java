@@ -1,7 +1,5 @@
 package gov.nist.hit.ds.docentryeditor.client.utils;
 
-/*Imports*/
-
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;

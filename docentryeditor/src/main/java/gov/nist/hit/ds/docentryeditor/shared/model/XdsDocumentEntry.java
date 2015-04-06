@@ -1,8 +1,5 @@
 package gov.nist.hit.ds.docentryeditor.shared.model;
 
-import gov.nist.hit.ds.ebMetadata.Metadata;
-import gov.nist.hit.ds.ebMetadata.MetadataSupport;
-import org.apache.axiom.om.OMElement;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.annotation.Nullable;
@@ -12,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * <b>This class represents the model which have to be respected by the xml
@@ -76,7 +72,7 @@ import java.util.logging.Logger;
  *
  * @see ModelElement class ModelElement
  */
-public class XdsDocumentEntry extends XdsModelElement implements ModelElement,Serializable {
+public class XdsDocumentEntry implements XdsModelElement,Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * <b>ArrayList(ArrayList(String)) validationErrors</b> - The error(s) which
@@ -826,291 +822,67 @@ public class XdsDocumentEntry extends XdsModelElement implements ModelElement,Se
         this.version = version;
     }
 
-    public XdsDocumentEntry copy(){
+    @Override
+    public XdsDocumentEntry clone(){
         XdsDocumentEntry doc=new XdsDocumentEntry();
-        doc.setId(this.id!=null ? this.id.copy() : null);
-        doc.setHomeCommunityId(this.homeCommunityId!=null ? this.homeCommunityId.copy():null);
-        doc.setUri(this.uri.copy());
+        doc.setId(this.id!=null ? this.id.clone() : null);
+        doc.setHomeCommunityId(this.homeCommunityId!=null ? this.homeCommunityId.clone():null);
+        doc.setUri(this.uri.clone());
         for (Author cp : this.authors) {
-            doc.getAuthors().add(cp.copy());
+            doc.getAuthors().add(cp.clone());
         }
-        doc.setAvailabilityStatus(this.availabilityStatus!=null ? this.availabilityStatus.copy():null);
-        doc.setClassCode(this.classCode.copy());
+        doc.setAvailabilityStatus(this.availabilityStatus!=null ? this.availabilityStatus.clone():null);
+        doc.setClassCode(this.classCode.clone());
         for (InternationalString cp : this.comments) {
-            doc.getComments().add(cp.copy());
+            doc.getComments().add(cp.clone());
         }
         for (CodedTerm cp : this.confidentialityCodes) {
-            doc.getConfidentialityCodes().add(cp.copy());
+            doc.getConfidentialityCodes().add(cp.clone());
         }
-        doc.setCreationTime(this.creationTime.copy());
+        doc.setCreationTime(this.creationTime.clone());
         for (CodedTerm cp : this.eventCode){
-            doc.getEventCode().add(cp.copy());
+            doc.getEventCode().add(cp.clone());
         }
         doc.setFileName(new String256(this.fileName.getString()));
-        doc.setFormatCode(this.formatCode.copy());
-        doc.setHash(this.hash.copy());
-        doc.setHealthcareFacilityType(this.healthcareFacilityType.copy());
+        doc.setFormatCode(this.formatCode.clone());
+        doc.setHash(this.hash.clone());
+        doc.setHealthcareFacilityType(this.healthcareFacilityType.clone());
         doc.setLanguageCode(this.languageCode);
-        doc.setLegalAuthenticator(this.legalAuthenticator.copy());
-        doc.setLogicalId(this.logicalId!=null?this.logicalId.copy():null);
-        doc.setMimeType(this.mimeType.copy());
-        doc.setPatientID(this.patientID.copy());
-        doc.setPracticeSettingCode(this.practiceSettingCode.copy());
-        doc.setRepoUId(this.repoUId.copy());
-        doc.setServiceStartTime(this.serviceStartTime.copy());
-        doc.setServiceStopTime(this.serviceStopTime.copy());
-        doc.setSize(this.size.copy());
-        doc.setSourcePatientId(this.sourcePatientId.copy());
-        doc.setSourcePatientInfo(this.sourcePatientInfo.copy());
-        doc.setTypeCode(this.typeCode.copy());
+        doc.setLegalAuthenticator(this.legalAuthenticator.clone());
+        doc.setLogicalId(this.logicalId!=null?this.logicalId.clone():null);
+        doc.setMimeType(this.mimeType.clone());
+        doc.setPatientID(this.patientID.clone());
+        doc.setPracticeSettingCode(this.practiceSettingCode.clone());
+        doc.setRepoUId(this.repoUId.clone());
+        doc.setServiceStartTime(this.serviceStartTime.clone());
+        doc.setServiceStopTime(this.serviceStopTime.clone());
+        doc.setSize(this.size.clone());
+        doc.setSourcePatientId(this.sourcePatientId.clone());
+        doc.setSourcePatientInfo(this.sourcePatientInfo.clone());
+        doc.setTypeCode(this.typeCode.clone());
         for (InternationalString cp:this.titles) {
-            doc.getTitles().add(cp.copy());
+            doc.getTitles().add(cp.clone());
         }
         doc.setUniqueId(this.uniqueId.copy());
-        doc.setVersion(this.version!=null?this.version.copy():null);
+        doc.setVersion(this.version!=null?this.version.clone():null);
         return doc;
-    }
-
-    /**
-     * <p>
-     * <b>Method toXML</b> <br>
-     * This method will be called to build a XML file with the information taken
-     * from the local DocumentModel.<br>
-     * It uses methods toXML() from each model class.
-     * </p>
-     *
-     * @return String which contains the document in XML format
-     * @see XdsDocumentEntry class DocumentModel
-     */
-    // TODO change this method or create a translator to get real xds xml document format
-    public String toXML() {
-        StringBuilder xml = new StringBuilder();
-        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document>\n");
-        System.out.println(getTitles());
-        if (getTitles() != null && titles.size() > 0) {
-            xml.append("\t<titles>\n");
-            for (InternationalString str : titles) {
-                xml.append(str.toXML());
-            }
-            xml.append("\t</titles>\n");
-        }
-        if (getComments() != null && comments.size() > 0) {
-            xml.append("\t<comments>\n");
-            for (InternationalString str : comments) {
-                xml.append(str.toXML());
-            }
-            xml.append("\t</comments>\n");
-        }
-
-        if (getAuthors() != null && authors.size() > 0) {
-            xml.append("\t<authors>\n");
-            for (Author auth : authors) {
-                xml.append(auth.toXML());
-            }
-            xml.append("\t</authors>\n");
-        }
-
-        if (classCode != null && !classCode.getCode().equals("")) {
-            xml.append("\t<classcode>\n");
-            xml.append(classCode.toXML());
-            xml.append("\t</classcode>\n");
-        }
-        if (confidentialityCodes.size() > 0) {
-            xml.append("\t<confidentialitycode>\n");
-            for (CodedTerm ct : confidentialityCodes) {
-                xml.append(ct.toXML());
-            }
-            xml.append("\t</confidentialitycode>\n");
-        }
-        if (creationTime != null) {
-            xml.append("\t<creationtime>\n");
-            xml.append(creationTime.toXML());
-            xml.append("\t</creationtime>\n");
-        }
-        if (id != null && !id.equals("")) {
-            xml.append("\t<id>");
-            xml.append(id.toString());
-            xml.append("</id>\n");
-        }
-        if (getEventCode() != null && eventCode.size() > 0) {
-            xml.append("\t<eventcode>\n");
-            for (CodedTerm ct : eventCode) {
-                xml.append(ct.toXML());
-            }
-            xml.append("\t</eventcode>\n");
-        }
-
-        if (formatCode != null && !formatCode.equals("")) {
-            xml.append("\t<formatcode>\n");
-            xml.append(formatCode.toXML());
-            xml.append("\t</formatcode>\n");
-        }
-        if (getHash() != null && !hash.equals("")) {
-            xml.append("\t<hash>");
-            xml.append(hash.toString());
-            xml.append("</hash>\n");
-        }
-
-        if (!healthcareFacilityType.getCode().getString().equals("")) {
-            xml.append("\t<healthcarefacilitytype>\n");
-            xml.append(healthcareFacilityType.toXML());
-            xml.append("\t</healthcarefacilitytype>\n");
-        }
-
-        if (languageCode != null) {
-            xml.append("\t<languagecode>");
-            xml.append(languageCode.toString());
-            xml.append("</languagecode>\n");
-        }
-        if (getLegalAuthenticator() != null && legalAuthenticator.getValues().size() > 0) {
-            xml.append("\t<legalauthenticator>\n");
-            xml.append(legalAuthenticator.toXML());
-            xml.append("\t</legalauthenticator>\n");
-        }
-        if (mimeType != null && !mimeType.equals("")) {
-            xml.append("\t<mimetype>");
-            xml.append(mimeType.toString());
-            xml.append("</mimetype>\n");
-        }
-        if (patientID != null && patientID.getValue() != null && !patientID.getValue().getString().equals("")) {
-            xml.append("\t<patientid>\n");
-            xml.append(patientID.toXML());
-            xml.append("\t</patientid>\n");
-        }
-        if (practiceSettingCode != null && !practiceSettingCode.getCode().getString().equals("")) {
-            xml.append("\t<practicesettingcode>\n");
-            xml.append(practiceSettingCode.toXML());
-            xml.append("\t</practicesettingcode>\n");
-        }
-        if (getRepoUId() != null && !repoUId.getOid().getString().equals("")) {
-            xml.append("\t<repositoryuniqueid>");
-            xml.append(repoUId.toString());
-            xml.append("</repositoryuniqueid>\n");
-        }
-
-        if (getServiceStartTime() != null) {
-            xml.append("\t<servicestarttime>\n");
-            xml.append(serviceStartTime.toXML());
-            xml.append("\t</servicestarttime>\n");
-        }
-
-        if (serviceStopTime != null) {
-            xml.append("\t<servicestoptime>\n");
-            xml.append(serviceStopTime.toXML());
-            xml.append("\t</servicestoptime>\n");
-        }
-
-        if (size != null) {
-            xml.append("\t<size>\n");
-            xml.append(size.toXML());
-            xml.append("\t</size>\n");
-        }
-
-        if (getSourcePatientId() != null && sourcePatientId.getValues().size() > 0) {
-            xml.append("\t<sourcepatientid>\n");
-            xml.append(sourcePatientId.toXML());
-            xml.append("\t</sourcepatientid>\n");
-        }
-
-        if (getSourcePatientInfo() != null && sourcePatientInfo.getValues().size() > 0) {
-            xml.append("\t<sourcepatientinfo>\n");
-            xml.append(sourcePatientInfo.toXML());
-            xml.append("\t</sourcepatientinfo>\n");
-        }
-
-        if (typeCode != null && typeCode.getCode() != null && !typeCode.getCode().getString().equals("")) {
-            xml.append("\t<typecode>\n");
-            xml.append(typeCode.toXML());
-            xml.append("\t</typecode>\n");
-        }
-        if (uniqueId != null && !uniqueId.getValue().getOid().getString().equals("")) {
-            xml.append("\t<uniqueid>\n");
-            xml.append(uniqueId.toXML());
-            xml.append("\t</uniqueid>\n");
-        }
-        if (getUri() != null && !uri.getString().equals("")) {
-            xml.append("\t<uri>");
-            xml.append(uri.toString());
-            xml.append("</uri>\n");
-        }
-
-        xml.append("</Document>");
-
-        String newXmlFile = xml.toString().replaceAll("&", "&amp;");
-        return newXmlFile;
     }
 
     /**
      * <p>
      * <b>Method verify</b> <br>
      * This method will be called to check syntax's document<br>
-     * It uses methods verify() from each model class</br> TODO (and save all
-     * error message in validationError.)
+     * It uses methods verify() from each model class</br>
      * </p>
      *
      * @return boolean true if all the document is available, else return false
-     * @throws String256Exception if there is a String256 with more than 256 characters
      * @see XdsDocumentEntry
      * @see #validationErrors
      */
-    public boolean verify() throws String256Exception {
-        // FIXME verification issue answer isn't well assigned along the process, this algorithm is horrible and wrong
-        boolean answer = true;
-        int total = 0;
-        for (InternationalString is : titles) {
-            if (!is.verify()) {
-                ArrayList<String> titleError = new ArrayList<String>();
-                titleError.set(0, "title");
-                // titleError
-                // .set(1,
-                // "message d'erreur, ou appel de fonction qui analyse la faute dans la classe InternationalString et retourne le msg d'erreur, ou encore intervention d' exception");
-
-                // titleError.set(1, is.getError());
-
-                validationErrors.set(total, titleError);
-                total = +1;
-            }
-        }
-
-        for (InternationalString is : comments) {
-            answer = is.verify();
-        }
-
-        for (Author auth : authors) {
-            answer = auth.verify();
-        }
-
-        answer = classCode.verify();
-        for (CodedTerm ct : confidentialityCodes) {
-            answer = ct.verify();
-        }
-
-        answer = creationTime.verify();
-        answer = id.verify();
-
-        for (CodedTerm ct : eventCode) {
-            answer = ct.verify();
-        }
-
-        // FIXME possible NullPointerExceptions
-        answer = formatCode.verify();
-        answer = hash.verify();
-        answer = healthcareFacilityType.verify();
-        // answer = languageCode.verify();
-        answer = legalAuthenticator.verify();
-        answer = mimeType.verify();
-        answer = patientID.verify();
-        answer = practiceSettingCode.verify();
-        answer = repoUId.verify();
-        answer = serviceStartTime.verify();
-        answer = serviceStopTime.verify();
-        answer = size.verify();
-        answer = sourcePatientId.verify();
-        answer = typeCode.verify();
-        answer = uniqueId.verify();
-        answer = uri.verify();
-
-        return answer;
+    @Override
+    public boolean verify()  {
+        // TODO
+        return true;
     }
 
     @Override

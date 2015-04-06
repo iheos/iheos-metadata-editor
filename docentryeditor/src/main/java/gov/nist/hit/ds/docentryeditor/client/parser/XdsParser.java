@@ -71,7 +71,6 @@ import java.util.logging.Logger;
  * @see PreParse
  * @see String256
  */
-// TODO change this class or create an new one to handle real xds xml file format
 public class XdsParser {
     /**
      * <b>Parse myParse</b> - The instance of Parse class (it's a singleton
@@ -153,10 +152,6 @@ public class XdsParser {
         // parser the XML document into a DOM
         document = XMLParser.parse(documentXml);
     }
-
-//    public XdsDocumentEntry getXdsDocumentEntry() {
-//        return xdsDocumentEntry;
-//    }
 
     /**
      * <b>Method findElements</b> <br>
@@ -278,8 +273,7 @@ public class XdsParser {
      * @throws String256Exception if there is a String256 with more than 256 characters
      * @see XdsParser
      */
-    // TODO This methods should handle exceptions and/or fire events which could
-    // be handled in GUI.
+    // TODO This methods should handle exceptions and/or fire events which could be handled in GUI.
     private void methodParseAuthors() throws String256Exception {
         NodeList authorsNode = document.getElementsByTagName(RootNodesEnum.authors.toString());
         ArrayList<Author> authors = new ArrayList<Author>();
@@ -341,9 +335,7 @@ public class XdsParser {
                     } else {
                         logger.warning("AuthorRoles node is empty for author named " + authorPerson256
                                 + ".\nCheck your XML Document!");
-                        // TODO Fire an event for this error that could be
-                        // handled
-                        // in the view
+                        // TODO Fire an event for this error that could be handled in the view
                     }
 
                     // Set authorSpecialities
@@ -391,8 +383,7 @@ public class XdsParser {
         } else {
             xdsDocumentEntry.setAuthors(null);
             logger.warning("Authors node is empty.\nCheck your XML Document!");
-            // TODO Fire an event for this error that could be handled in the
-            // view
+            // TODO Fire an event for this error that could be handled in the view
         }
     }
 
@@ -637,6 +628,7 @@ public class XdsParser {
      * @see XdsParser
      */
     private CodedTerm parseCodedTerm(String node) throws String256Exception {
+        logger.info(node);
         return parseArrayCodedTerm(node).get(0);
     }
 
@@ -655,7 +647,6 @@ public class XdsParser {
      */
     private ArrayList<CodedTerm> parseArrayCodedTerm(String node) throws String256Exception {
         NodeList nodeList = document.getElementsByTagName(node);
-
         if (!nodeList.toString().isEmpty()) {
             ArrayList<CodedTerm> arrayCodedTerm = new ArrayList<CodedTerm>();
             NodeList codedTermNodes = ((Element) nodeList.item(0)).getElementsByTagName(RootNodesEnum.SubNodesEnum.codedterm

@@ -99,8 +99,6 @@ public class NameValueString256 implements ModelElement, Serializable {
         return answer;
     }
 
-    // abstract public AssertionGroup validateValueType(String256 value);
-
     /**
      * <p>
      * <b>Method verify</b> <br>
@@ -114,14 +112,8 @@ public class NameValueString256 implements ModelElement, Serializable {
      */
     @Override
     public boolean verify() throws String256Exception {
-        // FIXME I don't understand the purpose of this code
-        boolean answer = true;
-        answer = name.verify();
-
-        for (String256 t : values) {
-            answer = t.verify();
-        }
-        return answer;
+        // TODO
+        return true;
     }
 
     @Override
@@ -151,11 +143,11 @@ public class NameValueString256 implements ModelElement, Serializable {
                 '}';
     }
 
-    public NameValueString256 copy() {
+    public NameValueString256 clone() {
         NameValueString256 cp = new NameValueString256();
-        cp.setName(this.getName().copy());
+        cp.setName(this.getName().clone());
         for (String256 s : this.values){
-            cp.getValues().add(s.copy());
+            cp.getValues().add(s.clone());
         }
         return cp;
     }

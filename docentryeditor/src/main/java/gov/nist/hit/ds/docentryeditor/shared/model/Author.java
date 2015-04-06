@@ -258,24 +258,8 @@ public class Author implements ModelElement, Serializable {
      */
     @Override
     public boolean verify() throws String256Exception {
-        // FIXME I don't understand the purpose of this code
-        boolean answer = true;
-        answer = authorPerson.verify();
-        for (String256 str256 : authorInstitutions) {
-            answer = str256.verify();
-        }
-
-        for (String256 str256 : authorRoles) {
-            answer = str256.verify();
-        }
-
-        for (String256 str256 : authorSpecialties) {
-            answer = str256.verify();
-        }
-        for (String256 str256 : authorTelecommunications) {
-            answer = str256.verify();
-        }
-        return answer;
+        // TODO
+        return true;
     }
 
     @Override
@@ -298,20 +282,20 @@ public class Author implements ModelElement, Serializable {
         return true;
     }
 
-    public Author copy() {
+    public Author clone() {
         Author cp = new Author();
-        cp.setAuthorPerson(this.authorPerson.copy());
+        cp.setAuthorPerson(this.authorPerson.clone());
         for (String256 institution : this.authorInstitutions){
-            cp.getAuthorInstitutions().add(institution.copy());
+            cp.getAuthorInstitutions().add(institution.clone());
         }
         for (String256 speciality : this.authorSpecialties){
-            cp.getAuthorSpecialties().add(speciality.copy());
+            cp.getAuthorSpecialties().add(speciality.clone());
         }
         for (String256 role : this.authorRoles){
-            cp.getAuthorRoles().add(role.copy());
+            cp.getAuthorRoles().add(role.clone());
         }
         for (String256 telecommunication : this.authorTelecommunications){
-            cp.getAuthorTelecommunications().add(telecommunication.copy());
+            cp.getAuthorTelecommunications().add(telecommunication.clone());
         }
         return cp;
     }

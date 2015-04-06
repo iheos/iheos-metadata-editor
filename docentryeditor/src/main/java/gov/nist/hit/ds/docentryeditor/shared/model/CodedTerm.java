@@ -144,12 +144,8 @@ public class CodedTerm implements ModelElement, Serializable {
      */
     @Override
     public boolean verify() throws String256Exception {
-        // FIXME I don't understand the purpose of this code
-        boolean answer = true;
-        answer = displayName.verify();
-        answer = code.verify();
-        answer = codingScheme.verify();
-        return answer;
+        //  TODO
+        return true;
     }
 
     @Override
@@ -166,10 +162,8 @@ public class CodedTerm implements ModelElement, Serializable {
         return true;
     }
 
-    public CodedTerm copy() {
+    public CodedTerm clone() {
         return new CodedTerm(this.code.toString(),this.displayName.toString(),this.codingScheme.toString());
     }
-
-// Ajouter: abstract public AssertionGroup validateCode(String256 code);
 
 }

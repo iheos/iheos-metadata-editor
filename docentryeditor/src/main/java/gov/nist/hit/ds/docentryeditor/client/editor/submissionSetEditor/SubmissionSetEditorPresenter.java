@@ -9,11 +9,7 @@ import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsSubmissionSetEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
-import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
-import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
-import gov.nist.hit.ds.ebMetadata.Metadata;
 
 /**
  * This class is the presenter that handles all the actions and events related to the Submission Set Editor view.
