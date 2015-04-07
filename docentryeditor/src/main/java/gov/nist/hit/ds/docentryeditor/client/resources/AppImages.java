@@ -17,7 +17,7 @@ public interface AppImages extends ClientBundle {
     ImageResource filePlus();
 
     @Source("baseResources/folder-32.png")
-    ImageResource folder();
+    ImageResource newFolder();
 
     @Source("baseResources/prefilled.png")
     ImageResource preFilled();
@@ -27,6 +27,9 @@ public interface AppImages extends ClientBundle {
 
     @Source("baseResources/load-file.png")
     ImageResource loadFile();
+
+    @Source("baseResources/edit-subSet.png")
+    ImageResource editSubSet();
 
     @Source("baseResources/load-file-16.png")
     ImageResource loadFile12px();
@@ -43,7 +46,6 @@ public interface AppImages extends ClientBundle {
     @Source("baseResources/checkbox.png")
     ImageResource checkbox();
 
-    //    @Source("baseResources/help.ico.gif")
     @Source("baseResources/comment.png")
     ImageResource help();
 

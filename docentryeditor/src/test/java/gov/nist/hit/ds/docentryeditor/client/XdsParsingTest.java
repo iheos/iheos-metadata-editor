@@ -43,7 +43,7 @@ public class XdsParsingTest extends GWTTestCase {
 
     public void testParseDocEntry() {
         final String docentry = AppResources.INSTANCE.xdsPrefill().getText();
-        MetadataEditorGinInjector injector = MetadataEditorGinInjector.instance;
+        MetadataEditorGinInjector injector = MetadataEditorGinInjector.INSTANCE;
         XdsParser xdsParser = injector.getXdsParser();
         XdsDocumentEntry model = xdsParser.parse(PreParse.getInstance().doPreParse(docentry));
         assertNotNull("Parsed Document Entry is null", model);
@@ -76,7 +76,7 @@ public class XdsParsingTest extends GWTTestCase {
 
     public void testSaveFile() {
         final String docentry = AppResources.INSTANCE.xdsPrefill().getText();
-        MetadataEditorGinInjector injector = MetadataEditorGinInjector.instance;
+        MetadataEditorGinInjector injector = MetadataEditorGinInjector.INSTANCE;
         XdsParser xdsParser = injector.getXdsParser();
         XdsDocumentEntry model = xdsParser.parse(PreParse.getInstance().doPreParse(docentry));
     }

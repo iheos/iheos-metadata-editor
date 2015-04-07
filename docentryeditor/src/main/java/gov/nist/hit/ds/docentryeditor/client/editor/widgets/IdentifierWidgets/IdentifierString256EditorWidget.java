@@ -4,9 +4,9 @@ import com.google.gwt.editor.client.Editor;
 import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
+import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.shared.model.IdentifierString256;
 
@@ -16,7 +16,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.IdentifierString256;
  * </p>
  */
 public class IdentifierString256EditorWidget extends Composite implements Editor<IdentifierString256> {
-    VerticalLayoutContainer vcontainer = new VerticalLayoutContainer();
+    private VerticalLayoutContainer vcontainer = new VerticalLayoutContainer();
     String256EditorWidget value = new String256EditorWidget();
     String256EditorWidget idType = new String256EditorWidget();
 
@@ -25,11 +25,8 @@ public class IdentifierString256EditorWidget extends Composite implements Editor
      */
     public IdentifierString256EditorWidget() {
         initWidget(vcontainer);
-        FieldLabel valueLabel = new FieldLabel(value, "Value");
-        valueLabel.setLabelWidth(125);
-
-        FieldLabel idTypeLabel = new FieldLabel(idType, "IdType");
-        idTypeLabel.setLabelWidth(125);
+        EditorFieldLabel valueLabel = new EditorFieldLabel(value, "Value");
+        EditorFieldLabel idTypeLabel = new EditorFieldLabel(idType, "IdType");
 
         vcontainer.add(value, new VerticalLayoutData(1, -1));
     }

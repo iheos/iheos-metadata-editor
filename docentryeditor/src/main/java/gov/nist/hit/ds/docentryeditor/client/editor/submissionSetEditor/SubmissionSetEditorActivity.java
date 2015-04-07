@@ -24,15 +24,15 @@ import java.util.logging.Logger;
  */
 public class SubmissionSetEditorActivity extends AbstractActivity{
     @Inject
-    ActivityDisplayer displayer;
+    private ActivityDisplayer displayer;
     @Inject
-    MetadataEditorEventBus metadataEditorEventBus;
+    private MetadataEditorEventBus metadataEditorEventBus;
 
     private GenericMVP<XdsSubmissionSet,SubmissionSetEditorView,SubmissionSetEditorPresenter> editorMVP;
     @Inject
-    SubmissionSetEditorView editorView;
+    private SubmissionSetEditorView editorView;
     @Inject
-    SubmissionSetEditorPresenter editorPresenter;
+    private SubmissionSetEditorPresenter editorPresenter;
 
     private SimpleContainer sc;
     private BorderLayoutContainer blc;

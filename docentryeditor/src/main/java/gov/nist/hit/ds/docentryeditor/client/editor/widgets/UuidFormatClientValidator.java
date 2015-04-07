@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * Created by onh2 on 8/28/2014.
  */
 public class UuidFormatClientValidator extends AbstractValidator<String> {
-    Logger logger = Logger.getLogger(this.getClass().getName());
+    private final static Logger LOGGER = Logger.getLogger(UuidFormatClientValidator.class.getName());
 
     static private boolean isLCHexString(String value) {
         for (int i = 0; i < value.length(); i++) {
@@ -62,7 +62,7 @@ public class UuidFormatClientValidator extends AbstractValidator<String> {
                     return createError(editor, "Value is not a correct UUID. It does not have the right number of characters. It should be 45 and start with 'urn:uuid:'.", value);
                 }
             } else {
-                logger.info("else");
+                LOGGER.info("else");
                 String rest;
                 rest = value.substring(9);
 

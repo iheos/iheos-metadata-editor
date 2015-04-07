@@ -20,10 +20,10 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.editing.ClicksToEdit;
 import com.sencha.gxt.widget.core.client.grid.editing.GridRowEditing;
-import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
+import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +91,15 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
     private boolean hasToolbar = true;
     private boolean hasHelpButtonEnabled = false;
     private boolean toolTipAutoShow = true;
+    private int extraWidgetCount=0;
+
+    // constants
+    private static final int DEFAULT_GRID_HEIGHT = 250;
+    private static final int DEFAULT_TOOLBAR_HEIGHT = 35;
+    private static final int ENTRY_HEIGHT = 30;
+    private static final int ESTIMATED_EXTRA_WIDGET_HEIGHT = 30;
+    private static final int DEFAULT_SINGLE_ENTRY_GRID_HEIGHT = 85;
+
 
     /**
      * Generic editable grid (abstract class) constructor.
@@ -113,20 +122,20 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         this.setBorders(false);
 
         this.addStyleName("grid-minheight");
-        this.setHeight(250);
+        this.setHeight(DEFAULT_GRID_HEIGHT);
 
         // toolbar configuration.
         newItemButton.setIcon(AppImages.INSTANCE.add());
-        newItemButton.setToolTip("Add an new element");
+        newItemButton.setToolTip(ToolTipResources.INSTANCE.getGridAddToolTip());
         toolBar.add(newItemButton);
         deleteItemsButton.setIcon(AppImages.INSTANCE.delete());
-        deleteItemsButton.setToolTip("Delete selected element(s)");
+        deleteItemsButton.setToolTip(ToolTipResources.INSTANCE.getGridDeleteToolTip());
         toolBar.add(deleteItemsButton);
         clearButton.setIcon(AppImages.INSTANCE.clear());
-        clearButton.setToolTip("Clear all elements");
+        clearButton.setToolTip(ToolTipResources.INSTANCE.getGridClearTooltip());
         toolBar.add(clearButton);
         helpButton.setIcon(AppImages.INSTANCE.help());
-        helpButton.setTitle("Help?");
+        helpButton.setTitle(ToolTipResources.INSTANCE.getHelpButtonToolTip());
 
         // widget information help panel configuration.
         helpTooltipConfig.setTitleText("Widget help");
@@ -169,6 +178,7 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
      */
     protected void addWidget(Widget widget) {
         hasExtraWidget = true;
+        extraWidgetCount++;
         widget.addStyleName("topBorder");
         gridContainer.add(widget, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 4, 1, 4)));
     }
@@ -181,6 +191,7 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         hasExtraWidget = true;
         boolean firstDone = false;
         for (Widget w : widgets) {
+            extraWidgetCount++;
             if (firstDone == false) {
                 w.addStyleName("topBorder");
                 firstDone = true;
@@ -255,7 +266,6 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
             @Override
             public void onSelect(SelectEvent selectEvent) {
                 // try to fire an event
-//                logger.info("current list size: " + getStore().size() + "\nStore max size: " + storeMaxLength);
                 if (getStore().size() < storeMaxLength || storeMaxLength == 0) {
                     editing.cancelEditing();
                     // this method should work I don't understand why there is a problem.
@@ -339,7 +349,6 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
      */
     public void disableEditing() {
         disableToolbar();
-        // this.disable();
         editing.clearEditors();
     }
 
@@ -426,10 +435,10 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
     protected void setStoreMaxLength(int storeMaxLength) {
         this.storeMaxLength = storeMaxLength;
         if (storeMaxLength == 1) {
-            this.setHeight(85 + (hasToolbar == true ? 35 : 0) + (hasExtraWidget == true ? 30 : 0));
+            this.setHeight(DEFAULT_SINGLE_ENTRY_GRID_HEIGHT + (hasToolbar == true ? DEFAULT_TOOLBAR_HEIGHT : 0) + (hasExtraWidget == true ? ESTIMATED_EXTRA_WIDGET_HEIGHT*extraWidgetCount : 0));
         } else {
             if (storeMaxLength < 11) {
-                this.setHeight((30 * storeMaxLength) + (hasToolbar == true ? 35 : 0) + (hasExtraWidget == true ? 30 : 0));
+                this.setHeight((ENTRY_HEIGHT * storeMaxLength) + (hasToolbar == true ? DEFAULT_TOOLBAR_HEIGHT : 0) + (hasExtraWidget == true ? ESTIMATED_EXTRA_WIDGET_HEIGHT*extraWidgetCount : 0));
             }
         }
     }
@@ -493,13 +502,6 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         this.cm = new ColumnModel<M>(columnsConfigs);
 
         this.setSelectionModel(selectColumn);
-
-        this.getSelectionModel().addSelectionChangedHandler(new SelectionChangedEvent.SelectionChangedHandler<M>() {
-            @Override
-            public void onSelectionChanged(SelectionChangedEvent<M> event) {
-                // TODO whatever you have to do
-            }
-        });
 
         setEditable();
     }

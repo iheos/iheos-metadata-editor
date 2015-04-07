@@ -8,9 +8,9 @@ import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.editor.EditionMode;
+import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.LanguageCodeComboBox;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
@@ -26,8 +26,8 @@ public class InternationalStringEditorWidget extends Composite implements Editor
     // --- UI Widgets
     private final VerticalLayoutContainer widgetVContainer = new VerticalLayoutContainer();
     // fields
-    LanguageCodeComboBox langCode = new LanguageCodeComboBox();
-    String256EditorWidget value = new String256EditorWidget();
+    private LanguageCodeComboBox langCode = new LanguageCodeComboBox();
+    private String256EditorWidget value = new String256EditorWidget();
 
     // the InternationalString object being edited
     @Ignore
@@ -53,8 +53,8 @@ public class InternationalStringEditorWidget extends Composite implements Editor
      */
     private void buildUI() {
         initWidget(widgetVContainer);
-        FieldLabel langCodeFL = new FieldLabel(langCode, "Language Code");
-        FieldLabel valueFL = new FieldLabel(value, "Value");
+        EditorFieldLabel langCodeFL = new EditorFieldLabel(langCode, "Language Code");
+        EditorFieldLabel valueFL = new EditorFieldLabel(value, "Value");
         langCode.setWidth("auto");
         value.setWidth("auto");
         widgetVContainer.add(langCodeFL);

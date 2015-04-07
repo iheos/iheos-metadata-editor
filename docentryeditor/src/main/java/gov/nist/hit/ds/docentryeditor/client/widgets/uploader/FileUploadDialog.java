@@ -14,9 +14,9 @@ import javax.inject.Inject;
 public class FileUploadDialog extends Dialog {
 
     @Inject
-    FileUploadMVP fileUploadMVP;
+    private FileUploadMVP fileUploadMVP;
     @Inject
-    MetadataEditorEventBus eventBus;
+    private MetadataEditorEventBus eventBus;
 
     public FileUploadDialog() {
         super();

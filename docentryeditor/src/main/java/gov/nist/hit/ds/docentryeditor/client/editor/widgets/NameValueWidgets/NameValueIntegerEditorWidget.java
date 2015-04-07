@@ -24,7 +24,7 @@ public class NameValueIntegerEditorWidget extends GenericEditableListView<Intege
     ListStoreEditor<Integer> values;
 
     @Ignore
-    SpinnerField<Integer> value;
+    private SpinnerField<Integer> value;
 
     /**
      * NameValueInteger editable list default constructor.
@@ -76,7 +76,7 @@ public class NameValueIntegerEditorWidget extends GenericEditableListView<Intege
      */
     @Override
     protected GridModelFactory<Integer> getModelFactory() {
-        return IntegerFactory.instance;
+        return IntegerFactory.INSTANCE;
     }
 
     /**

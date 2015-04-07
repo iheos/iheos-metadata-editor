@@ -12,9 +12,9 @@ import javax.inject.Inject;
 public class SubmissionSetEditorMVP extends AbstractMVP<XdsSubmissionSet,SubmissionSetEditorView,SubmissionSetEditorPresenter> {
 
     @Inject
-    SubmissionSetEditorView editorView;
+    private SubmissionSetEditorView editorView;
     @Inject
-    SubmissionSetEditorPresenter editorPresenter;
+    private SubmissionSetEditorPresenter editorPresenter;
 
     @Override
     public SubmissionSetEditorView buildView() {

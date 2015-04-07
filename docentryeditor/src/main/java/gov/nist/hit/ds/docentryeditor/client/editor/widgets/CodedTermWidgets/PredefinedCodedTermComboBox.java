@@ -203,13 +203,18 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
         private final TextButton okButton;
         private final CodedTermEditorWidget editor;
 
+        private final static int POPUP_WIDTH=600;
+        private final static int POPUP_HEIGHT=180;
+        private final static int BUTTON_WIDTH=80;
+        private final static int BUTTON_HEIGHT=30;
+
         public CodedTermPopUpEditor() {
             super();
             setBodyBorder(false);
             setHeadingText("Custom Coded Term");
             setHideOnButtonClick(true);
-            setWidth(600);
-            setHeight(180);
+            setWidth(POPUP_WIDTH);
+            setHeight(POPUP_HEIGHT);
 
             FramedPanel fpanel = new FramedPanel();
             fpanel.setBorders(false);
@@ -220,12 +225,12 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
             editor.editNew();
             editor.setAllowBlanks(false, false, false);
 
-            okButton = new TextButton("Add ");
-            okButton.setHeight(25);
-            okButton.setWidth(80);
+            okButton = new TextButton("Add");
+            okButton.setWidth(BUTTON_WIDTH);
+            okButton.setHeight(BUTTON_HEIGHT);
             cancelButton = new TextButton("Cancel");
-            cancelButton.setHeight(25);
-            cancelButton.setWidth(80);
+            cancelButton.setWidth(BUTTON_WIDTH);
+            cancelButton.setHeight(BUTTON_HEIGHT);
             fpanel.addButton(okButton);
             fpanel.addButton(cancelButton);
             fpanel.setButtonAlign(BoxLayoutContainer.BoxLayoutPack.CENTER);

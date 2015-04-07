@@ -11,18 +11,21 @@ import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.SubmissionSetEditorPlace;
-import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
-import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
-import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorRequestFactory;
 import gov.nist.hit.ds.docentryeditor.client.editor.documentEntryEditor.DocEntryEditorPlace;
+import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.SubmissionSetEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.event.*;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.client.home.WelcomePlace;
 import gov.nist.hit.ds.docentryeditor.client.parser.PreParse;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
+import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
+import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppResources;
-import gov.nist.hit.ds.docentryeditor.shared.model.*;
+import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorRequestFactory;
+import gov.nist.hit.ds.docentryeditor.shared.model.String256;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
 import javax.inject.Inject;
 
@@ -35,11 +38,12 @@ import javax.inject.Inject;
  */
 public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelView> {
     @Inject
-    PlaceController placeController;
+    private PlaceController placeController;
     @Inject
-    XdsParser xdsParser;
+    private XdsParser xdsParser;
     @Inject
-    MetadataEditorRequestFactory requestFactory;
+    private MetadataEditorRequestFactory requestFactory;
+
     private final SubmissionMenuData submissionSetTreeNode = new SubmissionMenuData("subSet", "Submission set",new XdsSubmissionSet());
 
     private SubmissionMenuData currentlyEdited;
@@ -47,8 +51,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
     private XdsDocumentEntry prefilledDocEntry;
 
     // RPC services declaration
-    private final static XdsParserServicesAsync xdsParserServices = GWT
-            .create(XdsParserServices.class);
+    private final static XdsParserServicesAsync xdsParserServices = GWT.create(XdsParserServices.class);
 
     @Override
     public void init() {
@@ -128,10 +131,18 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                 createPreFilledDocumentEntry();
             }
         });
+        // handle auto-save
         ((MetadataEditorEventBus) getEventBus()).addSaveFileEventHandler(new SaveFileEvent.SaveFileEventHandler() {
             @Override
             public void onFileSave(SaveFileEvent event) {
                 doSave();
+            }
+        });
+        // start edit submission set from home page
+        eventBus.addHandler(SelectSubmissionSetEvent.TYPE, new SelectSubmissionSetEvent.SelectSubmissionSetEventHandler() {
+            @Override
+            public void onSelectSubmissionSet(SelectSubmissionSetEvent event) {
+                view.getTree().getSelectionModel().select(submissionSetTreeNode,false);
             }
         });
     }

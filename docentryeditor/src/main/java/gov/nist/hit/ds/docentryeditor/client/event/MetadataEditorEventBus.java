@@ -162,4 +162,8 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     public HandlerRegistration addPlaceChangeEventHandler(ChangePlaceEvent.ChangePlaceEventHandler handler){
         return addHandler(ChangePlaceEvent.TYPE,handler);
     }
+
+    public void fireSelectSubmissionSetEvent() {
+        fireEvent(new SelectSubmissionSetEvent());
+    }
 }

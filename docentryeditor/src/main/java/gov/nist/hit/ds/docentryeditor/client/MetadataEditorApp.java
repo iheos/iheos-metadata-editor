@@ -20,16 +20,17 @@ import java.util.logging.Logger;
  * This is the class to use to create the application.
  */
 public class MetadataEditorApp implements IsWidget {
-    private final static MetadataEditorGinInjector injector = MetadataEditorGinInjector.instance;
-    protected static Logger logger = Logger.getLogger(MetadataEditorApp.class.getName());
-    private final MetadataEditorEventBus eventBus = injector.getEventBus();
-    private final SimplePanel activityPanel = new SimplePanel();
+    private final static MetadataEditorGinInjector INJECTOR = MetadataEditorGinInjector.INSTANCE;
+    protected final static Logger LOGGER = Logger.getLogger(MetadataEditorApp.class.getName());
+    private final MetadataEditorEventBus eventBus = INJECTOR.getEventBus();
+
+    private SimplePanel activityPanel = new SimplePanel();
     private MetadataEditorAppView appView;
 
     public MetadataEditorApp(){
-        appView = injector.getMetadataEditorAppView();
+        appView = INJECTOR.getMetadataEditorAppView();
 
-        PlaceController placeController = injector.getPlaceController();
+        PlaceController placeController = INJECTOR.getPlaceController();
 
         MetadataEditorActivityMapper activityMapper = new MetadataEditorActivityMapper();
         ActivityManager activityManager = new ActivityManager(activityMapper, eventBus);
@@ -62,7 +63,7 @@ public class MetadataEditorApp implements IsWidget {
     }
 
     public static MetadataEditorGinInjector getInjector() {
-        return injector;
+        return INJECTOR;
     }
 
     public MetadataEditorEventBus getEventBus() {

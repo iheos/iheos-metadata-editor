@@ -37,38 +37,38 @@ import gov.nist.hit.ds.docentryeditor.shared.model.Author;
 public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements IsWidget {
     // instance of the property access for the Author entity attributes (for the GXT Store).
     @Ignore
-    private static final AuthorProperties authorprops = GWT.create(AuthorProperties.class);
+    private static final AuthorProperties AUTHOR_PROPERTIES = GWT.create(AuthorProperties.class);
     // Widget's container.
     @Ignore
     private SimpleContainer authorGridEditorWidget;
 
     // Widget that handles the list of Authors.
     @Ignore
-    ListView<Author, String> listViewAuthors;
+    private ListView<Author, String> listViewAuthors;
 
     // ///////////////////////////////////////////////////////////////////////
     // ---- AUTHOR WIDGETS
     // ///////////////////////////////////////////////////////////////////////
     // Widget to edit a selected entry of the list of Authors.
     @Ignore
-    AuthorEditorWidget author;
+    private AuthorEditorWidget author;
     // Buttons to handle actions on the list of authors.
     @Ignore
-    TextButton newAuthorWidget = new TextButton("New entry");
+    private TextButton newAuthorWidget = new TextButton("New entry");
     @Ignore
-    TextButton editAuthorWidget = new TextButton("Edit entry");
+    private TextButton editAuthorWidget = new TextButton("Edit entry");
     @Ignore
-    TextButton saveAuthorWidget = new TextButton("Save entry");
+    private TextButton saveAuthorWidget = new TextButton("Save entry");
     @Ignore
-    TextButton cancelAuthorWidget = new TextButton("Cancel");
+    private TextButton cancelAuthorWidget = new TextButton("Cancel");
     @Ignore
-    TextButton deleteAuthorWidget = new TextButton("Delete entry");
+    private TextButton deleteAuthorWidget = new TextButton("Delete entry");
 
     /**
      * Widget's default constuctor.
      */
     public AuthorsListEditorWidget() {
-        super(new ListStore<Author>(authorprops.key()));
+        super(new ListStore<Author>(AUTHOR_PROPERTIES.key()));
         buildUI();
         bindUI();
     }
@@ -79,7 +79,7 @@ public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements 
      * @return authors editor widget w/ sub-editor
      */
     private void buildUI() {
-        listViewAuthors = new ListView<Author, String>(this.getStore(), authorprops.authorPerson());
+        listViewAuthors = new ListView<Author, String>(this.getStore(), AUTHOR_PROPERTIES.authorPerson());
         // set the list selection mode to one single entry selected at a time.
         listViewAuthors.getSelectionModel().setSelectionMode(Style.SelectionMode.SINGLE);
 

@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.client.editor.ListStoreEditor;
-import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
@@ -18,7 +17,6 @@ import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.AuthorWidgets.AuthorsListEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.CodedTermWidgets.PredefinedCodedTermComboBox;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
-import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorToolbar;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.IdentifierWidgets.IdentifierOIDEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.IdentifierWidgets.IdentifierString256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.InternationalStringWidgets.InternationalStringEditableGrid;
@@ -29,6 +27,8 @@ import gov.nist.hit.ds.docentryeditor.client.editor.widgets.UuidFormatClientVali
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
+import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
+import gov.nist.hit.ds.docentryeditor.client.widgets.ToolbarIconButton;
 import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
@@ -49,8 +49,8 @@ import java.util.Map;
 public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPresenter> implements Editor<XdsSubmissionSet>{
     private final VerticalLayoutContainer mainContainer = new VerticalLayoutContainer();
 
-    VerticalLayoutContainer requiredFields = new VerticalLayoutContainer();
-    VerticalLayoutContainer optionalFields = new VerticalLayoutContainer();
+    private VerticalLayoutContainer requiredFields = new VerticalLayoutContainer();
+    private VerticalLayoutContainer optionalFields = new VerticalLayoutContainer();
 
     // Required R in XDS (DS and DR) and in XDS DS.
     @Inject
@@ -70,10 +70,10 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
     NameValueString256EditorWidget intendedRecipient=new NameValueString256EditorWidget("Intended Recipients");
     // ---- Titles Widgets
     ListStoreEditor<InternationalString> title;
-    InternationalStringEditableGrid titleGrid;
+    private InternationalStringEditableGrid titleGrid;
     // ---- Comments Widgets
     ListStoreEditor<InternationalString> comments;
-    InternationalStringEditableGrid commentsGrid;
+    private InternationalStringEditableGrid commentsGrid;
     @Inject
     String256EditorWidget availabilityStatus;
     @Inject
@@ -84,8 +84,8 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
     private EditorToolbar editorTopToolbar;
     @Inject
     private EditorToolbar editorBottomToolbar;
-    private TextButton populateTopButton =new TextButton("Populate");
-    private TextButton populateBottomButton =new TextButton("Populate");
+    private ToolbarIconButton populateTopButton;
+    private ToolbarIconButton populateBottomButton;
 
     /**
      * This is the abstract method implementation that builds a collection of objects
@@ -129,7 +129,7 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         requiredFieldsContainer.add(requiredFields);
         optionalFieldsContainer.add(optionalFields);
 
-        populateTopButton.setIcon(AppImages.INSTANCE.pen());
+        populateTopButton=new ToolbarIconButton("Populate",AppImages.INSTANCE.pen(),85);
         populateTopButton.setToolTip("Populate the submission set editor form with test data.");
         editorTopToolbar.addButton(populateTopButton);
 
@@ -203,7 +203,7 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         setWidgetsInfo();
 
         // Bottom toolbar container.
-        populateBottomButton.setIcon(AppImages.INSTANCE.pen());
+        populateBottomButton=new ToolbarIconButton("Populate",AppImages.INSTANCE.pen(),85);
         populateBottomButton.setToolTip("Populate the submission set editor form with test data.");
         editorBottomToolbar.addButton(populateBottomButton);
         SimpleContainer bottomToolbarContainer = new SimpleContainer();

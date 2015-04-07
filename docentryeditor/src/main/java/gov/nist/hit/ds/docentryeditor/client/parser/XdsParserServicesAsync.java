@@ -13,6 +13,6 @@ public interface XdsParserServicesAsync {
      * @param fileContent XML ebRim file to parse.
      * @param async asynchronous callback containing the java object set.
      */
-    void parseXdsMetadata(String fileContent, AsyncCallback<XdsMetadata> async);
-    void toEbRim(XdsMetadata xdsDocumentEntry,AsyncCallback<String> async);
+    public void parseXdsMetadata(String fileContent, AsyncCallback<XdsMetadata> async);
+    public void toEbRim(XdsMetadata xdsDocumentEntry,AsyncCallback<String> async);
 }
