@@ -4,7 +4,6 @@ import com.google.gwt.editor.client.Editor;
 import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.shared.model.OID;
@@ -22,8 +21,7 @@ public class OIDEditorWidget extends Composite implements Editor<OID> {
         initWidget(vcontainer);
 
         if (displayLabel) {
-            FieldLabel oidLabel = new FieldLabel(oid, "OID");
-            oidLabel.setLabelWidth(125);
+            EditorFieldLabel oidLabel = new EditorFieldLabel(oid, "OID");
             vcontainer.add(oidLabel, new VerticalLayoutData(1, -1));
         } else {
             vcontainer.add(oid, new VerticalLayoutData(1, -1));

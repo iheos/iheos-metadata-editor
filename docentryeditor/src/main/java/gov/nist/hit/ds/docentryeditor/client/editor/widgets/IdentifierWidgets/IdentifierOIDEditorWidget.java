@@ -3,9 +3,9 @@ package gov.nist.hit.ds.docentryeditor.client.editor.widgets.IdentifierWidgets;
 import com.google.gwt.editor.client.Editor;
 import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
+import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.OIDEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.shared.model.IdentifierOID;
@@ -17,7 +17,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.IdentifierOID;
  */
 public class IdentifierOIDEditorWidget extends Composite implements
         Editor<IdentifierOID> {
-    VerticalLayoutContainer vcontainer = new VerticalLayoutContainer();
+    private VerticalLayoutContainer vcontainer = new VerticalLayoutContainer();
     OIDEditorWidget value = new OIDEditorWidget(false);
     String256EditorWidget idType = new String256EditorWidget();
 
@@ -26,11 +26,8 @@ public class IdentifierOIDEditorWidget extends Composite implements
      */
     public IdentifierOIDEditorWidget() {
         initWidget(vcontainer);
-        FieldLabel valueLabel = new FieldLabel(value, "Value");
-        valueLabel.setLabelWidth(125);
-
-        FieldLabel idTypeLabel = new FieldLabel(idType, "ID Type (OID)");
-        idTypeLabel.setLabelWidth(125);
+        EditorFieldLabel valueLabel = new EditorFieldLabel(value, "Value");
+        EditorFieldLabel idTypeLabel = new EditorFieldLabel(idType, "ID Type (OID)");
         idTypeLabel.setVisible(false);
 
         vcontainer.add(value, new VerticalLayoutContainer.VerticalLayoutData(1, -1));

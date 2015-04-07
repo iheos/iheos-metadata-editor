@@ -21,19 +21,19 @@ import gov.nist.hit.ds.docentryeditor.shared.model.String256;
  */
 public class NameValueString256EditorWidget extends GenericEditableListView<String256, String> implements Editor<NameValueString256> {
     // instance of the property access for the String256 entity attributes (for the GXT Store).
-    private final static String256Properties props = GWT.create(String256Properties.class);
+    private final static String256Properties PROPS = GWT.create(String256Properties.class);
 
     // --- UI Widgets
     ListStoreEditor<String256> values;
     @Ignore
-    BoundedTextField tf;
+    private BoundedTextField tf;
 
     /**
      * NameValueString256 editable list widget default constructor.
      * @param widgetTitle title of the widget (for the grid's panel header).
      */
     public NameValueString256EditorWidget(String widgetTitle) {
-        super(widgetTitle, new ListStore<String256>(props.key()), props.string());
+        super(widgetTitle, new ListStore<String256>(PROPS.key()), PROPS.string());
         buildUI();
     }
 
@@ -43,7 +43,7 @@ public class NameValueString256EditorWidget extends GenericEditableListView<Stri
      * @param listSize number of String256 objects that can be stored in the widget (list).
      */
     public NameValueString256EditorWidget(String widgetTitle,int listSize) {
-        super(widgetTitle, new ListStore<String256>(props.key()), props.string());
+        super(widgetTitle, new ListStore<String256>(PROPS.key()), PROPS.string());
         buildUI();
         setStoreMaxLength(listSize);
     }
@@ -88,7 +88,7 @@ public class NameValueString256EditorWidget extends GenericEditableListView<Stri
 
     @Override
     protected GridModelFactory<String256> getModelFactory() {
-        return String256Factory.instance;
+        return String256Factory.INSTANCE;
     }
 
     /**
@@ -130,7 +130,7 @@ public class NameValueString256EditorWidget extends GenericEditableListView<Stri
      */
     @Override
     protected ValueProvider<? super String256, String> getValueProvider() {
-        return props.string();
+        return PROPS.string();
     }
     //	/**
 //	 * Sets whether a field is valid when its value length = 0 (default to

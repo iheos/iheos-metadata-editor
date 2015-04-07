@@ -14,7 +14,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.XdsModelElement;
  * Created by onh2 on 7/11/2014.
  */
 public class SubmissionMenuData<M extends XdsModelElement> {
-    public static final SubmissionMenuData.SubmissionMenuDataProperties props = GWT.create(SubmissionMenuData.SubmissionMenuDataProperties.class);
+    public static final SubmissionMenuData.SubmissionMenuDataProperties PROPS = GWT.create(SubmissionMenuData.SubmissionMenuDataProperties.class);
     private String key;
     private String value;
     private M model;

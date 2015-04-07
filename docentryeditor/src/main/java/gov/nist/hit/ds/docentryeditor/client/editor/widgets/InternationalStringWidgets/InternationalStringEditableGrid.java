@@ -82,6 +82,6 @@ public class InternationalStringEditableGrid extends GenericEditableGrid<Interna
      */
     @Override
     protected GridModelFactory<InternationalString> getModelFactory() {
-        return InternationalStringFactory.instance;
+        return InternationalStringFactory.INSTANCE;
     }
 }

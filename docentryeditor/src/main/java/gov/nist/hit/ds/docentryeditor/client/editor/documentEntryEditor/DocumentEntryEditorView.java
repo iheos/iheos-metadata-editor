@@ -28,6 +28,7 @@ import gov.nist.hit.ds.docentryeditor.client.editor.widgets.NameValueWidgets.Nam
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.NameValueWidgets.NameValueString256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
+import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
 import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
 import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
@@ -47,8 +48,8 @@ import java.util.Map;
 public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPresenter> implements Editor<XdsDocumentEntry> {
     private final VerticalLayoutContainer form = new VerticalLayoutContainer();
 
-    VerticalLayoutContainer requiredFields = new VerticalLayoutContainer();
-    VerticalLayoutContainer optionalFields = new VerticalLayoutContainer();
+    private VerticalLayoutContainer requiredFields = new VerticalLayoutContainer();
+    private VerticalLayoutContainer optionalFields = new VerticalLayoutContainer();
 
     /* simple fields declaration */
     @Inject

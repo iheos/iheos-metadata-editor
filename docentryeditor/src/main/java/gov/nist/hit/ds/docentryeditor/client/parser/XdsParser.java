@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * To do it, here are the following variables required
  * </p>
  * <ul>
- * <li>{@link #instance}: The parser object, this class is a singleton (Parse) ;</li>
+ * <li>{@link #INSTANCE}: The parser object, this class is a singleton (Parse) ;</li>
  * <li>{@link #documentXml}: The String which contains the XML data (String) ;</li>
  * <li>{@link #xdsDocumentEntry}: The document model which will be completed.</li>
  * </ul>
@@ -79,8 +79,8 @@ public class XdsParser {
      *
      * @see XdsParser
      */
-    private final static XdsParser instance = new XdsParser();
-    private static Logger logger = Logger.getLogger(XdsParser.class.getName());
+    private final static XdsParser INSTANCE = new XdsParser();
+    private final static Logger LOGGER = Logger.getLogger(XdsParser.class.getName());
     /**
      * <b>DocumentModel xdsDocumentEntry</b> - The model which will be completed
      * by buildMyModel using the data's XML file.<br>
@@ -111,7 +111,7 @@ public class XdsParser {
     private PreParse preParse;
 
     public static XdsParser getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     /**
@@ -280,8 +280,6 @@ public class XdsParser {
 
         if (authorsNode != null && !authorsNode.toString().isEmpty()) {
             for (int a = 0; a < authorsNode.getLength(); a++) {
-                // int titleLength = authorsNode.item(0).getChildNodes()
-                // .getLength();
                 NodeList authorNodes = ((Element) authorsNode.item(a)).getElementsByTagName("author");
                 for (int i = 0; i < authorNodes.getLength(); i++) {
                     Author intern_temp = new Author();
@@ -299,10 +297,9 @@ public class XdsParser {
                         for (int p = 0; p < authorPersonNodes.getLength(); p++) {
                             authorPerson256.setString(authorPersonNodes.item(p).getFirstChild().getNodeValue());
                             intern_temp.setAuthorPerson(authorPerson256);
-
                         }
                     } else {
-                        logger.warning("This author lacks an author person node. \nCheck your XML Document!");
+                        LOGGER.warning("This author lacks an author person node. \nCheck your XML Document!");
                     }
                     // Set authorInstitutions
                     NodeList institutionNodes = ((Element) authorNodes.item(i))
@@ -317,7 +314,7 @@ public class XdsParser {
                         }
                         intern_temp.setAuthorInstitutions(authorInstitutions_temp);
                     } else {
-                        logger.warning("AuthorInstitutions node is empty for author named " + authorPerson256
+                        LOGGER.warning("AuthorInstitutions node is empty for author named " + authorPerson256
                                 + ".\nCheck your XML Document!");
                     }
                     // Set authorRoles
@@ -333,11 +330,10 @@ public class XdsParser {
                         }
                         intern_temp.setAuthorRoles(authorRoles_temp);
                     } else {
-                        logger.warning("AuthorRoles node is empty for author named " + authorPerson256
+                        LOGGER.warning("AuthorRoles node is empty for author named " + authorPerson256
                                 + ".\nCheck your XML Document!");
                         // TODO Fire an event for this error that could be handled in the view
                     }
-
                     // Set authorSpecialities
                     NodeList specialtyNodes = ((Element) authorNodes.item(i))
                             .getElementsByTagName(RootNodesEnum.SubNodesEnum.authorspecialty.toString());
@@ -351,7 +347,7 @@ public class XdsParser {
                         }
                         intern_temp.setAuthorSpecialties(authorSpecialities_temp);
                     } else {
-                        logger.warning("AuthorSpecialities node is empty for author named " + authorPerson256
+                        LOGGER.warning("AuthorSpecialities node is empty for author named " + authorPerson256
                                 + "!\nCheck your XML Document");
                         // TODO fire an event to handle the issue in the view
                     }
@@ -368,21 +364,19 @@ public class XdsParser {
                         }
                         intern_temp.setAuthorTelecommunications(authorTelecommunications_temp);
                     } else {
-                        logger.warning("AuthorTelecommunications node is empty for author named " + authorPerson256
+                        LOGGER.warning("AuthorTelecommunications node is empty for author named " + authorPerson256
                                 + ".\nCheck your XML Document!");
                         // TODO fire an event to handle the issue in the view
                     }
                     // Add this Element to the model
                     authors.add(intern_temp);
-
                 }
-
                 // Set title to xdsDocumentEntry
                 xdsDocumentEntry.setAuthors(authors);
             }
         } else {
             xdsDocumentEntry.setAuthors(null);
-            logger.warning("Authors node is empty.\nCheck your XML Document!");
+            LOGGER.warning("Authors node is empty.\nCheck your XML Document!");
             // TODO Fire an event for this error that could be handled in the view
         }
     }
@@ -406,14 +400,12 @@ public class XdsParser {
             if (string256.verify()) {
                 return string256;
             } else {
-                // FIXME Not sure it should be done here but maybe with the
-                // verify method which may return something
-                logger.warning(node + " node is larger than 256 characters.");
+                // FIXME Not sure it should be done here but maybe within the verify method which may return something
+                LOGGER.warning(node + " node is larger than 256 characters.");
                 return null;
             }
-
         } else {
-            logger.warning(node + " node is empty.\nCheck your XML Document!");
+            LOGGER.warning(node + " node is empty.\nCheck your XML Document!");
             return null;
         }
     }
@@ -437,16 +429,13 @@ public class XdsParser {
             if (oid.verify()) {
                 return oid;
             } else {
-                // FIXME Not sure it should be done that way (abstraction issue,
-                // string256 validation check)
-                logger.warning(node + " node is larger than 256 characters.");
+                // FIXME Not sure it should be done that way (abstraction issue, string256 validation check)
+                LOGGER.warning(node + " node is larger than 256 characters.");
                 return null;
             }
-
         } else {
-            // TODO Fire an event for this error that could be handled in the
-            // view
-            logger.warning(node + " node is empty.\nCheck your XML Document!");
+            // TODO Fire an event for this error that could be handled in the view
+            LOGGER.warning(node + " node is empty.\nCheck your XML Document!");
             return null;
         }
     }
@@ -481,7 +470,6 @@ public class XdsParser {
             }
             if (identifier256_value.verify()) {
                 identifier.setValue(identifier256_value);
-
             } else {
                 // FIXME should do something to raise an exception or fire event
                 return null;
@@ -506,7 +494,7 @@ public class XdsParser {
             // Set IDPatient element to xdsDocumentEntry
             return identifier;
         } else {
-            logger.warning(node + " node is empty.\nCheck your XML Document!");
+            LOGGER.warning(node + " node is empty.\nCheck your XML Document!");
             return null;
         }
     }
@@ -563,7 +551,7 @@ public class XdsParser {
             // Set IDPatient element to xdsDocumentEntry
             return identifier;
         } else {
-            logger.warning(node + " node is empty.\nCheck your XML Document!");
+            LOGGER.warning(node + " node is empty.\nCheck your XML Document!");
             return null;
         }
     }
@@ -611,7 +599,7 @@ public class XdsParser {
             // Set title to xdsDocumentEntry
             return array;
         } else {
-            logger.warning(node + " node is empty!\nCheck your XML Document");
+            LOGGER.warning(node + " node is empty!\nCheck your XML Document");
             return null;
         }
     }
@@ -628,7 +616,6 @@ public class XdsParser {
      * @see XdsParser
      */
     private CodedTerm parseCodedTerm(String node) throws String256Exception {
-        logger.info(node);
         return parseArrayCodedTerm(node).get(0);
     }
 
@@ -693,11 +680,9 @@ public class XdsParser {
                     // TODO return problem to client view
                 }
             }
-
             return arrayCodedTerm;
-
         } else {
-            logger.warning(node + " node is empty!\nCheck your XML Document");
+            LOGGER.warning(node + " node is empty!\nCheck your XML Document");
             return null;
         }
     }
@@ -717,7 +702,7 @@ public class XdsParser {
         NodeList nodeList = document.getElementsByTagName(node);
 
         if (nodeList.toString().isEmpty()) {
-            logger.warning(node + " node is empty!\nCheck your XML Document");
+            LOGGER.warning(node + " node is empty!\nCheck your XML Document");
             return null;
         } else {
             // NameValue<String256>
@@ -757,7 +742,7 @@ public class XdsParser {
     private NameValueInteger parseNameValueInteger(String node) throws String256Exception {
         NodeList nodeList = document.getElementsByTagName(node);
         if (nodeList.toString().isEmpty()) {
-            logger.warning(node + " node is empty.\nCheck your XML Document!");
+            LOGGER.warning(node + " node is empty.\nCheck your XML Document!");
             return null;
         } else {
             // NameValue<String256>
@@ -796,7 +781,7 @@ public class XdsParser {
     private NameValueDTM parseNameValueDTM(String node) throws String256Exception {
         NodeList nodeList = document.getElementsByTagName(node);
         if (nodeList.toString().isEmpty()) {
-            logger.warning(node + " node is empty.\nCheck your XML Document!");
+            LOGGER.warning(node + " node is empty.\nCheck your XML Document!");
             return null;
         } else {
             NameValueDTM nameValue = new NameValueDTM();
@@ -811,10 +796,9 @@ public class XdsParser {
                 // TODO fire problem to view
             }
             // Set values
-            // Set values
             NodeList valueNodes = ((Element) nodeList.item(0)).getElementsByTagName(RootNodesEnum.SubNodesEnum.value
                     .toString());
-
+            // FIXME this should be done elsewhere
             for (int i = 0; i < valueNodes.getLength(); i++) {
                 String256 value256 = new String256();
                 DTM dtm = new DTM();

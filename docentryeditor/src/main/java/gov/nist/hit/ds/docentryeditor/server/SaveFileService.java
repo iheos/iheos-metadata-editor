@@ -17,9 +17,9 @@ import java.util.logging.Logger;
  */
 public class SaveFileService implements Serializable {
 
+    private final static Logger LOGGER = Logger.getLogger(SaveFileService.class.getName());
     private static final long serialVersionUID = 1L;
     private static File FILE_REPOSITORY;
-    private final Logger logger = Logger.getLogger(SaveFileService.class.getName());
 
     public SaveFileService(){
         String rootDirPath;
@@ -30,15 +30,15 @@ public class SaveFileService implements Serializable {
             // ~ For tests purpose
             rootDirPath = System.getProperty("user.dir");
         }
-        logger.info("Root Path: " + rootDirPath);
+        LOGGER.info("Root Path: " + rootDirPath);
         File fileFolder=new File(new File(rootDirPath),"/files/");
         if(!fileFolder.exists()) {
-            logger.info("Create storage folder 'files''");
+            LOGGER.info("Create storage folder 'files''");
             fileFolder.mkdir();
-            logger.info("... storage folder 'files' created.");
+            LOGGER.info("... storage folder 'files' created.");
         }
         FILE_REPOSITORY=fileFolder;
-        logger.info("New storage folder is: "+FILE_REPOSITORY.getAbsolutePath());
+        LOGGER.info("New storage folder is: " + FILE_REPOSITORY.getAbsolutePath());
     }
 
     /**
@@ -49,13 +49,13 @@ public class SaveFileService implements Serializable {
      * @return String filename
      */
     public String saveAsXMLFile(String fileContent) {
-        logger.info("Saving xml file...");
+        LOGGER.info("Saving xml file...");
 
         // Random name created for save on server
         String filename = UUID.randomUUID().toString() + ".xml";
 
         // Save xml file content into "files" repository
-        logger.info("Metadata xml file creation...");
+        LOGGER.info("Metadata xml file creation...");
 
         // return created file's name
         return saveAsXMLFile(filename,fileContent.replace("displayName","name"));
@@ -72,7 +72,7 @@ public class SaveFileService implements Serializable {
      * @return String filename
      */
     public String saveAsXMLFile(String filename, String fileContent) {
-        logger.info("Saving xml file...");
+        LOGGER.info("Saving xml file...");
 
         // Random name created for save on server
         String fileName = filename;
@@ -82,7 +82,7 @@ public class SaveFileService implements Serializable {
             fileName += ".xml";
 
         // Save xml file content into "files" repository
-        logger.info("Metadata xml file creation...");
+        LOGGER.info("Metadata xml file creation...");
 
         FileOutputStream out;
 
@@ -91,14 +91,14 @@ public class SaveFileService implements Serializable {
 
         try {
             out = new FileOutputStream(new File(FILE_REPOSITORY, fileName));
-            logger.info("... writing file ("+fileName+") in "+FILE_REPOSITORY.getAbsolutePath()+"...");
+            LOGGER.info("... writing file (" + fileName + ") in " + FILE_REPOSITORY.getAbsolutePath() + "...");
             out.write(outS.getBytes());
             out.close();
         } catch (IOException e) {
-            logger.warning("Error when writing metadata file on server.\n" + e.getMessage());
+            LOGGER.warning("Error when writing metadata file on server.\n" + e.getMessage());
             e.printStackTrace();
         }
-        logger.fine("... temporary file created: " + FILE_REPOSITORY + "/" + fileName);
+        LOGGER.fine("... temporary file created: " + FILE_REPOSITORY + "/" + fileName);
 
         // return created file's name
         return fileName;

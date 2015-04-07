@@ -9,9 +9,9 @@ import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.editor.EditionMode;
+import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
 
@@ -24,19 +24,19 @@ import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
 public class CodedTermEditorWidget extends Composite implements Editor<CodedTerm> {
     // instance of the driver for the edition of a coded term
     @Ignore
-    CodedTermEditorDriver codedTermEditorDriver = GWT.create(CodedTermEditorDriver.class);
+    private CodedTermEditorDriver codedTermEditorDriver = GWT.create(CodedTermEditorDriver.class);
     /*
      * editionMode is an instance of EditionMode. It is used to know the state
      * of the editor, to know how to display the different fields
      * (enable/disable especially)
      */
     @Ignore
-    EditionMode editionMode = EditionMode.NODATA;
+    private EditionMode editionMode = EditionMode.NODATA;
     // the CodedTerm object being edited
     @Ignore
-    CodedTerm model;
+    private CodedTerm model;
     // --- UI Widgets
-    VerticalLayoutContainer codedTermEditorVContainer = new VerticalLayoutContainer();
+    private VerticalLayoutContainer codedTermEditorVContainer = new VerticalLayoutContainer();
     // Fields
     String256EditorWidget displayName = new String256EditorWidget();
     String256EditorWidget code = new String256EditorWidget();
@@ -55,14 +55,9 @@ public class CodedTermEditorWidget extends Composite implements Editor<CodedTerm
     private void buildUI() {
         initWidget(codedTermEditorVContainer);
 
-        FieldLabel displayNameLabel = new FieldLabel(displayName, "Display Name");
-        displayNameLabel.setLabelWidth(125);
-
-        FieldLabel codeLabel = new FieldLabel(code, "Code");
-        codeLabel.setLabelWidth(125);
-
-        FieldLabel codingSchemeLabel = new FieldLabel(codingScheme, "Coding Scheme");
-        codingSchemeLabel.setLabelWidth(125);
+        EditorFieldLabel displayNameLabel = new EditorFieldLabel(displayName, "Display Name");
+        EditorFieldLabel codeLabel = new EditorFieldLabel(code, "Code");
+        EditorFieldLabel codingSchemeLabel = new EditorFieldLabel(codingScheme, "Coding Scheme");
 
         // setAllowBlanks(false, false, false);
         setEmptyTexts("ex: General Medicine", "ex: Outpatient", "ex: urn:uuid:vvvh6285-8b07-6s88-f36d-df545z654jgf");

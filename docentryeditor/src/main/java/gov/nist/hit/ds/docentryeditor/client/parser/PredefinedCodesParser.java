@@ -30,35 +30,35 @@ public enum PredefinedCodesParser {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     // name of the root node of the file containing the existing codes.
-    private static String CONFIG_FILE_ROOT_NODE = "CodeType";
+    private final static String CONFIG_FILE_ROOT_NODE = "CodeType";
 
     // XML Parsed document.
     @SuppressWarnings("GwtInconsistentSerializableClass")
-    private final static Document dom = XMLParser.parse(PreParse.getInstance().doPreParse(
+    private final static Document DOM = XMLParser.parse(PreParse.getInstance().doPreParse(
             AppResources.INSTANCE.codes().getText()));
 
     // list of nodes corresponding to each type of codes
     @SuppressWarnings("GwtInconsistentSerializableClass")
-    private static final NodeList nodes = dom.getElementsByTagName(CONFIG_FILE_ROOT_NODE);
+    private static final NodeList NODES = DOM.getElementsByTagName(CONFIG_FILE_ROOT_NODE);
 
     // list of existing content type codes.
-    private static final List<CodedTerm> contentTypeCodes = new ArrayList<CodedTerm>();
+    private final List<CodedTerm> contentTypeCodes = new ArrayList<CodedTerm>();
     // list of existing class codes.
-    private static final List<CodedTerm> classCodes = new ArrayList<CodedTerm>();
+    private final List<CodedTerm> classCodes = new ArrayList<CodedTerm>();
     // list of existing format codes.
-    private static final List<CodedTerm> formatCodes = new ArrayList<CodedTerm>();
+    private final List<CodedTerm> formatCodes = new ArrayList<CodedTerm>();
     // list of existing healthcare facility type codes.
-    private static final List<CodedTerm> healthcareFacilityTypeCodes = new ArrayList<CodedTerm>();
+    private final List<CodedTerm> healthcareFacilityTypeCodes = new ArrayList<CodedTerm>();
     // list of existing practice setting codes.
-    private static final List<CodedTerm> practiceSettingCodes = new ArrayList<CodedTerm>();
+    private final List<CodedTerm> practiceSettingCodes = new ArrayList<CodedTerm>();
     // list of existing type codes.
-    private static final List<CodedTerm> typeCodes = new ArrayList<CodedTerm>();
+    private final List<CodedTerm> typeCodes = new ArrayList<CodedTerm>();
     // list of existing confidentiality codes.
-    private static final List<CodedTerm> confidentialityCodes = new ArrayList<CodedTerm>();
+    private final List<CodedTerm> confidentialityCodes = new ArrayList<CodedTerm>();
     // list of existing event codes.
-    private static final List<CodedTerm> eventCodes = new ArrayList<CodedTerm>();
+    private final List<CodedTerm> eventCodes = new ArrayList<CodedTerm>();
     // list of existing mime types.
-    private static final List<String256> mimeTypes = new ArrayList<String256>();
+    private final List<String256> mimeTypes = new ArrayList<String256>();
 
     /**
      * Method that retrieves a required list of codes.
@@ -135,10 +135,10 @@ public enum PredefinedCodesParser {
     private List<CodedTerm> parseNode(String nodeName) {
         int index = 0;
         List<CodedTerm> temp = new ArrayList<CodedTerm>();
-        while (!(((Element) nodes.item(index)).getAttribute(ConfigCodeNodes.CodeAttributes.name.toString()).equals(nodeName))) {
+        while (!(((Element) NODES.item(index)).getAttribute(ConfigCodeNodes.CodeAttributes.name.toString()).equals(nodeName))) {
             index++;
         }
-        NodeList n = ((Element) nodes.item(index)).getElementsByTagName("Code");
+        NodeList n = ((Element) NODES.item(index)).getElementsByTagName("Code");
         for (int i = 0; i < n.getLength(); i++) {
             CodedTerm code = new CodedTerm();
             code.setCode(new String256().setString(((Element) n.item(i)).getAttribute(ConfigCodeNodes.CodeAttributes.code
@@ -166,10 +166,10 @@ public enum PredefinedCodesParser {
     public List<String256> getMimeTypes() {
         if (mimeTypes.size() == 0) {
             int index = 0;
-            while (!(((Element) nodes.item(index)).getAttribute("name").equals("mimeType"))) {
+            while (!(((Element) NODES.item(index)).getAttribute("name").equals("mimeType"))) {
                 index++;
             }
-            NodeList n = ((Element) nodes.item(index)).getElementsByTagName("Code");
+            NodeList n = ((Element) NODES.item(index)).getElementsByTagName("Code");
             for (int i = 0; i < n.getLength(); i++) {
                 String256 code = new String256().setString(((Element) n.item(i)).getAttribute("code"));
 

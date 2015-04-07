@@ -7,11 +7,11 @@ import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderL
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.Viewport;
-import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorGinInjector;
 import gov.nist.hit.ds.docentryeditor.client.generics.GenericMVP;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionMenuData;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelPresenter;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelView;
+import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorGinInjector;
 
 /**
  * This class contains layout objects to handle the global interface layout,
@@ -20,28 +20,28 @@ import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelView
  * @author OLIVIER
  */
 public class MetadataEditorAppView extends Viewport {
+    private final static MetadataEditorGinInjector INJECTOR = MetadataEditorGinInjector.INSTANCE;
+    private static final int WEST_PANEL_WIDTH = 200;
 
     // NorthPanel north; // interface for file loading and saving
-    CenterPanel center; // main edtior fields
-    GenericMVP<SubmissionMenuData, SubmissionPanelView, SubmissionPanelPresenter> submissionMVP;
+    private CenterPanel center; // main edtior fields
+    private GenericMVP<SubmissionMenuData, SubmissionPanelView, SubmissionPanelPresenter> submissionMVP;
 
-    SubmissionPanelView submissionPanelView;
-    SubmissionPanelPresenter submissionPanelPresenter;
-    private final SimpleContainer simple;
+    private SimpleContainer simpleContainer;
+    private SubmissionPanelView submissionPanelView;
+    private SubmissionPanelPresenter submissionPanelPresenter;
 
     public MetadataEditorAppView() {
         super();
 
-        final MetadataEditorGinInjector injector = MetadataEditorGinInjector.instance;
-
-        submissionPanelPresenter = injector.getSubmissionPanelPresenter();
-        submissionPanelView = injector.getSubmissionPanelView();
+        submissionPanelPresenter = INJECTOR.getSubmissionPanelPresenter();
+        submissionPanelView = INJECTOR.getSubmissionPanelView();
 
         BorderLayoutContainer con = new BorderLayoutContainer();
         con.setBorders(true);
 
         // NORTH
-        // north = injector.getNorthPanel();
+        // north = INJECTOR.getNorthPanel();
         // BorderLayoutData northData = new BorderLayoutData(35);
         // northData.setMargins(new Margins(5, 5, 5, 5));
         // con.setNorthWidget(north, northData);
@@ -57,7 +57,7 @@ public class MetadataEditorAppView extends Viewport {
         // WEST
         submissionMVP = buildSubmissionMVP();
         submissionMVP.init();
-        BorderLayoutData westData = new BorderLayoutData(200);
+        BorderLayoutData westData = new BorderLayoutData(WEST_PANEL_WIDTH);
         westData.setMargins(new Margins(0, 5, 5, 5));
         westData.setCollapsible(true);
         westData.setSplit(false);
@@ -65,10 +65,10 @@ public class MetadataEditorAppView extends Viewport {
         con.setWestWidget(submissionMVP.getDisplay(), westData);
 
 
-        simple = new SimpleContainer();
-        simple.add(con, new MarginData(0, 0, /*8*/0, 0));
-        simple.setWidget(con);
-        add(simple);
+        simpleContainer = new SimpleContainer();
+        simpleContainer.add(con, new MarginData(0, 0, /*8*/0, 0));
+        simpleContainer.setWidget(con);
+        add(simpleContainer);
 
         //  north.start();
         submissionMVP.start();
@@ -85,6 +85,6 @@ public class MetadataEditorAppView extends Viewport {
     }
 
     public void setMarginTop(int marginTop) {
-        simple.getWidget().setLayoutData(new MarginData(0,0,80,0));
+        simpleContainer.getWidget().setLayoutData(new MarginData(0,0,80,0));
     }
 }

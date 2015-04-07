@@ -27,7 +27,7 @@ import java.util.Date;
  */
 public class NameValueDTMEditorWidget extends GenericEditableListView<DTM, Date> implements Editor<NameValueDTM> {
     // instance of the property access for the DTM entity attributes (for the GXT Store).
-    private final static DTMProperties props = GWT.create(DTMProperties.class);
+    private final static DTMProperties PROPS = GWT.create(DTMProperties.class);
 
     // --- UI Widgets
     ListStoreEditor<DTM> values;
@@ -40,7 +40,7 @@ public class NameValueDTMEditorWidget extends GenericEditableListView<DTM, Date>
      * @param widgetTitle title of the widget (for the grid's panel header).
      */
     public NameValueDTMEditorWidget(String widgetTitle) {
-        super(widgetTitle, new ListStore<DTM>(props.key()), props.dtm());
+        super(widgetTitle, new ListStore<DTM>(PROPS.key()), PROPS.dtm());
         // init list store that will handle the list of DTM objects
         values = new ListStoreEditor<DTM>(getStore());
         bind();
@@ -121,7 +121,7 @@ public class NameValueDTMEditorWidget extends GenericEditableListView<DTM, Date>
      */
     @Override
     protected GridModelFactory<DTM> getModelFactory() {
-        return DTMFactory.instance;
+        return DTMFactory.INSTANCE;
     }
 
     /**
@@ -138,6 +138,6 @@ public class NameValueDTMEditorWidget extends GenericEditableListView<DTM, Date>
      */
     @Override
     protected ValueProvider<DTM, Date> getValueProvider() {
-        return props.dtm();
+        return PROPS.dtm();
     }
 }

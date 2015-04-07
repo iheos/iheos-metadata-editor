@@ -1,14 +1,13 @@
 package gov.nist.hit.ds.docentryeditor.client.editor.widgets;
 
-import java.util.*;
-
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
-
 import gov.nist.hit.ds.docentryeditor.shared.model.LanguageCode;
+
+import java.util.*;
 
 /**
  * <p>

@@ -1,5 +1,14 @@
 package gov.nist.hit.ds.docentryeditor.server;
 
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,25 +19,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
-
 public class UploadFileServlet extends HttpServlet {
-
+	private final static Logger LOGGER = Logger.getLogger(UploadFileServlet.class.getName());
 	private static final long serialVersionUID = 1L;
-
+	private final static Charset ENCODING = StandardCharsets.UTF_8;
 	private final String FILE_REPOSITORY = "files";
-	private final Charset ENCODING = StandardCharsets.UTF_8;
 
-	private final Logger logger = Logger.getLogger(UploadFileServlet.class
-			.getName());
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -43,7 +39,7 @@ public class UploadFileServlet extends HttpServlet {
                 String filename=item.getName();
 
 				if (!item.isFormField()) {
-					logger.fine("file uploaded on server side");
+					LOGGER.fine("file uploaded on server side");
 
 					// Reading file content
 					InputStream is = item.openStream();
@@ -53,7 +49,7 @@ public class UploadFileServlet extends HttpServlet {
 
 					// Return file content to the client
 //					resp.getOutputStream().print(filename+";^;^;"+fileContent);
-                    logger.info(fileContent);
+                    LOGGER.info(fileContent);
 					resp.getOutputStream().print(fileContent);
 
 
@@ -86,7 +82,7 @@ public class UploadFileServlet extends HttpServlet {
 
 		// Recovery of submitted file and save it into "files"
 		// repository
-		logger.info("Temporary metadata xml file creation...");
+		LOGGER.info("Temporary metadata xml file creation...");
 
 		FileOutputStream out = new FileOutputStream(new File(FILE_REPOSITORY,
 				filename));
@@ -94,8 +90,8 @@ public class UploadFileServlet extends HttpServlet {
 		out.write(IOUtils.toByteArray(is));
 		out.close();
 
-		logger.fine("... temporary file created: " + FILE_REPOSITORY + "/"
-				+ filename);
+		LOGGER.fine("... temporary file created: " + FILE_REPOSITORY + "/"
+                + filename);
 
 		return filename;
 	}

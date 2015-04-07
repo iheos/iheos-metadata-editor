@@ -37,7 +37,7 @@ public class MetadataEditorGinModule extends AbstractGinModule {
     @Provides
     MetadataEditorRequestFactory provideMetadataEditorRequestFactory() {
         MetadataEditorRequestFactory requestFactory = GWT.create(MetadataEditorRequestFactory.class);
-        requestFactory.initialize(MetadataEditorGinInjector.instance.getEventBus());
+        requestFactory.initialize(MetadataEditorGinInjector.INSTANCE.getEventBus());
         return requestFactory;
     }
 

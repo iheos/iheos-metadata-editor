@@ -6,7 +6,8 @@ import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.*;
+import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsDocumentEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 
@@ -24,7 +25,6 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
     protected static Logger logger = Logger.getLogger(DocumentEntryEditorPresenter.class.getName());
     protected XdsDocumentEntry model=new XdsDocumentEntry();
     private DocEntryEditorDriver editorDriver = GWT.create(DocEntryEditorDriver.class);
-    // private final static XdsParserServicesAsync xdsParserServicesAsync=GWT.create(XdsParserServices.class);
 
     /**
      * Method that initializes the editor and the request factory on document entry editor view start.
@@ -84,7 +84,7 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
         if (editorDriver.isDirty()) {
             final XdsDocumentEntry tmp = editorDriver.flush();
             logger.info("Saving document entry: ");
-            logger.info(model.toXML());
+            logger.info(model.toString());
 
             if (editorDriver.hasErrors()) {
                 final ConfirmMessageBox cmb = new ConfirmMessageBox("Error", "There are errors in your editor. Are you sure you want to download a copy of these data? They may not be usable.");

@@ -6,27 +6,34 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
+import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FileUploadField;
 import com.sencha.gxt.widget.core.client.info.Info;
+import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
+import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class FileUploadView extends AbstractView<FileUploadPresenter> {
-    FileUploadField file;
     private FormPanel form;
     private FramedPanel panel;
     private TextButton btnSubmit;
     private TextButton btnCancel;
+
+    private FileUploadField file;
+
+    private static final int UPLOADER_WIDTH=500;
+    private static final int UPLOADER_HEIGHT=120;
 
     @Override
     public Widget asWidget() {
@@ -53,7 +60,8 @@ public class FileUploadView extends AbstractView<FileUploadPresenter> {
         panel = new FramedPanel();
         panel.setHeaderVisible(false);
         panel.setButtonAlign(BoxLayoutPack.CENTER);
-        // panel.setWidth(350);
+        panel.setWidth(UPLOADER_WIDTH);
+        panel.setHeight(UPLOADER_HEIGHT);
         panel.getElement().setMargins(5);
         panel.setBorders(false);
 
@@ -84,10 +92,11 @@ public class FileUploadView extends AbstractView<FileUploadPresenter> {
         });
         file.setName("uploadedfile");
         file.setAllowBlank(false);
-        file.setWidth(250);
 
-        vcontainer.add(new FieldLabel(file, "File"), new VerticalLayoutData(-1,
-                -1));
+        HtmlLayoutContainer uploadGuidance=new HtmlLayoutContainer(ToolTipResources.INSTANCE.getUploadFileTooltip());
+        EditorFieldLabel fileField=new EditorFieldLabel(file, "Metadata file (*.xml)");
+        vcontainer.add(uploadGuidance,new VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
+        vcontainer.add(fileField, new VerticalLayoutData(1,-1,new Margins(0,0,0,0)));
 
         btnSubmit = new TextButton("Open");
         btnSubmit.disable();

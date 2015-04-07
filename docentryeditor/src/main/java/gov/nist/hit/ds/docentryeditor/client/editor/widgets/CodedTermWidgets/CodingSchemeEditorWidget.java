@@ -13,7 +13,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.CodingScheme;
  * </p>
  */
 public class CodingSchemeEditorWidget extends Composite implements Editor<CodingScheme> {
-    VerticalLayoutContainer vcontainer = new VerticalLayoutContainer();
+    private VerticalLayoutContainer vcontainer = new VerticalLayoutContainer();
     String256EditorWidget codingScheme = new String256EditorWidget();
 
     /**

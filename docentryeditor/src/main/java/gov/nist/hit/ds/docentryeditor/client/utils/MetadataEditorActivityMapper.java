@@ -18,7 +18,7 @@ import javax.inject.Inject;
  */
 public class MetadataEditorActivityMapper implements ActivityMapper {
 
-    MetadataEditorGinInjector injector = MetadataEditorGinInjector.instance;
+    private final MetadataEditorGinInjector injector = MetadataEditorGinInjector.INSTANCE;
 
     @Inject
     public MetadataEditorActivityMapper() {

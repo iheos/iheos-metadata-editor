@@ -11,7 +11,7 @@ import com.google.gwt.xml.client.DOMException;
  * To do it, here are the following variables required
  * </p>
  * <ul>
- * <li>{@link #myPreParse} : The PreParse object, this class is a singleton
+ * <li>{@link #PRE_PARSE} : The PreParse object, this class is a singleton
  * (PreParse) ;</li>
  * <li>{@link #documentXml} : The String which contains the XML data (String).</li>
  * </ul>
@@ -63,17 +63,17 @@ public class PreParse {
 	/**
 	 * <p>
 	 *
-	 * myPreParse - The instance of PreParse class (it's a singleton class).<br>
+	 * PRE_PARSE - The instance of PreParse class (it's a singleton class).<br>
 	 * Type : PreParse</br>
 	 * </p>
 	 *
 	 *
 	 * @see gov.nist.hit.ds.docentryeditor.client.parser.PreParse
 	 */
-	private final static PreParse myPreParse = new PreParse();
+	private final static PreParse PRE_PARSE = new PreParse();
 
 	public static PreParse getInstance() {
-		return myPreParse;
+		return PRE_PARSE;
 	}
 
 	public String doPreParseUTF8(String msg) {

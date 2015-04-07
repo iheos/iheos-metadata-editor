@@ -11,10 +11,10 @@ import javax.inject.Inject;
 public class DocumentEntryEditorMVP extends AbstractMVP<XdsDocumentEntry, DocumentEntryEditorView, DocumentEntryEditorPresenter> {
 
     @Inject
-    DocumentEntryEditorView editorView;
+    private DocumentEntryEditorView editorView;
 
     @Inject
-    DocumentEntryEditorPresenter editorPresenter;
+    private DocumentEntryEditorPresenter editorPresenter;
 
     @Override
     public DocumentEntryEditorView buildView() {

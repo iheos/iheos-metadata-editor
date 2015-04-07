@@ -9,7 +9,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.String256;
  * (pattern used to solve a problem of java reflection in GWT).
  */
 public enum String256Factory implements GridModelFactory<String256> {
-    instance;
+    INSTANCE;
     private int counter=0;
 
     /**

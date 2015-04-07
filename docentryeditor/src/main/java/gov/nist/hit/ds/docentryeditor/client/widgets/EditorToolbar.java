@@ -1,38 +1,27 @@
-package gov.nist.hit.ds.docentryeditor.client.editor.widgets;
+package gov.nist.hit.ds.docentryeditor.client.widgets;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.cell.core.client.ButtonCell;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
-import gov.nist.hit.ds.docentryeditor.client.widgets.HomeButton;
+import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 
 /**
  * Created by onh2 on 3/3/2015.
  */
 public class EditorToolbar extends HorizontalLayoutContainer {
     private HomeButton homeBtn;
-    private TextButton saveButton;
-    private TextButton cancelButton;
+    private ToolbarIconButton saveButton;
+    private ToolbarIconButton cancelButton;
 
     public EditorToolbar() {
         homeBtn = new HomeButton();
-        homeBtn.setHeight(30);
-        homeBtn.setWidth(130);
-        saveButton = new TextButton("Save");
-        saveButton.setHeight(30);
-        saveButton.setWidth(60);
-        saveButton.setIcon(AppImages.INSTANCE.saveBW());
-        saveButton.setIconAlign(ButtonCell.IconAlign.LEFT);
-        cancelButton = new TextButton("Cancel changes");
-        cancelButton.setHeight(30);
-        cancelButton.setWidth(110);
-        cancelButton.setIcon(AppImages.INSTANCE.back());
-        cancelButton.setIconAlign(ButtonCell.IconAlign.LEFT);
-        cancelButton.setToolTipConfig(new ToolTipConfig("Rollback all the changes made since the last save or the last page change (auto save)."));
+        saveButton = new ToolbarIconButton("Save",AppImages.INSTANCE.saveBW(),60);
+        saveButton.setToolTip(ToolTipResources.INSTANCE.getSaveButtonToolTip());
+        cancelButton = new ToolbarIconButton("Cancel changes",AppImages.INSTANCE.back(),110);
+        cancelButton.setToolTip(ToolTipResources.INSTANCE.getCancelButtonToolTip());
 
         this.add(homeBtn, new HorizontalLayoutData(-1, -1, new Margins(0, 5, 0, 0)));
         this.add(saveButton, new HorizontalLayoutData(-1, -1, new Margins(0, 5, 0, 0)));
@@ -47,9 +36,7 @@ public class EditorToolbar extends HorizontalLayoutContainer {
         return cancelButton.addSelectHandler(handler);
     }
 
-    public void addButton(TextButton button){
-        button.setHeight(30);
-        button.setWidth(80);
+    public void addButton(ToolbarIconButton button){
         this.add(button,new HorizontalLayoutData(-1,-1,new Margins(0,5,0,0)));
     }
 

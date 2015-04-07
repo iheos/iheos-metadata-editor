@@ -9,7 +9,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.DTM;
  * (pattern used to solve a problem of java reflection in GWT).
  */
 public enum DTMFactory implements GridModelFactory<DTM> {
-    instance;
+    INSTANCE;
 
     /**
      * This methods returns a new instance of DTM in order to avoid reflection in GWT.

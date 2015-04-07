@@ -16,6 +16,7 @@ import com.sencha.gxt.widget.core.client.tree.Tree;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
+import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadDialog;
 
 import javax.inject.Inject;
@@ -26,26 +27,23 @@ import java.util.Map;
  * Created by onh2 on 7/11/2014.
  */
 public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> {
-    private final static TreeStore<SubmissionMenuData> treeStore = new TreeStore<SubmissionMenuData>(SubmissionMenuData.props.key());
-    private final static Tree<SubmissionMenuData, String> tree = new Tree<SubmissionMenuData, String>(treeStore, SubmissionMenuData.props.value());
+    private final TreeStore<SubmissionMenuData> treeStore = new TreeStore<SubmissionMenuData>(SubmissionMenuData.PROPS.key());
+    private final Tree<SubmissionMenuData, String> tree = new Tree<SubmissionMenuData, String>(treeStore, SubmissionMenuData.PROPS.value());
     private final ToolBar toolbar = new ToolBar();
 
-    private final Menu addMenu = new Menu();
-    private final MenuItem addEmptyDocEntry = new MenuItem("Create an empty document entry");
-    private final MenuItem addPrefilledDocEntry = new MenuItem("Create a pre-filled document entry");
-//    private final MenuItem loadDocEntry = new MenuItem("Load a document entry from xml file");
-
-    private final TextButton loadFileButton = new TextButton();
-    private final TextButton addDocEntryButton = new TextButton();
+    private final TextButton uploadFileButton = new TextButton();
     private final TextButton removeDocEntryButton = new TextButton();
     private final TextButton clearDocEntriesButton = new TextButton();
     private final TextButton saveDocEntriesButton = new TextButton();
     private final TextButton helpButton = new TextButton();
 
+    private final MenuItem addEmptyDocEntry = new MenuItem("Create an empty document entry");
+    private final MenuItem addPrefilledDocEntry = new MenuItem("Create a pre-filled document entry");
+
     @Inject
-    MetadataEditorEventBus eventBus;
+    private MetadataEditorEventBus eventBus;
     @Inject
-    FileUploadDialog fileUploadDialog;
+    private FileUploadDialog fileUploadDialog;
 
     @Override
     protected Map<String, Widget> getPathToWidgetsMap() {
@@ -62,22 +60,29 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
 
         VerticalLayoutContainer vlc = new VerticalLayoutContainer();
 
-        loadFileButton.setIcon(AppImages.INSTANCE.loadFile12px());
-        loadFileButton.setToolTip("Upload an existing ebRim file.");
+        uploadFileButton.setIcon(AppImages.INSTANCE.loadFile12px());
+        uploadFileButton.setToolTip(ToolTipResources.INSTANCE.getUploadFileTooltip());
+
+        TextButton addDocEntryButton = new TextButton();
         addDocEntryButton.setIcon(AppImages.INSTANCE.add());
         addDocEntryButton.setToolTip("Create a new Document Entry.");
-        addMenu.add(addEmptyDocEntry);
-        addMenu.add(addPrefilledDocEntry);
-        addDocEntryButton.setMenu(addMenu);
+
+        addEmptyDocEntry.setToolTip(ToolTipResources.INSTANCE.getNewDocEntryTooltip());
+        addPrefilledDocEntry.setToolTip(ToolTipResources.INSTANCE.getNewPrefilledDocEntryTooltip());
+
+        Menu addDocEntryMenu = new Menu();
+        addDocEntryMenu.add(addEmptyDocEntry);
+        addDocEntryMenu.add(addPrefilledDocEntry);
+        addDocEntryButton.setMenu(addDocEntryMenu);
         removeDocEntryButton.setIcon(AppImages.INSTANCE.delete());
-        removeDocEntryButton.setToolTip("Remove this Document Entry.");
+        removeDocEntryButton.setToolTip(ToolTipResources.INSTANCE.getGridDeleteToolTip().split("(s)\\.")[0]);
         clearDocEntriesButton.setIcon(AppImages.INSTANCE.clear());
-        clearDocEntriesButton.setToolTip("Clear submission set from all document entries.");
+        clearDocEntriesButton.setToolTip(ToolTipResources.INSTANCE.getClearSubmissionSetToolTip());
         saveDocEntriesButton.setIcon(AppImages.INSTANCE.save());
-        saveDocEntriesButton.setToolTip("Download xml file with document entries.");
+        saveDocEntriesButton.setToolTip(ToolTipResources.INSTANCE.getSaveButtonToolTip());
         helpButton.setIcon(AppImages.INSTANCE.help());
-        helpButton.setToolTip("Help?");
-        toolbar.add(loadFileButton);
+        helpButton.setToolTip(ToolTipResources.INSTANCE.getHelpButtonToolTip());
+        toolbar.add(uploadFileButton);
         toolbar.add(addDocEntryButton);
         toolbar.add(removeDocEntryButton);
         toolbar.add(clearDocEntriesButton);
@@ -111,7 +116,6 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
             public void onSelect(SelectEvent event) {
                 tree.getStore().remove(tree.getSelectionModel().getSelectedItem());
                 tree.getSelectionModel().select(tree.getStore().getFirstChild(presenter.getSubmissionSetTreeNode()), false);
-//                presenter.loadSelectedEntryEditor(tree.getStore().getFirstChild(getSubmissionSetTreeNode()));
             }
         });
         clearDocEntriesButton.addSelectHandler(new SelectEvent.SelectHandler() {
@@ -133,7 +137,7 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
                 getPresenter().createPreFilledDocumentEntry();
             }
         });
-        loadFileButton.addSelectHandler(new SelectEvent.SelectHandler() {
+        uploadFileButton.addSelectHandler(new SelectEvent.SelectHandler() {
 
             @Override
             public void onSelect(SelectEvent event) {

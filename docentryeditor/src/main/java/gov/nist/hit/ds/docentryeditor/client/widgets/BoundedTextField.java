@@ -9,13 +9,15 @@ import com.sencha.gxt.widget.core.client.form.TextField;
  */
 public class BoundedTextField extends TextField {
 
+    private static final int FIELD_MAX_LENGTH = 256;
+
     /**
      * Default constructor, with default max length=256
      */
     public BoundedTextField() {
         super();
         setWidth("auto");
-        setMaxLength(256);
+        setMaxLength(FIELD_MAX_LENGTH);
     }
 
     public void setMaxLength(int length) {

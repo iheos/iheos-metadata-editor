@@ -23,23 +23,23 @@ import java.util.logging.Logger;
 public class DocEntryEditorActivity extends AbstractActivity {
 
     @Inject
-    ActivityDisplayer displayer;
+    private ActivityDisplayer displayer;
 
-    GenericMVP<XdsDocumentEntry, DocumentEntryEditorView, DocumentEntryEditorPresenter> editorMVP;
-    GenericMVP<XdsDocumentEntry, ValidationView, ValidationPresenter> validationMVP;
-
-    @Inject
-    DocumentEntryEditorView editorView;
-    @Inject
-    DocumentEntryEditorPresenter editorPresenter;
+    private GenericMVP<XdsDocumentEntry, DocumentEntryEditorView, DocumentEntryEditorPresenter> editorMVP;
+    private GenericMVP<XdsDocumentEntry, ValidationView, ValidationPresenter> validationMVP;
 
     @Inject
-    ValidationView validationView;
+    private DocumentEntryEditorView editorView;
     @Inject
-    ValidationPresenter validationPresenter;
+    private DocumentEntryEditorPresenter editorPresenter;
 
     @Inject
-    MetadataEditorEventBus metadataEditorEventBus;
+    private ValidationView validationView;
+    @Inject
+    private ValidationPresenter validationPresenter;
+
+    @Inject
+    private MetadataEditorEventBus metadataEditorEventBus;
 
     private SimpleContainer sc;
     private BorderLayoutContainer blc;

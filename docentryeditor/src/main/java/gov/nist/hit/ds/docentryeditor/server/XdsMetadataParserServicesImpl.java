@@ -30,18 +30,19 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
     private Metadata m;
     private XdsMetadata xdsMetadata;
 
-    private List<String> schemes = new ArrayList<String>();
+    private final static Logger LOGGER = Logger.getLogger(XdsMetadataParserServicesImpl.class.getName());
+    private final static List<String> SCHEMES = new ArrayList<String>();
     private Map<String, List<String>> codes = null;
 
     public XdsMetadataParserServicesImpl(){
-        schemes.add(MetadataSupport.XDSDocumentEntry_classCode_uuid);
-        schemes.add(MetadataSupport.XDSDocumentEntry_confCode_uuid);
-        schemes.add(MetadataSupport.XDSDocumentEntry_eventCode_uuid);
-        schemes.add(MetadataSupport.XDSDocumentEntry_formatCode_uuid);
-        schemes.add(MetadataSupport.XDSDocumentEntry_hcftCode_uuid);
-        schemes.add(MetadataSupport.XDSDocumentEntry_psCode_uuid);
-        schemes.add(MetadataSupport.XDSDocumentEntry_typeCode_uuid);
-        schemes.add(MetadataSupport.XDSSubmissionSet_contentTypeCode_uuid);
+        SCHEMES.add(MetadataSupport.XDSDocumentEntry_classCode_uuid);
+        SCHEMES.add(MetadataSupport.XDSDocumentEntry_confCode_uuid);
+        SCHEMES.add(MetadataSupport.XDSDocumentEntry_eventCode_uuid);
+        SCHEMES.add(MetadataSupport.XDSDocumentEntry_formatCode_uuid);
+        SCHEMES.add(MetadataSupport.XDSDocumentEntry_hcftCode_uuid);
+        SCHEMES.add(MetadataSupport.XDSDocumentEntry_psCode_uuid);
+        SCHEMES.add(MetadataSupport.XDSDocumentEntry_typeCode_uuid);
+        SCHEMES.add(MetadataSupport.XDSSubmissionSet_contentTypeCode_uuid);
     }
 
     /**
@@ -65,11 +66,9 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                 xdsMetadata.getDocumentEntries().add(parseDocumentEntry(eo));
             }
         } catch (XdsInternalException e) {
-            Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
-            e.printStackTrace();
+            LOGGER.warning(e.getMessage());
         } catch (MetadataException e) {
-            Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
-            e.printStackTrace();
+            LOGGER.warning(e.getMessage());
         }
         return xdsMetadata;
     }
@@ -112,15 +111,14 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             }
             subSet.setUniqueId(new IdentifierOID(new OID(new String256(m.getSubmissionSetUniqueId())),new String256(MetadataSupport.XDSSubmissionSet_uniqueid_uuid)));
             subSet.setSourceId(new IdentifierOID(new OID(new String256(m.getSubmissionSetSourceId(oe))),new String256(MetadataSupport.XDSSubmissionSet_sourceid_uuid)));
-            codes = m.getCodesWithDisplayName(oe, schemes);
+            codes = m.getCodesWithDisplayName(oe, SCHEMES);
             String[] contentTypeCode = codes.get(MetadataSupport.XDSSubmissionSet_contentTypeCode_uuid).get(0).split("\\^");
             subSet.setContentTypeCode(new CodedTerm(contentTypeCode[0],contentTypeCode[1],contentTypeCode[2]));
             List<OMElement> authorClassifications = m.getClassifications(oe, MetadataSupport.XDSSubmissionSet_author_uuid);
             subSet.setAuthors(parseAuthors(authorClassifications));
         } catch (MetadataException e) {
-            e.printStackTrace();
-        } catch (Exception e) {e.printStackTrace();}
-        // Logger.getLogger(this.getClass().getName()).info(subSet.toString());
+            LOGGER.warning(e.getMessage());
+        } catch (Exception e) {LOGGER.warning(e.getMessage());}
         return subSet;
     }
 
@@ -186,7 +184,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             de.setPatientID(new IdentifierString256(new String256(asString(m.getPatientId(ele))),new String256("urn:uuid:6b5aea1a-874d-4603-a4bc-96a0a7b38446")));
             de.setUniqueId(new IdentifierOID(new OID(new String256(asString(m.getUniqueIdValue(ele)))),new String256("urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab")));
         } catch (MetadataException e) {
-            e.printStackTrace();
+           LOGGER.warning(e.getMessage());
         }
         de.getSourcePatientId().getValues().add(new String256(asString(m.getSlotValue(ele, "sourcePatientId", 0))));
         for(String s:m.getSlotValues(ele, "sourcePatientInfo")){
@@ -203,7 +201,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         de.setCreationTime(creationTime);
 
         try {
-            codes = m.getCodesWithDisplayName(ele, schemes);
+            codes = m.getCodesWithDisplayName(ele, SCHEMES);
 
             String[] classCodeStrings = codes.get(MetadataSupport.XDSDocumentEntry_classCode_uuid).get(0).split("\\^");
             de.setClassCode(new CodedTerm(classCodeStrings[0],classCodeStrings[1],classCodeStrings[2]));
@@ -238,7 +236,8 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             List<OMElement> authorClassifications = m.getClassifications(ele, MetadataSupport.XDSDocumentEntry_author_uuid);
             de.setAuthors(parseAuthors(authorClassifications));
             for (OMElement auEle : authorClassifications) {
-//                de.authorsX.add(new OMFormatter(auEle).toHtml());
+                // TODO
+                // de.authorsX.add(new OMFormatter(auEle).toHtml());
             }
         } catch (Exception e) {}
 
@@ -267,7 +266,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                 a.getAuthorRoles().add(new String256(s));
             for (String s:specialties)
                 a.getAuthorSpecialties().add(new String256(s));
-            // FIXME telecommunication is missing
+            // TODO telecommunication is missing
             authors.add(a);
         }
 
@@ -283,7 +282,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
     public String toEbRim(XdsMetadata metadata){
         Metadata m=new Metadata();
         // Submission Set
-        // FIXME authors, comments, titles are missing
+        // TODO authors, comments, titles are missing
         XdsSubmissionSet subSet=metadata.getSubmissionSet();
         OMElement regPackage=m.mkSubmissionSet(subSet.getEntryUUID().toString());
         m.addSubmissionSetPatientId(regPackage,subSet.getPatientId().getValue().toString());
@@ -307,7 +306,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             }
         }
         // DocEntries
-        // FIXME authors, titles and comments are missing
+        // TODO authors, titles and comments are missing
         for (XdsDocumentEntry documentEntry : metadata.getDocumentEntries()) {
             OMElement extObj = m.mkExtrinsicObject(documentEntry.getId().toString(), documentEntry.getMimeType().toString());
             m.addDocumentEntryPatientId(extObj, documentEntry.getPatientID().getValue().toString());
@@ -386,7 +385,6 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             }
             m.addAssociation(m.mkAssociation(MetadataSupport.assoctype_has_member, subSet.getEntryUUID().toString(), documentEntry.getId().toString()));
         }
-        // Logger.getLogger(this.getClass().getName()).info(m.format());
         String result="<xdsb:ProvideAndRegisterDocumentSetRequest xmlns:xdsb=\"urn:ihe:iti:xds-b:2007\">\n" +
                 "    <lcm:SubmitObjectsRequest xmlns:lcm=\"urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0\">\n" +
                 "        <rim:RegistryObjectList xmlns:rim=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\">";

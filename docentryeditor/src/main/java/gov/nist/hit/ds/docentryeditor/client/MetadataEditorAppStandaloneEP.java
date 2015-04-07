@@ -11,14 +11,14 @@ import java.util.logging.Logger;
  * application.
  */
 public class MetadataEditorAppStandaloneEP implements EntryPoint {
-    protected static Logger logger = Logger.getLogger(MetadataEditorAppStandaloneEP.class.getName());
+    protected final static Logger LOGGER = Logger.getLogger(MetadataEditorAppStandaloneEP.class.getName());
 
     @SuppressWarnings("deprecation")
     @Override
     public void onModuleLoad() {
         RootLayoutPanel.get(/*"editorAppContainer"*/).add(new MetadataEditorApp().asWidget());
         //  RootPanel.get("editorAppContainer").add(new MetadataEditorApp().asWidget());
-        logger.info("Application Started!");
+        LOGGER.info("Application Started!");
     }
 
 

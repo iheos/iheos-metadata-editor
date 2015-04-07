@@ -1,22 +1,22 @@
 package gov.nist.hit.ds.docentryeditor.client.widgets;
 
-import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorGinInjector;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
+import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorGinInjector;
 
 /**
  * Button to return to the Home page.
  */
-public class HomeButton extends TextButton {
+public class HomeButton extends ToolbarIconButton {
 
     private MetadataEditorEventBus eventBus;
 
     public HomeButton() {
-        eventBus= MetadataEditorGinInjector.instance.getEventBus();
-        setText("Back to home page");
-        setIcon(AppImages.INSTANCE.home());
+        super("Back to home page",AppImages.INSTANCE.home());
+        setToolTip("Navigate back to the home page");
+        eventBus= MetadataEditorGinInjector.INSTANCE.getEventBus();
+        setWidth(130);
         bindUI();
     }
 

@@ -26,7 +26,7 @@ import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadMVP;
 @GinModules(MetadataEditorGinModule.class)
 public interface MetadataEditorGinInjector extends Ginjector {
 
-    public static MetadataEditorGinInjector instance = GWT.create(MetadataEditorGinInjector.class);
+    public static MetadataEditorGinInjector INSTANCE = GWT.create(MetadataEditorGinInjector.class);
 
     // -----------------------------------------
     // ~ Utils

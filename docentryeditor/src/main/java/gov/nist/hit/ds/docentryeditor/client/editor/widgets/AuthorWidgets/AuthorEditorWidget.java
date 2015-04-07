@@ -75,22 +75,14 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
 	 */
     ListStoreEditor<String256> authorInstitutions;
     @Ignore
-    ListView<String256, String> listViewAuthInstitutions;
+    private ListView<String256, String> listViewAuthInstitutions;
     // Sub editor for an authorInstitution
     @Ignore
-    String256EditorWidget authorInstitution = new String256EditorWidget();
-
-    // /*
-    // * field to input the authorTelecommunication attribute it is directly
-    // mapped by its
-    // * name on "Telecommunication" in Author's class.
-    // */
-    // String256EditorWidget authorTelecommunication = new
-    // String256EditorWidget();
+    private String256EditorWidget authorInstitution = new String256EditorWidget();
     @Ignore
-    TextButton addInstitutionButton = new TextButton("Add");
+    private TextButton addInstitutionButton = new TextButton("Add");
     @Ignore
-    TextButton deleteInstitutionButton = new TextButton("Delete entry");
+    private TextButton deleteInstitutionButton = new TextButton("Delete entry");
     // /////////////////////////////////
     // --- List of Roles
     // /////////////////////////////////
@@ -102,14 +94,14 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
 	 */
     ListStoreEditor<String256> authorRoles;
     @Ignore
-    ListView<String256, String> listViewAuthRoles;
+    private ListView<String256, String> listViewAuthRoles;
     // Sub Editor for an authorRole
     @Ignore
-    String256EditorWidget authorRole = new String256EditorWidget();
+    private String256EditorWidget authorRole = new String256EditorWidget();
     @Ignore
-    TextButton addRoleButton = new TextButton("Add");
+    private TextButton addRoleButton = new TextButton("Add");
     @Ignore
-    TextButton deleteRoleButton = new TextButton("Delete entry");
+    private TextButton deleteRoleButton = new TextButton("Delete entry");
     // /////////////////////////////////
     // --- List of Specialties
     // /////////////////////////////////
@@ -121,14 +113,14 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
 	 */
     ListStoreEditor<String256> authorSpecialties;
     @Ignore
-    ListView<String256, String> listViewAuthSpecialties;
+    private ListView<String256, String> listViewAuthSpecialties;
     // Sub Editor for an authorSpecialty
     @Ignore
-    String256EditorWidget authorSpecialty = new String256EditorWidget();
+    private String256EditorWidget authorSpecialty = new String256EditorWidget();
     @Ignore
-    TextButton addSpecialtyButton = new TextButton("Add");
+    private TextButton addSpecialtyButton = new TextButton("Add");
     @Ignore
-    TextButton deleteSpecialtyButton = new TextButton("Delete entry");
+    private TextButton deleteSpecialtyButton = new TextButton("Delete entry");
     // /////////////////////////////////
     // --- List of telecommunications
     // /////////////////////////////////
@@ -141,14 +133,14 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
 	 */
     ListStoreEditor<String256> authorTelecommunications;
     @Ignore
-    ListView<String256, String> listViewAuthTelecommunications;
+    private ListView<String256, String> listViewAuthTelecommunications;
     // Sub editor for an authorInstitution
     @Ignore
-    String256EditorWidget authorTelecommunication = new String256EditorWidget();
+    private String256EditorWidget authorTelecommunication = new String256EditorWidget();
     @Ignore
-    TextButton addTelecommunicationButton = new TextButton("Add");
+    private TextButton addTelecommunicationButton = new TextButton("Add");
     @Ignore
-    TextButton deleteTelecommunicationButton = new TextButton("Delete entry");
+    private TextButton deleteTelecommunicationButton = new TextButton("Delete entry");
     /*
      * editionMode is an instance of EditionMode. It is used to know the state
      * of the editor, to know how to display the different fields

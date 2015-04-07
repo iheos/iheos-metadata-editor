@@ -11,9 +11,9 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import gov.nist.hit.ds.docentryeditor.client.editor.properties.CodedTermProperties;
-import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
 import gov.nist.hit.ds.docentryeditor.client.generics.GenericEditableGrid;
 import gov.nist.hit.ds.docentryeditor.client.generics.GridModelFactory;
+import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
 import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
 
 import java.util.ArrayList;
@@ -124,7 +124,7 @@ public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm>
      */
     @Override
     protected GridModelFactory<CodedTerm> getModelFactory() {
-        return CodedTermFactory.instance;
+        return CodedTermFactory.INSTANCE;
     }
 
     /**

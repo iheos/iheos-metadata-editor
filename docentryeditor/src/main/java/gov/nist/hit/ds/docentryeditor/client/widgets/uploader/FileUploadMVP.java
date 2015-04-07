@@ -7,9 +7,9 @@ import javax.inject.Inject;
 
 public class FileUploadMVP extends AbstractMVP<XdsDocumentEntry, FileUploadView, FileUploadPresenter> {
     @Inject
-    FileUploadView fileUploadView;
+    private FileUploadView fileUploadView;
     @Inject
-    FileUploadPresenter fileUploadPresenter;
+    private FileUploadPresenter fileUploadPresenter;
 
     public FileUploadMVP() {
 

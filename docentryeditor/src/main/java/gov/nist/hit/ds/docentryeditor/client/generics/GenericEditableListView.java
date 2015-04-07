@@ -16,9 +16,9 @@ import java.util.List;
  * Created by onh2 on 6/11/2014.
  */
 public abstract class GenericEditableListView<M, N> extends GenericEditableGrid<M> {
-    private final ValueProvider<? super M, N> valueProvider;
     protected ColumnConfig<M, N> cc1;
-
+    // - constants
+    private static final int COLUMN_WIDTH = 1000;
 
     /**
      * Abstract constructor
@@ -28,9 +28,6 @@ public abstract class GenericEditableListView<M, N> extends GenericEditableGrid<
      */
     public GenericEditableListView(/*Class<M> parametrizedClass,*/ String listTitle, ListStore<M> listStore, ValueProvider<? super M, N> valueProvider) {
         super(/*parametrizedClass,*/ listTitle, listStore);
-
-        this.valueProvider = valueProvider;
-
         this.setHideHeaders(true);
     }
 
@@ -39,7 +36,7 @@ public abstract class GenericEditableListView<M, N> extends GenericEditableGrid<
     @Override
     protected ColumnModel<M> buildColumnModel() {
         List<ColumnConfig<M, ?>> columnsConfigs = new ArrayList<ColumnConfig<M, ?>>();
-        cc1 = new ColumnConfig<M, N>(getValueProvider(), 1000);
+        cc1 = new ColumnConfig<M, N>(getValueProvider(), COLUMN_WIDTH);
         columnsConfigs.add(cc1);
 
         return new ColumnModel<M>(columnsConfigs);
