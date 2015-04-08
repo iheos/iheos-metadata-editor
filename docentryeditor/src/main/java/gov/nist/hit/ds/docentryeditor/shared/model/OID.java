@@ -103,17 +103,22 @@ public class OID implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OID)) return false;
+        if (this == o){ return true;}
+        if (!(o instanceof OID)){ return false;}
 
         OID oid1 = (OID) o;
 
-        if (oid != null ? !oid.equals(oid1.oid) : oid1.oid != null) return false;
+        if (oid != null ? !oid.equals(oid1.oid) : oid1.oid != null){ return false;}
 
         return true;
     }
 
-    public OID clone() {
-        return new OID(this.oid.clone());
+    @Override
+    public int hashCode() {
+        return oid.hashCode();
+    }
+
+    public OID copy() {
+        return new OID(this.oid.copy());
     }
 }

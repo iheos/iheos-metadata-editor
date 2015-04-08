@@ -28,6 +28,7 @@ import gov.nist.hit.ds.docentryeditor.client.editor.widgets.NameValueWidgets.Nam
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.NameValueWidgets.NameValueString256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
+import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
 import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
 import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
@@ -211,10 +212,10 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         simpleRequiredFieldsContainer.add(practiceSettingCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
 
 		/* REQUIRED container added to a fieldset */
-        FieldSet fieldSet_general_fields_required = new FieldSet();
-        fieldSet_general_fields_required.setHeadingText("General");
-        fieldSet_general_fields_required.setCollapsible(true);
-        fieldSet_general_fields_required.add(simpleRequiredFieldsContainer);
+        FieldSet generalRequiredFieldSet = new FieldSet();
+        generalRequiredFieldSet.setHeadingText("General");
+        generalRequiredFieldSet.setCollapsible(true);
+        generalRequiredFieldSet.add(simpleRequiredFieldsContainer);
 
         // //////////////////////////////////////////////////////////
         // --- Adding OPTIONAL simple fields labels to containers
@@ -228,15 +229,15 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         repositoryAttributesFieldsContainer.add(repositoryLabel, new VerticalLayoutData(1, -1));
 
 		/* OPTIONAL container added to a fieldset */
-        FieldSet fieldSet_fileProperties = new FieldSet();
-        fieldSet_fileProperties.setHeadingText("Files properties");
-        fieldSet_fileProperties.setCollapsible(true);
-        fieldSet_fileProperties.add(filePropertiesFieldsContainer);
+        FieldSet filePropertiesFieldSet = new FieldSet();
+        filePropertiesFieldSet.setHeadingText("Files properties");
+        filePropertiesFieldSet.setCollapsible(true);
+        filePropertiesFieldSet.add(filePropertiesFieldsContainer);
 
-        FieldSet fieldSet_repoAttributes = new FieldSet();
-        fieldSet_repoAttributes.setHeadingText("Repository attributes");
-        fieldSet_repoAttributes.setCollapsible(true);
-        fieldSet_repoAttributes.add(repositoryAttributesFieldsContainer, new VerticalLayoutData(1, -1));
+        FieldSet repositoryAttributesFieldSet = new FieldSet();
+        repositoryAttributesFieldSet.setHeadingText("Repository attributes");
+        repositoryAttributesFieldSet.setCollapsible(true);
+        repositoryAttributesFieldSet.add(repositoryAttributesFieldsContainer, new VerticalLayoutData(1, -1));
 
         // //////////////////////////////////////////////////////
         // Other fields and options (init)
@@ -261,13 +262,12 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
 
         // Service Start Time (optional)
         serviceStartTime.setListMaxSize(1);
-//        serviceStartTime.disableEditing();
 
         // Service Stop Time (optional)
         serviceStopTime.setListMaxSize(1);
 
         // Size (optional)
-//        size.disableEditing();
+        //  size.disableEditing();
         size.disableToolbar();
         size.setListMaxSize(1);
 
@@ -276,10 +276,10 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         creationTime.setListMaxSize(1);
 
         // AUTHORS (Optional)
-        FieldSet fieldSet_authors = new FieldSet();
-        fieldSet_authors.setHeadingText("Authors");
-        fieldSet_authors.setCollapsible(true);
-        fieldSet_authors.add(authors.asWidget());
+        FieldSet authorsFieldSet = new FieldSet();
+        authorsFieldSet.setHeadingText("Authors");
+        authorsFieldSet.setCollapsible(true);
+        authorsFieldSet.add(authors.asWidget());
 
         // TITLES (Optional)
         titlesGrid = new InternationalStringEditableGrid("Titles");
@@ -302,18 +302,18 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // Adding and ordering fieldsets in REQUIRED panel
         // /////////////////////////////////////////////////////////
         /* simple required fields added to FramedPanel container */
-        requiredFields.add(fieldSet_general_fields_required, new VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
+        requiredFields.add(generalRequiredFieldSet, new VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
         requiredFields.add(creationTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
 
         // /////////////////////////////////////////////////////////
         // Adding and ordering fieldsets in OPTIONAL fields panel
         // /////////////////////////////////////////////////////////
         /* simple optional fields added to FramedPanel container */
-        optionalFields.add(fieldSet_fileProperties, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(fieldSet_repoAttributes, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
+        optionalFields.add(filePropertiesFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
+        optionalFields.add(repositoryAttributesFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
         optionalFields.add(titlesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
         optionalFields.add(commentsGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(fieldSet_authors, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
+        optionalFields.add(authorsFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
         optionalFields.add(legalAuthenticator.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
         optionalFields.add(sourcePatientId.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
         optionalFields.add(sourcePatientInfo.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
@@ -323,7 +323,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         optionalFields.add(serviceStopTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
 
         SimpleContainer bottomToolbarContainer = new SimpleContainer();
-        bottomToolbarContainer.setHeight(35);
         bottomToolbarContainer.add(editorBottomToolbar);
         optionalFields.add(bottomToolbarContainer);
 
@@ -368,58 +367,29 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     }
 
     public void refreshGridButtonsDisplay() {
-        if (serviceStartTime.getStoreMaxSize() != 0 && serviceStartTime.getStore().size() >= serviceStartTime.getStoreMaxSize()) {
-            serviceStartTime.disableNewButton();
-        } else {
-            serviceStartTime.enableNewButton();
+        serviceStartTime.refreshNewButton();
+        serviceStopTime.refreshNewButton();
+        if (commentsGrid!=null) {
+            commentsGrid.refreshNewButton();
         }
-        if (serviceStopTime.getStoreMaxSize() != 0 && serviceStopTime.getStore().size() >= serviceStopTime.getStoreMaxSize()) {
-            serviceStopTime.disableNewButton();
-        } else {
-            serviceStopTime.enableNewButton();
+        if (confidentialityCodes!=null) {
+            confidentialityCodesGrid.refreshNewButton();
         }
-        if (commentsGrid != null)
-            if (commentsGrid.getStoreMaxSize() != 0 && commentsGrid.getStore().size() >= commentsGrid.getStoreMaxSize()) {
-                commentsGrid.disableNewButton();
-            } else {
-                commentsGrid.enableNewButton();
-            }
-        if (confidentialityCodesGrid != null)
-            if (confidentialityCodesGrid.getStoreMaxSize() != 0 && confidentialityCodesGrid.getStore().size() >= confidentialityCodesGrid.getStoreMaxSize()) {
-                confidentialityCodesGrid.disableNewButton();
-            } else {
-                confidentialityCodesGrid.enableNewButton();
-            }
-        if (eventCodesGrid != null)
-            if (eventCodesGrid.getStoreMaxSize() != 0 && eventCodesGrid.getStore().size() >= eventCodesGrid.getStoreMaxSize()) {
-                eventCodesGrid.disableNewButton();
-            } else {
-                eventCodesGrid.enableNewButton();
-            }
-        if (legalAuthenticator != null)
-            if (legalAuthenticator.getStoreMaxSize() != 0 && legalAuthenticator.getStore().size() >= legalAuthenticator.getStoreMaxSize()) {
-                legalAuthenticator.disableNewButton();
-            } else {
-                legalAuthenticator.enableNewButton();
-            }
-        if (sourcePatientId != null)
-            if (sourcePatientId.getStoreMaxSize() != 0 && sourcePatientId.getStore().size() >= sourcePatientId.getStoreMaxSize()) {
-                sourcePatientId.disableNewButton();
-            } else {
-                sourcePatientId.enableNewButton();
-            }
-        if (sourcePatientInfo != null)
-            if (sourcePatientInfo.getStoreMaxSize() != 0 && sourcePatientInfo.getStore().size() >= sourcePatientInfo.getStoreMaxSize()) {
-                sourcePatientInfo.disableNewButton();
-            } else {
-                sourcePatientInfo.enableNewButton();
-            }
-        if (titlesGrid != null)
-            if (titlesGrid.getStoreMaxSize() != 0 && titlesGrid.getStore().size() >= titlesGrid.getStoreMaxSize()) {
-                titlesGrid.disableNewButton();
-            } else {
-                titlesGrid.enableNewButton();
-            }
+        if (eventCodesGrid!=null) {
+            eventCodesGrid.refreshNewButton();
+        }
+        if (legalAuthenticator!=null) {
+            legalAuthenticator.refreshNewButton();
+        }
+        if(sourcePatientId!=null) {
+            sourcePatientId.refreshNewButton();
+        }
+        if (sourcePatientInfo!=null) {
+            sourcePatientInfo.refreshNewButton();
+        }
+        if (titlesGrid!=null) {
+            titlesGrid.refreshNewButton();
+        }
     }
 
     /**
@@ -461,7 +431,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         formatCode.setAllowBlank(false);
         // hash code
         hash.setEmptyText("ex: Hex456");
-        hash.setToolTipConfig(new ToolTipConfig("Hash is a string", "It should contain less than 256 characters"));
+        hash.setToolTipConfig(new ToolTipConfig("Hash is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
         hash.setAllowBlank(true);
         hash.addValidator(new RegExValidator("^[0-9a-fA-F]+$", "Value is not correct. It is supposed to be a hexadecimal value."));
         // healthcare facility
@@ -470,9 +440,9 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         healthcareFacilityType.setAllowBlank(false);
         // entry uuid
         id.setEmptyText("ex: 123456789");
-        id.setToolTipConfig(new ToolTipConfig("ID is a string", "It should contain less than 256 characters"));
+        id.setToolTipConfig(new ToolTipConfig("ID is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
         id.setAllowBlank(false);
-        // id.addOIDValidator(new RegExValidator("[1-9][0-9]+", "Value is not correct. It is supposed to be a number."));
+        // RegExValidator: "[1-9][0-9]+", "Value is not correct. It is supposed to be a number."
         id.addValidator(new UuidFormatClientValidator());
         // language code
         languageCode.setAllowBlank(false);
@@ -480,7 +450,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         languageCode.setToolTipConfig(new ToolTipConfig("LanguageCode from RFC3066", "Language code format is \"[a-z](2)-[A-Z](2)\""));
         // legal authenticator
         legalAuthenticator.setEditingFieldToolTip("A legal authenticator is a string256 in XCN format. It should be formatted as follow: \n<b>Identifier^LastName^FirstName[^SecondName[^FurtherGivenNames]][^Suffix][^Prefix]^AssigningAuthority</b>.");
-        // legalAuthenticator.setEmptyTexts("ex: 11375^Welby^Marcus^J^Jr. MD^Dr^^^&1.2.840.113619.6.197&ISO");
+        // Empty Texts : "ex: 11375^Welby^Marcus^J^Jr. MD^Dr^^^&1.2.840.113619.6.197&ISO"
         legalAuthenticator.addFieldValidator(new RegExValidator("^[0-9]+\\^(([A-Za-z]+\\.?\\s?)+\\^){3,7}\\^{2}&[0-9]+(\\.[0-9]+)*(&ISO)$"));
         legalAuthenticator.setToolbarHelpButtonTooltip(new ToolTipConfig("Help about legal authenticator", "Represents a participant who has legally authenticated or attested the" +
                 "document within the authorInstitution. Legal authentication implies that " +
@@ -493,7 +463,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // mime type
         mimeType.setAllowBlank(false);
         mimeType.setEmptyText("Select a mime type...");
-        mimeType.setToolTipConfig(new ToolTipConfig("Mime Type is a string", "It should contain less than 256 characters"));
+        mimeType.setToolTipConfig(new ToolTipConfig("Mime Type is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
         // patient id
         patientID.setEmptyTexts("ex: 76cc^^1.3.6367.2005.3.7&ISO", "ex: urn:uuid:6b5aea1a-625s-5631-v4se-96a0a7b38446");
         patientID.setToolTipConfigs(new ToolTipConfig("Patient ID is a String256 in HL7 CX format", "The required format is:" +
@@ -530,8 +500,8 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
                         "If present, shall have a single value."));
         // source patient id
         sourcePatientId.addFieldValidator(new RegExValidator("^(([A-Za-z])|([1-9]))*[0-9A-z]+\\^{3}&[1-9][0-9]*(\\.[1-9][0-9]*)+(&ISO)$", "This value is not a correct source patient id."));
-        // sourcePatientId.addFieldValidator(new RegExValidator("^[A-Za-z]*[0-9]+\\^{3}&[1-9][0-9]*(\\.[1-9][0-9]*)+(&ISO)$", "This value is not a correct source patient id."));
-        // sourcePatientId.setEmptyTexts("j98789^^^&1.2.3.4.343.1&ISO");
+        // RegExValidator: "^[A-Za-z]*[0-9]+\\^{3}&[1-9][0-9]*(\\.[1-9][0-9]*)+(&ISO)$", "This value is not a correct source patient id."
+        // Empty Text: "j98789^^^&1.2.3.4.343.1&ISO"
         sourcePatientId.setToolbarHelpButtonTooltip(new ToolTipConfig("Help on Source Patient ID", "The sourcePatientId represents the subject of care medical record " +
                 "Identifier (e.g., Patient Id) in the local patient Identifier Domain of the " +
                 "Document Source. It shall contain two parts:" +
@@ -580,7 +550,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // uri
         uri.setAllowBlank(true);
         uri.setEmptyText("ex: uriO");
-        uri.setToolTipConfig(new ToolTipConfig("URI is a string", "It should contain less than 256 characters"));
+        uri.setToolTipConfig(new ToolTipConfig("URI is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
     }
-
 }

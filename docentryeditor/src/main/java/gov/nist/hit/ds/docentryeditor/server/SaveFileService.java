@@ -96,7 +96,6 @@ public class SaveFileService implements Serializable {
             out.close();
         } catch (IOException e) {
             LOGGER.warning("Error when writing metadata file on server.\n" + e.getMessage());
-            e.printStackTrace();
         }
         LOGGER.fine("... temporary file created: " + FILE_REPOSITORY + "/" + fileName);
 

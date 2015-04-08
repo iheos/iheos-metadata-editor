@@ -99,17 +99,22 @@ public class String256 implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof String256)) return false;
+        if (this == o){ return true;}
+        if (!(o instanceof String256)){ return false;}
 
         String256 string256 = (String256) o;
 
-        if (!string.equals(string256.string)) return false;
+        if (!string.equals(string256.string)){ return false;}
 
         return true;
     }
 
-    public String256 clone() {
+    @Override
+    public int hashCode() {
+        return string.hashCode();
+    }
+
+    public String256 copy() {
        return new String256(new String(this.string));
     }
 }

@@ -126,4 +126,8 @@ public class CodingScheme implements ModelElement, Serializable {
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        return codingScheme.hashCode();
+    }
 }

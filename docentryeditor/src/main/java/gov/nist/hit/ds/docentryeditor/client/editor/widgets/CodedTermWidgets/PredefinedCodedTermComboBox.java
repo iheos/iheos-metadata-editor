@@ -61,21 +61,22 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
             @Override
             public String getLabel(CodedTerm codedTerm) {
                 String s = new String();
-                if (codedTerm.getDisplayName() != null)
-                    if (!codedTerm.getDisplayName().toString().equals(""))
-                        s += codedTerm.getDisplayName().toString();
-                if (codedTerm.getDisplayName() != null)
-                    if (!codedTerm.getCode().toString().equals("") && codedTerm.getDisplayName() != null) {
-                        if (codedTerm.getDisplayName().toString() != null && !codedTerm.getDisplayName().toString().equals(""))
-                            s += "  -  ";
-                        s += codedTerm.getCode().toString();
+                Logger.getLogger(this.getClass().getName()).info(codedTerm.toString());
+                if (codedTerm.getDisplayName() != null && !codedTerm.getDisplayName().toString().equals("")) {
+                    s += codedTerm.getDisplayName().toString();
+                }
+                if (codedTerm.getCode() != null && !codedTerm.getCode().toString().equals("") ) {
+                    if (!s.isEmpty()) {
+                        s += "  -  ";
                     }
-                if (codedTerm.getCodingScheme() != null)
-                    if (!codedTerm.getCodingScheme().toString().equals("")) {
-                        if (!s.isEmpty())
-                            s += "  -  ";
-                        s += codedTerm.getCodingScheme().toString();
+                    s += codedTerm.getCode().toString();
+                }
+                if (codedTerm.getCodingScheme() != null && !codedTerm.getCodingScheme().toString().equals("")) {
+                    if (!s.isEmpty()) {
+                        s += "  -  ";
                     }
+                    s += codedTerm.getCodingScheme().toString();
+                }
                 return s;
             }
         });

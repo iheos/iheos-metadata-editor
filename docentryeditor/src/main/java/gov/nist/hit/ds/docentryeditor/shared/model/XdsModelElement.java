@@ -6,5 +6,5 @@ package gov.nist.hit.ds.docentryeditor.shared.model;
 public interface XdsModelElement {
     public String toString();
     public boolean verify();
-    public XdsModelElement clone();
+    public XdsModelElement copy();
 }
