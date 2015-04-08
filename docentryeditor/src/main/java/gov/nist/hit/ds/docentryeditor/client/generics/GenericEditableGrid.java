@@ -484,6 +484,14 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         return storeMaxLength;
     }
 
+    public void refreshNewButton(){
+        if (getStoreMaxSize() != 0 && getStore().size() >= getStoreMaxSize()) {
+            disableNewButton();
+        } else {
+            enableNewButton();
+        }
+    }
+
     //--------------------------------------------------------------------------------------------------------
     //----  SHOULD NOT BE USED WITH GIRD ROW EDITING, ONLY WITH GRID INLINE EDITING
     /**

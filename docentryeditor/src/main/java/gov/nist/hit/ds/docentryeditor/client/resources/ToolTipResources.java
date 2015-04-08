@@ -46,4 +46,8 @@ public enum ToolTipResources {
     public String getClearSubmissionSetToolTip() {
         return "Clear submission set from all elements.";
     }
+
+    public String getString256ToolTip() {
+        return "It should contain less than 256 characters";
+    }
 }

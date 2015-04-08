@@ -66,64 +66,65 @@ public enum PredefinedCodesParser {
      * @return list of codes
      */
     public List<CodedTerm> getCodes(PredefinedCodes predefinedCodes) {
+        List<CodedTerm> result=null;
         if (predefinedCodes.equals(PredefinedCodes.CLASS_CODES)) {
             if (classCodes.size() == 0) {
                 logger.info("Parsing codes file for class codes...");
                 classCodes.addAll(parseNode(ConfigCodeNodes.classCode.toString()));
                 logger.info("... class codes retrieved from file.");
             }
-            return classCodes;
+            result= classCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.FORMAT_CODES)) {
             if (formatCodes.size() == 0) {
                 logger.info("Parsing codes file for format codes...");
                 formatCodes.addAll(parseNode(ConfigCodeNodes.formatCode.toString()));
                 logger.info("... format codes retrieved from file.");
             }
-            return formatCodes;
+            result=formatCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.HEALTHCARE_FACILITY_TYPE_CODES)) {
             if (healthcareFacilityTypeCodes.size() == 0) {
                 logger.info("Parsing codes file for healthcare facility type codes...");
                 healthcareFacilityTypeCodes.addAll(parseNode(ConfigCodeNodes.healthcareFacilityTypeCode.toString()));
                 logger.info("... healthcare facility type codes retrieved from file.");
             }
-            return healthcareFacilityTypeCodes;
+            result = healthcareFacilityTypeCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.PRACTICE_SETTING_CODES)) {
             if (practiceSettingCodes.size() == 0) {
                 logger.info("Parsing codes file for practice setting codes...");
                 practiceSettingCodes.addAll(parseNode(ConfigCodeNodes.practiceSettingCode.toString()));
                 logger.info("... practice setting codes retrieved from file.");
             }
-            return practiceSettingCodes;
+            result = practiceSettingCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.TYPE_CODES)) {
             if (typeCodes.size() == 0) {
                 logger.info("Parsing codes file for type codes...");
                 typeCodes.addAll(parseNode(ConfigCodeNodes.typeCode.toString()));
                 logger.info("... type codes retrieved from file.");
             }
-            return typeCodes;
+            result = typeCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.CONTENT_TYPE_CODE)) {
             if (contentTypeCodes.size() == 0) {
                 logger.info("Parsing codes file for content type codes...");
                 contentTypeCodes.addAll(parseNode(ConfigCodeNodes.contentTypeCode.toString()));
                 logger.info("... content type codes retrieved from file.");
             }
-            return contentTypeCodes;
+            result = contentTypeCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.CONFIDENTIALITY_CODES)) {
             if (confidentialityCodes.size() == 0) {
                 logger.info("Parsing codes file for confidentiality codes...");
                 confidentialityCodes.addAll(parseNode(ConfigCodeNodes.confidentialityCode.toString()));
                 logger.info("... confidentiality codes retrieved from file.");
             }
-            return confidentialityCodes;
+            result= confidentialityCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.EVENT_CODES)) {
             if (eventCodes.size() == 0) {
                 logger.info("Parsing codes file for event codes...");
                 eventCodes.addAll(parseNode(ConfigCodeNodes.eventCodeList.toString()));
                 logger.info("... event codes retrieved from file.");
             }
-            return eventCodes;
+            result = eventCodes;
         }
-        return null;
+        return result;
     }
 
     /**

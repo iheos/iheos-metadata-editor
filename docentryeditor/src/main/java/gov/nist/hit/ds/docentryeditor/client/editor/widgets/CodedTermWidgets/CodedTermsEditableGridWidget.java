@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm> {
     // instance of the property access for the Author entity attributes (for the GXT Store).
-    private final static CodedTermProperties isprops = GWT.create(CodedTermProperties.class);
+    private final static CodedTermProperties CT_PROPS = GWT.create(CodedTermProperties.class);
 
     // --- UI Widgets
     private static ColumnConfig<CodedTerm, String> displayNameColumnConfig;
@@ -46,7 +46,7 @@ public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm>
      */
     public CodedTermsEditableGridWidget(String gridTitle, PredefinedCodes predefinedCode) {
         // use of the super constructor from GenericEditableGrid
-        super(gridTitle, new ListStore<CodedTerm>(isprops.key())/*, buildColumnModel()*/);
+        super(gridTitle, new ListStore<CodedTerm>(CT_PROPS.key())/*, buildColumnModel()*/);
 
         // change default tooltip for the toolbar add button.
         ((TextButton) getToolbar().getWidget(0)).setToolTip("Add a custom value");
@@ -83,11 +83,11 @@ public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm>
         List<ColumnConfig<CodedTerm, ?>> columnsConfigs = new ArrayList<ColumnConfig<CodedTerm, ?>>();
 
         displayNameColumnConfig = new ColumnConfig<CodedTerm, String>(
-                isprops.displayName(), 20, "Display Name");
+                CT_PROPS.displayName(), 20, "Display Name");
         codeColumnConfig = new ColumnConfig<CodedTerm, String>(
-                isprops.code(), 30, "Code");
+                CT_PROPS.code(), 30, "Code");
         codingSchemeColumnConfig = new ColumnConfig<CodedTerm, String>(
-                isprops.codingScheme(), 50, "CodingScheme");
+                CT_PROPS.codingScheme(), 50, "CodingScheme");
 
         columnsConfigs.add(displayNameColumnConfig);
         columnsConfigs.add(codeColumnConfig);

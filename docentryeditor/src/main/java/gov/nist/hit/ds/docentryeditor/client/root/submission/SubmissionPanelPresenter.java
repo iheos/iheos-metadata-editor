@@ -193,7 +193,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         }
         //------------------------------------------- MIGHT CHANGE
         logger.info("Create new pre-filled document entry");
-        XdsDocumentEntry newDoc=prefilledDocEntry.clone();
+        XdsDocumentEntry newDoc=prefilledDocEntry.copy();
         currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, newDoc);
         nextIndex++;
         view.getTreeStore().add(view.getTreeStore().getRootItems().get(0), currentlyEdited);

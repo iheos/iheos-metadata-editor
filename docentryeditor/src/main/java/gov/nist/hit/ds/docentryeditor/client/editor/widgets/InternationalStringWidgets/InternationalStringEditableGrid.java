@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class InternationalStringEditableGrid extends GenericEditableGrid<InternationalString> {
     // instance of the property access for the InternationalString entity attributes (for the GXT Store).
-    private final static InternationalStringProperties isprops= GWT.create(InternationalStringProperties.class);
+    private final static InternationalStringProperties IS_PROPS = GWT.create(InternationalStringProperties.class);
 
     // --- UI Widgets
     private static ColumnConfig<InternationalString, LanguageCode> languageCodeColumnConfig;
@@ -36,7 +36,7 @@ public class InternationalStringEditableGrid extends GenericEditableGrid<Interna
      * @param gridTitle title of the widget (for the grid's panel header).
      */
     public InternationalStringEditableGrid(String gridTitle) {
-        super(gridTitle, new ListStore<InternationalString>(isprops.key())/*, buildColumnModel()*/);
+        super(gridTitle, new ListStore<InternationalString>(IS_PROPS.key())/*, buildColumnModel()*/);
 //        setCheckBoxSelectionModel();
     }
 
@@ -49,9 +49,9 @@ public class InternationalStringEditableGrid extends GenericEditableGrid<Interna
         List<ColumnConfig<InternationalString, ?>> columnsConfigs = new ArrayList<ColumnConfig<InternationalString, ?>>();
 
         languageCodeColumnConfig = new ColumnConfig<InternationalString, LanguageCode>(
-                isprops.langCode(), 15, "Language Code");
+                IS_PROPS.langCode(), 15, "Language Code");
         titleColumnConfig = new ColumnConfig<InternationalString, String>(
-                isprops.value(), 85, "Title");
+                IS_PROPS.value(), 85, "Title");
         columnsConfigs.add(languageCodeColumnConfig);
         columnsConfigs.add(titleColumnConfig);
         return new ColumnModel<InternationalString>(

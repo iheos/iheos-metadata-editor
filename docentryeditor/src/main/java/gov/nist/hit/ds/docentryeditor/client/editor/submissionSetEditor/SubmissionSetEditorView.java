@@ -27,6 +27,7 @@ import gov.nist.hit.ds.docentryeditor.client.editor.widgets.UuidFormatClientVali
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
+import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
 import gov.nist.hit.ds.docentryeditor.client.widgets.ToolbarIconButton;
 import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
@@ -173,28 +174,28 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         simpleOptionalFieldsContainer.add(homeCommunityIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1,-1));
 
         // - Required field set.
-        FieldSet fieldSet_simpleRequired = new FieldSet();
-        fieldSet_simpleRequired.setHeadingText("General");
-        fieldSet_simpleRequired.setCollapsible(true);
-        fieldSet_simpleRequired.add(simpleRequiredFieldsContainer);
+        FieldSet simpleRequiredFieldSet = new FieldSet();
+        simpleRequiredFieldSet.setHeadingText("General");
+        simpleRequiredFieldSet.setCollapsible(true);
+        simpleRequiredFieldSet.add(simpleRequiredFieldsContainer);
 
         // - Optional field sets.
-        FieldSet fieldSet_simpleOptional = new FieldSet();
-        fieldSet_simpleOptional.setHeadingText("General");
-        fieldSet_simpleOptional.setCollapsible(true);
-        fieldSet_simpleOptional.add(simpleOptionalFieldsContainer);
+        FieldSet simpleOptionalFieldSet = new FieldSet();
+        simpleOptionalFieldSet.setHeadingText("General");
+        simpleOptionalFieldSet.setCollapsible(true);
+        simpleOptionalFieldSet.add(simpleOptionalFieldsContainer);
 
-        FieldSet fieldSet_authors = new FieldSet();
-        fieldSet_authors.setHeadingText("Authors");
-        fieldSet_authors.setCollapsible(true);
-        fieldSet_authors.add(authors.asWidget());
+        FieldSet authorsFieldSet = new FieldSet();
+        authorsFieldSet.setHeadingText("Authors");
+        authorsFieldSet.setCollapsible(true);
+        authorsFieldSet.add(authors.asWidget());
 
         // Add every required fields to the required fields panel.
-        requiredFields.add(fieldSet_simpleRequired,new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, 10, 0)));
+        requiredFields.add(simpleRequiredFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, 10, 0)));
         requiredFields.add(submissionTime.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, 10, 0)));
         // Add every optional fields to the optional fields panel.
-        optionalFields.add(fieldSet_simpleOptional,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
-        optionalFields.add(fieldSet_authors,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
+        optionalFields.add(simpleOptionalFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
+        optionalFields.add(authorsFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
         optionalFields.add(intendedRecipient.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
         optionalFields.add(titleGrid.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
         optionalFields.add(commentsGrid.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
@@ -257,31 +258,16 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
     }
 
     public void refreshGridButtonsDisplay() {
-        if (submissionTime.getStoreMaxSize() != 0 && submissionTime.getStore().size() >= submissionTime.getStoreMaxSize()) {
-            submissionTime.disableNewButton();
-        } else {
-            submissionTime.enableNewButton();
-        }
-        if (commentsGrid != null) {
-            if (commentsGrid.getStoreMaxSize() != 0 && commentsGrid.getStore().size() >= commentsGrid.getStoreMaxSize()) {
-                commentsGrid.disableNewButton();
-            } else {
-                commentsGrid.enableNewButton();
-            }
+        submissionTime.refreshNewButton();
+        if (commentsGrid!=null) {
+            commentsGrid.refreshNewButton();
         }
         if (intendedRecipient != null) {
-            if (intendedRecipient.getStoreMaxSize() != 0 && intendedRecipient.getStore().size() >= intendedRecipient.getStoreMaxSize()) {
-                intendedRecipient.disableNewButton();
-            } else {
-                intendedRecipient.enableNewButton();
-            }
+            intendedRecipient.refreshNewButton();
         }
-        if (titleGrid != null)
-            if (titleGrid.getStoreMaxSize() != 0 && titleGrid.getStore().size() >= titleGrid.getStoreMaxSize()) {
-                titleGrid.disableNewButton();
-            } else {
-                titleGrid.enableNewButton();
-            }
+        if (titleGrid != null){
+            titleGrid.refreshNewButton();
+        }
     }
 
     /**
@@ -301,7 +287,7 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         contentTypeCode.clear();
         contentTypeCode.setAllowBlank(false);
         // entry uuid
-        entryUUID.setToolTipConfig(new ToolTipConfig("ID is a string", "It should contain less than 256 characters"));
+        entryUUID.setToolTipConfig(new ToolTipConfig("ID is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
         entryUUID.setAllowBlank(false);
         entryUUID.addValidator(new UuidFormatClientValidator());
         // home community id

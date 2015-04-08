@@ -140,7 +140,14 @@ public class IdentifierString256 implements ModelElement, Serializable {
         return true;
     }
 
-    public IdentifierString256 clone() {
-        return new IdentifierString256(this.value.clone(),this.getIdType().clone());
+    @Override
+    public int hashCode() {
+        int result = value != null ? value.hashCode() : 0;
+        result = 31 * result + (idType != null ? idType.hashCode() : 0);
+        return result;
+    }
+
+    public IdentifierString256 copy() {
+        return new IdentifierString256(this.value.copy(),this.getIdType().copy());
     }
 }

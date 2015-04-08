@@ -407,7 +407,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         try {
             date = (Date)lFormatter.parse(sdate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.warning(e.getMessage());
         }
         return date;
     }

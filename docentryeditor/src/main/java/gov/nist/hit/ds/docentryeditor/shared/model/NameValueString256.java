@@ -136,6 +136,13 @@ public class NameValueString256 implements ModelElement, Serializable {
     }
 
     @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (values != null ? values.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "NameValueString256{" +
                 "name=" + name +
@@ -143,11 +150,11 @@ public class NameValueString256 implements ModelElement, Serializable {
                 '}';
     }
 
-    public NameValueString256 clone() {
+    public NameValueString256 copy() {
         NameValueString256 cp = new NameValueString256();
-        cp.setName(this.getName().clone());
+        cp.setName(this.getName().copy());
         for (String256 s : this.values){
-            cp.getValues().add(s.clone());
+            cp.getValues().add(s.copy());
         }
         return cp;
     }

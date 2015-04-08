@@ -113,18 +113,25 @@ public class InternationalString implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof InternationalString)) return false;
+        if (this == o){ return true;}
+        if (!(o instanceof InternationalString)){ return false;}
 
         InternationalString that = (InternationalString) o;
 
-        if (langCode != that.langCode) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+        if (langCode != that.langCode){ return false;}
+        if (value != null ? !value.equals(that.value) : that.value != null){ return false;}
 
         return true;
     }
 
-    public InternationalString clone() {
-        return new InternationalString(this.langCode,this.value.clone());
+    @Override
+    public int hashCode() {
+        int result = langCode != null ? langCode.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
+    }
+
+    public InternationalString copy() {
+        return new InternationalString(this.langCode,this.value.copy());
     }
 }

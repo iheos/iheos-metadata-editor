@@ -8,6 +8,8 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 
+import javax.inject.Inject;
+
 /**
  * Created by onh2 on 3/3/2015.
  */
@@ -16,16 +18,18 @@ public class EditorToolbar extends HorizontalLayoutContainer {
     private ToolbarIconButton saveButton;
     private ToolbarIconButton cancelButton;
 
+    private final static int BUTTON_RIGHT_MARGIN=5;
+
     public EditorToolbar() {
-        homeBtn = new HomeButton();
+        homeBtn=new HomeButton();
         saveButton = new ToolbarIconButton("Save",AppImages.INSTANCE.saveBW(),60);
         saveButton.setToolTip(ToolTipResources.INSTANCE.getSaveButtonToolTip());
         cancelButton = new ToolbarIconButton("Cancel changes",AppImages.INSTANCE.back(),110);
         cancelButton.setToolTip(ToolTipResources.INSTANCE.getCancelButtonToolTip());
 
-        this.add(homeBtn, new HorizontalLayoutData(-1, -1, new Margins(0, 5, 0, 0)));
-        this.add(saveButton, new HorizontalLayoutData(-1, -1, new Margins(0, 5, 0, 0)));
-        this.add(cancelButton, new HorizontalLayoutData(-1, -1, new Margins(0, 5, 0, 0)));
+        this.add(homeBtn, new HorizontalLayoutData(-1, -1, new Margins(0, BUTTON_RIGHT_MARGIN, 0, 0)));
+        this.add(saveButton, new HorizontalLayoutData(-1, -1, new Margins(0, BUTTON_RIGHT_MARGIN, 0, 0)));
+        this.add(cancelButton, new HorizontalLayoutData(-1, -1, new Margins(0, BUTTON_RIGHT_MARGIN, 0, 0)));
     }
 
     public HandlerRegistration addSaveHandler(SelectEvent.SelectHandler handler){
@@ -37,7 +41,7 @@ public class EditorToolbar extends HorizontalLayoutContainer {
     }
 
     public void addButton(ToolbarIconButton button){
-        this.add(button,new HorizontalLayoutData(-1,-1,new Margins(0,5,0,0)));
+        this.add(button,new HorizontalLayoutData(-1,-1,new Margins(0,BUTTON_RIGHT_MARGIN,0,0)));
     }
 
     public HomeButton getHomeBtn() {

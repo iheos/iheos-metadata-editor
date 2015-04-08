@@ -822,49 +822,48 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         this.version = version;
     }
 
-    @Override
-    public XdsDocumentEntry clone(){
+    public XdsDocumentEntry copy(){
         XdsDocumentEntry doc=new XdsDocumentEntry();
-        doc.setId(this.id!=null ? this.id.clone() : null);
-        doc.setHomeCommunityId(this.homeCommunityId!=null ? this.homeCommunityId.clone():null);
-        doc.setUri(this.uri.clone());
+        doc.setId(this.id!=null ? this.id.copy() : null);
+        doc.setHomeCommunityId(this.homeCommunityId!=null ? this.homeCommunityId.copy():null);
+        doc.setUri(this.uri.copy());
         for (Author cp : this.authors) {
-            doc.getAuthors().add(cp.clone());
+            doc.getAuthors().add(cp.copy());
         }
-        doc.setAvailabilityStatus(this.availabilityStatus!=null ? this.availabilityStatus.clone():null);
-        doc.setClassCode(this.classCode.clone());
+        doc.setAvailabilityStatus(this.availabilityStatus!=null ? this.availabilityStatus.copy():null);
+        doc.setClassCode(this.classCode.copy());
         for (InternationalString cp : this.comments) {
-            doc.getComments().add(cp.clone());
+            doc.getComments().add(cp.copy());
         }
         for (CodedTerm cp : this.confidentialityCodes) {
-            doc.getConfidentialityCodes().add(cp.clone());
+            doc.getConfidentialityCodes().add(cp.copy());
         }
-        doc.setCreationTime(this.creationTime.clone());
+        doc.setCreationTime(this.creationTime.copy());
         for (CodedTerm cp : this.eventCode){
-            doc.getEventCode().add(cp.clone());
+            doc.getEventCode().add(cp.copy());
         }
         doc.setFileName(new String256(this.fileName.getString()));
-        doc.setFormatCode(this.formatCode.clone());
-        doc.setHash(this.hash.clone());
-        doc.setHealthcareFacilityType(this.healthcareFacilityType.clone());
+        doc.setFormatCode(this.formatCode.copy());
+        doc.setHash(this.hash.copy());
+        doc.setHealthcareFacilityType(this.healthcareFacilityType.copy());
         doc.setLanguageCode(this.languageCode);
-        doc.setLegalAuthenticator(this.legalAuthenticator.clone());
-        doc.setLogicalId(this.logicalId!=null?this.logicalId.clone():null);
-        doc.setMimeType(this.mimeType.clone());
-        doc.setPatientID(this.patientID.clone());
-        doc.setPracticeSettingCode(this.practiceSettingCode.clone());
-        doc.setRepoUId(this.repoUId.clone());
-        doc.setServiceStartTime(this.serviceStartTime.clone());
-        doc.setServiceStopTime(this.serviceStopTime.clone());
-        doc.setSize(this.size.clone());
-        doc.setSourcePatientId(this.sourcePatientId.clone());
-        doc.setSourcePatientInfo(this.sourcePatientInfo.clone());
-        doc.setTypeCode(this.typeCode.clone());
+        doc.setLegalAuthenticator(this.legalAuthenticator.copy());
+        doc.setLogicalId(this.logicalId!=null?this.logicalId.copy():null);
+        doc.setMimeType(this.mimeType.copy());
+        doc.setPatientID(this.patientID.copy());
+        doc.setPracticeSettingCode(this.practiceSettingCode.copy());
+        doc.setRepoUId(this.repoUId.copy());
+        doc.setServiceStartTime(this.serviceStartTime.copy());
+        doc.setServiceStopTime(this.serviceStopTime.copy());
+        doc.setSize(this.size.copy());
+        doc.setSourcePatientId(this.sourcePatientId.copy());
+        doc.setSourcePatientInfo(this.sourcePatientInfo.copy());
+        doc.setTypeCode(this.typeCode.copy());
         for (InternationalString cp:this.titles) {
-            doc.getTitles().add(cp.clone());
+            doc.getTitles().add(cp.copy());
         }
         doc.setUniqueId(this.uniqueId.copy());
-        doc.setVersion(this.version!=null?this.version.clone():null);
+        doc.setVersion(this.version!=null?this.version.copy():null);
         return doc;
     }
 

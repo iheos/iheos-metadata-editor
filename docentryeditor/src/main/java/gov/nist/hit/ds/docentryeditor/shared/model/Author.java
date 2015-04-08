@@ -168,16 +168,18 @@ public class Author implements ModelElement, Serializable {
         for (String256 str : authorRoles) {
             counter++;
             author = author + str.toString();
-            if(counter<authorRoles.size())
-                author+=",";
+            if(counter<authorRoles.size()) {
+                author += ",";
+            }
         }
         author = author + "\", AuthorSpecialties=\"";
 
         counter=0;
         for (String256 str : authorSpecialties) {
             author = author + str.toString();
-            if (counter<authorSpecialties.size())
-                author+= ",";
+            if (counter<authorSpecialties.size()) {
+                author += ",";
+            }
         }
         author = author + "\"";
 
@@ -264,8 +266,8 @@ public class Author implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Author)) return false;
+        if (this == o){ return true; }
+        if (!(o instanceof Author)){return false;}
 
         Author author = (Author) o;
 
@@ -282,20 +284,30 @@ public class Author implements ModelElement, Serializable {
         return true;
     }
 
-    public Author clone() {
+    @Override
+    public int hashCode() {
+        int result = authorPerson.hashCode();
+        result = 31 * result + (authorInstitutions != null ? authorInstitutions.hashCode() : 0);
+        result = 31 * result + (authorRoles != null ? authorRoles.hashCode() : 0);
+        result = 31 * result + (authorSpecialties != null ? authorSpecialties.hashCode() : 0);
+        result = 31 * result + (authorTelecommunications != null ? authorTelecommunications.hashCode() : 0);
+        return result;
+    }
+
+    public Author copy() {
         Author cp = new Author();
-        cp.setAuthorPerson(this.authorPerson.clone());
+        cp.setAuthorPerson(this.authorPerson.copy());
         for (String256 institution : this.authorInstitutions){
-            cp.getAuthorInstitutions().add(institution.clone());
+            cp.getAuthorInstitutions().add(institution.copy());
         }
         for (String256 speciality : this.authorSpecialties){
-            cp.getAuthorSpecialties().add(speciality.clone());
+            cp.getAuthorSpecialties().add(speciality.copy());
         }
         for (String256 role : this.authorRoles){
-            cp.getAuthorRoles().add(role.clone());
+            cp.getAuthorRoles().add(role.copy());
         }
         for (String256 telecommunication : this.authorTelecommunications){
-            cp.getAuthorTelecommunications().add(telecommunication.clone());
+            cp.getAuthorTelecommunications().add(telecommunication.copy());
         }
         return cp;
     }

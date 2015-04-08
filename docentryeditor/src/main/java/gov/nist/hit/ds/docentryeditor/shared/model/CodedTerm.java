@@ -150,19 +150,27 @@ public class CodedTerm implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o){ return true; }
+        if (o == null || getClass() != o.getClass()){ return false;}
 
         CodedTerm codedTerm = (CodedTerm) o;
 
-        if (!code.equals(codedTerm.code)) return false;
-        if (!codingScheme.equals(codedTerm.codingScheme)) return false;
-        if (!displayName.equals(codedTerm.displayName)) return false;
+        if (!code.equals(codedTerm.code)){ return false;}
+        if (!codingScheme.equals(codedTerm.codingScheme)){ return false;}
+        if (!displayName.equals(codedTerm.displayName)){ return false;}
 
         return true;
     }
 
-    public CodedTerm clone() {
+    @Override
+    public int hashCode() {
+        int result = displayName != null ? displayName.hashCode() : 0;
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (codingScheme != null ? codingScheme.hashCode() : 0);
+        return result;
+    }
+
+    public CodedTerm copy() {
         return new CodedTerm(this.code.toString(),this.displayName.toString(),this.codingScheme.toString());
     }
 

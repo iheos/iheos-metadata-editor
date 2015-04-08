@@ -117,11 +117,11 @@ public class NameValueDTM implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof NameValueDTM)) return false;
+        if (this == o){ return true;}
+        if (!(o instanceof NameValueDTM)){ return false;}
 
         NameValueDTM that = (NameValueDTM) o;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null){ return false;}
         if (values != null && values.size() == that.getValues().size()) {
             for (int i = 0; i < values.size(); i++) {
                 if (!values.get(i).getDtm().equals(that.getValues().get(i).getDtm())) {
@@ -135,6 +135,13 @@ public class NameValueDTM implements ModelElement, Serializable {
     }
 
     @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (values != null ? values.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "NameValueDTM{" +
                 "name=" + name +
@@ -142,11 +149,11 @@ public class NameValueDTM implements ModelElement, Serializable {
                 '}';
     }
 
-    public NameValueDTM clone() {
+    public NameValueDTM copy() {
         NameValueDTM cp = new NameValueDTM();
-        cp.setName(this.name.clone());
+        cp.setName(this.name.copy());
         for(DTM vcp : this.values) {
-            cp.getValues().set(0,vcp.clone());
+            cp.getValues().set(0,vcp.copy());
         }
         return cp;
     }

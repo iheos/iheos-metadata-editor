@@ -105,7 +105,7 @@ public class DTM implements ModelElement, Serializable {
         return false;
     }
 
-    public DTM clone() {
+    public DTM copy() {
         return new DTM(new Date(this.dtm.getTime()));
     }
 }

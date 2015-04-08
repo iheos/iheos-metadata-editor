@@ -40,7 +40,7 @@ public enum LanguageCode {
             "zh-Hant"), CHINESE_WUU("zh-wuu"), CHINESE_XIANG("zh-xiang"), CHINESE_YUE(
             "zh-yue"), SPANISH_COLOMBIA("es-CO"), SPANISH_COSTA_RICA("es-CR"), SERBIAN(
             "sr"), SERBIAN_CYRL("sr-Cyrl"), SERBIAN_LATN("sr-Latn"), SPANISH_CUBA(
-            "es-CU"), PORTUGUESE_CAPE_VERDE("pt-CV"), GREEK_CYPRUS("el-CY"), TURKISH_CYPRuS(
+            "es-CU"), PORTUGUESE_CAPE_VERDE("pt-CV"), GREEK_CYPRUS("el-CY"), TURKISH_CYPRUS(
             "tr-CY"), CZECH("cs"), DANISH_GERMANY("da-DE"), GERMAN("de-DE"), LOWER_SORBIAN(
             "dsb"), FRISIAN_GERMANY("fy-DE"), UPPER_SORBIAN("hsb"), LUXEMBOURGISH(
             "lb"), LOW_GERMAN("nds"), SORBIAN("wen"), AFAR_DJIBOUTI("aa-DJ"), FRENCH_DJIBOUTI(
@@ -160,8 +160,9 @@ public enum LanguageCode {
 
     public static LanguageCode getValueOf(String languageCode) {
         for (LanguageCode l : LanguageCode.values()) {
-            if (l.toString().toLowerCase().equals(languageCode.toLowerCase()))
+            if (l.toString().toLowerCase().equals(languageCode.toLowerCase())) {
                 return l;
+            }
         }
         return null;
     }

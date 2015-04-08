@@ -285,8 +285,7 @@ public class XdsSubmissionSet  implements XdsModelElement,Serializable {
         return true;
     }
 
-    @Override
-    public XdsSubmissionSet clone() {
+    public XdsSubmissionSet copy() {
         XdsSubmissionSet subSet=new XdsSubmissionSet();
         subSet.setContentTypeCode(this.getContentTypeCode());
         subSet.setSubmissionTime(this.getSubmissionTime());
