@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -53,7 +54,7 @@ public class NameValueInteger implements ModelElement, Serializable {
      */
     @NotNull
     @NotEmpty
-    private ArrayList<Integer> values;
+    private List<Integer> values;
 
     public NameValueInteger() {
         name = new String256();
@@ -61,11 +62,11 @@ public class NameValueInteger implements ModelElement, Serializable {
         values.add(0);
     }
 
-    public ArrayList<Integer> getValues() {
+    public List<Integer> getValues() {
         return values;
     }
 
-    public void setValues(ArrayList<Integer> values) {
+    public void setValues(List<Integer> values) {
         this.values = values;
     }
 

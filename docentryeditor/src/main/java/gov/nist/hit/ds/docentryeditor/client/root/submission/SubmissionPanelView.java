@@ -13,7 +13,6 @@ import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import com.sencha.gxt.widget.core.client.tree.Tree;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
@@ -40,8 +39,6 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
     private final MenuItem addEmptyDocEntry = new MenuItem("Create an empty document entry");
     private final MenuItem addPrefilledDocEntry = new MenuItem("Create a pre-filled document entry");
 
-    @Inject
-    private MetadataEditorEventBus eventBus;
     @Inject
     private FileUploadDialog fileUploadDialog;
 

@@ -6,7 +6,6 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
-import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.shared.model.IdentifierString256;
 
@@ -25,9 +24,6 @@ public class IdentifierString256EditorWidget extends Composite implements Editor
      */
     public IdentifierString256EditorWidget() {
         initWidget(vcontainer);
-        EditorFieldLabel valueLabel = new EditorFieldLabel(value, "Value");
-        EditorFieldLabel idTypeLabel = new EditorFieldLabel(idType, "IdType");
-
         vcontainer.add(value, new VerticalLayoutData(1, -1));
     }
 

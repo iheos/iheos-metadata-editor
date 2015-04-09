@@ -33,6 +33,7 @@ import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.Selecti
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.editor.EditionMode;
 import gov.nist.hit.ds.docentryeditor.client.editor.properties.String256Properties;
+import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.widgets.ConfirmDeleteDialog;
 import gov.nist.hit.ds.docentryeditor.client.widgets.FieldEmptyValidator;
@@ -54,8 +55,11 @@ import java.util.logging.Logger;
  * @see EditionMode
  */
 public class AuthorEditorWidget extends Composite implements Editor<Author> {
+    private static final int FIELDS_HEIGHT = 30;
+    private static final int LIST_EDITOR_WIDGET_HEIGHT = 230;
+    private static final int LISTS_HEIGHT = 150;
     // class logger
-    private static Logger logger = Logger.getLogger(AuthorEditorWidget.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AuthorEditorWidget.class.getName());
     // instance of the driver for the edition of an author (used for the edition
     // the selected author in authors list)
     private final AuthorEditorDriver authorEditorDriver = GWT.create(AuthorEditorDriver.class);
@@ -197,8 +201,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         VerticalLayoutContainer authorTelecommunicationsContainer = new VerticalLayoutContainer();
 
         // Author Person field
-        FieldLabel authorPersonLabel = new FieldLabel(authorPerson, "Author Person");
-        authorPersonLabel.setLabelWidth(125);
+        EditorFieldLabel authorPersonLabel = new EditorFieldLabel(authorPerson, "Author Person");
         authorPerson.addValidator(new RegExValidator("^([A-Za-z]*[0-9]+\\^){0,1}[A-z]+(\\^{6}&[0-9](\\.[0-9])+&ISO$){0,1}"));
         authorPerson.addValidator(new FieldEmptyValidator("author person"));
 
@@ -217,7 +220,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
                 + "Some Hospital^^^^^^^^^1.2.3.4.5.6.7.8.9.1789.45<br/>"
                 + "Some Hospital^^^^^&1.2.3.4.5.6.7.8.9.1789&ISO^^^^45"));
 
-        hcontainerInstitution.add(authorInstitution, new HorizontalLayoutData(1, 30, new Margins(0, 10, 10, 0)));
+        hcontainerInstitution.add(authorInstitution, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, 10, 10, 0)));
         authorInstitution.setWidth("auto");
         addInstitutionButton.setWidth("auto");
         hcontainerInstitution.add(addInstitutionButton);
@@ -226,8 +229,8 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         deleteInstitutionButton.disable();
 
         authorInstitutionsContainer.add(institutionLabel, new VerticalLayoutData(1, -1));
-        authorInstitutionsContainer.add(hcontainerInstitution, new VerticalLayoutData(1, 30));
-        authorInstitutionsContainer.add(listViewAuthInstitutions, new VerticalLayoutData(1, 150));
+        authorInstitutionsContainer.add(hcontainerInstitution, new VerticalLayoutData(1, FIELDS_HEIGHT));
+        authorInstitutionsContainer.add(listViewAuthInstitutions, new VerticalLayoutData(1, LISTS_HEIGHT));
         authorInstitutionsContainer.add(deleteInstitutionButton);
 
         // ///////////////////////////////////////////////////
@@ -238,7 +241,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         FieldLabel roleLabel = new FieldLabel();
         roleLabel.setText("Role");
 
-        hcontainerRole.add(authorRole, new HorizontalLayoutData(1, 30, new Margins(0, 10, 10, 0)));
+        hcontainerRole.add(authorRole, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, 10, 10, 0)));
         authorRole.setWidth("auto");
         addRoleButton.setWidth("auto");
         hcontainerRole.add(addRoleButton);
@@ -247,8 +250,8 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         deleteRoleButton.disable();
 
         authorRolesContainer.add(roleLabel, new VerticalLayoutData(1, -1));
-        authorRolesContainer.add(hcontainerRole, new VerticalLayoutData(1, 30));
-        authorRolesContainer.add(listViewAuthRoles, new VerticalLayoutData(1, 150));
+        authorRolesContainer.add(hcontainerRole, new VerticalLayoutData(1, FIELDS_HEIGHT));
+        authorRolesContainer.add(listViewAuthRoles, new VerticalLayoutData(1, LISTS_HEIGHT));
         authorRolesContainer.add(deleteRoleButton);
 
         // ///////////////////////////////////////////////////
@@ -259,7 +262,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         FieldLabel specialtyLabel = new FieldLabel();
         specialtyLabel.setText("Specialty");
 
-        hcontainerSpecialty.add(authorSpecialty, new HorizontalLayoutData(1, 30, new Margins(0, 10, 10, 0)));
+        hcontainerSpecialty.add(authorSpecialty, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, 10, 10, 0)));
         authorSpecialty.setWidth("auto");
         addSpecialtyButton.setWidth("auto");
         hcontainerSpecialty.add(addSpecialtyButton);
@@ -268,8 +271,8 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         deleteSpecialtyButton.disable();
 
         authorSpecialtiesContainer.add(specialtyLabel, new VerticalLayoutData(1, -1));
-        authorSpecialtiesContainer.add(hcontainerSpecialty, new VerticalLayoutData(1, 30));
-        authorSpecialtiesContainer.add(listViewAuthSpecialties, new VerticalLayoutData(1, 150));
+        authorSpecialtiesContainer.add(hcontainerSpecialty, new VerticalLayoutData(1, FIELDS_HEIGHT));
+        authorSpecialtiesContainer.add(listViewAuthSpecialties, new VerticalLayoutData(1, LISTS_HEIGHT));
         authorSpecialtiesContainer.add(deleteSpecialtyButton);
 
         // ///////////////////////////////////////////////////
@@ -280,7 +283,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         FieldLabel telecommunicationLabel = new FieldLabel();
         telecommunicationLabel.setText("Telecommunication");
 
-        hcontainerTelecommunication.add(authorTelecommunication, new HorizontalLayoutData(1, 30, new Margins(0, 10, 10, 0)));
+        hcontainerTelecommunication.add(authorTelecommunication, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, 10, 10, 0)));
         authorTelecommunication.setWidth("auto");
         authorTelecommunication.setToolTipConfig(new ToolTipConfig("Telecommunication represents the telecommunications address (e.g., email) of the document or SubmissionSet author."));
         addTelecommunicationButton.setWidth("auto");
@@ -302,17 +305,17 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         deleteTelecommunicationButton.disable();
 
         authorTelecommunicationsContainer.add(telecommunicationLabel, new VerticalLayoutData(1, -1));
-        authorTelecommunicationsContainer.add(hcontainerTelecommunication, new VerticalLayoutData(1, 30));
-        authorTelecommunicationsContainer.add(listViewAuthTelecommunications, new VerticalLayoutData(1, 150));
+        authorTelecommunicationsContainer.add(hcontainerTelecommunication, new VerticalLayoutData(1, FIELDS_HEIGHT));
+        authorTelecommunicationsContainer.add(listViewAuthTelecommunications, new VerticalLayoutData(1, LISTS_HEIGHT));
         authorTelecommunicationsContainer.add(deleteTelecommunicationButton);
 
         // Add each widget to the main container
-        vcontainer.add(authorPersonLabel, new VerticalLayoutData(1, -1));
+        vcontainer.add(authorPersonLabel, new VerticalLayoutData(1, FIELDS_HEIGHT));
         listsContainer.add(authorInstitutionsContainer, new HorizontalLayoutData(0.25, -1, new Margins(0, 10, 0, 0)));
         listsContainer.add(authorRolesContainer, new HorizontalLayoutData(0.25, -1, new Margins(0, 10, 0, 0)));
         listsContainer.add(authorSpecialtiesContainer, new HorizontalLayoutData(0.25, -1, new Margins(0, 10, 0, 0)));
         listsContainer.add(authorTelecommunicationsContainer, new HorizontalLayoutData(0.25, -1, new Margins()));
-        vcontainer.add(listsContainer, new VerticalLayoutData(1, 230));
+        vcontainer.add(listsContainer, new VerticalLayoutData(1, LIST_EDITOR_WIDGET_HEIGHT));
 
         // init namevaluestring256 with its widgets container
         initWidget(vcontainer);
@@ -324,7 +327,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         String s = authorInstitution.getField().getText();
 
         if (s != null && !s.isEmpty()) {
-            logger.info("adding new value (" + s + ") to list store");
+            LOGGER.info("adding new value (" + s + ") to list store");
             String256 v = new String256().setString(s);
             if (!contains(authorInstitutions.getStore(), v)) {
                 authorInstitutions.getStore().add(new String256().setString(s));
@@ -340,7 +343,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
     private void addAuthorRoleToListStore() {
         String s = authorRole.getField().getText();
         if (s != null && !s.isEmpty()) {
-            logger.info("adding new value (" + s + ") to list store");
+            LOGGER.info("adding new value (" + s + ") to list store");
             String256 v = new String256().setString(s);
             if (!contains(authorRoles.getStore(), v)) {
                 authorRoles.getStore().add(new String256().setString(s));
@@ -356,7 +359,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
     private void addAuthorSpecialtyToListStore() {
         String s = authorSpecialty.getField().getText();
         if (s != null && !s.isEmpty()) {
-            logger.info("adding new value (" + s + ") to list store");
+            LOGGER.info("adding new value (" + s + ") to list store");
             String256 v = new String256().setString(s);
             if (!contains(authorSpecialties.getStore(), v)) {
                 authorSpecialties.getStore().add(new String256().setString(s));
@@ -373,7 +376,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
 
         if (authorTelecommunication.getField().validate())
             if (s != null && !s.isEmpty()) {
-                logger.info("adding new value (" + s + ") to list store");
+                LOGGER.info("adding new value (" + s + ") to list store");
                 String256 v = new String256().setString(s);
                 if (!contains(authorTelecommunications.getStore(), v)) {
                     authorTelecommunications.getStore().add(new String256().setString(s));
@@ -465,18 +468,16 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
             @Override
             public void onKeyDown(KeyDownEvent event) {
                 if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-                    logger.info("ENTER KEY PRESSED on Institution Field");
+                    LOGGER.info("ENTER KEY PRESSED on Institution Field");
                     addAuthorInstitutionToListStore();
                 }
             }
         });
         // Delete Institution Value handler
         deleteInstitutionButton.addSelectHandler(new SelectHandler() {
-
             @Override
             public void onSelect(SelectEvent event) {
-                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthInstitutions.getSelectionModel()
-                        .getSelectedItem().getString());
+                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthInstitutions.getSelectionModel().getSelectedItem().getString());
                 cdd.show();
                 cdd.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
 
@@ -484,13 +485,11 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
                     public void onDialogHide(DialogHideEvent event) {
                         if (event.getHideButton() == PredefinedButton.YES) {
                             // perform YES action
-                            authorInstitutions.getStore().remove(
-                                    listViewAuthInstitutions.getSelectionModel().getSelectedItem());
+                            authorInstitutions.getStore().remove(listViewAuthInstitutions.getSelectionModel().getSelectedItem());
                         }
                     }
                 });
             }
-
         });
 
         // Add Role value handlers
@@ -506,18 +505,16 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
             @Override
             public void onKeyDown(KeyDownEvent event) {
                 if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-                    logger.info("ENTER KEY PRESSED on Role Field");
+                    LOGGER.info("ENTER KEY PRESSED on Role Field");
                     addAuthorRoleToListStore();
                 }
             }
         });
         // Delete Role Value handler
         deleteRoleButton.addSelectHandler(new SelectHandler() {
-
             @Override
             public void onSelect(SelectEvent event) {
-                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthRoles.getSelectionModel()
-                        .getSelectedItem().getString());
+                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthRoles.getSelectionModel().getSelectedItem().getString());
                 cdd.show();
                 cdd.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
 
@@ -530,7 +527,6 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
                     }
                 });
             }
-
         });
 
         // Add Specialty value handlers
@@ -546,32 +542,27 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
             @Override
             public void onKeyDown(KeyDownEvent event) {
                 if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-                    logger.info("ENTER KEY PRESSED on Specialty field");
+                    LOGGER.info("ENTER KEY PRESSED on Specialty field");
                     addAuthorSpecialtyToListStore();
                 }
             }
         });
-        // Delete Institution Value handler
+        // Delete Specialty Value handler
         deleteSpecialtyButton.addSelectHandler(new SelectHandler() {
-
             @Override
             public void onSelect(SelectEvent event) {
-                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthSpecialties.getSelectionModel()
-                        .getSelectedItem().getString());
+                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthSpecialties.getSelectionModel().getSelectedItem().getString());
                 cdd.show();
                 cdd.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
-
                     @Override
                     public void onDialogHide(DialogHideEvent event) {
                         if (event.getHideButton() == PredefinedButton.YES) {
                             // perform YES action
-                            authorSpecialties.getStore().remove(
-                                    listViewAuthSpecialties.getSelectionModel().getSelectedItem());
+                            authorSpecialties.getStore().remove(listViewAuthSpecialties.getSelectionModel().getSelectedItem());
                         }
                     }
                 });
             }
-
         });
         // Add Telecommunication value handlers
         addTelecommunicationButton.addSelectHandler(new SelectHandler() {
@@ -586,32 +577,27 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
             @Override
             public void onKeyDown(KeyDownEvent event) {
                 if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-                    logger.info("ENTER KEY PRESSED on Telecommunication field");
+                    LOGGER.info("ENTER KEY PRESSED on Telecommunication field");
                     addAuthorTelecommunicationToListStore();
                 }
             }
         });
         // Delete Telecommunication Value handler
         deleteTelecommunicationButton.addSelectHandler(new SelectHandler() {
-
             @Override
             public void onSelect(SelectEvent event) {
-                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthTelecommunications.getSelectionModel()
-                        .getSelectedItem().getString());
+                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthTelecommunications.getSelectionModel()                        .getSelectedItem().getString());
                 cdd.show();
                 cdd.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
-
                     @Override
                     public void onDialogHide(DialogHideEvent event) {
                         if (event.getHideButton() == PredefinedButton.YES) {
                             // perform YES action
-                            authorTelecommunications.getStore().remove(
-                                    listViewAuthTelecommunications.getSelectionModel().getSelectedItem());
+                            authorTelecommunications.getStore().remove(listViewAuthTelecommunications.getSelectionModel().getSelectedItem());
                         }
                     }
                 });
             }
-
         });
     }
 
@@ -721,19 +707,19 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         addSpecialtyButton.setEnabled(enabled);
         addTelecommunicationButton.setEnabled(enabled);
         if (listViewAuthSpecialties.getSelectionModel().getSelectedItem() != null
-                || listViewAuthSpecialties.getSelectionModel().getSelectedItems().size() > 0) {
+                || !listViewAuthSpecialties.getSelectionModel().getSelectedItems().isEmpty()) {
             deleteSpecialtyButton.setEnabled(enabled);
         }
         if (listViewAuthRoles.getSelectionModel().getSelectedItem() != null
-                || listViewAuthRoles.getSelectionModel().getSelectedItems().size() > 0) {
+                || !listViewAuthRoles.getSelectionModel().getSelectedItems().isEmpty()) {
             deleteRoleButton.setEnabled(enabled);
         }
         if (listViewAuthInstitutions.getSelectionModel().getSelectedItem() != null
-                || listViewAuthInstitutions.getSelectionModel().getSelectedItems().size() > 0) {
+                || !listViewAuthInstitutions.getSelectionModel().getSelectedItems().isEmpty()) {
             deleteInstitutionButton.setEnabled(enabled);
         }
         if (listViewAuthTelecommunications.getSelectionModel().getSelectedItem() != null
-                || listViewAuthTelecommunications.getSelectionModel().getSelectedItems().size() > 0) {
+                || !listViewAuthTelecommunications.getSelectionModel().getSelectedItems().isEmpty()) {
             deleteTelecommunicationButton.setEnabled(enabled);
         }
     }

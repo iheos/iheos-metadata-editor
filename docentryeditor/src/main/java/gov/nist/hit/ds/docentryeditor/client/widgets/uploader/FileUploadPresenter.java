@@ -12,7 +12,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 public class FileUploadPresenter extends AbstractPresenter<FileUploadView> {
 
     // RPC services declaration
-    private final static XdsParserServicesAsync xdsParserServices = GWT
+    private final XdsParserServicesAsync xdsParserServices = GWT
             .create(XdsParserServices.class);
 
     public void fileUploaded(String results) {
@@ -29,11 +29,7 @@ public class FileUploadPresenter extends AbstractPresenter<FileUploadView> {
 
             @Override
             public void onSuccess(XdsMetadata xdsMetadata) {
-                XdsDocumentEntry model = xdsMetadata.getDocumentEntries().get(0);
-
                 logger.info("... file parsed.");
-                // logger.info("Metadata file: " + model.toXML());
-
                 getEventBus().fireEvent(new NewFileLoadedEvent(xdsMetadata));
             }
         });

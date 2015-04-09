@@ -23,7 +23,7 @@ public class UploadFileServlet extends HttpServlet {
 	private final static Logger LOGGER = Logger.getLogger(UploadFileServlet.class.getName());
 	private static final long serialVersionUID = 1L;
 	private final static Charset ENCODING = StandardCharsets.UTF_8;
-	private final String FILE_REPOSITORY = "files";
+	private final static String FILE_REPOSITORY = "files";
 
 
 	@Override

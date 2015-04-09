@@ -20,8 +20,9 @@ public class EditorToolbar extends HorizontalLayoutContainer {
 
     private final static int BUTTON_RIGHT_MARGIN=5;
 
-    public EditorToolbar() {
-        homeBtn=new HomeButton();
+    @Inject
+    public EditorToolbar(HomeButton hb) {
+        homeBtn=hb;
         saveButton = new ToolbarIconButton("Save",AppImages.INSTANCE.saveBW(),60);
         saveButton.setToolTip(ToolTipResources.INSTANCE.getSaveButtonToolTip());
         cancelButton = new ToolbarIconButton("Cancel changes",AppImages.INSTANCE.back(),110);
@@ -30,6 +31,16 @@ public class EditorToolbar extends HorizontalLayoutContainer {
         this.add(homeBtn, new HorizontalLayoutData(-1, -1, new Margins(0, BUTTON_RIGHT_MARGIN, 0, 0)));
         this.add(saveButton, new HorizontalLayoutData(-1, -1, new Margins(0, BUTTON_RIGHT_MARGIN, 0, 0)));
         this.add(cancelButton, new HorizontalLayoutData(-1, -1, new Margins(0, BUTTON_RIGHT_MARGIN, 0, 0)));
+        bindUI();
+    }
+
+    private void bindUI() {
+//        homeBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+//            @Override
+//            public void onSelect(SelectEvent selectEvent) {
+//                eventBus.fireBackToHomePageEvent();
+//            }
+//        });
     }
 
     public HandlerRegistration addSaveHandler(SelectEvent.SelectHandler handler){
