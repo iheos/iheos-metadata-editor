@@ -14,6 +14,7 @@ import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.Submissi
 import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.SubmissionSetEditorView;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.AuthorWidgets.AuthorsListEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.home.WelcomeActivity;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.client.root.CenterPanel;
@@ -21,6 +22,7 @@ import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelMVP;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelPresenter;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelView;
+import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
 import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadMVP;
 
 @GinModules(MetadataEditorGinModule.class)
@@ -33,6 +35,7 @@ public interface MetadataEditorGinInjector extends Ginjector {
     MetadataEditorEventBus getEventBus();
     PlaceController getPlaceController();
     MetadataEditorRequestFactory getRequestFactory();
+    ActivityDisplayer getActivityDisplayer();
 
     // ------------------------------------------
     // ~ Root
@@ -44,6 +47,7 @@ public interface MetadataEditorGinInjector extends Ginjector {
     // ~ Various widgets
     FileUploadMVP getFileUploadMVP();
     AuthorsListEditorWidget getAuthorsListEditorWidget();
+    EditorToolbar getToolbar();
 
     // ------------------------------------------
     // ~ ACTIVITIES

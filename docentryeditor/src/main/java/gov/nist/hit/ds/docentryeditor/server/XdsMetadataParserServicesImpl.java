@@ -231,7 +231,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                 eventCodes.add(new CodedTerm(eventCodeStrings[0],eventCodeStrings[1],eventCodeStrings[2]));
             }
             de.setEventCode(eventCodes);
-        } catch(Exception e) {}
+        } catch(Exception e) {LOGGER.warning(e.getMessage());}
         try {
             List<OMElement> authorClassifications = m.getClassifications(ele, MetadataSupport.XDSDocumentEntry_author_uuid);
             de.setAuthors(parseAuthors(authorClassifications));
@@ -239,7 +239,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                 // TODO
                 // de.authorsX.add(new OMFormatter(auEle).toHtml());
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {LOGGER.warning(e.getMessage());}
 
         return de;
     }

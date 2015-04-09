@@ -51,7 +51,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
     private XdsDocumentEntry prefilledDocEntry;
 
     // RPC services declaration
-    private final static XdsParserServicesAsync xdsParserServices = GWT.create(XdsParserServices.class);
+    private final XdsParserServicesAsync xdsParserServices = GWT.create(XdsParserServices.class);
 
     @Override
     public void init() {

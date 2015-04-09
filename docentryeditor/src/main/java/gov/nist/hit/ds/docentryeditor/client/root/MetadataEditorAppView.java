@@ -11,7 +11,8 @@ import gov.nist.hit.ds.docentryeditor.client.generics.GenericMVP;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionMenuData;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelPresenter;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelView;
-import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorGinInjector;
+
+import javax.inject.Inject;
 
 /**
  * This class contains layout objects to handle the global interface layout,
@@ -20,10 +21,11 @@ import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorGinInjector;
  * @author OLIVIER
  */
 public class MetadataEditorAppView extends Viewport {
-    private final static MetadataEditorGinInjector INJECTOR = MetadataEditorGinInjector.INSTANCE;
     private static final int WEST_PANEL_WIDTH = 200;
+    private static final int PANELS_MARGINS = 5;
+    // Constant to compensate the size of the html header for resize purposes
+    private static final int HEADER_HEIGHT = 80;
 
-    // NorthPanel north; // interface for file loading and saving
     private CenterPanel center; // main edtior fields
     private GenericMVP<SubmissionMenuData, SubmissionPanelView, SubmissionPanelPresenter> submissionMVP;
 
@@ -31,24 +33,19 @@ public class MetadataEditorAppView extends Viewport {
     private SubmissionPanelView submissionPanelView;
     private SubmissionPanelPresenter submissionPanelPresenter;
 
-    public MetadataEditorAppView() {
+    @Inject
+    public MetadataEditorAppView(SubmissionPanelView submissionPanelView,SubmissionPanelPresenter submissionPanelPresenter) {
         super();
 
-        submissionPanelPresenter = INJECTOR.getSubmissionPanelPresenter();
-        submissionPanelView = INJECTOR.getSubmissionPanelView();
+        this.submissionPanelPresenter = submissionPanelPresenter;
+        this.submissionPanelView = submissionPanelView;
 
         BorderLayoutContainer con = new BorderLayoutContainer();
         con.setBorders(true);
 
-        // NORTH
-        // north = INJECTOR.getNorthPanel();
-        // BorderLayoutData northData = new BorderLayoutData(35);
-        // northData.setMargins(new Margins(5, 5, 5, 5));
-        // con.setNorthWidget(north, northData);
-
         // CENTER
         center = new CenterPanel();
-        MarginData centerData = new MarginData(0, 5, 5, 5);
+        MarginData centerData = new MarginData(PANELS_MARGINS);
         BorderLayoutContainer c = new BorderLayoutContainer();
         c.setCenterWidget(center, centerData);
 
@@ -58,7 +55,7 @@ public class MetadataEditorAppView extends Viewport {
         submissionMVP = buildSubmissionMVP();
         submissionMVP.init();
         BorderLayoutData westData = new BorderLayoutData(WEST_PANEL_WIDTH);
-        westData.setMargins(new Margins(0, 5, 5, 5));
+        westData.setMargins(new Margins(PANELS_MARGINS));
         westData.setCollapsible(true);
         westData.setSplit(false);
 
@@ -85,6 +82,6 @@ public class MetadataEditorAppView extends Viewport {
     }
 
     public void setMarginTop(int marginTop) {
-        simpleContainer.getWidget().setLayoutData(new MarginData(0,0,80,0));
+        simpleContainer.getWidget().setLayoutData(new MarginData(0,0,HEADER_HEIGHT,0));
     }
 }

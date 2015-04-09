@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -53,7 +54,7 @@ public class NameValueDTM implements ModelElement, Serializable {
      */
     @NotNull
     @NotEmpty
-    private ArrayList<DTM> values;
+    private List<DTM> values;
 
     public NameValueDTM() {
         name = new String256();
@@ -61,11 +62,11 @@ public class NameValueDTM implements ModelElement, Serializable {
         values.add(new DTM());
     }
 
-    public ArrayList<DTM> getValues() {
+    public List<DTM> getValues() {
         return values;
     }
 
-    public void setValues(ArrayList<DTM> values) {
+    public void setValues(List<DTM> values) {
         this.values = values;
     }
 

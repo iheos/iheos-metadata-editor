@@ -174,4 +174,7 @@ public class CodedTerm implements ModelElement, Serializable {
         return new CodedTerm(this.code.toString(),this.displayName.toString(),this.codingScheme.toString());
     }
 
+    public boolean isOneFieldEmpty() {
+        return getCode().toString().isEmpty() && getCodingScheme().toString() != null && getDisplayName().toString() != null;
+    }
 }

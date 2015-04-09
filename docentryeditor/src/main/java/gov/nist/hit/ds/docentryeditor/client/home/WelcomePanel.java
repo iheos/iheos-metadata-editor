@@ -52,8 +52,6 @@ public class WelcomePanel extends VerticalLayoutContainer {
         setBorders(false);
 
         // set html welcome explanation panel
-        HtmlLayoutContainer htmlWelcome=new HtmlLayoutContainer("<br/><br/>" + "<div style='font-family:Helvetica;font-size:2em;font-weight:bold;color:#777777;text-align:center'>" + "Welcome !"
-                + "</div>");
         HtmlLayoutContainer htmlExplanationTitle=new HtmlLayoutContainer("<br/><h2>Welcome to the XDS Document Entry Editor</h2>");
         HtmlLayoutContainer htmlExplanation=new HtmlLayoutContainer("<br/>This application was developed by the National Institute of Standards and Technology " +
                 "to generate custom XDS metadata for testing purposes. This software is based on the specification " +
@@ -94,7 +92,6 @@ public class WelcomePanel extends VerticalLayoutContainer {
 				"<ul><li>The functionalities Folder and Association are not implemented yet.</li>" +
 				"</ul>");
 
-        //		this.add(htmlWelcome);
 		this.add(htmlExplanationTitle);
 		this.add(htmlExplanation);
 		this.add(buttonsHContainer, new VerticalLayoutData(1, 120));

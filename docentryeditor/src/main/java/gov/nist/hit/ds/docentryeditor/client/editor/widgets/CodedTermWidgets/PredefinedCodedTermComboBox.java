@@ -24,7 +24,6 @@ import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * ComboBox widget that handles predefined coded terms.
@@ -43,7 +42,6 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
      */
     public PredefinedCodedTermComboBox(PredefinedCodes predefinedCodes) {
         super(new ListStore<CodedTerm>(new ModelKeyProvider<CodedTerm>() {
-
             @Override
             public String getKey(CodedTerm item) {
                 if (item == null) {
@@ -52,7 +50,6 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
                 return item.toString();
             }
         }), new LabelProvider<CodedTerm>() {
-
             /**
              * Method that builds a label value to be displayed in the combobox for a CodedTerm object.
              * @param codedTerm coded term entity
@@ -61,7 +58,6 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
             @Override
             public String getLabel(CodedTerm codedTerm) {
                 String s = new String();
-                Logger.getLogger(this.getClass().getName()).info(codedTerm.toString());
                 if (codedTerm.getDisplayName() != null && !codedTerm.getDisplayName().toString().equals("")) {
                     s += codedTerm.getDisplayName().toString();
                 }
@@ -119,8 +115,7 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
                         @Override
                         public void onSelect(SelectEvent event) {
                             CodedTerm added = codedTermPopUpEditor.getEditor().save();
-                            if (added.getCode().toString() != null && added.getCodingScheme().toString() != null
-                                    && added.getDisplayName().toString() != null) {
+                            if (!added.isOneFieldEmpty()) {
                                 getStore().add(added);
                                 select(added);
                                 setValue(added);
@@ -140,7 +135,6 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
                 }
                 selectedIndex = getStore().indexOf(event.getItem());
                 if (customedValuesIndexes.contains(selectedIndex)) {
-                    Logger.getLogger(this.getClass().getName()).info("Index: " + customedValuesIndexes.indexOf(selectedIndex));
                     editCustomedValueBtn.enable();
                 } else {
                     editCustomedValueBtn.disable();
@@ -158,8 +152,7 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
                     @Override
                     public void onSelect(SelectEvent event) {
                         CodedTerm updated = codedTermPopUpEditor.getEditor().save();
-                        if (updated.getCode().toString() != null && updated.getCodingScheme().toString() != null
-                                && updated.getDisplayName().toString() != null) {
+                        if (!updated.isOneFieldEmpty()) {
                             customedValuesIndexes.remove(customedValuesIndexes.indexOf(getStore().indexOf(currentValue)));
                             getStore().remove(currentValue);
                             getStore().add(updated);

@@ -10,6 +10,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -79,8 +80,8 @@ public class XdsParser {
      *
      * @see XdsParser
      */
-    private final static XdsParser INSTANCE = new XdsParser();
-    private final static Logger LOGGER = Logger.getLogger(XdsParser.class.getName());
+    private static final XdsParser INSTANCE = new XdsParser();
+    private static final Logger LOGGER = Logger.getLogger(XdsParser.class.getName());
     /**
      * <b>DocumentModel xdsDocumentEntry</b> - The model which will be completed
      * by buildMyModel using the data's XML file.<br>
@@ -131,7 +132,7 @@ public class XdsParser {
         try {
             findElements();
         } catch (String256Exception e) {
-            e.printStackTrace();
+            LOGGER.warning(e.getMessage());
         }
         return xdsDocumentEntry;
     }
@@ -276,7 +277,7 @@ public class XdsParser {
     // TODO This methods should handle exceptions and/or fire events which could be handled in GUI.
     private void methodParseAuthors() throws String256Exception {
         NodeList authorsNode = document.getElementsByTagName(RootNodesEnum.authors.toString());
-        ArrayList<Author> authors = new ArrayList<Author>();
+        List<Author> authors = new ArrayList<Author>();
 
         if (authorsNode != null && !authorsNode.toString().isEmpty()) {
             for (int a = 0; a < authorsNode.getLength(); a++) {
@@ -284,10 +285,10 @@ public class XdsParser {
                 for (int i = 0; i < authorNodes.getLength(); i++) {
                     Author intern_temp = new Author();
 
-                    ArrayList<String256> authorInstitutions_temp = new ArrayList<String256>();
-                    ArrayList<String256> authorRoles_temp = new ArrayList<String256>();
-                    ArrayList<String256> authorSpecialities_temp = new ArrayList<String256>();
-                    ArrayList<String256> authorTelecommunications_temp = new ArrayList<String256>();
+                    List<String256> authorInstitutions_temp = new ArrayList<String256>();
+                    List<String256> authorRoles_temp = new ArrayList<String256>();
+                    List<String256> authorSpecialities_temp = new ArrayList<String256>();
+                    List<String256> authorTelecommunications_temp = new ArrayList<String256>();
 
                     // Set authorPerson
                     String256 authorPerson256 = new String256();
@@ -568,9 +569,9 @@ public class XdsParser {
      * @throws String256Exception if there is a String256 with more than 256 characters
      * @see XdsParser
      */
-    private ArrayList<InternationalString> parseArrayInternationalString(String node) throws String256Exception {
+    private List<InternationalString> parseArrayInternationalString(String node) throws String256Exception {
         NodeList nodeList = document.getElementsByTagName(node);
-        ArrayList<InternationalString> array = new ArrayList<InternationalString>();
+        List<InternationalString> array = new ArrayList<InternationalString>();
 
         if (!nodeList.toString().isEmpty()) {
             int nodeLength = nodeList.item(0).getChildNodes().getLength();
@@ -632,10 +633,10 @@ public class XdsParser {
      * @throws String256Exception if there is a String256 with more than 256 characters
      * @see XdsParser
      */
-    private ArrayList<CodedTerm> parseArrayCodedTerm(String node) throws String256Exception {
+    private List<CodedTerm> parseArrayCodedTerm(String node) throws String256Exception {
         NodeList nodeList = document.getElementsByTagName(node);
         if (!nodeList.toString().isEmpty()) {
-            ArrayList<CodedTerm> arrayCodedTerm = new ArrayList<CodedTerm>();
+            List<CodedTerm> arrayCodedTerm = new ArrayList<CodedTerm>();
             NodeList codedTermNodes = ((Element) nodeList.item(0)).getElementsByTagName(RootNodesEnum.SubNodesEnum.codedterm
                     .toString());
             for (int i = 0; i < codedTermNodes.getLength(); i++) {
@@ -707,7 +708,7 @@ public class XdsParser {
         } else {
             // NameValue<String256>
             NameValueString256 nameValue = new NameValueString256();
-            ArrayList<String256> values = new ArrayList<String256>();
+            List<String256> values = new ArrayList<String256>();
             // Set name
             String256 name256 = new String256();
             name256.setString(((Element) nodeList.item(0)).getElementsByTagName(RootNodesEnum.SubNodesEnum.name.toString())
@@ -747,7 +748,7 @@ public class XdsParser {
         } else {
             // NameValue<String256>
             NameValueInteger nameValue = new NameValueInteger();
-            ArrayList<Integer> values = new ArrayList<Integer>();
+            List<Integer> values = new ArrayList<Integer>();
             // Set name
             String256 name256 = new String256();
             name256.setString(((Element) nodeList.item(0)).getElementsByTagName(RootNodesEnum.SubNodesEnum.name.toString())
@@ -785,7 +786,7 @@ public class XdsParser {
             return null;
         } else {
             NameValueDTM nameValue = new NameValueDTM();
-            ArrayList<DTM> values = new ArrayList<DTM>();
+            List<DTM> values = new ArrayList<DTM>();
             // Set name
             String256 name256 = new String256();
             name256.setString(((Element) nodeList.item(0)).getElementsByTagName(RootNodesEnum.SubNodesEnum.name.toString())
