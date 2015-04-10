@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.GwtEvent;
  */
 public class XdsEditorLoadedEvent extends GwtEvent<XdsEditorLoadedEvent.XdsEditorLoadedEventHandler> {
 
-    public static Type<XdsEditorLoadedEventHandler> TYPE = new Type<XdsEditorLoadedEventHandler>();
+    public static final Type<XdsEditorLoadedEventHandler> TYPE = new Type<XdsEditorLoadedEventHandler>();
 
     public XdsEditorLoadedEvent() {
     }

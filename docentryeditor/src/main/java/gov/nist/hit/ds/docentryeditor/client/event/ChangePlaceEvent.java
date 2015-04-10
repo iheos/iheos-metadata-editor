@@ -7,7 +7,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * Created by onh2 on 4/2/2015.
  */
 public class ChangePlaceEvent extends GwtEvent<ChangePlaceEvent.ChangePlaceEventHandler> {
-    public static Type<ChangePlaceEventHandler> TYPE = new Type<ChangePlaceEventHandler>();
+    public static final Type<ChangePlaceEventHandler> TYPE = new Type<ChangePlaceEventHandler>();
 
     public ChangePlaceEvent(){
     }

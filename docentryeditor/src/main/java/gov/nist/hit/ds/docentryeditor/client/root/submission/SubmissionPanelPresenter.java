@@ -11,6 +11,7 @@ import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.info.Info;
 import gov.nist.hit.ds.docentryeditor.client.editor.documentEntryEditor.DocEntryEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.SubmissionSetEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.event.*;
@@ -48,7 +49,6 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
 
     private SubmissionMenuData currentlyEdited;
     private int nextIndex = 1;
-    private XdsDocumentEntry prefilledDocEntry;
 
     // RPC services declaration
     private final XdsParserServicesAsync xdsParserServices = GWT.create(XdsParserServices.class);
@@ -187,10 +187,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * This method load the editor user interface with a pre-filled document entry which is added to the submission set tree.
      */
     public void createPreFilledDocumentEntry() {
-        if (prefilledDocEntry==null) {
-            prefilledDocEntry = xdsParser.parse(PreParse.getInstance().doPreParse(AppResources.INSTANCE.xdsPrefill().getText()));
-            prefilledDocEntry.setFileName(new String256("new-doc-entry"));
-        }
+        XdsDocumentEntry prefilledDocEntry = xdsParser.getPrefilledDocumentEntry();
         //------------------------------------------- MIGHT CHANGE
         logger.info("Create new pre-filled document entry");
         XdsDocumentEntry newDoc=prefilledDocEntry.copy();
@@ -290,7 +287,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * Getter that return the entity currently under edition.
      * @return SubmissionMenuData.
      */
-    public SubmissionMenuData getCurrentlyEdited(){
+    public SubmissionMenuData getCurrentlyEditedEntry(){
         return currentlyEdited;
     }
 

@@ -19,13 +19,13 @@ import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 import javax.inject.Inject;
 
 public class WelcomePanel extends VerticalLayoutContainer {
+    public static final int BUTTONS_MARGINS = 50;
+    public static final int BUTTONS_CONTAINER_HEIGHT = 120;
 
     @Inject
     protected EventBus eventBus;
-
     @Inject
     FileUploadDialog fileUploadDialog;
-
     @Inject
     PlaceController placeController;
 
@@ -73,19 +73,19 @@ public class WelcomePanel extends VerticalLayoutContainer {
 
         // - organize buttons layout
         VerticalLayoutContainer submissionSetButtonsContainer = new VerticalLayoutContainer();
-        submissionSetButtonsContainer.add(uploadFileBtn,new VerticalLayoutData(1,-1,new Margins(0,0,50,0)));
-        submissionSetButtonsContainer.add(editSubSetBtn,new VerticalLayoutData(1,-1,new Margins(50,0,0,0)));
+        submissionSetButtonsContainer.add(uploadFileBtn,new VerticalLayoutData(1,-1,new Margins(0,0,BUTTONS_MARGINS,0)));
+        submissionSetButtonsContainer.add(editSubSetBtn,new VerticalLayoutData(1,-1,new Margins(BUTTONS_MARGINS,0,0,0)));
         VerticalLayoutContainer folderButtonsContainer=new VerticalLayoutContainer();
-        folderButtonsContainer.add(newFolderBtn,new VerticalLayoutData(1,-1,new Margins(0,0,50,0)));
+        folderButtonsContainer.add(newFolderBtn,new VerticalLayoutData(1,-1,new Margins(0,0,BUTTONS_MARGINS,0)));
         VerticalLayoutContainer docEntryButtonsContainer=new VerticalLayoutContainer();
-        docEntryButtonsContainer.add(newDocEntryBtn,new VerticalLayoutData(1,-1,new Margins(0,0,50,0)));
-        docEntryButtonsContainer.add(loadPreFilledDocEntryBtn,new VerticalLayoutData(1,-1,new Margins(50,0,0,0)));
+        docEntryButtonsContainer.add(newDocEntryBtn,new VerticalLayoutData(1,-1,new Margins(0,0,BUTTONS_MARGINS,0)));
+        docEntryButtonsContainer.add(loadPreFilledDocEntryBtn,new VerticalLayoutData(1,-1,new Margins(BUTTONS_MARGINS,0,0,0)));
 
 		// add home buttons to a Horizontal container
 		HorizontalLayoutContainer buttonsHContainer= new HorizontalLayoutContainer();
-        buttonsHContainer.add(submissionSetButtonsContainer,new HorizontalLayoutContainer.HorizontalLayoutData(0.33,-1,new Margins(5,50,5,0)));
-        buttonsHContainer.add(folderButtonsContainer,new HorizontalLayoutContainer.HorizontalLayoutData(0.33,-1,new Margins(5,50,5,50)));
-        buttonsHContainer.add(docEntryButtonsContainer,new HorizontalLayoutContainer.HorizontalLayoutData(0.33,-1,new Margins(5,0,5,50)));
+        buttonsHContainer.add(submissionSetButtonsContainer,new HorizontalLayoutContainer.HorizontalLayoutData(0.33,-1,new Margins(0, BUTTONS_MARGINS,0,0)));
+        buttonsHContainer.add(folderButtonsContainer,new HorizontalLayoutContainer.HorizontalLayoutData(0.33,-1,new Margins(0, BUTTONS_MARGINS,0, BUTTONS_MARGINS)));
+        buttonsHContainer.add(docEntryButtonsContainer,new HorizontalLayoutContainer.HorizontalLayoutData(0.33,-1,new Margins(0,0,0, BUTTONS_MARGINS)));
 
 		// Set home page warning panel
 		PageWarningPanel warningPanel = new PageWarningPanel("<strong style='font-size:1.15em'>Warning:</strong> This software is still under development.<br/>" +
@@ -94,7 +94,7 @@ public class WelcomePanel extends VerticalLayoutContainer {
 
 		this.add(htmlExplanationTitle);
 		this.add(htmlExplanation);
-		this.add(buttonsHContainer, new VerticalLayoutData(1, 120));
+		this.add(buttonsHContainer, new VerticalLayoutData(1, BUTTONS_CONTAINER_HEIGHT));
 		this.add(warningPanel, new VerticalLayoutData(1, -1));
         this.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 	}

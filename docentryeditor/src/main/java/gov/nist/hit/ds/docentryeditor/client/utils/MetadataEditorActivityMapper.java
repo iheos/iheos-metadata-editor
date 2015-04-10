@@ -18,7 +18,7 @@ import javax.inject.Inject;
  */
 public class MetadataEditorActivityMapper implements ActivityMapper {
 
-    private final MetadataEditorGinInjector injector = MetadataEditorGinInjector.INSTANCE;
+    private static final MetadataEditorGinInjector INJECTOR = MetadataEditorGinInjector.INSTANCE;
 
     @Inject
     public MetadataEditorActivityMapper() {
@@ -37,11 +37,11 @@ public class MetadataEditorActivityMapper implements ActivityMapper {
 
         // WELCOME
         if (place instanceof WelcomePlace) {
-            activity = injector.getWelcomeActivity();
+            activity = INJECTOR.getWelcomeActivity();
         } else if (place instanceof SubmissionSetEditorPlace) {
-            activity = injector.getSubmissionSetEditorActivity();
+            activity = INJECTOR.getSubmissionSetEditorActivity();
         } else if (place instanceof DocEntryEditorPlace) {
-            activity = injector.getDocEntryEditorActivity();
+            activity = INJECTOR.getDocEntryEditorActivity();
         }
         return activity;
     }

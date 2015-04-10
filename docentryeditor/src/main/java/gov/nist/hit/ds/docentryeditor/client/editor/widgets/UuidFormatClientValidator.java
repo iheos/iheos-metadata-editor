@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * Created by onh2 on 8/28/2014.
  */
 public class UuidFormatClientValidator extends AbstractValidator<String> {
-    private final static Logger LOGGER = Logger.getLogger(UuidFormatClientValidator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UuidFormatClientValidator.class.getName());
 
     static private boolean isLCHexString(String value) {
         for (int i = 0; i < value.length(); i++) {

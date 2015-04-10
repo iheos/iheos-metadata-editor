@@ -26,10 +26,6 @@ public class IdentifierOIDEditorWidget extends Composite implements
      */
     public IdentifierOIDEditorWidget() {
         initWidget(vcontainer);
-        EditorFieldLabel valueLabel = new EditorFieldLabel(value, "Value");
-        EditorFieldLabel idTypeLabel = new EditorFieldLabel(idType, "ID Type (OID)");
-        idTypeLabel.setVisible(false);
-
         vcontainer.add(value, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
     }
 

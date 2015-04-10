@@ -14,33 +14,33 @@ import javax.inject.Inject;
  * Created by onh2 on 3/3/2015.
  */
 public class EditorToolbar extends HorizontalLayoutContainer {
-    private HomeButton homeBtn;
+    private static final int BUTTON_RIGHT_MARGIN=5;
+    private static final int SAVE_BUTTON_WIDTH = 60;
+    private static final int CANCEL_BUTTON_WIDTH = 110;
+    private static final int POPULATE_BUTTON_WIDTH = 85;
+
+    private HomeButton homeButton;
     private ToolbarIconButton saveButton;
     private ToolbarIconButton cancelButton;
+    private ToolbarIconButton populateButton;
 
-    private final static int BUTTON_RIGHT_MARGIN=5;
 
     @Inject
-    public EditorToolbar(HomeButton hb) {
-        homeBtn=hb;
-        saveButton = new ToolbarIconButton("Save",AppImages.INSTANCE.saveBW(),60);
+    public EditorToolbar(HomeButton homeButton) {
+        this.homeButton =homeButton;
+
+        saveButton = new ToolbarIconButton("Save",AppImages.INSTANCE.saveBW(), SAVE_BUTTON_WIDTH);
         saveButton.setToolTip(ToolTipResources.INSTANCE.getSaveButtonToolTip());
-        cancelButton = new ToolbarIconButton("Cancel changes",AppImages.INSTANCE.back(),110);
+        cancelButton = new ToolbarIconButton("Cancel changes",AppImages.INSTANCE.back(),CANCEL_BUTTON_WIDTH);
         cancelButton.setToolTip(ToolTipResources.INSTANCE.getCancelButtonToolTip());
+        populateButton =new ToolbarIconButton("Populate",AppImages.INSTANCE.pen(), POPULATE_BUTTON_WIDTH);
+        populateButton.setToolTip("Populate the submission set editor form with test data.");
 
-        this.add(homeBtn, new HorizontalLayoutData(-1, -1, new Margins(0, BUTTON_RIGHT_MARGIN, 0, 0)));
-        this.add(saveButton, new HorizontalLayoutData(-1, -1, new Margins(0, BUTTON_RIGHT_MARGIN, 0, 0)));
-        this.add(cancelButton, new HorizontalLayoutData(-1, -1, new Margins(0, BUTTON_RIGHT_MARGIN, 0, 0)));
-        bindUI();
-    }
+        this.addButton(this.homeButton);
+        this.addButton(saveButton);
+        this.addButton(cancelButton);
+        this.addButton(populateButton);
 
-    private void bindUI() {
-//        homeBtn.addSelectHandler(new SelectEvent.SelectHandler() {
-//            @Override
-//            public void onSelect(SelectEvent selectEvent) {
-//                eventBus.fireBackToHomePageEvent();
-//            }
-//        });
     }
 
     public HandlerRegistration addSaveHandler(SelectEvent.SelectHandler handler){
@@ -51,19 +51,12 @@ public class EditorToolbar extends HorizontalLayoutContainer {
         return cancelButton.addSelectHandler(handler);
     }
 
+    public HandlerRegistration addPopulateHandler(SelectEvent.SelectHandler handler) {
+        return populateButton.addSelectHandler(handler);
+    }
+
     public void addButton(ToolbarIconButton button){
         this.add(button,new HorizontalLayoutData(-1,-1,new Margins(0,BUTTON_RIGHT_MARGIN,0,0)));
     }
 
-    public HomeButton getHomeBtn() {
-        return homeBtn;
-    }
-
-    public TextButton getSaveButton() {
-        return saveButton;
-    }
-
-    public TextButton getCancelButton() {
-        return cancelButton;
-    }
 }

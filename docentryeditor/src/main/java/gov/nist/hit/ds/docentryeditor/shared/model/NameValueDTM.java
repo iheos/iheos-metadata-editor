@@ -13,13 +13,6 @@ import java.util.List;
  * A NameValue depends on a type T which is implemented during the instantiation
  * </p>
  * <p>
- * An NameValue has the following parameters:
- * <ul>
- * <li>{@link #name}: The name of the NameValue ({@link String256}) ;</li>
- * <li>{@link #values}: A list of values (ArrayList of DTM) ;</li>
- * </ul>
- * </p>
- * <p>
  * It contains a toXML method to return the NameValue in XML format.<br>
  * This class also contains getters/setters.</br> In addition, it has verify
  * method to check its syntax.
@@ -118,27 +111,28 @@ public class NameValueDTM implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){ return true;}
-        if (!(o instanceof NameValueDTM)){ return false;}
-
+        if (this == o) return true;
+        if (!(o instanceof NameValueDTM)) return false;
         NameValueDTM that = (NameValueDTM) o;
-        if (name != null ? !name.equals(that.name) : that.name != null){ return false;}
+        if (name != null ? !name.equals(that.name) : that.name != null){
+            return false;
+        }
         if (values != null && values.size() == that.getValues().size()) {
             for (int i = 0; i < values.size(); i++) {
                 if (!values.get(i).getDtm().equals(that.getValues().get(i).getDtm())) {
                     return false;
                 }
             }
-        } else
+        } else {
             return false;
-
+        }
         return true;
     }
 
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (values != null ? values.hashCode() : 0);
+        result = HASHING_KEY * result + (values != null ? values.hashCode() : 0);
         return result;
     }
 

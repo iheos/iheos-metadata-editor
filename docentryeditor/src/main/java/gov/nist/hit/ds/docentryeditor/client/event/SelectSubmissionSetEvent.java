@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.GwtEvent;
  */
 public class SelectSubmissionSetEvent extends GwtEvent<SelectSubmissionSetEvent.SelectSubmissionSetEventHandler> {
 
-    public static Type<SelectSubmissionSetEventHandler> TYPE = new Type<SelectSubmissionSetEventHandler>();
+    public static final Type<SelectSubmissionSetEventHandler> TYPE = new Type<SelectSubmissionSetEventHandler>();
 
     @Override
     public Type<SelectSubmissionSetEventHandler> getAssociatedType() {

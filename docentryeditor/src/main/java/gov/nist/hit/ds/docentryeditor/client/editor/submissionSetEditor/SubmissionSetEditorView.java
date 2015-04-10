@@ -85,8 +85,6 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
     private EditorToolbar editorTopToolbar;
     @Inject
     private EditorToolbar editorBottomToolbar;
-    private ToolbarIconButton populateTopButton;
-    private ToolbarIconButton populateBottomButton;
 
     /**
      * This is the abstract method implementation that builds a collection of objects
@@ -129,10 +127,6 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
 
         requiredFieldsContainer.add(requiredFields);
         optionalFieldsContainer.add(optionalFields);
-
-        populateTopButton=new ToolbarIconButton("Populate",AppImages.INSTANCE.pen(),85);
-        populateTopButton.setToolTip("Populate the submission set editor form with test data.");
-        editorTopToolbar.addButton(populateTopButton);
 
         // Adding required and optional fields panels to the main container of editor view.
         container.add(editorTopToolbar, new VerticalLayoutContainer.VerticalLayoutData(-1,30));
@@ -204,9 +198,6 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         setWidgetsInfo();
 
         // Bottom toolbar container.
-        populateBottomButton=new ToolbarIconButton("Populate",AppImages.INSTANCE.pen(),85);
-        populateBottomButton.setToolTip("Populate the submission set editor form with test data.");
-        editorBottomToolbar.addButton(populateBottomButton);
         SimpleContainer bottomToolbarContainer = new SimpleContainer();
         bottomToolbarContainer.setHeight(35);
         bottomToolbarContainer.add(editorBottomToolbar);
@@ -253,8 +244,8 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
                 presenter.populate();
             }
         };
-        populateBottomButton.addSelectHandler(populateHandler);
-        populateTopButton.addSelectHandler(populateHandler);
+        editorTopToolbar.addPopulateHandler(populateHandler);
+        editorBottomToolbar.addPopulateHandler(populateHandler);
     }
 
     public void refreshGridButtonsDisplay() {

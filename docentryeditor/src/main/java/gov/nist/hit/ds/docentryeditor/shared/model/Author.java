@@ -153,7 +153,6 @@ public class Author implements ModelElement, Serializable {
     @Override
     public String toString() {
         String author = "Author: " + authorPerson.toString() + ", AuthorInstitutions=\"";
-
         int counter=0;
         for (String256 str : authorInstitutions) {
             counter++;
@@ -163,7 +162,6 @@ public class Author implements ModelElement, Serializable {
             }
         }
         author = author + "\", AuthorRoles=\"";
-
         counter=0;
         for (String256 str : authorRoles) {
             counter++;
@@ -173,7 +171,6 @@ public class Author implements ModelElement, Serializable {
             }
         }
         author = author + "\", AuthorSpecialties=\"";
-
         counter=0;
         for (String256 str : authorSpecialties) {
             author = author + str.toString();
@@ -266,31 +263,34 @@ public class Author implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){ return true; }
-        if (!(o instanceof Author)){return false;}
-
+        if (this == o) return true;
+        if (!(o instanceof Author))return false;
         Author author = (Author) o;
-
-        if (authorInstitutions != null ? !authorInstitutions.equals(author.authorInstitutions) : author.authorInstitutions != null)
+        if (authorInstitutions != null ? !authorInstitutions.equals(author.authorInstitutions) : author.authorInstitutions != null) {
             return false;
-        if (authorPerson != null ? !authorPerson.equals(author.authorPerson) : author.authorPerson != null)
+        }
+        if (authorPerson != null ? !authorPerson.equals(author.authorPerson) : author.authorPerson != null) {
             return false;
-        if (authorRoles != null ? !authorRoles.equals(author.authorRoles) : author.authorRoles != null) return false;
-        if (authorSpecialties != null ? !authorSpecialties.equals(author.authorSpecialties) : author.authorSpecialties != null)
+        }
+        if (authorRoles != null ? !authorRoles.equals(author.authorRoles) : author.authorRoles != null){
             return false;
-        if (authorTelecommunications != null ? !authorTelecommunications.equals(author.authorTelecommunications) : author.authorTelecommunications != null)
+        }
+        if (authorSpecialties != null ? !authorSpecialties.equals(author.authorSpecialties) : author.authorSpecialties != null) {
             return false;
-
+        }
+        if (authorTelecommunications != null ? !authorTelecommunications.equals(author.authorTelecommunications) : author.authorTelecommunications != null) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public int hashCode() {
         int result = authorPerson.hashCode();
-        result = 31 * result + (authorInstitutions != null ? authorInstitutions.hashCode() : 0);
-        result = 31 * result + (authorRoles != null ? authorRoles.hashCode() : 0);
-        result = 31 * result + (authorSpecialties != null ? authorSpecialties.hashCode() : 0);
-        result = 31 * result + (authorTelecommunications != null ? authorTelecommunications.hashCode() : 0);
+        result = HASHING_KEY * result + (authorInstitutions != null ? authorInstitutions.hashCode() : 0);
+        result = HASHING_KEY * result + (authorRoles != null ? authorRoles.hashCode() : 0);
+        result = HASHING_KEY * result + (authorSpecialties != null ? authorSpecialties.hashCode() : 0);
+        result = HASHING_KEY * result + (authorTelecommunications != null ? authorTelecommunications.hashCode() : 0);
         return result;
     }
 

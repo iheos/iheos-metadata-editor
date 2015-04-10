@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 public class GenericServiceLocator implements ServiceLocator {
 
-	private final static Logger LOGGER = Logger.getLogger(GenericServiceLocator.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(GenericServiceLocator.class.getName());
 
 	@Override
 	public Object getInstance(Class<?> clazz) {

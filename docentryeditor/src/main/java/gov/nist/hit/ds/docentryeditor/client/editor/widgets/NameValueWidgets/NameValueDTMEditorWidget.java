@@ -40,7 +40,7 @@ public class NameValueDTMEditorWidget extends GenericEditableListView<DTM, Date>
      * @param widgetTitle title of the widget (for the grid's panel header).
      */
     public NameValueDTMEditorWidget(String widgetTitle) {
-        super(widgetTitle, new ListStore<DTM>(PROPS.key()), PROPS.dtm());
+        super(widgetTitle, new ListStore<DTM>(PROPS.key()));
         // init list store that will handle the list of DTM objects
         values = new ListStoreEditor<DTM>(getStore());
         bind();

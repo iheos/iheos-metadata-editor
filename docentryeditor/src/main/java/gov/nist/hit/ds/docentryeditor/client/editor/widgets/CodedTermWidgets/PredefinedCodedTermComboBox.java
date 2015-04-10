@@ -197,10 +197,10 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
         private final TextButton okButton;
         private final CodedTermEditorWidget editor;
 
-        private final static int POPUP_WIDTH=600;
-        private final static int POPUP_HEIGHT=180;
-        private final static int BUTTON_WIDTH=80;
-        private final static int BUTTON_HEIGHT=30;
+        private static final int POPUP_WIDTH=600;
+        private static final int POPUP_HEIGHT=180;
+        private static final int BUTTON_WIDTH=80;
+        private static final int BUTTON_HEIGHT=30;
 
         public CodedTermPopUpEditor() {
             super();
