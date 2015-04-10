@@ -56,19 +56,19 @@ public class WelcomePanel extends VerticalLayoutContainer {
         HtmlLayoutContainer htmlExplanation=new HtmlLayoutContainer("<br/>This application was developed by the National Institute of Standards and Technology " +
                 "to generate custom XDS metadata for testing purposes. This software is based on the specification " +
                 "<a href='http://www.ihe.net/uploadedFiles/Documents/ITI/IHE_ITI_TF_Rev10.0_Vol3_FT_2013-09-27.pdf' target='_blank'>IHE IT Infrastructure Technical Framework Volume 3 (ITI TF-3)</a>.<br/>" +
-                "To start, use the buttons below or the left panel to create Document Entry objects. <br/><br/>");
+                "To start, use the buttons below or the left panel to manipulate metadata objects. <br/><br/>");
 
         // set home buttons to create xds elements
         newFolderBtn = new HomeIconButton("New folder",AppImages.INSTANCE.newFolder());
         // temporary disable new folder btn until it s implemented.
         newFolderBtn.disable();
-        editSubSetBtn=new HomeIconButton("Edit Submission set",AppImages.INSTANCE.editSubSet());
+        editSubSetBtn=new HomeIconButton("Edit submission set",AppImages.INSTANCE.editSubSet());
         editSubSetBtn.setToolTip(ToolTipResources.INSTANCE.getEditSubSetTooltip());
         newDocEntryBtn = new HomeIconButton("New doc. entry",AppImages.INSTANCE.filePlus());
         newDocEntryBtn.setToolTip(ToolTipResources.INSTANCE.getNewDocEntryTooltip());
         loadPreFilledDocEntryBtn = new HomeIconButton("New pre-filled doc. entry",AppImages.INSTANCE.preFilled());
         loadPreFilledDocEntryBtn.setToolTip(ToolTipResources.INSTANCE.getNewPrefilledDocEntryTooltip());
-        uploadFileBtn = new HomeIconButton("Upload Submission set",AppImages.INSTANCE.loadFile());
+        uploadFileBtn = new HomeIconButton("Upload submission set",AppImages.INSTANCE.loadFile());
         uploadFileBtn.setToolTip(ToolTipResources.INSTANCE.getUploadFileTooltip());
 
         // - organize buttons layout
