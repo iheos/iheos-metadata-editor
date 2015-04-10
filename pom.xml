@@ -4,7 +4,7 @@
 
     <artifactId>docentryeditor-build</artifactId>
     <groupId>gov.nist.hit.ds</groupId>
-    <version>1.0.1b-SNAPSHOT</version>
+    <version>1.0.2b</version>
     <packaging>pom</packaging>
 
     <name>docentryeditor-build</name>
@@ -80,6 +80,6 @@
 
     <scm>
         <developerConnection>scm:hg:https://bitbucket.org/oherrmann/xds-metadata-editor/branch/release</developerConnection>
-        <tag>v1.0.0b</tag>
+        <tag>v1.0.2b</tag>
     </scm>
 </project>
