@@ -5,7 +5,6 @@ import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
-import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.OIDEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.shared.model.IdentifierOID;

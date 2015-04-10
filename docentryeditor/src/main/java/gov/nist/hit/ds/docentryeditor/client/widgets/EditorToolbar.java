@@ -2,7 +2,6 @@ package gov.nist.hit.ds.docentryeditor.client.widgets;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;

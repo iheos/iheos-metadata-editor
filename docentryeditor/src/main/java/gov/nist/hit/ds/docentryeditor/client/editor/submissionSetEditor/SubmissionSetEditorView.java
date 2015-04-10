@@ -26,10 +26,8 @@ import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidge
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.UuidFormatClientValidator;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
-import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
-import gov.nist.hit.ds.docentryeditor.client.widgets.ToolbarIconButton;
 import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
