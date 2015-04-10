@@ -1,0 +1,85 @@
+/*
+This is a CSS file intended as a complement to the main XDS-MetadataEditor.xml.css stylesheet for the Xdstools3
+application. It provides CSS properties for smaller screens such as laptops, or browsers resized to
+a small window.
+See the loading condition dependent on the size of the viewport, inside XDS-MetadataEditor.html.
+*/
+
+
+/* ----------- Main title header ----------- */
+#apptitle-wrapper{
+    width: 1300px;
+    margin: auto;
+}
+
+/* Large dark blue bar */
+#appheader {
+    float: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    background-color: #021a4c;
+    padding:10px;
+}
+/* Main app title. Ex: Document Sharing Toolkit */
+#apptitle {
+    display: inline-block;
+    margin: 0 0 5px 20px;
+    font-size: 22px;
+    color: #F3C60D;
+}
+/* Yellow subtitle inside dark blue bar. */
+#appsubtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    margin-left: 20px;
+    color: #fc0;
+    text-shadow: none;
+}
+/* Name of the Connectathon event (or "Standard release"), if applicable, the release was made for.
+Displayed to the right side of the dark blue bar. */
+#appevent{
+    display: inline-block;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: #fc0;
+    float: right;
+    text-align: right;
+    margin: 5px 20px 0 0;
+    width: 300px;
+}
+
+/* Version of the application, at the right side of the dark blue bar */
+#appversion{
+    display: inline-block;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: #fc0;
+    text-align: right;
+    float: right;
+    margin:-20px 20px 0 0;
+    width:300px;
+}
+
+
+
+
+/* ----------- Navigation bar (yellow menu bar) ----------- */
+
+.navbar {
+    font-size: 14px;
+    height: 30px;
+}
+/* padding around menu titles */
+nav ul li a {
+    padding: 6px 15px;
+    color: #021a4c;
+}
+<<<<<<< local
+/* different padding for the buttons on the right because the icons already make them taller */
+.right-side-button{
+    padding: 4px 15px;
+}
+=======
+nav ul ul li {
+    font-size: 12px;
+}>>>>>>> other

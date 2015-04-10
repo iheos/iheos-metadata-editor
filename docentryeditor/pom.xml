@@ -1,0 +1,361 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>docentryeditor</artifactId>
+    <groupId>gov.nist.hit.ds</groupId>
+    <version>1.0.1b-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>doc-entry-editor</name>
+
+    <properties>
+        <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+        <gwtVersion>2.6.1</gwtVersion>
+        <!-- GWT 2.7.0 is not fully compatible w/ GXT 3.1.1-->
+        <mavenCompilerPluginVersion>3.1</mavenCompilerPluginVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
+        <maven-release-plugin.version>2.5</maven-release-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.2</nexus-staging-maven-plugin.version>
+    </properties>
+
+    <url>http://maven.apache.org</url>
+    <repositories>
+        <repository>
+            <id>gwt-maven</id>
+            <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
+        </repository>
+        <repository>
+            <id>internal-nist-repo-releases</id>
+            <url>http://vm-070.nist.gov:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>internal-nist-repo-third-party</id>
+            <url>http://vm-070.nist.gov:8081/nexus/content/repositories/thirdparty/</url>
+        </repository>
+        <repository>
+            <id>internal-nist-repo-snapshots</id>
+            <url>http://vm-070.nist.gov:8081/nexus/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <!--<scope>test</scope>-->
+            <version>4.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sencha.gxt</groupId>
+            <artifactId>gxt</artifactId>
+            <version>3.1.1</version>
+            <!-- 3.1.2 was not available in maven central,
+            I believe as it is the latest version it might be under a commercial licensing -->
+        </dependency>
+        <!-- dependency adding the missing gxt theme (new theme) -->
+        <!--<dependency>-->
+            <!--<groupId>com.sencha.gxt</groupId>-->
+            <!--<artifactId>gxt-theme-neptune</artifactId>-->
+            <!--<version>3.1.1</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+            <scope>runtime</scope>
+            <version>${gwtVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${gwtVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwtVersion}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.validation</groupId>
+                    <artifactId>validation-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.web.bindery</groupId>
+            <artifactId>requestfactory-server</artifactId>
+            <version>${gwtVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.web.bindery</groupId>
+            <artifactId>requestfactory-apt</artifactId>
+            <version>${gwtVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-servlet</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-assistedinject</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.1.0.Final</version>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>javax.annotation</groupId>-->
+        <!--<artifactId>jsr250-api</artifactId>-->
+        <!--<version>1.0-20050927.133100</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nist.hit.ds</groupId>
+            <artifactId>eb-metadata</artifactId>
+            <!--<version>3.0.0-SNAPSHOT</version>-->
+            <version>3.0.4a</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nist.toolkit</groupId>
+            <artifactId>common-datatypes</artifactId>
+            <version>3.0.4a</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nist.hit.ds</groupId>
+            <artifactId>utilities</artifactId>
+            <version>3.0.4a</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nist.hit.ds</groupId>
+            <artifactId>xds-exceptions</artifactId>
+            <version>3.0.4a</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-api</artifactId>
+            <version>1.2.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-impl</artifactId>
+            <version>1.2.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-dom</artifactId>
+            <version>1.2.10</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>docentryeditor</finalName>
+        <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
+        <!-- Generate compiled stuff in the folder used for developing mode -->
+        <!--<outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>-->
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement>
+                        <additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
+                    </additionalClasspathElements>
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
+                    <forkMode>always</forkMode>
+                    <!--<systemProperties>-->
+                        <!--<property>-->
+                            <!--<name>gwt.args</name>-->
+                            <!--<value>-war ${webappDirectory}</value>-->
+                        <!--</property>-->
+                    <!--</systemProperties>-->
+                </configuration>
+            </plugin>
+
+            <!-- GWT Maven Plugin-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>${gwtVersion}</version>
+                <!-- JS is only needed in the package phase, this speeds up testing -->
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>resources</goal> <!-- Import GWT module -->
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <!--<execution>-->
+                    <!--<id>run-gwt-tests</id>-->
+                    <!--<phase>test</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>test</goal>-->
+                    <!--</goals>-->
+                    <!--</execution>-->
+                </executions>
+                <configuration>
+                    <runTarget>MetadataEditorApp.html</runTarget>
+                    <modules>
+                        <module>${project.groupId}.docentryeditor.XDSMetadataEditor</module> <!-- This defines the GWT module packaged in the jar -->
+                    </modules>
+                </configuration>
+            </plugin>
+
+            <!-- Maven WAR plugin -->
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                    <classesClassifier>classes</classesClassifier>
+                    <!-- configured to be the same as for the gwt plugin -->
+                    <webappDirectory>${webappDirectory}</webappDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <!-- create an exploded version of the war in webappDirectory. Ideal
+                                for development -->
+                            <goal>exploded</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Copy static web files before executing gwt:run -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.2</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${webappDirectory}/WEB-INF/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/webapp</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- This generates a jar with only the sources -->
+            <!--<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
+
+            <!-- RequestFactory Validation jar -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${mavenCompilerPluginVersion}</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <!--<annotationProcessors>-->
+                    <!--<annotationProcessor>com.google.web.bindery.requestfactory.apt.RfValidator</annotationProcessor>-->
+                    <!--</annotationProcessors>-->
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.google.web.bindery</groupId>
+                        <artifactId>requestfactory-apt</artifactId>
+                        <version>${gwtVersion}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <!--This plugin's configuration is used to store Eclipse m2e settings
+                                only. It has no influence on the Maven build itself. -->
+
+            <!-- Deactivating the Maven Deploy plugin to use nexus-staging plugin instead -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven-deploy-plugin.version}</version>
+                <!-- skip true prepares the jar but does not deploy it
+                <configuration>
+                   <skip>true</skip>
+                </configuration> -->
+            </plugin>
+
+        </plugins>
+
+        <!--<resources>-->
+        <!--<resource>-->
+        <!--<directory>${basedir}/src/main/java</directory>-->
+        <!--</resource>-->
+        <!--<resource>-->
+        <!--<directory>${basedir}/src/main/resources</directory>-->
+        <!--</resource>-->
+        <!--</resources>-->
+    </build>
+</project>
