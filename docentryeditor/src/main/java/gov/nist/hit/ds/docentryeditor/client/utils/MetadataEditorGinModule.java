@@ -13,6 +13,14 @@ import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
 
 import javax.inject.Inject;
 
+/**
+ * Class that binds the various classes and providers.
+ *
+ * Note that if GIN can't find a binding for a class,
+ * it falls back to calling GWT.create() on that class.
+ * What this means that image bundles and translated
+ * messages will just magically work.
+ */
 public class MetadataEditorGinModule extends AbstractGinModule {
 
     @Override
