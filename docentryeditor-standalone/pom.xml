@@ -4,7 +4,7 @@
 
     <artifactId>docentryeditor-standalone</artifactId>
     <groupId>gov.nist.hit.ds</groupId>
-    <version>1.0.2b</version>
+    <version>1.0.3b-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>doc-entry-editor-standalone</name>
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>gov.nist.hit.ds</groupId>
             <artifactId>docentryeditor</artifactId>
-            <version>1.0.2b</version>
+            <version>1.0.3b-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
