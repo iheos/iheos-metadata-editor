@@ -6,11 +6,14 @@ import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
+import com.sencha.gxt.widget.core.client.info.Info;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsDocumentEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
+import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 
+import javax.inject.Inject;
 import java.util.logging.Logger;
 
 /**
@@ -25,6 +28,8 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
     protected static Logger logger = Logger.getLogger(DocumentEntryEditorPresenter.class.getName());
     protected XdsDocumentEntry model=new XdsDocumentEntry();
     private DocEntryEditorDriver editorDriver = GWT.create(DocEntryEditorDriver.class);
+    @Inject
+    private XdsParser xdsParser;
 
     /**
      * Method that initializes the editor and the request factory on document entry editor view start.
@@ -71,8 +76,10 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
             public void onPlaceChange(PlaceChangeEvent placeChangeEvent) {
                 // auto save on Place change.
                 logger.info("Document Entry auto save on Place change.");
+                Info.display("Auto save",
+                        "Document entry automatically saved when changing page.");
                 final XdsDocumentEntry tmp = editorDriver.flush();
-                model=tmp;
+                model = tmp;
             }
         });
     }
@@ -89,18 +96,7 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
             if (editorDriver.hasErrors()) {
                 final ConfirmMessageBox cmb = new ConfirmMessageBox("Error", "There are errors in your editor. Are you sure you want to download a copy of these data? They may not be usable.");
                 cmb.show();
-                cmb.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
-                    public void onDialogHide(DialogHideEvent event) {
-                        if (event.getHideButton() == PredefinedButton.YES) {
-                            // perform YES action
-                            model=tmp;
-                            save();
-                            cmb.hide();
-                        } else if (event.getHideButton() == PredefinedButton.NO) {
-                            // perform NO action
-                        }
-                    }
-                });
+                cmb.addDialogHideHandler(new SaveDialogHandler(tmp));
             } else {
                 model=tmp;
                 save();
@@ -108,17 +104,7 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
         } else {
             final ConfirmMessageBox cmb = new ConfirmMessageBox("", "Data has not changed. Are you sure you want to download a copy of this metadata entry?");
             cmb.show();
-            cmb.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
-                public void onDialogHide(DialogHideEvent event) {
-                    if (event.getHideButton() == PredefinedButton.YES) {
-                        // perform YES action
-                        save();
-                        cmb.hide();
-                    } else if (event.getHideButton() == PredefinedButton.NO) {
-                        // perform NO action
-                    }
-                }
-            });
+            cmb.addDialogHideHandler(new SaveDialogHandler(model));
         }
     }
 
@@ -146,10 +132,35 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
     }
 
     /**
+     * Method that fills the Document entry editor form with test data.
+     */
+    public void populate() {
+        model=xdsParser.getPrefilledDocumentEntry();
+        initDriver(model);
+        getView().authors.editNewAuthor();
+    }
+
+    /**
      * Interface of a XDS Document Entry Editor Driver
      */
     interface DocEntryEditorDriver extends SimpleBeanEditorDriver<XdsDocumentEntry, DocumentEntryEditorView> {
 
     }
 
+    class SaveDialogHandler implements DialogHideEvent.DialogHideHandler{
+        XdsDocumentEntry documentEntry;
+        public SaveDialogHandler(XdsDocumentEntry docentry){
+            documentEntry=docentry;
+        }
+        @Override
+        public void onDialogHide(DialogHideEvent event) {
+            if (event.getHideButton() == PredefinedButton.YES) {
+                // perform YES action
+                model=documentEntry;
+                save();
+            } else if (event.getHideButton() == PredefinedButton.NO) {
+                // perform NO action
+            }
+        }
+    }
 }

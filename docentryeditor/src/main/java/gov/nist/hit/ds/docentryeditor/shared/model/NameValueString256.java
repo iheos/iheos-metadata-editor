@@ -14,13 +14,6 @@ import java.util.List;
  * instantiation
  * </p>
  * <p>
- * An NameValueString256 has the following parameters:
- * <ul>
- * <li>{@link #name}: The name of the NameValueString256 ({@link String256}) ;</li>
- * <li>{@link #values}: A list of values (ArrayList of T) ;</li>
- * </ul>
- * </p>
- * <p>
  * It contains a toXML method to return the NameValueString256 in XML format.<br>
  * This class also contains getters/setters.</br> In addition, it has verify
  * method to check its syntax.
@@ -121,25 +114,26 @@ public class NameValueString256 implements ModelElement, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof NameValueString256)) return false;
-
         NameValueString256 that = (NameValueString256) o;
-
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) {
+            return false;
+        }
         if (values != null && values.size() == that.getValues().size()) {
             for (int i = 0; i < values.size(); i++) {
                 if (!values.get(i).equals(that.getValues().get(i))) {
                     return false;
                 }
             }
-        } else return false;
-
+        } else{
+            return false;
+        }
         return true;
     }
 
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (values != null ? values.hashCode() : 0);
+        result = HASHING_KEY * result + (values != null ? values.hashCode() : 0);
         return result;
     }
 

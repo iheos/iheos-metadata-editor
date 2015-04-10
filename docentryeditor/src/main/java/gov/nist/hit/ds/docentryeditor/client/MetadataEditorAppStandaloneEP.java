@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * application.
  */
 public class MetadataEditorAppStandaloneEP implements EntryPoint {
-    protected final static Logger LOGGER = Logger.getLogger(MetadataEditorAppStandaloneEP.class.getName());
+    protected static final Logger LOGGER = Logger.getLogger(MetadataEditorAppStandaloneEP.class.getName());
 
     @SuppressWarnings("deprecation")
     @Override

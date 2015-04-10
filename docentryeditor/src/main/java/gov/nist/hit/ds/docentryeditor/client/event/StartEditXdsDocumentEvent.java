@@ -9,7 +9,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
  */
 public class StartEditXdsDocumentEvent extends GwtEvent<StartEditXdsDocumentEvent.StartEditXdsDocumentHandler> {
 
-    public static Type<StartEditXdsDocumentHandler> TYPE = new Type<StartEditXdsDocumentHandler>();
+    public static final Type<StartEditXdsDocumentHandler> TYPE = new Type<StartEditXdsDocumentHandler>();
     private XdsDocumentEntry fileContent;
 
     public StartEditXdsDocumentEvent(XdsDocumentEntry fileContent) {

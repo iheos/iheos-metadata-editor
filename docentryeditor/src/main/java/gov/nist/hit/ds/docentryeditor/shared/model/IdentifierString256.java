@@ -131,19 +131,20 @@ public class IdentifierString256 implements ModelElement, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof IdentifierString256)) return false;
-
         IdentifierString256 that = (IdentifierString256) o;
-
-        if (idType != null ? !idType.equals(that.idType) : that.idType != null) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
-
+        if (idType != null ? !idType.equals(that.idType) : that.idType != null) {
+            return false;
+        }
+        if (value != null ? !value.equals(that.value) : that.value != null) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public int hashCode() {
         int result = value != null ? value.hashCode() : 0;
-        result = 31 * result + (idType != null ? idType.hashCode() : 0);
+        result = HASHING_KEY * result + (idType != null ? idType.hashCode() : 0);
         return result;
     }
 

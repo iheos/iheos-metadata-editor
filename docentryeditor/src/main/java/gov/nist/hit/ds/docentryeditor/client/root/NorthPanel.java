@@ -28,12 +28,8 @@ public class NorthPanel extends ContentPanel {
     private final TextButton loadButton;
     private final TextButton newButton;
     private final TextButton saveButton;
-    @Inject
-    private PlaceController placeController;
 	@Inject
     private FileUploadMVP fileUploadMVP;
-	@Inject
-    private DocumentEntryEditorMVP documentModelEditorMVP;
 	@Inject
     private MetadataEditorEventBus eventBus;
 	private Dialog loadingDialog;

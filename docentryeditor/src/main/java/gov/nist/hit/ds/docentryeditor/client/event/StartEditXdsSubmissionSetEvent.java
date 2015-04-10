@@ -10,7 +10,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
  */
 public class StartEditXdsSubmissionSetEvent extends GwtEvent<StartEditXdsSubmissionSetEvent.StartEditXdsSubmissionSetHandler> {
 
-    public static Type<StartEditXdsSubmissionSetHandler> TYPE = new Type<StartEditXdsSubmissionSetHandler>();
+    public static final Type<StartEditXdsSubmissionSetHandler> TYPE = new Type<StartEditXdsSubmissionSetHandler>();
     private XdsSubmissionSet submissionSet;
 
     public StartEditXdsSubmissionSetEvent(XdsSubmissionSet submissionSet) {

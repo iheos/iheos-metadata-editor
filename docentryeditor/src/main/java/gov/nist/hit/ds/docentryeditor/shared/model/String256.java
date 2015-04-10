@@ -100,12 +100,13 @@ public class String256 implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o){ return true;}
-        if (!(o instanceof String256)){ return false;}
-
+        if (!(o instanceof String256)){
+            return false;
+        }
         String256 string256 = (String256) o;
-
-        if (!string.equals(string256.string)){ return false;}
-
+        if (!string.equals(string256.string)){
+            return false;
+        }
         return true;
     }
 

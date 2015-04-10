@@ -11,13 +11,14 @@ import javax.inject.Inject;
  */
 public class HomeButton extends ToolbarIconButton {
 
+    public static final int HOME_BUTTON_WIDTH = 130;
     @Inject
     private MetadataEditorEventBus eventBus;
 
     public HomeButton() {
         super("Back to home page", AppImages.INSTANCE.home());
         setToolTip("Navigate back to the home page");
-        setWidth(130);
+        setWidth(HOME_BUTTON_WIDTH);
         bindUI();
     }
 

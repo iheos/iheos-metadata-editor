@@ -10,7 +10,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
  */
 public class NewFileLoadedEvent extends GwtEvent<NewFileLoadedHandler> {
 
-    public static Type<NewFileLoadedHandler> TYPE = new Type<NewFileLoadedHandler>();
+    public static final Type<NewFileLoadedHandler> TYPE = new Type<NewFileLoadedHandler>();
     private final XdsMetadata metadata;
 
     public NewFileLoadedEvent(XdsMetadata metadata) {

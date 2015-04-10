@@ -67,25 +67,12 @@ import java.util.Map;
  * <p/>
  * <p>
  * <b>See below each method mentioned above.</b> <br>
- * {@link #verify() method verify}</br> {@link #toXML() method toXML} <br>
  * </p>
  *
  * @see ModelElement class ModelElement
  */
 public class XdsDocumentEntry implements XdsModelElement,Serializable {
     private static final long serialVersionUID = 1L;
-    /**
-     * <b>ArrayList(ArrayList(String)) validationErrors</b> - The error(s) which
-     * occure(s) when verify() method is called.<br>
-     * Type: ArrayList<ArrayList<String>></br> </p>
-     * <p/>
-     * <p>
-     * This array represents (("document_variable_name", errorMessage)
-     * </p>
-     *
-     * @see XdsDocumentEntry class DocumentModel
-     */
-    private ArrayList<ArrayList<String>> validationErrors = new ArrayList<ArrayList<String>>();
     /**
      * <b>ArrayList(Author) authors</b> - The author(s) of the document
      * [Optional].<br>
@@ -165,16 +152,6 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
      */
     @Nullable
     private List<CodedTerm> eventCode;
-    /**
-     * <b>String256 fileName</b> - The name of the metadata file which will be generated.
-     * [Mandatory]<br/>
-     * <p/>
-     * <b>Cardinality:</b><br/>
-     * 1..1
-     */
-    @NotNull
-    @NotEmpty
-    private String256 fileName;
     /**
      * <b>CodedTerm formatCode</b> - The format code of the document
      * [Mandatory].<br>
@@ -547,7 +524,6 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         creationTime = new NameValueDTM();
         creationTime.setName(new String256().setString("creationTime"));
         id = new String256();
-        fileName = new String256();
         formatCode = new CodedTerm();
         hash = new String256();
         healthcareFacilityType = new CodedTerm();
@@ -694,14 +670,6 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         this.legalAuthenticator = legalAuthenticator;
     }
 
-    public String256 getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String256 fileName) {
-        this.fileName = fileName;
-    }
-
     public String256 getHomeCommunityId(){
         return homeCommunityId;
     }
@@ -842,7 +810,6 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         for (CodedTerm cp : this.eventCode){
             doc.getEventCode().add(cp.copy());
         }
-        doc.setFileName(new String256(this.fileName.getString()));
         doc.setFormatCode(this.formatCode.copy());
         doc.setHash(this.hash.copy());
         doc.setHealthcareFacilityType(this.healthcareFacilityType.copy());
@@ -876,7 +843,6 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
      *
      * @return boolean true if all the document is available, else return false
      * @see XdsDocumentEntry
-     * @see #validationErrors
      */
     @Override
     public boolean verify()  {
@@ -893,7 +859,6 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
                 "}, confidentialityCodes={" + confidentialityCodes +
                 "}, creationTime=" + creationTime +
                 ", eventCode={" + eventCode +
-                "}, fileName=" + fileName +
                 ", formatCode=" + formatCode +
                 ", hash=" + hash +
                 ", healthcareFacilityType=" + healthcareFacilityType +

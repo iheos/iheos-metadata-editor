@@ -12,7 +12,7 @@ public class SaveCurrentlyEditedMetadataEvent extends GwtEvent<SaveCurrentlyEdit
 
     private XdsModelElement documentEntry;
 
-	public static Type<SaveCurrentlyEditedMetadataEventHandler> TYPE = new Type<SaveCurrentlyEditedMetadataEventHandler>();
+	public static final Type<SaveCurrentlyEditedMetadataEventHandler> TYPE = new Type<SaveCurrentlyEditedMetadataEventHandler>();
 
 	public SaveCurrentlyEditedMetadataEvent(XdsModelElement documentEntry) {
         this.documentEntry=documentEntry;

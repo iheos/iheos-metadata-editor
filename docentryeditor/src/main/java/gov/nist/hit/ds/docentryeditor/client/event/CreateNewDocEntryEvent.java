@@ -9,7 +9,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
  * Created by onh2 on 3/9/2015.
  */
 public class CreateNewDocEntryEvent extends GwtEvent<CreateNewDocEntryEvent.CreateNewDocEntryEventHandler> {
-    public static GwtEvent.Type<CreateNewDocEntryEventHandler> TYPE = new Type<CreateNewDocEntryEventHandler>();
+    public static final GwtEvent.Type<CreateNewDocEntryEventHandler> TYPE = new Type<CreateNewDocEntryEventHandler>();
     private XdsDocumentEntry documentEntry;
 
     public CreateNewDocEntryEvent(XdsDocumentEntry documentEntry) {

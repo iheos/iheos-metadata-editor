@@ -16,7 +16,7 @@ public enum ToolTipResources {
     }
 
     public String getUploadFileTooltip() {
-        return "Upload a existing XDS metadata file in ebRim XML format. It musts at least contain a Submission set, a document entry and an association to bind them.";
+        return "Upload an existing XDS metadata file in ebRim XML format. It shall contain at least a submission set, a document entry and an association to bind them.";
     }
 
     public String getSaveButtonToolTip() {

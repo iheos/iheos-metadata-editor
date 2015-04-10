@@ -8,7 +8,7 @@ import gov.nist.hit.ds.docentryeditor.client.event.LoadPrefilledDocEntryEvent.Lo
  * Created by onh2 on 1/16/2015.
  */
 public class LoadPrefilledDocEntryEvent extends GwtEvent<LoadPrefilledDocEntryEventHandler>{
-    public static Type<LoadPrefilledDocEntryEventHandler> TYPE = new Type<LoadPrefilledDocEntryEventHandler>();
+    public static final Type<LoadPrefilledDocEntryEventHandler> TYPE = new Type<LoadPrefilledDocEntryEventHandler>();
 
     public LoadPrefilledDocEntryEvent(){
     }

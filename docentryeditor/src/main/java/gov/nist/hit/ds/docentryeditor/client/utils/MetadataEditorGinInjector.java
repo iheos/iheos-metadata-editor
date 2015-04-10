@@ -25,6 +25,16 @@ import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelView
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
 import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadMVP;
 
+/**
+ * Injection  interface with methods that return the desired types.
+ *
+ * Note that you only need to create injector methods for classes that
+ * you would directly access in your top-level initialization code,
+ * such as the UI classes to install in your RootPanel.
+ * You don't need to create injector methods for lower-level classes that
+ * will be automatically injected.
+ */
+// Associating the module with the injector
 @GinModules(MetadataEditorGinModule.class)
 public interface MetadataEditorGinInjector extends Ginjector {
 

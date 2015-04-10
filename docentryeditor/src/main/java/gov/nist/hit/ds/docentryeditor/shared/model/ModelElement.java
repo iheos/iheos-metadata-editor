@@ -12,5 +12,6 @@ package gov.nist.hit.ds.docentryeditor.shared.model;
  *
  */
 public interface ModelElement {
+    public int HASHING_KEY = 31;
 	public boolean verify() throws String256Exception;
 }

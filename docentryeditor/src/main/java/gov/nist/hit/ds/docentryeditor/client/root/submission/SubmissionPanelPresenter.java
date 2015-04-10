@@ -16,13 +16,10 @@ import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.Submissi
 import gov.nist.hit.ds.docentryeditor.client.event.*;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.client.home.WelcomePlace;
-import gov.nist.hit.ds.docentryeditor.client.parser.PreParse;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
-import gov.nist.hit.ds.docentryeditor.client.resources.AppResources;
 import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorRequestFactory;
-import gov.nist.hit.ds.docentryeditor.shared.model.String256;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
@@ -48,7 +45,6 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
 
     private SubmissionMenuData currentlyEdited;
     private int nextIndex = 1;
-    private XdsDocumentEntry prefilledDocEntry;
 
     // RPC services declaration
     private final XdsParserServicesAsync xdsParserServices = GWT.create(XdsParserServices.class);
@@ -187,10 +183,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * This method load the editor user interface with a pre-filled document entry which is added to the submission set tree.
      */
     public void createPreFilledDocumentEntry() {
-        if (prefilledDocEntry==null) {
-            prefilledDocEntry = xdsParser.parse(PreParse.getInstance().doPreParse(AppResources.INSTANCE.xdsPrefill().getText()));
-            prefilledDocEntry.setFileName(new String256("new-doc-entry"));
-        }
+        XdsDocumentEntry prefilledDocEntry = xdsParser.getPrefilledDocumentEntry();
         //------------------------------------------- MIGHT CHANGE
         logger.info("Create new pre-filled document entry");
         XdsDocumentEntry newDoc=prefilledDocEntry.copy();
@@ -290,7 +283,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * Getter that return the entity currently under edition.
      * @return SubmissionMenuData.
      */
-    public SubmissionMenuData getCurrentlyEdited(){
+    public SubmissionMenuData getCurrentlyEditedEntry(){
         return currentlyEdited;
     }
 

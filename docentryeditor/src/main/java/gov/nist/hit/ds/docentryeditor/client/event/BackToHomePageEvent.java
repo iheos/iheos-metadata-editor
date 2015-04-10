@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * Created by onh2 on 1/20/2015.
  */
 public class BackToHomePageEvent extends GwtEvent<BackToHomePageEvent.BackToHomePageEventHandler> {
-    public static Type<BackToHomePageEventHandler> TYPE = new Type<BackToHomePageEventHandler>();
+    public static final Type<BackToHomePageEventHandler> TYPE = new Type<BackToHomePageEventHandler>();
 
     public BackToHomePageEvent(){
     }

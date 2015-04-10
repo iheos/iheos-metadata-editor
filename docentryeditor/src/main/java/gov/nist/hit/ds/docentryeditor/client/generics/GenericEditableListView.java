@@ -24,10 +24,9 @@ public abstract class GenericEditableListView<M, N> extends GenericEditableGrid<
      * Abstract constructor
      * @param listTitle header for the editable list widget
      * @param listStore
-     * @param valueProvider
      */
-    public GenericEditableListView(/*Class<M> parametrizedClass,*/ String listTitle, ListStore<M> listStore, ValueProvider<? super M, N> valueProvider) {
-        super(/*parametrizedClass,*/ listTitle, listStore);
+    public GenericEditableListView(String listTitle, ListStore<M> listStore) {
+        super(listTitle, listStore);
         this.setHideHeaders(true);
     }
 

@@ -10,7 +10,7 @@ public class SaveFileEvent extends GwtEvent<SaveFileEventHandler> {
 		public void onFileSave(SaveFileEvent event);
 	}
 
-	public static Type<SaveFileEventHandler> TYPE = new Type<SaveFileEventHandler>();
+	public static final Type<SaveFileEventHandler> TYPE = new Type<SaveFileEventHandler>();
 
 	public SaveFileEvent() {
 	}
