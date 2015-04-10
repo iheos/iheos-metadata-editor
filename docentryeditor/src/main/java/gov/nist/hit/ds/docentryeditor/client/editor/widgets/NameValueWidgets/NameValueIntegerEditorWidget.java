@@ -31,7 +31,7 @@ public class NameValueIntegerEditorWidget extends GenericEditableListView<Intege
      * @param widgetTitle title of the widget (for the grid's panel header).
      */
     public NameValueIntegerEditorWidget(String widgetTitle) {
-        super(widgetTitle, new ListStore<Integer>(new IntegerKeyProvider()), new IntegerValueProvider());
+        super(widgetTitle, new ListStore<Integer>(new IntegerKeyProvider()));
         values = new ListStoreEditor<Integer>(getStore());
     }
 

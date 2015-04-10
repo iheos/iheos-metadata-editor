@@ -6,6 +6,7 @@ import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
+import com.sencha.gxt.widget.core.client.info.Info;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsSubmissionSetEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
@@ -63,6 +64,8 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
             public void onPlaceChange(PlaceChangeEvent placeChangeEvent) {
                 // auto save on Place change.
                 logger.info("Submission set metadata auto save on Place change.");
+                Info.display("Auto save",
+                        "Submission set automatically saved when changing page.");
                 final XdsSubmissionSet tmp = editorDriver.flush();
                 model=tmp;
             }
@@ -134,7 +137,7 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
     }
 
     /**
-     * This method populate the submission set editor form with test data.
+     * This method populates the submission set editor form with test data.
      */
     public void populate() {
         model.populate();

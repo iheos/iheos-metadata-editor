@@ -6,6 +6,7 @@ import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
+import gov.nist.hit.ds.docentryeditor.shared.model.ModelElement;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsModelElement;
 
 /**
@@ -51,23 +52,22 @@ public class SubmissionMenuData<M extends XdsModelElement> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){ return true;}
-        if (!(o instanceof SubmissionMenuData)){ return false;}
-
+        if (this == o) return true;
+        if (!(o instanceof SubmissionMenuData)){
+            return false;
+        }
         SubmissionMenuData that = (SubmissionMenuData) o;
-
-        if (!key.equals(that.key)){ return false;}
-        if (!model.equals(that.model)){ return false;}
-        if (!value.equals(that.value)){ return false;}
-
+        if (!(key.equals(that.key) && model.equals(that.model) && value.equals(that.value))){
+            return false;
+        }
         return true;
     }
 
     @Override
     public int hashCode() {
         int result = key != null ? key.hashCode() : 0;
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (model != null ? model.hashCode() : 0);
+        result = ModelElement.HASHING_KEY * result + (value != null ? value.hashCode() : 0);
+        result = ModelElement.HASHING_KEY * result + (model != null ? model.hashCode() : 0);
         return result;
     }
 

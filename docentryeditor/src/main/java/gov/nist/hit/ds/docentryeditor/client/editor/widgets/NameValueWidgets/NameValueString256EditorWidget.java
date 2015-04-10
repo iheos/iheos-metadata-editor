@@ -33,7 +33,7 @@ public class NameValueString256EditorWidget extends GenericEditableListView<Stri
      * @param widgetTitle title of the widget (for the grid's panel header).
      */
     public NameValueString256EditorWidget(String widgetTitle) {
-        super(widgetTitle, new ListStore<String256>(PROPS.key()), PROPS.string());
+        super(widgetTitle, new ListStore<String256>(PROPS.key()));
         buildUI();
     }
 
@@ -43,7 +43,7 @@ public class NameValueString256EditorWidget extends GenericEditableListView<Stri
      * @param listSize number of String256 objects that can be stored in the widget (list).
      */
     public NameValueString256EditorWidget(String widgetTitle,int listSize) {
-        super(widgetTitle, new ListStore<String256>(PROPS.key()), PROPS.string());
+        super(widgetTitle, new ListStore<String256>(PROPS.key()));
         buildUI();
         setStoreMaxLength(listSize);
     }

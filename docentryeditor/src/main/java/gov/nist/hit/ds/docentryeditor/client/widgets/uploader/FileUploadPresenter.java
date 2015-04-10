@@ -6,7 +6,6 @@ import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 
 public class FileUploadPresenter extends AbstractPresenter<FileUploadView> {

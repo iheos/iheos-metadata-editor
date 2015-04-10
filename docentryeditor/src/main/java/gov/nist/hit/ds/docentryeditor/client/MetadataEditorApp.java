@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  * This is the class to use to create the application.
  */
 public class MetadataEditorApp implements IsWidget {
-    private final static MetadataEditorGinInjector INJECTOR = MetadataEditorGinInjector.INSTANCE;
-    protected final static Logger LOGGER = Logger.getLogger(MetadataEditorApp.class.getName());
+    private static final MetadataEditorGinInjector INJECTOR = MetadataEditorGinInjector.INSTANCE;
+    protected static final Logger LOGGER = Logger.getLogger(MetadataEditorApp.class.getName());
     private final MetadataEditorEventBus eventBus = INJECTOR.getEventBus();
 
     private SimplePanel activityPanel = new SimplePanel();

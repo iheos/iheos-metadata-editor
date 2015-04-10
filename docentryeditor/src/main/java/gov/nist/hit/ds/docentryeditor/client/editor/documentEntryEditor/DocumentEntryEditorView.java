@@ -364,6 +364,14 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         };
         editorTopToolbar.addCancelHandler(cancelHandler);
         editorBottomToolbar.addCancelHandler(cancelHandler);
+        SelectHandler populateHandler = new SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent selectEvent) {
+                presenter.populate();
+            }
+        };
+        editorTopToolbar.addPopulateHandler(populateHandler);
+        editorBottomToolbar.addPopulateHandler(populateHandler);
     }
 
     public void refreshGridButtonsDisplay() {

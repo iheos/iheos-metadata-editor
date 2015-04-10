@@ -6,6 +6,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 import com.sencha.gxt.widget.core.client.box.MessageBox;
+import gov.nist.hit.ds.docentryeditor.client.resources.AppResources;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import javax.inject.Inject;
@@ -91,6 +92,7 @@ public class XdsParser {
      * @see XdsParser
      */
     private final XdsDocumentEntry xdsDocumentEntry = new XdsDocumentEntry();
+    private static XdsDocumentEntry prefilledXdsDocumentEntry;
     /**
      * <b>String documentXml</b> - The data taken from the XML document and send
      * by the server, this is the String to parser.<br>
@@ -123,10 +125,11 @@ public class XdsParser {
      * </br>
      *
      * @param newDocumentXml - The String which contains the XML content
-     * @return xdsDocumentEntry - The {@link gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry}
+     * @return parsed XDS Document Entry - The {@link gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry}
      * @see XdsParser
      */
     public XdsDocumentEntry parse(String newDocumentXml) {
+        LOGGER.info("Parsing document entry...");
         documentXml = preParse.doPreParse(newDocumentXml);
         getDocumentParsed();
         try {
@@ -134,6 +137,7 @@ public class XdsParser {
         } catch (String256Exception e) {
             LOGGER.warning(e.getMessage());
         }
+        LOGGER.info("... document entry parsed.");
         return xdsDocumentEntry;
     }
 
@@ -842,5 +846,12 @@ public class XdsParser {
             nameValue.setValues(values);
             return nameValue;
         }
+    }
+
+    public XdsDocumentEntry getPrefilledDocumentEntry() {
+        if(prefilledXdsDocumentEntry==null) {
+            prefilledXdsDocumentEntry= parse(PreParse.getInstance().doPreParse(AppResources.INSTANCE.xdsPrefill().getText()));
+        }
+        return prefilledXdsDocumentEntry;
     }
 }

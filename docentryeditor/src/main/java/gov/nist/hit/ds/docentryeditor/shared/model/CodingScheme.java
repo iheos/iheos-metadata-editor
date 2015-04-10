@@ -117,12 +117,13 @@ public class CodingScheme implements ModelElement, Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CodingScheme)) return false;
-
+        if (!(o instanceof CodingScheme)) {
+            return false;
+        }
         CodingScheme that = (CodingScheme) o;
-
-        if (!codingScheme.equals(that.codingScheme)) return false;
-
+        if (!codingScheme.equals(that.codingScheme)) {
+            return false;
+        }
         return true;
     }
 
