@@ -4,7 +4,7 @@
 
     <artifactId>docentryeditor-build</artifactId>
     <groupId>gov.nist.hit.ds</groupId>
-    <version>1.0.3b-SNAPSHOT</version>
+    <version>1.0.1b-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>docentryeditor-build</name>
