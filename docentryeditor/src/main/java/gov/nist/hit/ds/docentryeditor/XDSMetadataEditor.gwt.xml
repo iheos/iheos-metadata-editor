@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  When updating your version of GWT, you should also update this DTD reference,
+  so that your app can take advantage of the latest GWT module capabilities.
+-->
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.6.1//EN"
+        "http://google-web-toolkit.googlecode.com/svn/tags/2.6.1/distro-source/core/src/gwt-module.dtd">
+<module rename-to="xdseditor">
+
+    <!-- ****************************** *** Modules ****************************** -->
+    <!-- Inherit the core Web Toolkit stuff. -->
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.google.gwt.editor.Editor'/>
+    <inherits name='com.google.gwt.activity.Activity'/>
+    <inherits name='com.google.gwt.place.Place'/>
+    <inherits name="com.google.gwt.resources.Resources" />
+    <inherits name="com.google.gwt.xml.XML"/>
+    <inherits name="com.google.gwt.user.Debug"/>
+    <inherits name='com.google.web.bindery.requestfactory.RequestFactory'/>
+    <!-- http://code.google.com/p/google-gin -->
+    <inherits name="com.google.gwt.inject.Inject"/>
+
+    <!-- Inherit the default GWT style sheet. You can change -->
+    <!-- the theme of your GWT application by uncommenting -->
+    <!-- any one of the following lines. -->
+    <!--Clean theme is not supported by gxt    -->
+    <!--<inherits name='com.google.gwt.user.theme.standard.Standard'/>-->
+    <!-- <inherits name="com.google.gwt.user.theme.chrome.Chrome"/> -->
+    <!--<inherits name="com.google.gwt.user.theme.dark.Dark"/>-->
+    <!--<inherits name='com.google.gwt.user.theme.clean.Clean'/>  -->
+
+    <!-- Others modules -->
+    <inherits name='com.sencha.gxt.ui.GXT'/>
+    <!-- GXT style sheets -->
+    <!--<inherits name="com.sencha.gxt.theme.base.Base"/>-->
+    <!--<inherits name='com.sencha.gxt.theme.blue.Blue'/>-->
+    <inherits name='com.sencha.gxt.theme.gray.Gray' />
+    <!--<inherits name="com.sencha.gxt.theme.neptune.Theme" />-->
+
+    <!--<stylesheet src="XDS-MetadataEditor.css"/>-->
+
+
+    <!-- ********************************* Logging ****************************** -->
+    <inherits name="com.google.gwt.logging.LoggingDisabled" />
+    <!--<inherits name="com.google.gwt.logging.Logging"/>-->
+    <set-property name="gwt.logging.enabled" value="TRUE"/>
+    <set-property name="gwt.logging.logLevel" value="FINE"/>
+    <set-property name="gwt.logging.systemHandler" value="ENABLED" />
+    <set-property name="gwt.logging.developmentModeHandler" value="DISABLED" />
+    <set-property name="gwt.logging.popupHandler" value="DISABLED" />
+    <set-property name="gwt.logging.consoleHandler" value="ENABLED" />
+    <set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />
+
+
+    <!-- ****************************** *** sources ****************************** -->
+    <source path="client"/>
+    <source path="shared"/>
+
+    <!-- ****************************** *** Entry point ****************************** -->
+    <!--<entry-point class='gov.nist.hit.ds.docentryeditor.client.MetadataEditorApp'/>-->
+
+</module>

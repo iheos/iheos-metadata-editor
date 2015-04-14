@@ -1,0 +1,22 @@
+XDS Metadata Editor - Release notes
+
+v.1.0.0-alpha
+	- [new] create a document entry (empty or pre-filled)
+	- [new] edit a document entry (using custom tools)
+	- [new] save a document entry in a custom XML file
+	- [new] upload an existing document entry XML file (custom XML format)
+	- [new] add/delete a document entry in/from a submission set tree structure
+	- [new] clear the submission set tree structure
+	
+v.1.0.0-beta
+	- [new] edit the submission set (SS)
+	- [new] edit and save multiple DE in a single SS
+	- [fixed] save document entry (DE)
+	- [fixed] UI layout problems
+	- [fixed] navigation workflow
+	- [changed] XML file format changed for ebRim format
+	- [changed] save document entry in a custom XML file to save 
+	the entire submission set (includes SS, DE and hasMember SS-DE associations) in ebRim XML format
+	- [changed] upload an existing XML file (from custom XML format DE to ebRim XML format Submission set)
+	- [changed] buttons in submission panel toolbar
+	- [changed] application header (title and version)
