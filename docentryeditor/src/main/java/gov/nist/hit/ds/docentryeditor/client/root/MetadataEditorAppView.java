@@ -24,7 +24,7 @@ public class MetadataEditorAppView extends Viewport {
     private static final int WEST_PANEL_WIDTH = 200;
     private static final int PANELS_MARGINS = 5;
     // Constant to compensate the size of the html header for resize purposes
-    private static final int HEADER_HEIGHT = 80;
+    private static final int HEADER_HEIGHT = 75;
 
     private CenterPanel center; // main edtior fields
     private GenericMVP<SubmissionMenuData, SubmissionPanelView, SubmissionPanelPresenter> submissionMVP;

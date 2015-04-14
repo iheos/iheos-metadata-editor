@@ -10,7 +10,7 @@ import com.sencha.gxt.widget.core.client.button.ToggleButton;
  */
 public class HomeIconButton extends ToggleButton {
     private final static int BUTTON_HEIGHT=50;
-    private final static int BUTTON_MIN_WIDTH=50;
+    private final static int BUTTON_MIN_WIDTH=130;
 
     public HomeIconButton(String title, ImageResource icon){
         super(title);
