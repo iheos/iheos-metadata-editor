@@ -21,7 +21,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.String256;
  */
 public class NameValueString256EditorWidget extends GenericEditableListView<String256, String> implements Editor<NameValueString256> {
     // instance of the property access for the String256 entity attributes (for the GXT Store).
-    private final static String256Properties PROPS = GWT.create(String256Properties.class);
+    private static final String256Properties PROPS = GWT.create(String256Properties.class);
 
     // --- UI Widgets
     ListStoreEditor<String256> values;
@@ -129,22 +129,7 @@ public class NameValueString256EditorWidget extends GenericEditableListView<Stri
      * @return String256 ValueProvider.
      */
     @Override
-    protected ValueProvider<? super String256, String> getValueProvider() {
+    protected ValueProvider<String256, String> getValueProvider() {
         return PROPS.string();
     }
-    //	/**
-//	 * Sets whether a field is valid when its value length = 0 (default to
-//	 * true). This will warn the user through the editor widget if he didn't
-//	 * input anything in field which does not allow blank.
-//	 *
-//	 * @param nameAllowsBlank
-//	 *            true to allow blank to the name field, false otherwise
-//	 * @param valueAllowsBlank
-//	 *            true to allow blank to the value field, false otherwise
-//	 *
-//	 */
-//	public void setAllowBlanks(boolean nameAllowsBlank, boolean valueAllowsBlank) {
-//		name.setAllowBlank(nameAllowsBlank);
-//		value.setAllowBlank(valueAllowsBlank);
-//	}
 }

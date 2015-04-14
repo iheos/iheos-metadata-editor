@@ -27,14 +27,14 @@ public enum PredefinedCodesParser {
 
     // Class logger.
     @SuppressWarnings("GwtInconsistentSerializableClass")
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private static final Logger LOGGER = Logger.getLogger(PredefinedCodesParser.class.getName());
 
     // name of the root node of the file containing the existing codes.
-    private final static String CONFIG_FILE_ROOT_NODE = "CodeType";
+    private static final String CONFIG_FILE_ROOT_NODE = "CodeType";
 
     // XML Parsed document.
     @SuppressWarnings("GwtInconsistentSerializableClass")
-    private final static Document DOM = XMLParser.parse(PreParse.getInstance().doPreParse(
+    private static final Document DOM = XMLParser.parse(PreParse.getInstance().doPreParse(
             AppResources.INSTANCE.codes().getText()));
 
     // list of nodes corresponding to each type of codes
@@ -68,59 +68,59 @@ public enum PredefinedCodesParser {
     public List<CodedTerm> getCodes(PredefinedCodes predefinedCodes) {
         List<CodedTerm> result=null;
         if (predefinedCodes.equals(PredefinedCodes.CLASS_CODES)) {
-            if (classCodes.size() == 0) {
-                logger.info("Parsing codes file for class codes...");
+            if (classCodes.isEmpty()) {
+                LOGGER.info("Parsing codes file for class codes...");
                 classCodes.addAll(parseNode(ConfigCodeNodes.classCode.toString()));
-                logger.info("... class codes retrieved from file.");
+                LOGGER.info("... class codes retrieved from file.");
             }
             result= classCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.FORMAT_CODES)) {
-            if (formatCodes.size() == 0) {
-                logger.info("Parsing codes file for format codes...");
+            if (formatCodes.isEmpty()) {
+                LOGGER.info("Parsing codes file for format codes...");
                 formatCodes.addAll(parseNode(ConfigCodeNodes.formatCode.toString()));
-                logger.info("... format codes retrieved from file.");
+                LOGGER.info("... format codes retrieved from file.");
             }
             result=formatCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.HEALTHCARE_FACILITY_TYPE_CODES)) {
-            if (healthcareFacilityTypeCodes.size() == 0) {
-                logger.info("Parsing codes file for healthcare facility type codes...");
+            if (healthcareFacilityTypeCodes.isEmpty()) {
+                LOGGER.info("Parsing codes file for healthcare facility type codes...");
                 healthcareFacilityTypeCodes.addAll(parseNode(ConfigCodeNodes.healthcareFacilityTypeCode.toString()));
-                logger.info("... healthcare facility type codes retrieved from file.");
+                LOGGER.info("... healthcare facility type codes retrieved from file.");
             }
             result = healthcareFacilityTypeCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.PRACTICE_SETTING_CODES)) {
-            if (practiceSettingCodes.size() == 0) {
-                logger.info("Parsing codes file for practice setting codes...");
+            if (practiceSettingCodes.isEmpty()) {
+                LOGGER.info("Parsing codes file for practice setting codes...");
                 practiceSettingCodes.addAll(parseNode(ConfigCodeNodes.practiceSettingCode.toString()));
-                logger.info("... practice setting codes retrieved from file.");
+                LOGGER.info("... practice setting codes retrieved from file.");
             }
             result = practiceSettingCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.TYPE_CODES)) {
-            if (typeCodes.size() == 0) {
-                logger.info("Parsing codes file for type codes...");
+            if (typeCodes.isEmpty()) {
+                LOGGER.info("Parsing codes file for type codes...");
                 typeCodes.addAll(parseNode(ConfigCodeNodes.typeCode.toString()));
-                logger.info("... type codes retrieved from file.");
+                LOGGER.info("... type codes retrieved from file.");
             }
             result = typeCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.CONTENT_TYPE_CODE)) {
-            if (contentTypeCodes.size() == 0) {
-                logger.info("Parsing codes file for content type codes...");
+            if (contentTypeCodes.isEmpty()) {
+                LOGGER.info("Parsing codes file for content type codes...");
                 contentTypeCodes.addAll(parseNode(ConfigCodeNodes.contentTypeCode.toString()));
-                logger.info("... content type codes retrieved from file.");
+                LOGGER.info("... content type codes retrieved from file.");
             }
             result = contentTypeCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.CONFIDENTIALITY_CODES)) {
-            if (confidentialityCodes.size() == 0) {
-                logger.info("Parsing codes file for confidentiality codes...");
+            if (confidentialityCodes.isEmpty()) {
+                LOGGER.info("Parsing codes file for confidentiality codes...");
                 confidentialityCodes.addAll(parseNode(ConfigCodeNodes.confidentialityCode.toString()));
-                logger.info("... confidentiality codes retrieved from file.");
+                LOGGER.info("... confidentiality codes retrieved from file.");
             }
             result= confidentialityCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.EVENT_CODES)) {
-            if (eventCodes.size() == 0) {
-                logger.info("Parsing codes file for event codes...");
+            if (eventCodes.isEmpty()) {
+                LOGGER.info("Parsing codes file for event codes...");
                 eventCodes.addAll(parseNode(ConfigCodeNodes.eventCodeList.toString()));
-                logger.info("... event codes retrieved from file.");
+                LOGGER.info("... event codes retrieved from file.");
             }
             result = eventCodes;
         }
@@ -148,8 +148,9 @@ public enum PredefinedCodesParser {
                     .getAttribute(ConfigCodeNodes.CodeAttributes.display.toString())));
             code.setCodingScheme(new CodingScheme().setCodingScheme(new String256().setString(((Element) n.item(i))
                     .getAttribute(ConfigCodeNodes.CodeAttributes.codingScheme.toString()))));
-            if (!temp.contains(code))
+            if (!temp.contains(code)) {
                 temp.add(code);
+            }
         }
         Collections.sort(temp, new Comparator<CodedTerm>() {
             @Override
@@ -165,9 +166,9 @@ public enum PredefinedCodesParser {
      * @return sorted mime types.
      */
     public List<String256> getMimeTypes() {
-        if (mimeTypes.size() == 0) {
+        if (mimeTypes.isEmpty()) {
             int index = 0;
-            while (!(((Element) NODES.item(index)).getAttribute("name").equals("mimeType"))) {
+            while (!(((Element) NODES.item(index)).getAttribute("name").equals(ConfigCodeNodes.mimeType.toString()))) {
                 index++;
             }
             NodeList n = ((Element) NODES.item(index)).getElementsByTagName("Code");

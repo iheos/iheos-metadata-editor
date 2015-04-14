@@ -28,7 +28,11 @@ import java.util.List;
  */
 public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm> {
     // instance of the property access for the Author entity attributes (for the GXT Store).
-    private final static CodedTermProperties CT_PROPS = GWT.create(CodedTermProperties.class);
+    private static final CodedTermProperties CT_PROPS = GWT.create(CodedTermProperties.class);
+    private static final int CODING_SCHEME_COLUMN_WIDTH = 50;
+    private static final int CODE_COLUMN_WIDTH = 30;
+    private static final int NAME_COLUMN_WIDTH = 20;
+    private static final int ADD_CODE_LABEL_WIDTH = 200;
 
     // --- UI Widgets
     private static ColumnConfig<CodedTerm, String> displayNameColumnConfig;
@@ -46,7 +50,7 @@ public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm>
      */
     public CodedTermsEditableGridWidget(String gridTitle, PredefinedCodes predefinedCode) {
         // use of the super constructor from GenericEditableGrid
-        super(gridTitle, new ListStore<CodedTerm>(CT_PROPS.key())/*, buildColumnModel()*/);
+        super(gridTitle, new ListStore<CodedTerm>(CT_PROPS.key()));
 
         // change default tooltip for the toolbar add button.
         ((TextButton) getToolbar().getWidget(0)).setToolTip("Add a custom value");
@@ -55,7 +59,7 @@ public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm>
         // remove combobox value "Custom value"
         predefinedCodedTermComboBox.getStore().remove(0);
 
-//        setCheckBoxSelectionModel();
+        // use method setCheckBoxSelectionModel() to activate checkbox selection model
 
         bindUI();
     }
@@ -67,8 +71,9 @@ public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm>
         predefinedCodedTermComboBox.addSelectionHandler(new SelectionHandler<CodedTerm>() {
             @Override
             public void onSelection(SelectionEvent<CodedTerm> event) {
-                if (!getStore().getAll().contains(event.getSelectedItem()))
+                if (!getStore().getAll().contains(event.getSelectedItem())) {
                     getStore().add(event.getSelectedItem());
+                }
                 predefinedCodedTermComboBox.getStore().remove(event.getSelectedItem());
             }
         });
@@ -83,11 +88,11 @@ public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm>
         List<ColumnConfig<CodedTerm, ?>> columnsConfigs = new ArrayList<ColumnConfig<CodedTerm, ?>>();
 
         displayNameColumnConfig = new ColumnConfig<CodedTerm, String>(
-                CT_PROPS.displayName(), 20, "Display Name");
+                CT_PROPS.displayName(), NAME_COLUMN_WIDTH, "Display Name");
         codeColumnConfig = new ColumnConfig<CodedTerm, String>(
-                CT_PROPS.code(), 30, "Code");
+                CT_PROPS.code(), CODE_COLUMN_WIDTH, "Code");
         codingSchemeColumnConfig = new ColumnConfig<CodedTerm, String>(
-                CT_PROPS.codingScheme(), 50, "CodingScheme");
+                CT_PROPS.codingScheme(), CODING_SCHEME_COLUMN_WIDTH, "CodingScheme");
 
         columnsConfigs.add(displayNameColumnConfig);
         columnsConfigs.add(codeColumnConfig);
@@ -105,13 +110,11 @@ public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm>
         // Editing widgets
         TextField displayNameTF = new TextField();
         displayNameTF.setAllowBlank(false);
-//        displayNameTF.setToolTip("This fields is required.");
         TextField codeTF = new TextField();
         codeTF.setAllowBlank(false);
         codeTF.setToolTip("This field is required.");
         TextField codingSchemeTF = new TextField();
         codingSchemeTF.setAllowBlank(false);
-//        codingSchemeTF.setToolTip("This is required.");
         addColumnEditorConfig(displayNameColumnConfig, displayNameTF);
         addColumnEditorConfig(codeColumnConfig, codeTF);
         addColumnEditorConfig(codingSchemeColumnConfig, codingSchemeTF);
@@ -135,7 +138,7 @@ public class CodedTermsEditableGridWidget extends GenericEditableGrid<CodedTerm>
     @Override
     public Widget getDisplay() {
         FieldLabel codedTermFL = new FieldLabel(predefinedCodedTermComboBox, "Select a coded term to add");
-        codedTermFL.setLabelWidth(200);
+        codedTermFL.setLabelWidth(ADD_CODE_LABEL_WIDTH);
         addWidget(codedTermFL);
         return super.getDisplay();
     }

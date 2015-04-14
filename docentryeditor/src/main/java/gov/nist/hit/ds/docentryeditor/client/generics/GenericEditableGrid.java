@@ -27,7 +27,6 @@ import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Generic widget for Row Grid editing on double click. For each editable
@@ -67,7 +66,7 @@ import java.util.logging.Logger;
  * Created by onh2 on 6/10/2014.
  */
 public abstract class GenericEditableGrid<M> extends Grid<M> {
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private static final int EXTRA_WIDGET_SIDE_MARGIN = 5;
     // private Class<M> clazzM;
 
     // --- UI Widgets.
@@ -145,7 +144,7 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         helpTooltipConfig.setMouseOffsetY(0);
 
         gridContainer.add(toolBar);
-        gridContainer.add(super.asWidget(), new VerticalLayoutContainer.VerticalLayoutData(1, 1)); // VerticalLayoutData does not work here why?
+        gridContainer.add(super.asWidget(), new VerticalLayoutContainer.VerticalLayoutData(1, 1));
         pane.setWidget(gridContainer);
 
         // makes the grid editable.
@@ -180,7 +179,7 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         hasExtraWidget = true;
         extraWidgetCount++;
         widget.addStyleName("topBorder");
-        gridContainer.add(widget, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 4, 1, 4)));
+        gridContainer.add(widget, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(1, EXTRA_WIDGET_SIDE_MARGIN, 1, EXTRA_WIDGET_SIDE_MARGIN)));
     }
 
     /**
@@ -192,11 +191,11 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         boolean firstDone = false;
         for (Widget w : widgets) {
             extraWidgetCount++;
-            if (firstDone == false) {
+            if (!firstDone) {
                 w.addStyleName("topBorder");
                 firstDone = true;
             }
-            gridContainer.add(w, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 4, 1, 4)));
+            gridContainer.add(w, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(1, EXTRA_WIDGET_SIDE_MARGIN, 1, EXTRA_WIDGET_SIDE_MARGIN)));
         }
     }
 
@@ -235,8 +234,9 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         helpButton.getToolTip().addShowHandler(new ShowEvent.ShowHandler() {
             @Override
             public void onShow(ShowEvent event) {
-                if (toolTipAutoShow)
+                if (toolTipAutoShow) {
                     helpButton.getToolTip().hide();
+                }
             }
         });
         helpButton.addSelectHandler(new SelectEvent.SelectHandler() {
@@ -272,18 +272,15 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
                     // M element = GWT.create(clazzM);
                     M element = getModelFactory().newInstance();
                     getStore().add(0, element);
-                    int index = 0;
-                    if (isCheckBoxEnabled()) {
-                        index = 1;
-                    }
+                    int index = checkBoxEnabled ? 1 : 0;
                     editing.startEditing(new Grid.GridCell(getStore().indexOf(element), index));
                     if (getStore().size() >= storeMaxLength && storeMaxLength != 0) {
                         disableNewButton();
                     }
                 } else {
                     MessageBox mb = new MessageBox("Error: list size limit reached",
-                            "You can not add more items to that list. This list can contain only " + storeMaxLength
-                                    + " items.");
+                            "You can not add more items to that list. This list can contain only "
+                                    + storeMaxLength + " items.");
                     mb.show();
                 }
             }
@@ -435,10 +432,10 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
     protected void setStoreMaxLength(int storeMaxLength) {
         this.storeMaxLength = storeMaxLength;
         if (storeMaxLength == 1) {
-            this.setHeight(DEFAULT_SINGLE_ENTRY_GRID_HEIGHT + (hasToolbar == true ? DEFAULT_TOOLBAR_HEIGHT : 0) + (hasExtraWidget == true ? ESTIMATED_EXTRA_WIDGET_HEIGHT*extraWidgetCount : 0));
+            this.setHeight(DEFAULT_SINGLE_ENTRY_GRID_HEIGHT + (hasToolbar ? DEFAULT_TOOLBAR_HEIGHT : 0) + (hasExtraWidget ? ESTIMATED_EXTRA_WIDGET_HEIGHT*extraWidgetCount : 0));
         } else {
             if (storeMaxLength < 11) {
-                this.setHeight((ENTRY_HEIGHT * storeMaxLength) + (hasToolbar == true ? DEFAULT_TOOLBAR_HEIGHT : 0) + (hasExtraWidget == true ? ESTIMATED_EXTRA_WIDGET_HEIGHT*extraWidgetCount : 0));
+                this.setHeight((ENTRY_HEIGHT * storeMaxLength) + (hasToolbar ? DEFAULT_TOOLBAR_HEIGHT : 0) + (hasExtraWidget ? ESTIMATED_EXTRA_WIDGET_HEIGHT*extraWidgetCount : 0));
             }
         }
     }

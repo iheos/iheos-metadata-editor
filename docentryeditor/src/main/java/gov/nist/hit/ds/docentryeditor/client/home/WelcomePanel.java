@@ -53,7 +53,7 @@ public class WelcomePanel extends VerticalLayoutContainer {
         setBorders(false);
 
         // set html welcome explanation panel
-        HtmlLayoutContainer htmlExplanationTitle=new HtmlLayoutContainer("<br/><h2>Welcome to the XDS Document Entry Editor</h2>");
+        HtmlLayoutContainer htmlExplanationTitle=new HtmlLayoutContainer("<h2>Welcome to the XDS Document Entry Editor</h2>");
         HtmlLayoutContainer htmlExplanation=new HtmlLayoutContainer("<br/>This application was developed by the National Institute of Standards and Technology " +
                 "to generate custom XDS metadata for testing purposes. This software is based on the specification " +
                 "<a href='http://www.ihe.net/uploadedFiles/Documents/ITI/IHE_ITI_TF_Rev10.0_Vol3_FT_2013-09-27.pdf' target='_blank'>IHE IT Infrastructure Technical Framework Volume 3 (ITI TF-3)</a>.<br/>" +
@@ -82,41 +82,41 @@ public class WelcomePanel extends VerticalLayoutContainer {
         docEntryButtonsContainer.add(newDocEntryBtn,new VerticalLayoutData(1,-1,new Margins(0,0,BUTTONS_MARGINS,0)));
         docEntryButtonsContainer.add(loadPreFilledDocEntryBtn,new VerticalLayoutData(1,-1,new Margins(BUTTONS_MARGINS,0,0,0)));
 
-		// add home buttons to a Horizontal container
-		HorizontalLayoutContainer buttonsHContainer= new HorizontalLayoutContainer();
+        // add home buttons to a Horizontal container
+        HorizontalLayoutContainer buttonsHContainer= new HorizontalLayoutContainer();
         buttonsHContainer.add(submissionSetButtonsContainer,new HorizontalLayoutContainer.HorizontalLayoutData(0.33,-1,new Margins(0, BUTTONS_MARGINS,0,0)));
         buttonsHContainer.add(folderButtonsContainer,new HorizontalLayoutContainer.HorizontalLayoutData(0.33,-1,new Margins(0, BUTTONS_MARGINS,0, BUTTONS_MARGINS)));
         buttonsHContainer.add(docEntryButtonsContainer,new HorizontalLayoutContainer.HorizontalLayoutData(0.33,-1,new Margins(0,0,0, BUTTONS_MARGINS)));
 
-		// Set home page warning panel
-		PageWarningPanel warningPanel = new PageWarningPanel("<strong style='font-size:1.15em'>Warning:</strong> This software is still under development.<br/>" +
-				"<ul><li>The functionalities Folder and Association are not implemented yet.</li>" +
-				"</ul>");
+        // Set home page warning panel
+        PageWarningPanel warningPanel = new PageWarningPanel("<strong style='font-size:1.15em'>Warning:</strong> This software is still under development.<br/>" +
+                "<ul><li>The functionalities Folder and Association are not implemented yet.</li>" +
+                "</ul>");
 
-		this.add(htmlExplanationTitle);
-		this.add(htmlExplanation);
-		this.add(buttonsHContainer, new VerticalLayoutData(1, BUTTONS_CONTAINER_HEIGHT));
-		this.add(warningPanel, new VerticalLayoutData(1, -1, new Margins(0, WARNING_RIGHT_MARGIN,0,0)));
+        this.add(htmlExplanationTitle);
+        this.add(htmlExplanation);
+        this.add(buttonsHContainer, new VerticalLayoutData(1, BUTTONS_CONTAINER_HEIGHT));
+        this.add(warningPanel, new VerticalLayoutData(1, -1, new Margins(0, WARNING_RIGHT_MARGIN,0,0)));
         this.setScrollMode(ScrollSupport.ScrollMode.AUTO);
-	}
+    }
 
     /**
      * Method that ties actions with the view.
      */
-	private void bindUI() {
-		newDocEntryBtn.addSelectHandler(new SelectEvent.SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent selectEvent) {
+    private void bindUI() {
+        newDocEntryBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent selectEvent) {
                 ((MetadataEditorEventBus) eventBus).fireCreateNewDocEntryEvent(new XdsDocumentEntry());
-			}
-		});
-		loadPreFilledDocEntryBtn.addSelectHandler(new SelectEvent.SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent selectEvent) {
+            }
+        });
+        loadPreFilledDocEntryBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent selectEvent) {
                 ((MetadataEditorEventBus) eventBus).fireLoadPreFilledDocEntryEvent();
-			}
-		});
-		uploadFileBtn.addSelectHandler(new SelectEvent.SelectHandler() {
+            }
+        });
+        uploadFileBtn.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent selectEvent) {
                 fileUploadDialog.init();
@@ -129,11 +129,11 @@ public class WelcomePanel extends VerticalLayoutContainer {
                 ((MetadataEditorEventBus) eventBus).fireSelectSubmissionSetEvent();
             }
         });
-	}
+    }
 
-	@Override
-	public Widget asWidget() {
-		return this;
-	}
+    @Override
+    public Widget asWidget() {
+        return this;
+    }
 
 }

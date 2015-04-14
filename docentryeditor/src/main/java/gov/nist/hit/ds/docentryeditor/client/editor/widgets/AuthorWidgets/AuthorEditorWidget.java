@@ -60,6 +60,10 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
     private static final int LISTS_HEIGHT = 150;
     // class logger
     private static final Logger LOGGER = Logger.getLogger(AuthorEditorWidget.class.getName());
+    private static final int ADD_ENTRY_FIELD_RIGHT_MARGIN = 10;
+    private static final int LISTS_RIGHT_MARGIN = 10;
+    private static final String DELETE_ENTRY_TEXT = "Delete entry";
+    private static final String ADD_ENTRY_TEXT = "Add";
     // instance of the driver for the edition of an author (used for the edition
     // the selected author in authors list)
     private final AuthorEditorDriver authorEditorDriver = GWT.create(AuthorEditorDriver.class);
@@ -84,9 +88,9 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
     @Ignore
     private String256EditorWidget authorInstitution = new String256EditorWidget();
     @Ignore
-    private TextButton addInstitutionButton = new TextButton("Add");
+    private TextButton addInstitutionButton = new TextButton(ADD_ENTRY_TEXT);
     @Ignore
-    private TextButton deleteInstitutionButton = new TextButton("Delete entry");
+    private TextButton deleteInstitutionButton = new TextButton(DELETE_ENTRY_TEXT);
     // /////////////////////////////////
     // --- List of Roles
     // /////////////////////////////////
@@ -103,9 +107,9 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
     @Ignore
     private String256EditorWidget authorRole = new String256EditorWidget();
     @Ignore
-    private TextButton addRoleButton = new TextButton("Add");
+    private TextButton addRoleButton = new TextButton(ADD_ENTRY_TEXT);
     @Ignore
-    private TextButton deleteRoleButton = new TextButton("Delete entry");
+    private TextButton deleteRoleButton = new TextButton(DELETE_ENTRY_TEXT);
     // /////////////////////////////////
     // --- List of Specialties
     // /////////////////////////////////
@@ -122,9 +126,9 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
     @Ignore
     private String256EditorWidget authorSpecialty = new String256EditorWidget();
     @Ignore
-    private TextButton addSpecialtyButton = new TextButton("Add");
+    private TextButton addSpecialtyButton = new TextButton(ADD_ENTRY_TEXT);
     @Ignore
-    private TextButton deleteSpecialtyButton = new TextButton("Delete entry");
+    private TextButton deleteSpecialtyButton = new TextButton(DELETE_ENTRY_TEXT);
     // /////////////////////////////////
     // --- List of telecommunications
     // /////////////////////////////////
@@ -142,9 +146,9 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
     @Ignore
     private String256EditorWidget authorTelecommunication = new String256EditorWidget();
     @Ignore
-    private TextButton addTelecommunicationButton = new TextButton("Add");
+    private TextButton addTelecommunicationButton = new TextButton(ADD_ENTRY_TEXT);
     @Ignore
-    private TextButton deleteTelecommunicationButton = new TextButton("Delete entry");
+    private TextButton deleteTelecommunicationButton = new TextButton(DELETE_ENTRY_TEXT);
     /*
      * editionMode is an instance of EditionMode. It is used to know the state
      * of the editor, to know how to display the different fields
@@ -220,7 +224,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
                 + "Some Hospital^^^^^^^^^1.2.3.4.5.6.7.8.9.1789.45<br/>"
                 + "Some Hospital^^^^^&1.2.3.4.5.6.7.8.9.1789&ISO^^^^45"));
 
-        hcontainerInstitution.add(authorInstitution, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, 10, 10, 0)));
+        hcontainerInstitution.add(authorInstitution, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, ADD_ENTRY_FIELD_RIGHT_MARGIN, 0, 0)));
         authorInstitution.setWidth("auto");
         addInstitutionButton.setWidth("auto");
         hcontainerInstitution.add(addInstitutionButton);
@@ -241,7 +245,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         FieldLabel roleLabel = new FieldLabel();
         roleLabel.setText("Role");
 
-        hcontainerRole.add(authorRole, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, 10, 10, 0)));
+        hcontainerRole.add(authorRole, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, ADD_ENTRY_FIELD_RIGHT_MARGIN, 0, 0)));
         authorRole.setWidth("auto");
         addRoleButton.setWidth("auto");
         hcontainerRole.add(addRoleButton);
@@ -262,7 +266,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         FieldLabel specialtyLabel = new FieldLabel();
         specialtyLabel.setText("Specialty");
 
-        hcontainerSpecialty.add(authorSpecialty, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, 10, 10, 0)));
+        hcontainerSpecialty.add(authorSpecialty, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, ADD_ENTRY_FIELD_RIGHT_MARGIN, 0, 0)));
         authorSpecialty.setWidth("auto");
         addSpecialtyButton.setWidth("auto");
         hcontainerSpecialty.add(addSpecialtyButton);
@@ -283,7 +287,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
         FieldLabel telecommunicationLabel = new FieldLabel();
         telecommunicationLabel.setText("Telecommunication");
 
-        hcontainerTelecommunication.add(authorTelecommunication, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, 10, 10, 0)));
+        hcontainerTelecommunication.add(authorTelecommunication, new HorizontalLayoutData(1, FIELDS_HEIGHT, new Margins(0, ADD_ENTRY_FIELD_RIGHT_MARGIN, 0, 0)));
         authorTelecommunication.setWidth("auto");
         authorTelecommunication.setToolTipConfig(new ToolTipConfig("Telecommunication represents the telecommunications address (e.g., email) of the document or SubmissionSet author."));
         addTelecommunicationButton.setWidth("auto");
@@ -291,10 +295,12 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
             @Override
             public List<EditorError> validate(Editor<String> editor, String value) {
                 List<EditorError> errors = null;
-                if (value == null)
-                    value = authorTelecommunication.getField().getText();
-                if (/* value == null || */!value.matches(".*@.*\\.[a-z]*$")) {
-                    errors = createError(editor, "Value is not a valid telecommunication email.", value);
+                String fieldValue=value;
+                if (fieldValue == null) {
+                    fieldValue = authorTelecommunication.getField().getText();
+                }
+                if (!fieldValue.matches(".*@.*\\.[a-z]*$")) {
+                    errors = createError(editor, "Value is not a valid telecommunication email.", fieldValue);
                 }
                 return errors;
             }
@@ -311,9 +317,9 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
 
         // Add each widget to the main container
         vcontainer.add(authorPersonLabel, new VerticalLayoutData(1, FIELDS_HEIGHT));
-        listsContainer.add(authorInstitutionsContainer, new HorizontalLayoutData(0.25, -1, new Margins(0, 10, 0, 0)));
-        listsContainer.add(authorRolesContainer, new HorizontalLayoutData(0.25, -1, new Margins(0, 10, 0, 0)));
-        listsContainer.add(authorSpecialtiesContainer, new HorizontalLayoutData(0.25, -1, new Margins(0, 10, 0, 0)));
+        listsContainer.add(authorInstitutionsContainer, new HorizontalLayoutData(0.25, -1, new Margins(0, LISTS_RIGHT_MARGIN, 0, 0)));
+        listsContainer.add(authorRolesContainer, new HorizontalLayoutData(0.25, -1, new Margins(0, LISTS_RIGHT_MARGIN, 0, 0)));
+        listsContainer.add(authorSpecialtiesContainer, new HorizontalLayoutData(0.25, -1, new Margins(0, LISTS_RIGHT_MARGIN, 0, 0)));
         listsContainer.add(authorTelecommunicationsContainer, new HorizontalLayoutData(0.25, -1, new Margins()));
         vcontainer.add(listsContainer, new VerticalLayoutData(1, LIST_EDITOR_WIDGET_HEIGHT));
 
@@ -374,19 +380,18 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
     private void addAuthorTelecommunicationToListStore() {
         String s = authorTelecommunication.getField().getText();
 
-        if (authorTelecommunication.getField().validate())
-            if (s != null && !s.isEmpty()) {
-                LOGGER.info("adding new value (" + s + ") to list store");
-                String256 v = new String256().setString(s);
-                if (!contains(authorTelecommunications.getStore(), v)) {
-                    authorTelecommunications.getStore().add(new String256().setString(s));
-                    authorTelecommunication.getField().clear();
-                    authorTelecommunication.getField().clearInvalid();
-                    authorTelecommunication.getField().redraw();
-                } else {
-                    Info.display("Impossible to add value", "It is impossible to add this value. It already is in the list.");
-                }
+        if (authorTelecommunication.getField().validate() && (s != null && !s.isEmpty())) {
+            LOGGER.info("adding new value (" + s + ") to list store");
+            String256 v = new String256().setString(s);
+            if (!contains(authorTelecommunications.getStore(), v)) {
+                authorTelecommunications.getStore().add(new String256().setString(s));
+                authorTelecommunication.getField().clear();
+                authorTelecommunication.getField().clearInvalid();
+                authorTelecommunication.getField().redraw();
+            } else {
+                Info.display("Impossible to add value", "It is impossible to add this value. It already is in the list.");
             }
+        }
         authorTelecommunication.getField().focus();
     }
 
@@ -624,7 +629,6 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
      * @param author The Author which will be edited.
      */
     public void edit(Author author) {
-        // authorEditorDriver.getErrors().clear();
         resetWidgets();
         setModel(author);
         authorEditorDriver.edit(author);
@@ -634,7 +638,6 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
      * Method to start the edition of a new Author.
      */
     public void editNew() {
-        // authorEditorDriver.getErrors().clear();
         model = new Author();
         edit(model);
         resetWidgets();
