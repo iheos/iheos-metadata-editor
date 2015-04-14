@@ -19,8 +19,9 @@ import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 import javax.inject.Inject;
 
 public class WelcomePanel extends VerticalLayoutContainer {
-    public static final int BUTTONS_MARGINS = 50;
-    public static final int BUTTONS_CONTAINER_HEIGHT = 120;
+    private static final int BUTTONS_MARGINS = 50;
+    private static final int WARNING_RIGHT_MARGIN = 15;
+    private static final int BUTTONS_CONTAINER_HEIGHT = 120;
 
     @Inject
     protected EventBus eventBus;
@@ -95,7 +96,7 @@ public class WelcomePanel extends VerticalLayoutContainer {
 		this.add(htmlExplanationTitle);
 		this.add(htmlExplanation);
 		this.add(buttonsHContainer, new VerticalLayoutData(1, BUTTONS_CONTAINER_HEIGHT));
-		this.add(warningPanel, new VerticalLayoutData(1, -1));
+		this.add(warningPanel, new VerticalLayoutData(1, -1, new Margins(0, WARNING_RIGHT_MARGIN,0,0)));
         this.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 	}
 
