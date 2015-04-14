@@ -7,11 +7,11 @@ body{
     margin-bottom: 5px;
     display: inline-block;
     margin-left: 10px;
-    font-size: 32px;
+    font-size: 28px;
     color: #F3C60D;
 }
 #appsubtitle {
-    font-size: 14px;
+    font-size: 12px;
     margin-left: 10px;
     color: #fc0;
     text-shadow: none;
@@ -21,7 +21,7 @@ body{
 #appheader {
     float: none;
     font-family: Verdana;
-    font-weight: 700;
+    font-weight: 600;
     background-color: #021a4c;
     margin: 0px;
     padding:10px;
