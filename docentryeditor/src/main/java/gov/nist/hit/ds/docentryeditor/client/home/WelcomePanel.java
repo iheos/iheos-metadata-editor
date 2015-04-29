@@ -53,7 +53,7 @@ public class WelcomePanel extends VerticalLayoutContainer {
         setBorders(false);
 
         // set html welcome explanation panel
-        HtmlLayoutContainer htmlExplanationTitle=new HtmlLayoutContainer("<h2>Welcome to the XDS Document Entry Editor</h2>");
+        HtmlLayoutContainer htmlExplanationTitle=new HtmlLayoutContainer("<h2>Welcome to the XDS Metadata Editor</h2>");
         HtmlLayoutContainer htmlExplanation=new HtmlLayoutContainer("<br/>This application was developed by the National Institute of Standards and Technology " +
                 "to generate custom XDS metadata for testing purposes. This software is based on the specification " +
                 "<a href='http://www.ihe.net/uploadedFiles/Documents/ITI/IHE_ITI_TF_Rev10.0_Vol3_FT_2013-09-27.pdf' target='_blank'>IHE IT Infrastructure Technical Framework Volume 3 (ITI TF-3)</a>.<br/>" +
