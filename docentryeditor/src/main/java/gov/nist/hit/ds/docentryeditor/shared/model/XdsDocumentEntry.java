@@ -124,7 +124,6 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
      */
     @NotNull
     @NotEmpty
-    // FIXME should not be a list
     private List<CodedTerm> confidentialityCodes;
     /**
      * <b>NameValueDTM creationTime</b> - The creation time of the document
@@ -421,7 +420,6 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
      * @see XdsDocumentEntry
      */
     @Nullable
-    // FIXME Are you sure this is meant to be a list?
     private List<InternationalString> titles;
     /**
      * <b>CodedTerm typeCode</b> - The type code of the document [Mandatory].<br>
@@ -527,7 +525,6 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         formatCode = new CodedTerm();
         hash = new String256();
         healthcareFacilityType = new CodedTerm();
-        // languageCode = new String256();
         legalAuthenticator = new NameValueString256();
         legalAuthenticator.setName(new String256()
                 .setString("legalAuthenticator"));
@@ -792,13 +789,13 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
 
     public XdsDocumentEntry copy(){
         XdsDocumentEntry doc=new XdsDocumentEntry();
-        doc.setId(this.id!=null ? this.id.copy() : null);
-        doc.setHomeCommunityId(this.homeCommunityId!=null ? this.homeCommunityId.copy():null);
+        doc.setId(this.id!=null ? this.id.copy() : doc.getId());
+        doc.setHomeCommunityId(this.homeCommunityId!=null ? this.homeCommunityId.copy():doc.getHomeCommunityId());
         doc.setUri(this.uri.copy());
         for (Author cp : this.authors) {
             doc.getAuthors().add(cp.copy());
         }
-        doc.setAvailabilityStatus(this.availabilityStatus!=null ? this.availabilityStatus.copy():null);
+        doc.setAvailabilityStatus(this.availabilityStatus!=null ? this.availabilityStatus.copy():doc.getAvailabilityStatus());
         doc.setClassCode(this.classCode.copy());
         for (InternationalString cp : this.comments) {
             doc.getComments().add(cp.copy());
@@ -815,7 +812,7 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         doc.setHealthcareFacilityType(this.healthcareFacilityType.copy());
         doc.setLanguageCode(this.languageCode);
         doc.setLegalAuthenticator(this.legalAuthenticator.copy());
-        doc.setLogicalId(this.logicalId!=null?this.logicalId.copy():null);
+        doc.setLogicalId(this.logicalId!=null?this.logicalId.copy():doc.getLogicalId());
         doc.setMimeType(this.mimeType.copy());
         doc.setPatientID(this.patientID.copy());
         doc.setPracticeSettingCode(this.practiceSettingCode.copy());
@@ -830,7 +827,7 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
             doc.getTitles().add(cp.copy());
         }
         doc.setUniqueId(this.uniqueId.copy());
-        doc.setVersion(this.version!=null?this.version.copy():null);
+        doc.setVersion(this.version!=null?this.version.copy():doc.getVersion());
         return doc;
     }
 

@@ -76,8 +76,8 @@ public class DocEntryEditorActivity extends AbstractActivity {
         sc = new SimpleContainer();
         blc = new BorderLayoutContainer();
 
-        ContentPanel validationView = new ContentPanel();
-        validationView.setHeadingText("Validation");
+        ContentPanel validationViewCP = new ContentPanel();
+        validationViewCP.setHeadingText("Validation");
 
         ContentPanel center = new ContentPanel();
         center.setHeaderVisible(false);
@@ -90,7 +90,7 @@ public class DocEntryEditorActivity extends AbstractActivity {
         southData.setSplit(true);
         southData.setCollapsed(true);
 
-        blc.setSouthWidget(validationView, southData);
+        blc.setSouthWidget(validationViewCP, southData);
 
         blc.collapse(LayoutRegion.SOUTH);
 

@@ -14,7 +14,7 @@ public class SaveFileTest extends TestCase {
     @Test
     public void testSave() {
         SaveFileService service = new SaveFileService();
-        String filename = service.saveAsXMLFile("test.xml", ServerTestHelper.instance.docEntryToXML(ServerTestHelper.instance.getDocEntry()));
+        String filename = service.saveAsXMLFile("test.xml", ServerTestHelper.INSTANCE.docEntryToXML(ServerTestHelper.INSTANCE.getDocEntry()));
         assertNotNull("No written filename return from server.", filename);
         assertFalse("Filename returned from server is empty", filename.isEmpty());
         assertTrue("Filename's extension is wrong (not .xml)", filename.contains(".xml"));

@@ -45,7 +45,6 @@ public class InternationalStringEditorWidget extends Composite implements Editor
      */
     public InternationalStringEditorWidget() {
         buildUI();
-        bindUI();
     }
 
     /**
@@ -59,13 +58,6 @@ public class InternationalStringEditorWidget extends Composite implements Editor
         value.setWidth("auto");
         widgetVContainer.add(langCodeFL);
         widgetVContainer.add(valueFL);
-    }
-
-    /**
-     * Mehtod that binds widgets of the UI with actions.
-     */
-    private void bindUI() {
-
     }
 
     /**

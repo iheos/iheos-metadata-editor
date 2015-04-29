@@ -125,7 +125,9 @@ public class NameValueInteger implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){ return true;}
+        if (this == o){
+            return true;
+        }
         if (!(o instanceof NameValueInteger)){
             return false;
         }

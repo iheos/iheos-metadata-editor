@@ -30,7 +30,7 @@ public abstract class GenericEditableListView<M, N> extends GenericEditableGrid<
         this.setHideHeaders(true);
     }
 
-    protected abstract ValueProvider<? super M, N> getValueProvider();
+    protected abstract ValueProvider getValueProvider();
 
     @Override
     protected ColumnModel<M> buildColumnModel() {
@@ -54,6 +54,7 @@ public abstract class GenericEditableListView<M, N> extends GenericEditableGrid<
     /**
      * Should not be used, use addEditorConfig(Field<N> field) instead.
      *
+     * @deprecated use #addEditorConfig(Field<N> field) instead.
      * @param columnConfig Grid's Column Configuration which will be associated to a type of editable field
      * @param field        Editable field which will be used to edit the grid's Column
      */

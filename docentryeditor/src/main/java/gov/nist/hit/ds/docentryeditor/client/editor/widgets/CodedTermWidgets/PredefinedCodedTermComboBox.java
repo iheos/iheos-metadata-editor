@@ -58,16 +58,16 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
             @Override
             public String getLabel(CodedTerm codedTerm) {
                 String s = new String();
-                if (codedTerm.getDisplayName() != null && !codedTerm.getDisplayName().toString().equals("")) {
+                if (codedTerm.getDisplayName() != null && !"".equals(codedTerm.getDisplayName().toString())) {
                     s += codedTerm.getDisplayName().toString();
                 }
-                if (codedTerm.getCode() != null && !codedTerm.getCode().toString().equals("") ) {
+                if (codedTerm.getCode() != null && !"".equals(codedTerm.getCode().toString()) ) {
                     if (!s.isEmpty()) {
                         s += "  -  ";
                     }
                     s += codedTerm.getCode().toString();
                 }
-                if (codedTerm.getCodingScheme() != null && !codedTerm.getCodingScheme().toString().equals("")) {
+                if (codedTerm.getCodingScheme() != null && !"".equals(codedTerm.getCodingScheme().toString())) {
                     if (!s.isEmpty()) {
                         s += "  -  ";
                     }
@@ -108,7 +108,7 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
         this.addBeforeSelectionHandler(new BeforeSelectionHandler<CodedTerm>() {
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<CodedTerm> event) {
-                if (event.getItem().getDisplayName().toString().equals("Custom Value")) {
+                if ("Custom Value".equals(event.getItem().getDisplayName().toString())) {
                     final CodedTermPopUpEditor codedTermPopUpEditor = new CodedTermPopUpEditor();
 
                     codedTermPopUpEditor.getOkButton().addSelectHandler(new SelectEvent.SelectHandler() {

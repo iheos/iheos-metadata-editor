@@ -287,12 +287,12 @@ public class XdsParser {
             for (int a = 0; a < authorsNode.getLength(); a++) {
                 NodeList authorNodes = ((Element) authorsNode.item(a)).getElementsByTagName("author");
                 for (int i = 0; i < authorNodes.getLength(); i++) {
-                    Author intern_temp = new Author();
+                    Author internTemp = new Author();
 
-                    List<String256> authorInstitutions_temp = new ArrayList<String256>();
-                    List<String256> authorRoles_temp = new ArrayList<String256>();
-                    List<String256> authorSpecialities_temp = new ArrayList<String256>();
-                    List<String256> authorTelecommunications_temp = new ArrayList<String256>();
+                    List<String256> authorInstitutionsTemp = new ArrayList<String256>();
+                    List<String256> authorRolesTemp = new ArrayList<String256>();
+                    List<String256> authorSpecialitiesTemp = new ArrayList<String256>();
+                    List<String256> authorTelecommunicationsTemp = new ArrayList<String256>();
 
                     // Set authorPerson
                     String256 authorPerson256 = new String256();
@@ -301,7 +301,7 @@ public class XdsParser {
                     if (authorPersonNodes != null) {
                         for (int p = 0; p < authorPersonNodes.getLength(); p++) {
                             authorPerson256.setString(authorPersonNodes.item(p).getFirstChild().getNodeValue());
-                            intern_temp.setAuthorPerson(authorPerson256);
+                            internTemp.setAuthorPerson(authorPerson256);
                         }
                     } else {
                         LOGGER.warning("This author lacks an author person node. \nCheck your XML Document!");
@@ -314,10 +314,10 @@ public class XdsParser {
                             String256 str = new String256();
                             str.setString(institutionNodes.item(j).getFirstChild().getNodeValue());
                             if (str.verify()) {
-                                authorInstitutions_temp.add(str);
+                                authorInstitutionsTemp.add(str);
                             }
                         }
-                        intern_temp.setAuthorInstitutions(authorInstitutions_temp);
+                        internTemp.setAuthorInstitutions(authorInstitutionsTemp);
                     } else {
                         LOGGER.warning("AuthorInstitutions node is empty for author named " + authorPerson256
                                 + ".\nCheck your XML Document!");
@@ -330,10 +330,10 @@ public class XdsParser {
                             String256 str = new String256();
                             str.setString(roleNodes.item(j).getFirstChild().getNodeValue());
                             if (str.verify()) {
-                                authorRoles_temp.add(str);
+                                authorRolesTemp.add(str);
                             }
                         }
-                        intern_temp.setAuthorRoles(authorRoles_temp);
+                        internTemp.setAuthorRoles(authorRolesTemp);
                     } else {
                         LOGGER.warning("AuthorRoles node is empty for author named " + authorPerson256
                                 + ".\nCheck your XML Document!");
@@ -347,10 +347,10 @@ public class XdsParser {
                             String256 str = new String256();
                             str.setString(specialtyNodes.item(j).getFirstChild().getNodeValue());
                             if (str.verify()) {
-                                authorSpecialities_temp.add(str);
+                                authorSpecialitiesTemp.add(str);
                             }
                         }
-                        intern_temp.setAuthorSpecialties(authorSpecialities_temp);
+                        internTemp.setAuthorSpecialties(authorSpecialitiesTemp);
                     } else {
                         LOGGER.warning("AuthorSpecialities node is empty for author named " + authorPerson256
                                 + "!\nCheck your XML Document");
@@ -364,17 +364,17 @@ public class XdsParser {
                             String256 str = new String256();
                             str.setString(telecommunicationNodes.item(j).getFirstChild().getNodeValue());
                             if (str.verify()) {
-                                authorTelecommunications_temp.add(str);
+                                authorTelecommunicationsTemp.add(str);
                             }
                         }
-                        intern_temp.setAuthorTelecommunications(authorTelecommunications_temp);
+                        internTemp.setAuthorTelecommunications(authorTelecommunicationsTemp);
                     } else {
                         LOGGER.warning("AuthorTelecommunications node is empty for author named " + authorPerson256
                                 + ".\nCheck your XML Document!");
                         // TODO fire an event to handle the issue in the view
                     }
                     // Add this Element to the model
-                    authors.add(intern_temp);
+                    authors.add(internTemp);
                 }
                 // Set title to xdsDocumentEntry
                 xdsDocumentEntry.setAuthors(authors);
@@ -465,32 +465,32 @@ public class XdsParser {
             IdentifierString256 identifier = new IdentifierString256();
 
             // Set value
-            String256 identifier256_value = new String256();
+            String256 identifier256Value = new String256();
             for (int i = 0; i < nodeList.getLength(); i++) {
                 NodeList valueNodes = ((Element) nodeList.item(i)).getElementsByTagName(RootNodesEnum.SubNodesEnum.value
                         .toString());
                 for (int j = 0; j < valueNodes.getLength(); j++) {
-                    identifier256_value.setString(valueNodes.item(j).getFirstChild().getNodeValue());
+                    identifier256Value.setString(valueNodes.item(j).getFirstChild().getNodeValue());
                 }
             }
-            if (identifier256_value.verify()) {
-                identifier.setValue(identifier256_value);
+            if (identifier256Value.verify()) {
+                identifier.setValue(identifier256Value);
             } else {
                 // FIXME should do something to raise an exception or fire event
                 return null;
             }
 
             // Set type
-            String256 identifier256_type = new String256();
+            String256 identifier256Type = new String256();
             for (int i = 0; i < nodeList.getLength(); i++) {
                 NodeList valueNodes = ((Element) nodeList.item(i)).getElementsByTagName(RootNodesEnum.SubNodesEnum.idtype
                         .toString());
                 for (int j = 0; j < valueNodes.getLength(); j++) {
-                    identifier256_type.setString(valueNodes.item(j).getFirstChild().getNodeValue());
+                    identifier256Type.setString(valueNodes.item(j).getFirstChild().getNodeValue());
                 }
             }
-            if (identifier256_type.verify()) {
-                identifier.setIdType(identifier256_type);
+            if (identifier256Type.verify()) {
+                identifier.setIdType(identifier256Type);
             } else {
                 // FIXME should do something to raise an exception or fire event
                 return null;
@@ -522,32 +522,32 @@ public class XdsParser {
             IdentifierOID identifier = new IdentifierOID();
 
             // Set value
-            OID identifier256_value = new OID();
+            OID identifier256Value = new OID();
             for (int i = 0; i < nodeList.getLength(); i++) {
                 NodeList valueNodes = ((Element) nodeList.item(i)).getElementsByTagName(RootNodesEnum.SubNodesEnum.value
                         .toString());
                 for (int j = 0; j < valueNodes.getLength(); j++) {
-                    identifier256_value.setOid(new String256().setString(valueNodes.item(j).getFirstChild().getNodeValue()));
+                    identifier256Value.setOid(new String256().setString(valueNodes.item(j).getFirstChild().getNodeValue()));
                 }
             }
-            if (identifier256_value.verify()) {
-                identifier.setValue(identifier256_value);
+            if (identifier256Value.verify()) {
+                identifier.setValue(identifier256Value);
             } else {
                 // FIXME should do something to raise an exception or fire event
                 return null;
             }
 
             // Set type
-            String256 identifier256_type = new String256();
+            String256 identifier256Type = new String256();
             for (int i = 0; i < nodeList.getLength(); i++) {
                 NodeList valueNodes = ((Element) nodeList.item(i)).getElementsByTagName(RootNodesEnum.SubNodesEnum.idtype
                         .toString());
                 for (int j = 0; j < valueNodes.getLength(); j++) {
-                    identifier256_type.setString(valueNodes.item(j).getFirstChild().getNodeValue());
+                    identifier256Type.setString(valueNodes.item(j).getFirstChild().getNodeValue());
                 }
             }
-            if (identifier256_type.verify()) {
-                identifier.setIdType(identifier256_type);
+            if (identifier256Type.verify()) {
+                identifier.setIdType(identifier256Type);
             } else {
                 // FIXME should do something to raise an exception or fire event
                 return null;
@@ -583,18 +583,18 @@ public class XdsParser {
                 InternationalString internationalString = new InternationalString();
 
                 // Set languageCode
-                LanguageCode international256_langCode = LanguageCode.getValueOf(((Element) nodeList.item(0).getChildNodes()
+                LanguageCode international256LangCode = LanguageCode.getValueOf(((Element) nodeList.item(0).getChildNodes()
                         .item(i)).getElementsByTagName(RootNodesEnum.SubNodesEnum.language.toString()).item(0)
                         .getFirstChild().getNodeValue());
-                internationalString.setLangCode(international256_langCode);
+                internationalString.setLangCode(international256LangCode);
 
                 // Set information
-                String256 international256_value = new String256();
-                international256_value.setString(((Element) nodeList.item(0).getChildNodes().item(i))
+                String256 international256Value = new String256();
+                international256Value.setString(((Element) nodeList.item(0).getChildNodes().item(i))
                         .getElementsByTagName(RootNodesEnum.SubNodesEnum.information.toString()).item(0).getFirstChild()
                         .getNodeValue());
-                if (international256_value.verify()) {
-                    internationalString.setValue(international256_value);
+                if (international256Value.verify()) {
+                    internationalString.setValue(international256Value);
                 }
                 // TODO else w/ exception and/or fire event
 
@@ -646,25 +646,25 @@ public class XdsParser {
             for (int i = 0; i < codedTermNodes.getLength(); i++) {
                 CodedTerm codedTerm = new CodedTerm();
                 CodingScheme codingScheme = new CodingScheme();
-                String256 codedTerm256_name = new String256();
-                String256 codedTerm256_code = new String256();
+                String256 codedTerm256Name = new String256();
+                String256 codedTerm256Code = new String256();
 
                 // Set displayName
-                codedTerm256_name.setString(((Element) codedTermNodes.item(i))
+                codedTerm256Name.setString(((Element) codedTermNodes.item(i))
                         .getElementsByTagName(RootNodesEnum.SubNodesEnum.displayname.toString()).item(0).getFirstChild()
                         .getNodeValue());
 
-                if (codedTerm256_name.verify()) {
-                    codedTerm.setDisplayName(codedTerm256_name);
+                if (codedTerm256Name.verify()) {
+                    codedTerm.setDisplayName(codedTerm256Name);
                 } else {
                     // TODO return problem to client view
                 }
                 // Set code
-                codedTerm256_code.setString(((Element) codedTermNodes.item(i))
+                codedTerm256Code.setString(((Element) codedTermNodes.item(i))
                         .getElementsByTagName(RootNodesEnum.SubNodesEnum.code.toString()).item(0).getFirstChild()
                         .getNodeValue());
-                if (codedTerm256_code.verify()) {
-                    codedTerm.setCode(codedTerm256_code);
+                if (codedTerm256Code.verify()) {
+                    codedTerm.setCode(codedTerm256Code);
                 } else {
                     // TODO return problem to client view
                 }
@@ -830,7 +830,6 @@ public class XdsParser {
                         df = "yyyyMMddhhmmss";
                         break;
                     default:
-                        // TODO change this
                         MessageBox mb = new MessageBox("Date parsing error", "Your " + nameValue.getName()
                                 + " date is not well formatted, this value can not be treated.");
                         mb.show();

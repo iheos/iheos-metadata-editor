@@ -99,7 +99,9 @@ public class String256 implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){ return true;}
+        if (this == o){
+            return true;
+        }
         if (!(o instanceof String256)){
             return false;
         }

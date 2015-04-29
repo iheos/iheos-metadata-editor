@@ -1,11 +1,18 @@
 package gov.nist.hit.ds.docentryeditor.client.root.submission;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.menu.Item;
@@ -26,6 +33,9 @@ import java.util.Map;
  * Created by onh2 on 7/11/2014.
  */
 public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> {
+    private static final int RIGHT_N_LEFT_LBL_MARGIN = 5;
+    private static final int UP_N_DOWN_LBL_MARGIN = 10;
+
     private final TreeStore<SubmissionMenuData> treeStore = new TreeStore<SubmissionMenuData>(SubmissionMenuData.PROPS.key());
     private final Tree<SubmissionMenuData, String> tree = new Tree<SubmissionMenuData, String>(treeStore, SubmissionMenuData.PROPS.value());
     private final ToolBar toolbar = new ToolBar();
@@ -149,6 +159,23 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
                 presenter.doSave();
             }
         });
+    }
+
+    public void openPopup(String fileNameOnServer) {
+        String fileURI=GWT.getHostPageBaseURL() + "files/" + fileNameOnServer;
+        Window.open(fileURI, fileNameOnServer + " Metadata File", "enabled");
+        Dialog d = new Dialog();
+        HTMLPanel htmlP = new HTMLPanel("<a href='" + fileURI + "'>" + fileURI + "</a>");
+        VerticalLayoutContainer vp = new VerticalLayoutContainer();
+        vp.add(new Label("Your download is in progress, please allow this application to open popups with your browser..."),
+                new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(UP_N_DOWN_LBL_MARGIN, RIGHT_N_LEFT_LBL_MARGIN, UP_N_DOWN_LBL_MARGIN, RIGHT_N_LEFT_LBL_MARGIN)));
+        vp.add(htmlP, new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(UP_N_DOWN_LBL_MARGIN, RIGHT_N_LEFT_LBL_MARGIN, UP_N_DOWN_LBL_MARGIN, RIGHT_N_LEFT_LBL_MARGIN)));
+        d.add(vp);
+        d.setPredefinedButtons(Dialog.PredefinedButton.OK);
+        d.setButtonAlign(BoxLayoutContainer.BoxLayoutPack.CENTER);
+        d.setHideOnButtonClick(true);
+        d.setHeadingText("XML Metadata File Download");
+        d.show();
     }
 
     /**

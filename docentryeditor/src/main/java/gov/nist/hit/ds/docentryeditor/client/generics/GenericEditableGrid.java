@@ -9,7 +9,6 @@ import com.sencha.gxt.fx.client.Draggable;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.box.MessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.*;
@@ -66,7 +65,6 @@ import java.util.List;
  * Created by onh2 on 6/10/2014.
  */
 public abstract class GenericEditableGrid<M> extends Grid<M> {
-    private static final int EXTRA_WIDGET_SIDE_MARGIN = 5;
     // private Class<M> clazzM;
 
     // --- UI Widgets.
@@ -95,10 +93,11 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
     // constants
     private static final int DEFAULT_GRID_HEIGHT = 250;
     private static final int DEFAULT_TOOLBAR_HEIGHT = 35;
+    private static final int DEFAULT_SINGLE_ENTRY_GRID_HEIGHT = 85;
+    private static final int DEFAULT_STORE_MAX_LENGTH = 11;
     private static final int ENTRY_HEIGHT = 30;
     private static final int ESTIMATED_EXTRA_WIDGET_HEIGHT = 30;
-    private static final int DEFAULT_SINGLE_ENTRY_GRID_HEIGHT = 85;
-
+    private static final int EXTRA_WIDGET_SIDE_MARGIN = 5;
 
     /**
      * Generic editable grid (abstract class) constructor.
@@ -277,11 +276,6 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
                     if (getStore().size() >= storeMaxLength && storeMaxLength != 0) {
                         disableNewButton();
                     }
-                } else {
-                    MessageBox mb = new MessageBox("Error: list size limit reached",
-                            "You can not add more items to that list. This list can contain only "
-                                    + storeMaxLength + " items.");
-                    mb.show();
                 }
             }
         });
@@ -296,9 +290,7 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
                     public void onDialogHide(DialogHideEvent event) {
                         if (event.getHideButton() == Dialog.PredefinedButton.YES) {
                             deleteSelectedItemAction();
-                            if (getStore().size() < storeMaxLength && storeMaxLength != 0) {
-                                enableNewButton();
-                            }
+                            refreshNewButton();
                         }
                     }
                 });
@@ -347,6 +339,18 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
     public void disableEditing() {
         disableToolbar();
         editing.clearEditors();
+    }
+
+    /**
+     * This method either enable or disable the grid's 'new' button regarding if the grid store
+     * is already full or not.
+     */
+    public void refreshNewButton(){
+        if (getStoreMaxSize() != 0 && getStore().size() >= getStoreMaxSize()) {
+            disableNewButton();
+        } else {
+            enableNewButton();
+        }
     }
 
     /**
@@ -434,7 +438,7 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         if (storeMaxLength == 1) {
             this.setHeight(DEFAULT_SINGLE_ENTRY_GRID_HEIGHT + (hasToolbar ? DEFAULT_TOOLBAR_HEIGHT : 0) + (hasExtraWidget ? ESTIMATED_EXTRA_WIDGET_HEIGHT*extraWidgetCount : 0));
         } else {
-            if (storeMaxLength < 11) {
+            if (storeMaxLength < DEFAULT_STORE_MAX_LENGTH) {
                 this.setHeight((ENTRY_HEIGHT * storeMaxLength) + (hasToolbar ? DEFAULT_TOOLBAR_HEIGHT : 0) + (hasExtraWidget ? ESTIMATED_EXTRA_WIDGET_HEIGHT*extraWidgetCount : 0));
             }
         }
@@ -479,14 +483,6 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
      */
     public int getStoreMaxSize() {
         return storeMaxLength;
-    }
-
-    public void refreshNewButton(){
-        if (getStoreMaxSize() != 0 && getStore().size() >= getStoreMaxSize()) {
-            disableNewButton();
-        } else {
-            enableNewButton();
-        }
     }
 
     //--------------------------------------------------------------------------------------------------------

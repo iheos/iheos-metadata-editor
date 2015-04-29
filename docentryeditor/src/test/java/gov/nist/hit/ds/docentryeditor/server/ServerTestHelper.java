@@ -3,14 +3,18 @@ package gov.nist.hit.ds.docentryeditor.server;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import java.text.SimpleDateFormat;
+import java.util.logging.Logger;
 
 /**
  * Created by onh2 on 10/2/2014.
  */
 public class ServerTestHelper {
-    public final static ServerTestHelper instance = new ServerTestHelper();
+    public static final ServerTestHelper INSTANCE = new ServerTestHelper();
+    private static final Logger LOGGER = Logger.getLogger(ServerTestHelper.class.getName());
+    public static final String DATE_TIME_FORMAT = "yyyyMMddHHmmss";
     private XdsDocumentEntry docentry;
-    private SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+    private SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT);
+    private int defautSize = 65;
 
     private ServerTestHelper() {
         initDocEntry();
@@ -52,10 +56,9 @@ public class ServerTestHelper {
         creation.setName(new String256("creationTime"));
         creation.getValues().clear();
         try {
-            creation.getValues().add(new DTM((format.parse("20131126214203"))));
+            creation.getValues().add(new DTM(format.parse("20131126214203")));
         } catch (Exception e) {
-            System.err.println("Error while parsing date to format yyyyMMddHHmmss");
-            System.err.println(e.getStackTrace());
+            LOGGER.warning("Error while parsing date to format "+DATE_TIME_FORMAT+" \n" + e.getMessage());
         }
         docentry.setCreationTime(creation);
         // ---- EVENT CODES
@@ -83,10 +86,9 @@ public class ServerTestHelper {
         start.setName(new String256("startTime"));
         start.getValues().clear();
         try {
-            start.getValues().add(new DTM((format.parse("20131202201000"))));
+            start.getValues().add(new DTM(format.parse("20131202201000")));
         } catch (Exception e) {
-            System.err.println("Error while parsing date to format yyyyMMddHHmmss");
-            System.err.println(e.getStackTrace());
+            LOGGER.warning("Error while parsing date to format "+DATE_TIME_FORMAT+" \n" + e.getMessage());
         }
         docentry.setServiceStartTime(start);
         // ---- SERVICE STOP TIME
@@ -94,16 +96,15 @@ public class ServerTestHelper {
         stop.setName(new String256("stopTime"));
         stop.getValues().clear();
         try {
-            start.getValues().add(new DTM((format.parse("20140213101500"))));
+            start.getValues().add(new DTM(format.parse("20140213101500")));
         } catch (Exception e) {
-            System.err.println("Error while parsing date to format yyyyMMddHHmmss");
-            System.err.println(e.getStackTrace());
+            LOGGER.warning("Error while parsing date to format "+DATE_TIME_FORMAT+" \n" + e.getMessage());
         }
         docentry.setServiceStopTime(stop);
         // ---- SIZE
         docentry.getSize().setName(new String256("size"));
         docentry.getSize().getValues().clear();
-        docentry.getSize().getValues().add(65);
+        docentry.getSize().getValues().add(defautSize);
         // ---- SOURCE PATIENT ID
         docentry.getSourcePatientId().setName(new String256("SourcePatientID"));
         docentry.getSourcePatientId().getValues().clear();
@@ -131,15 +132,15 @@ public class ServerTestHelper {
     public String docEntryToXML(XdsDocumentEntry docentry) {
         StringBuilder xml = new StringBuilder();
         xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Document>\n");
-        System.out.println(docentry.getTitles());
-        if (docentry.getTitles() != null && docentry.getTitles().size() > 0) {
+        LOGGER.info(docentry.getTitles().toString());
+        if (docentry.getTitles() != null && docentry.getTitles().isEmpty()) {
             xml.append("\t<titles>\n");
             for (InternationalString str : docentry.getTitles()) {
                 xml.append(str.toXML());
             }
             xml.append("\t</titles>\n");
         }
-        if (docentry.getComments() != null && docentry.getComments().size() > 0) {
+        if (docentry.getComments() != null && docentry.getComments().isEmpty()) {
             xml.append("\t<comments>\n");
             for (InternationalString str : docentry.getComments()) {
                 xml.append(str.toXML());
@@ -147,7 +148,7 @@ public class ServerTestHelper {
             xml.append("\t</comments>\n");
         }
 
-        if (docentry.getAuthors() != null && docentry.getAuthors().size() > 0) {
+        if (docentry.getAuthors() != null && docentry.getAuthors().isEmpty()) {
             xml.append("\t<authors>\n");
             for (Author auth : docentry.getAuthors()) {
                 xml.append(auth.toXML());
@@ -155,12 +156,12 @@ public class ServerTestHelper {
             xml.append("\t</authors>\n");
         }
 
-        if (docentry.getClassCode() != null && !docentry.getClassCode().getCode().equals("")) {
+        if (docentry.getClassCode() != null && !"".equals(docentry.getClassCode().getCode())) {
             xml.append("\t<classcode>\n");
             xml.append(docentry.getClassCode().toXML());
             xml.append("\t</classcode>\n");
         }
-        if (docentry.getConfidentialityCodes().size() > 0) {
+        if (docentry.getConfidentialityCodes().isEmpty()) {
             xml.append("\t<confidentialitycode>\n");
             for (CodedTerm ct : docentry.getConfidentialityCodes()) {
                 xml.append(ct.toXML());
@@ -169,15 +170,15 @@ public class ServerTestHelper {
         }
         if (docentry.getCreationTime() != null) {
             xml.append("\t<creationtime>\n");
-            xml.append(new SimpleDateFormat("yyyyMMddHHmmss").format(docentry.getCreationTime().getValues().get(0).getDtm()));
+            xml.append(new SimpleDateFormat(DATE_TIME_FORMAT).format(docentry.getCreationTime().getValues().get(0).getDtm()));
             xml.append("\t</creationtime>\n");
         }
-        if (docentry.getId() != null && !docentry.getId().equals("")) {
+        if (docentry.getId() != null && !"".equals(docentry.getId())) {
             xml.append("\t<id>");
             xml.append(docentry.getId().toString());
             xml.append("</id>\n");
         }
-        if (docentry.getEventCode() != null && docentry.getEventCode().size() > 0) {
+        if (docentry.getEventCode() != null && docentry.getEventCode().isEmpty()) {
             xml.append("\t<eventcode>\n");
             for (CodedTerm ct : docentry.getEventCode()) {
                 xml.append(ct.toXML());
@@ -185,18 +186,18 @@ public class ServerTestHelper {
             xml.append("\t</eventcode>\n");
         }
 
-        if (docentry.getFormatCode() != null && !docentry.getFormatCode().equals("")) {
+        if (docentry.getFormatCode() != null && !"".equals(docentry.getFormatCode())) {
             xml.append("\t<formatcode>\n");
             xml.append(docentry.getFormatCode().toXML());
             xml.append("\t</formatcode>\n");
         }
-        if (docentry.getHash() != null && !docentry.getHash().equals("")) {
+        if (docentry.getHash() != null && !"".equals(docentry.getHash())) {
             xml.append("\t<hash>");
             xml.append(docentry.getHash().toString());
             xml.append("</hash>\n");
         }
 
-        if (!docentry.getHealthcareFacilityType().getCode().getString().equals("")) {
+        if (!docentry.getHealthcareFacilityType().getCode().getString().isEmpty()) {
             xml.append("\t<healthcarefacilitytype>\n");
             xml.append(docentry.getHealthcareFacilityType().toXML());
             xml.append("\t</healthcarefacilitytype>\n");
@@ -207,27 +208,27 @@ public class ServerTestHelper {
             xml.append(docentry.getLanguageCode().toString());
             xml.append("</languagecode>\n");
         }
-        if (docentry.getLegalAuthenticator() != null && docentry.getLegalAuthenticator().getValues().size() > 0) {
+        if (docentry.getLegalAuthenticator() != null && docentry.getLegalAuthenticator().getValues().isEmpty()) {
             xml.append("\t<legalauthenticator>\n");
             xml.append(docentry.getLegalAuthenticator().toXML());
             xml.append("\t</legalauthenticator>\n");
         }
-        if (docentry.getMimeType() != null && !docentry.getMimeType().equals("")) {
+        if (docentry.getMimeType() != null && !"".equals(docentry.getMimeType())) {
             xml.append("\t<mimetype>");
             xml.append(docentry.getMimeType().toString());
             xml.append("</mimetype>\n");
         }
-        if (docentry.getPatientID() != null && docentry.getPatientID().getValue() != null && !docentry.getPatientID().getValue().getString().equals("")) {
+        if (docentry.getPatientID() != null && docentry.getPatientID().getValue() != null && !docentry.getPatientID().getValue().getString().isEmpty()) {
             xml.append("\t<patientid>\n");
             xml.append(docentry.getPatientID().toXML());
             xml.append("\t</patientid>\n");
         }
-        if (docentry.getPracticeSettingCode() != null && !docentry.getPracticeSettingCode().getCode().getString().equals("")) {
+        if (docentry.getPracticeSettingCode() != null && !docentry.getPracticeSettingCode().getCode().getString().isEmpty()) {
             xml.append("\t<practicesettingcode>\n");
             xml.append(docentry.getPracticeSettingCode().toXML());
             xml.append("\t</practicesettingcode>\n");
         }
-        if (docentry.getRepoUId() != null && !docentry.getRepoUId().getOid().getString().equals("")) {
+        if (docentry.getRepoUId() != null && !docentry.getRepoUId().getOid().getString().isEmpty()) {
             xml.append("\t<repositoryuniqueid>");
             xml.append(docentry.getRepoUId().toString());
             xml.append("</repositoryuniqueid>\n");
@@ -235,13 +236,13 @@ public class ServerTestHelper {
 
         if (docentry.getServiceStartTime() != null) {
             xml.append("\t<servicestarttime>\n");
-            xml.append(new SimpleDateFormat("yyyyMMddHHmmss").format(docentry.getServiceStartTime().getValues().get(0).getDtm()));
+            xml.append(new SimpleDateFormat(DATE_TIME_FORMAT).format(docentry.getServiceStartTime().getValues().get(0).getDtm()));
             xml.append("\t</servicestarttime>\n");
         }
 
         if (docentry.getServiceStopTime() != null && !docentry.getServiceStopTime().getValues().isEmpty()) {
             xml.append("\t<servicestoptime>\n");
-            xml.append(new SimpleDateFormat("yyyyMMddHHmmss").format(docentry.getServiceStopTime().getValues().get(0).getDtm()));
+            xml.append(new SimpleDateFormat(DATE_TIME_FORMAT).format(docentry.getServiceStopTime().getValues().get(0).getDtm()));
             xml.append("\t</servicestoptime>\n");
         }
 
@@ -251,29 +252,29 @@ public class ServerTestHelper {
             xml.append("\t</size>\n");
         }
 
-        if (docentry.getSourcePatientId() != null && docentry.getSourcePatientId().getValues().size() > 0) {
+        if (docentry.getSourcePatientId() != null && docentry.getSourcePatientId().getValues().isEmpty()) {
             xml.append("\t<sourcepatientid>\n");
             xml.append(docentry.getSourcePatientId().toXML());
             xml.append("\t</sourcepatientid>\n");
         }
 
-        if (docentry.getSourcePatientInfo() != null && docentry.getSourcePatientInfo().getValues().size() > 0) {
+        if (docentry.getSourcePatientInfo() != null && docentry.getSourcePatientInfo().getValues().isEmpty()) {
             xml.append("\t<sourcepatientinfo>\n");
             xml.append(docentry.getSourcePatientInfo().toXML());
             xml.append("\t</sourcepatientinfo>\n");
         }
 
-        if (docentry.getTypeCode() != null && docentry.getTypeCode().getCode() != null && !docentry.getTypeCode().getCode().getString().equals("")) {
+        if (docentry.getTypeCode() != null && docentry.getTypeCode().getCode() != null && !docentry.getTypeCode().getCode().getString().isEmpty()) {
             xml.append("\t<typecode>\n");
             xml.append(docentry.getTypeCode().toXML());
             xml.append("\t</typecode>\n");
         }
-        if (docentry.getUniqueId() != null && !docentry.getUniqueId().getValue().getOid().getString().equals("")) {
+        if (docentry.getUniqueId() != null && !docentry.getUniqueId().getValue().getOid().getString().isEmpty()) {
             xml.append("\t<uniqueid>\n");
             xml.append(docentry.getUniqueId().toXML());
             xml.append("\t</uniqueid>\n");
         }
-        if (docentry.getUri() != null && !docentry.getUri().getString().equals("")) {
+        if (docentry.getUri() != null && !docentry.getUri().getString().isEmpty()) {
             xml.append("\t<uri>");
             xml.append(docentry.getUri().toString());
             xml.append("</uri>\n");
@@ -281,8 +282,7 @@ public class ServerTestHelper {
 
         xml.append("</Document>");
 
-        String newXmlFile = xml.toString().replaceAll("&", "&amp;");
-        return newXmlFile;
+        return xml.toString().replaceAll("&", "&amp;");
     }
 
     public XdsDocumentEntry getDocEntry() {

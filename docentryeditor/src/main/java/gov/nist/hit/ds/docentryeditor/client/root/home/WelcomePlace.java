@@ -1,4 +1,4 @@
-package gov.nist.hit.ds.docentryeditor.client.home;
+package gov.nist.hit.ds.docentryeditor.client.root.home;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;

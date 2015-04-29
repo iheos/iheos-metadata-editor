@@ -53,7 +53,6 @@ public class InternationalString implements ModelElement, Serializable {
     String256 value;
 
     public InternationalString() {
-        // langCode = new String256();
         value = new String256();
     }
 
@@ -90,9 +89,8 @@ public class InternationalString implements ModelElement, Serializable {
      * @see InternationalString class InternationalString
      */
     public String toXML() {
-        String answer = "\t\t<internationalstring>\n\t\t\t<language>" + langCode.toString() + "</language>\n\t\t\t<information>" + value.toString()
+        return "\t\t<internationalstring>\n\t\t\t<language>" + langCode.toString() + "</language>\n\t\t\t<information>" + value.toString()
                 + "</information>\n\t\t</internationalstring>\n";
-        return answer;
     }
 
     /**
@@ -113,7 +111,9 @@ public class InternationalString implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){ return true;}
+        if (this == o){
+            return true;
+        }
         if (!(o instanceof InternationalString)){
             return false;
         }

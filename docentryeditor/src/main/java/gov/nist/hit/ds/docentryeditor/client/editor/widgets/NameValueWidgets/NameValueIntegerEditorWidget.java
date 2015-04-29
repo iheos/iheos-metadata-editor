@@ -43,27 +43,26 @@ public class NameValueIntegerEditorWidget extends GenericEditableListView<Intege
         value = new SpinnerField<Integer>(new NumberPropertyEditor.IntegerPropertyEditor());
         value.setAllowBlank(false);
         value.setWidth("auto");
-//        this.setHeight(75);
         value.setMinValue(1);
         value.setIncrement(5);
 
         Converter<String, Integer> converter = new Converter<String, Integer>() {
             @Override
             public String convertFieldValue(Integer object) {
-                String value = "";
+                String v = "";
                 if (object != null) {
-                    value = object.toString();
+                    v = object.toString();
                 }
-                return value;
+                return v;
             }
 
             @Override
             public Integer convertModelValue(String object) {
-                Integer value = 0;
+                Integer v = 0;
                 if (object != null && object.trim().length() > 0) {
-                    value = Integer.parseInt(object);
+                    v = Integer.parseInt(object);
                 }
-                return value;
+                return v;
             }
         };
 
@@ -92,7 +91,7 @@ public class NameValueIntegerEditorWidget extends GenericEditableListView<Intege
      * @return Integer ValueProvider.
      */
     @Override
-    protected ValueProvider<? super Integer, String> getValueProvider() {
+    protected ValueProvider<Integer, String> getValueProvider() {
         return new IntegerValueProvider();
     }
 

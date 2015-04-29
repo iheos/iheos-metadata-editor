@@ -4,7 +4,7 @@ import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
 import gov.nist.hit.ds.docentryeditor.client.editor.documentEntryEditor.DocEntryEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.SubmissionSetEditorPlace;
-import gov.nist.hit.ds.docentryeditor.client.home.WelcomePlace;
+import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
 
 /**
  * Monitors PlaceChangeEvents and History events and keep them in sync.

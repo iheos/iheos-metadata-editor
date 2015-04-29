@@ -47,31 +47,31 @@ public class XdsParsingTest extends GWTTestCase {
         XdsParser xdsParser = injector.getXdsParser();
         XdsDocumentEntry model = xdsParser.parse(PreParse.getInstance().doPreParse(docentry));
         assertNotNull("Parsed Document Entry is null", model);
-        assertEquals("There has been a problem while parsing authors", model.getAuthors(), ClientTestHelper.instance.getDocEntry().getAuthors());
-        assertEquals("There has been a problem while parsing class code", ClientTestHelper.instance.getDocEntry().getClassCode(), model.getClassCode());
-        assertEquals("There has been a problem while parsing format code", ClientTestHelper.instance.getDocEntry().getFormatCode(), model.getFormatCode());
-        assertEquals("There has been a problem while parsing healthcare facility type", ClientTestHelper.instance.getDocEntry().getHealthcareFacilityType(), model.getHealthcareFacilityType());
-        assertEquals("There has been a problem while parsing comments", ClientTestHelper.instance.getDocEntry().getComments(), model.getComments());
-        assertEquals("There has been a problem while parsing titles", ClientTestHelper.instance.getDocEntry().getTitles(), model.getTitles());
-        assertEquals("There has been a problem while parsing confidentiality codes", ClientTestHelper.instance.getDocEntry().getConfidentialityCodes(), model.getConfidentialityCodes());
-        assertEquals("There has been a problem while parsing creation time", ClientTestHelper.instance.getDocEntry().getCreationTime(), model.getCreationTime());
-        assertEquals("There has been a problem while parsing service start time", ClientTestHelper.instance.getDocEntry().getServiceStartTime(), model.getServiceStartTime());
-        assertEquals("There has been a problem while parsing service stop time", ClientTestHelper.instance.getDocEntry().getServiceStopTime(), model.getServiceStopTime());
-        assertEquals("There has been a problem while parsing event codes", ClientTestHelper.instance.getDocEntry().getEventCode(), model.getEventCode());
-        assertEquals("There has been a problem while parsing uuid", ClientTestHelper.instance.getDocEntry().getId(), model.getId());
-        assertEquals("There has been a problem while parsing mime type", ClientTestHelper.instance.getDocEntry().getMimeType(), model.getMimeType());
-        assertEquals("There has been a problem while parsing language code", ClientTestHelper.instance.getDocEntry().getLanguageCode(), model.getLanguageCode());
-        assertEquals("There has been a problem while parsing legal authenticator", ClientTestHelper.instance.getDocEntry().getLegalAuthenticator(), model.getLegalAuthenticator());
-        assertEquals("There has been a problem while parsing patient id", ClientTestHelper.instance.getDocEntry().getPatientID(), model.getPatientID());
-        assertEquals("There has been a problem while parsing practice setting code", ClientTestHelper.instance.getDocEntry().getPracticeSettingCode(), model.getPracticeSettingCode());
-        assertEquals("There has been a problem while parsing repository unique id", ClientTestHelper.instance.getDocEntry().getRepoUId(), model.getRepoUId());
-        assertEquals("There has been a problem while parsing size", ClientTestHelper.instance.getDocEntry().getSize(), model.getSize());
-        assertEquals("There has been a problem while parsing source patient id", ClientTestHelper.instance.getDocEntry().getSourcePatientId(), model.getSourcePatientId());
-        assertEquals("There has been a problem while parsing source patient info", ClientTestHelper.instance.getDocEntry().getSourcePatientInfo(), model.getSourcePatientInfo());
-        assertEquals("There has been a problem while parsing type code", ClientTestHelper.instance.getDocEntry().getTypeCode(), model.getTypeCode());
-        assertEquals("There has been a problem while parsing uri", ClientTestHelper.instance.getDocEntry().getUri(), model.getUri());
-        assertEquals("There has been a problem while parsing unique id", ClientTestHelper.instance.getDocEntry().getUniqueId(), model.getUniqueId());
-        assertEquals("There has been a problem while parsing hash", ClientTestHelper.instance.getDocEntry().getHash(), model.getHash());
+        assertEquals("There has been a problem while parsing authors", model.getAuthors(), ClientTestHelper.INSTANCE.getDocEntry().getAuthors());
+        assertEquals("There has been a problem while parsing class code", ClientTestHelper.INSTANCE.getDocEntry().getClassCode(), model.getClassCode());
+        assertEquals("There has been a problem while parsing format code", ClientTestHelper.INSTANCE.getDocEntry().getFormatCode(), model.getFormatCode());
+        assertEquals("There has been a problem while parsing healthcare facility type", ClientTestHelper.INSTANCE.getDocEntry().getHealthcareFacilityType(), model.getHealthcareFacilityType());
+        assertEquals("There has been a problem while parsing comments", ClientTestHelper.INSTANCE.getDocEntry().getComments(), model.getComments());
+        assertEquals("There has been a problem while parsing titles", ClientTestHelper.INSTANCE.getDocEntry().getTitles(), model.getTitles());
+        assertEquals("There has been a problem while parsing confidentiality codes", ClientTestHelper.INSTANCE.getDocEntry().getConfidentialityCodes(), model.getConfidentialityCodes());
+        assertEquals("There has been a problem while parsing creation time", ClientTestHelper.INSTANCE.getDocEntry().getCreationTime(), model.getCreationTime());
+        assertEquals("There has been a problem while parsing service start time", ClientTestHelper.INSTANCE.getDocEntry().getServiceStartTime(), model.getServiceStartTime());
+        assertEquals("There has been a problem while parsing service stop time", ClientTestHelper.INSTANCE.getDocEntry().getServiceStopTime(), model.getServiceStopTime());
+        assertEquals("There has been a problem while parsing event codes", ClientTestHelper.INSTANCE.getDocEntry().getEventCode(), model.getEventCode());
+        assertEquals("There has been a problem while parsing uuid", ClientTestHelper.INSTANCE.getDocEntry().getId(), model.getId());
+        assertEquals("There has been a problem while parsing mime type", ClientTestHelper.INSTANCE.getDocEntry().getMimeType(), model.getMimeType());
+        assertEquals("There has been a problem while parsing language code", ClientTestHelper.INSTANCE.getDocEntry().getLanguageCode(), model.getLanguageCode());
+        assertEquals("There has been a problem while parsing legal authenticator", ClientTestHelper.INSTANCE.getDocEntry().getLegalAuthenticator(), model.getLegalAuthenticator());
+        assertEquals("There has been a problem while parsing patient id", ClientTestHelper.INSTANCE.getDocEntry().getPatientID(), model.getPatientID());
+        assertEquals("There has been a problem while parsing practice setting code", ClientTestHelper.INSTANCE.getDocEntry().getPracticeSettingCode(), model.getPracticeSettingCode());
+        assertEquals("There has been a problem while parsing repository unique id", ClientTestHelper.INSTANCE.getDocEntry().getRepoUId(), model.getRepoUId());
+        assertEquals("There has been a problem while parsing size", ClientTestHelper.INSTANCE.getDocEntry().getSize(), model.getSize());
+        assertEquals("There has been a problem while parsing source patient id", ClientTestHelper.INSTANCE.getDocEntry().getSourcePatientId(), model.getSourcePatientId());
+        assertEquals("There has been a problem while parsing source patient info", ClientTestHelper.INSTANCE.getDocEntry().getSourcePatientInfo(), model.getSourcePatientInfo());
+        assertEquals("There has been a problem while parsing type code", ClientTestHelper.INSTANCE.getDocEntry().getTypeCode(), model.getTypeCode());
+        assertEquals("There has been a problem while parsing uri", ClientTestHelper.INSTANCE.getDocEntry().getUri(), model.getUri());
+        assertEquals("There has been a problem while parsing unique id", ClientTestHelper.INSTANCE.getDocEntry().getUniqueId(), model.getUniqueId());
+        assertEquals("There has been a problem while parsing hash", ClientTestHelper.INSTANCE.getDocEntry().getHash(), model.getHash());
     }
 
     public void testSaveFile() {
@@ -79,6 +79,7 @@ public class XdsParsingTest extends GWTTestCase {
         MetadataEditorGinInjector injector = MetadataEditorGinInjector.INSTANCE;
         XdsParser xdsParser = injector.getXdsParser();
         XdsDocumentEntry model = xdsParser.parse(PreParse.getInstance().doPreParse(docentry));
+        assertNotNull(model);
     }
 
 

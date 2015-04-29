@@ -97,10 +97,8 @@ public class DTM implements ModelElement, Serializable {
      */
     @Override
     public boolean verify() throws String256Exception {
-        if (dtm.toString().length() < 13) {
-            if (dtm.toString().matches("[0-9]*")) {
+        if (dtm.toString().length() < 13 && dtm.toString().matches("[0-9]*")) {
                 return true;
-            }
         }
         return false;
     }

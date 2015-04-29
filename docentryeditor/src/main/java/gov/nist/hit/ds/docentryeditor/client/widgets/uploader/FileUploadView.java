@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FileUploadView extends AbstractView<FileUploadPresenter> {
+    public static final int INSTRUCTIONS_BOTTOM_MARGIN = 10;
     private FormPanel form;
     private FramedPanel panel;
     private TextButton btnSubmit;
@@ -32,6 +33,7 @@ public class FileUploadView extends AbstractView<FileUploadPresenter> {
 
     private FileUploadField file;
 
+    private static final int FORM_MARGIN = 5;
     private static final int UPLOADER_WIDTH=500;
     private static final int UPLOADER_HEIGHT=120;
 
@@ -62,11 +64,10 @@ public class FileUploadView extends AbstractView<FileUploadPresenter> {
         panel.setButtonAlign(BoxLayoutPack.CENTER);
         panel.setWidth(UPLOADER_WIDTH);
         panel.setHeight(UPLOADER_HEIGHT);
-        panel.getElement().setMargins(5);
+        panel.getElement().setMargins(FORM_MARGIN);
         panel.setBorders(false);
 
         form = new FormPanel();
-        form.setStyleName("form-margin");
         form.setAction("ServletUpload");
         form.setEncoding(FormPanel.ENCODING_MULTIPART);
         form.setMethod(FormPanel.METHOD_POST);
@@ -83,7 +84,6 @@ public class FileUploadView extends AbstractView<FileUploadPresenter> {
                 if (!file.getValue().matches(".*\\.xml")) {
                     Info.display("File Invalid", "XML File Required");
                     btnSubmit.disable();
-                    // file.isValid();
                 } else {
                     Info.display("File Changed", "You selected " + file.getValue());
                     btnSubmit.enable();
@@ -95,7 +95,7 @@ public class FileUploadView extends AbstractView<FileUploadPresenter> {
 
         HtmlLayoutContainer uploadGuidance=new HtmlLayoutContainer(ToolTipResources.INSTANCE.getUploadFileTooltip());
         EditorFieldLabel fileField=new EditorFieldLabel(file, "Metadata file (*.xml)");
-        vcontainer.add(uploadGuidance,new VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
+        vcontainer.add(uploadGuidance,new VerticalLayoutData(1,-1,new Margins(0,0, INSTRUCTIONS_BOTTOM_MARGIN,0)));
         vcontainer.add(fileField, new VerticalLayoutData(1,-1,new Margins(0,0,0,0)));
 
         btnSubmit = new TextButton("Open");
