@@ -10,7 +10,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.DTM;
  * <p>
  * <b>This class represents the widget which matches DTM model type</b>
  * </p>
- * @deprecated use {@link gov.nist.hit.ds.docentryeditor.client.editor.widgets.NameValueWidgets.NameValueDTMEditorWidget} instead.
+ * @deprecated use {@link gov.nist.hit.ds.docentryeditor.client.editor.widgets.namevalue.NameValueDTMEditorWidget} instead.
  */
 @Deprecated
 public class DTMEditorWidget extends Composite implements Editor<DTM> {

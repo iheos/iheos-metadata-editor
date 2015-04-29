@@ -73,20 +73,21 @@ public abstract class AbstractView<P extends AbstractPresenter<?>> implements Is
      * This is an abstract method supposed to construct the view as a widget.
      * @return view as a Widget.
      */
-    abstract protected Widget buildUI();
+    protected abstract Widget buildUI();
 
     /**
      * This is an abstract method supposed to bind the different widgets of the view
      * with action defined in the presenter.
      */
-    abstract protected void bindUI();
+    protected abstract void bindUI();
 
 
     // impl
     @Override
     public Widget asWidget() {
-        if (ui == null || cp == null)
+        if (ui == null || cp == null) {
             init();
+        }
         return cp;
     }
 

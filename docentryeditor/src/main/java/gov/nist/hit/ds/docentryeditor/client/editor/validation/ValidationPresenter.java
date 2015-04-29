@@ -10,6 +10,6 @@ public class ValidationPresenter extends AbstractPresenter<ValidationView> {
      */
     @Override
     public void init() {
-
+        // not implemented yet
     }
 }

@@ -91,7 +91,6 @@ public class XdsSubmissionSet  implements XdsModelElement,Serializable {
      * The title of the SubmissionSet.
      * [Optional] regardless the standard (XDS DS, XDS DR, XDM MC, XDR DS, XDR MS).
      */
-    // FIXME List or not?
     private List<InternationalString> title;
 
     /**

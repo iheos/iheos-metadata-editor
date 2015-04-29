@@ -2,8 +2,8 @@ package gov.nist.hit.ds.docentryeditor.client.utils;
 
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
-import gov.nist.hit.ds.docentryeditor.client.editor.documentEntryEditor.DocEntryEditorPlace;
-import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.SubmissionSetEditorPlace;
+import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocEntryEditorPlace;
+import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
 
 /**

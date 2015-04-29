@@ -3,6 +3,8 @@ package gov.nist.hit.ds.docentryeditor.client.parser;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.DOMException;
 
+import java.util.logging.Logger;
+
 /**
  *
  * <b>This class prepares a XML file to be parsed</b>
@@ -47,6 +49,7 @@ import com.google.gwt.xml.client.DOMException;
  */
 public class PreParse {
 
+	private static final Logger LOGGER = Logger.getLogger(PreParse.class.getName());
 	/**
 	 * <p>
 	 *
@@ -70,7 +73,7 @@ public class PreParse {
 	 *
 	 * @see gov.nist.hit.ds.docentryeditor.client.parser.PreParse
 	 */
-	private final static PreParse PRE_PARSE = new PreParse();
+	private static final PreParse PRE_PARSE = new PreParse();
 
 	public static PreParse getInstance() {
 		return PRE_PARSE;
@@ -122,6 +125,7 @@ public class PreParse {
 				}
 			}
 		} catch (DOMException e) {
+			LOGGER.warning(e.getMessage());
 			Window.alert("Could not parse XML document.");
 		}
 		documentXml = xmlWithoutEscape.toString();

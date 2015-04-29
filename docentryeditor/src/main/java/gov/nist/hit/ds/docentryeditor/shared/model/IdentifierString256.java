@@ -15,21 +15,7 @@ import java.io.Serializable;
  * </li>
  * </ul>
  * </p>
- * <p>
- * </p>
- * <p>
- * It contains a toXML method to return the Identifier in XML format.<br>
- * This class also contains getters/setters.</br> In addition, it has verify
- * method to check its syntax.
- * </p>
- * <p/>
- * <p>
- * <b>See below each method mentioned above.</b> <br>
- * {@link #verify() method verify}</br> {@link #toXML() method toXML} <br>
- * </p>
- *
- * @see XdsDocumentEntry class DocumentModel
- * @see ModelElement class ModelElement <
+ * @see ModelElement class ModelElement
  */
 public class IdentifierString256 implements ModelElement, Serializable {
 
@@ -38,30 +24,35 @@ public class IdentifierString256 implements ModelElement, Serializable {
     /**
      * <p>
      * <p/>
-     * <b>String256 value</b> - The value of the identifier [Mandatory].<br>
+     * The value of the identifier [Mandatory].<br>
      * Type: {@link String256}</br>
      * </p>
      *
      * @see String256 class String256
-     * @see IdentifierString256
      */
     @NotNull
     private String256 value;
 
     /**
-     * <b>String256 idType</b> - The type of the identifier [Mandatory].<br>
+     * The type of the identifier [Mandatory].<br>
      * Type: {@link String256}</br>
-     *
-     * @see IdentifierString256
      */
     @NotNull
     private String256 idType;
 
+    /**
+     * Parametrized constructor.
+     * @param valueId Value of the identifier object
+     * @param idTypeId type of identifier object
+     */
     public IdentifierString256(String256 valueId, String256 idTypeId) {
         value = valueId;
         idType = idTypeId;
     }
 
+    /**
+     * Default constructor.
+     */
     public IdentifierString256() {
         value = new String256();
         idType = new String256();
@@ -85,33 +76,23 @@ public class IdentifierString256 implements ModelElement, Serializable {
 
     /**
      * <p>
-     * <b>Method toXML</b> <br>
-     * This method will be called to build a XML file by the
-     * {@link XdsDocumentEntry} with the information taken from the local
-     * Identifier.<br/>
-     * </p>
+     * <b>Method toXML</b> <br/>
+     * It generates the xml for an identifier of type String256 (custom XML format).
      *
      * @return String which contains the Identifier in XML format
-     * @see IdentifierString256
      */
     public String toXML() {
-        String answer = null;
-        answer = "\t\t<identifier>\n\t\t\t<value>" + value.getString().replace("&","&amp;") + "</value>\n\t\t\t<idtype>" + idType.toString()
+      return "\t\t<identifier>\n\t\t\t<value>" + value.getString().replace("&","&amp;") + "</value>\n\t\t\t<idtype>" + idType.toString()
                 + "</idtype>\n\t\t</identifier>\n";
-
-        return answer;
     }
 
     /**
      * <p>
-     * <b>Method verify</b> <br>
-     * This method will be called to check whether the syntax's
-     * {@link IdentifierString256} is correct </br>
+     * This method will be called to check whether the syntax is correct </br>
      * </p>
      *
      * @return boolean true if the syntax is correct, else return false
      * @throws String256Exception if there is a String256 with more than 256 characters
-     * @see IdentifierString256
      */
     @Override
     public boolean verify() throws String256Exception {
@@ -129,8 +110,12 @@ public class IdentifierString256 implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof IdentifierString256)) return false;
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof IdentifierString256)){
+            return false;
+        }
         IdentifierString256 that = (IdentifierString256) o;
         if (idType != null ? !idType.equals(that.idType) : that.idType != null) {
             return false;
