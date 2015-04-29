@@ -11,6 +11,10 @@ import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
  * Widget to display a warning message in a red bordered panel at the bottom of the page
  */
 public class PageWarningPanel extends VerticalLayoutContainer{
+
+    private static final int LEFT_MARGIN = 5;
+    private static final int HEIGHT = 100;
+
     /**
      * Default constructor
      */
@@ -24,14 +28,11 @@ public class PageWarningPanel extends VerticalLayoutContainer{
 
         // render the icon warning message
         HorizontalLayoutContainer hlc=new HorizontalLayoutContainer();
-        hlc.add(i, new HorizontalLayoutContainer.HorizontalLayoutData(-1, -1, new Margins(0, 0, 0, 5)));
-        hlc.add(l, new HorizontalLayoutContainer.HorizontalLayoutData(1, -1, new Margins(0, 0, 0, 5)));
+        hlc.add(i, new HorizontalLayoutContainer.HorizontalLayoutData(-1, -1, new Margins(0, 0, 0, LEFT_MARGIN)));
+        hlc.add(l, new HorizontalLayoutContainer.HorizontalLayoutData(1, -1, new Margins(0, 0, 0, LEFT_MARGIN)));
 
         // set the red bordered warning panel
-        this.add(hlc, new VerticalLayoutData(1,100));
-        // this.setHeaderVisible(false);
-        // this.setBodyBorder(false);
-        // this.setHeight(100);
+        this.add(hlc, new VerticalLayoutData(1, HEIGHT));
         this.setStyleName("warning-panel");
     }
 }

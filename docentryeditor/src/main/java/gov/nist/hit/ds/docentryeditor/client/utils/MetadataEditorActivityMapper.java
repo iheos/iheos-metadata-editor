@@ -6,7 +6,7 @@ import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 import gov.nist.hit.ds.docentryeditor.client.editor.documentEntryEditor.DocEntryEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.SubmissionSetEditorPlace;
-import gov.nist.hit.ds.docentryeditor.client.home.WelcomePlace;
+import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
 
 import javax.inject.Inject;
 

@@ -52,7 +52,9 @@ public class SubmissionMenuData<M extends XdsModelElement> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o){
+            return true;
+        }
         if (!(o instanceof SubmissionMenuData)){
             return false;
         }

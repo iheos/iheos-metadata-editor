@@ -76,10 +76,8 @@ public class OID implements ModelElement, Serializable {
      */
     @Override
     public boolean verify() throws String256Exception {
-        if (oid.verify()) {
-            if (oid.toString().matches("[0-9](\\.[0-9]+)*(\\^[0-9]+)?")) {
-                return true;
-            }
+        if (oid.verify() && oid.toString().matches("[0-9](\\.[0-9]+)*(\\^[0-9]+)?")) {
+            return true;
         }
         return false;
     }

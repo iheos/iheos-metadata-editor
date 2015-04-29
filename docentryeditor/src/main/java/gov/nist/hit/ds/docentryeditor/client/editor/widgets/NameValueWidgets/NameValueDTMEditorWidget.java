@@ -43,7 +43,7 @@ public class NameValueDTMEditorWidget extends GenericEditableListView<DTM, Date>
         super(widgetTitle, new ListStore<DTM>(PROPS.key()));
         // init list store that will handle the list of DTM objects
         values = new ListStoreEditor<DTM>(getStore());
-        bind();
+        bindUI();
     }
 
     /**
@@ -65,16 +65,9 @@ public class NameValueDTMEditorWidget extends GenericEditableListView<DTM, Date>
     }
 
     /**
-     * Method that constructs the widget itself.
-     */
-    private void buildUI() {
-
-    }
-
-    /**
      * Method binding the view with actions.
      */
-    private void bind() {
+    private void bindUI() {
         // FIXME not working asked a question on stackoverflow waiting for answers
 //        editing.addCompleteEditHandler(new CompleteEditEvent.CompleteEditHandler<DTM>() {
 //            @Override

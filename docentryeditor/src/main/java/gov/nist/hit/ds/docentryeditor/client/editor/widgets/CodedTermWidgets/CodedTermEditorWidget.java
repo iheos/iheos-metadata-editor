@@ -193,15 +193,15 @@ public class CodedTermEditorWidget extends Composite implements Editor<CodedTerm
      * true). This will warn the user through the editor widget if he didn't
      * input anything in field which does not allow blank.
      *
-     * @param b_displayName  true to allow blank to the name field, false otherwise
-     * @param b_code         true to allow blank to the code field, false otherwise
-     * @param b_codingScheme true to allow blank to the coding scheme field, false
+     * @param isDisplayNameBlank  true to allow blank to the name field, false otherwise
+     * @param isCodeBlank         true to allow blank to the code field, false otherwise
+     * @param isCodingSchemeBlank true to allow blank to the coding scheme field, false
      *                       otherwise
      */
-    public void setAllowBlanks(boolean b_displayName, boolean b_code, boolean b_codingScheme) {
-        displayName.setAllowBlank(b_displayName);
-        code.setAllowBlank(b_code);
-        codingScheme.setAllowBlank(b_codingScheme);
+    public void setAllowBlanks(boolean isDisplayNameBlank, boolean isCodeBlank, boolean isCodingSchemeBlank) {
+        displayName.setAllowBlank(isDisplayNameBlank);
+        code.setAllowBlank(isCodeBlank);
+        codingScheme.setAllowBlank(isCodingSchemeBlank);
     }
 
     /**

@@ -65,11 +65,11 @@ public class IdentifierOIDEditorWidget extends Composite implements
      * true). This will warn the user through the editor widget if he didn't
      * input anything in field which does not allow blank.
      *
-     * @param b_value  true to allow blank to the value field, false otherwise
-     * @param b_idType true to allow blank to the idType field, false otherwise
+     * @param doesValueAllowBlank  true to allow blank to the value field, false otherwise
+     * @param doesTypeAllowBlank true to allow blank to the idType field, false otherwise
      */
-    public void setAllowBlanks(boolean b_value, boolean b_idType) {
-        value.setAllowBlank(b_value);
-        idType.setAllowBlank(b_idType);
+    public void setAllowBlanks(boolean doesValueAllowBlank, boolean doesTypeAllowBlank) {
+        value.setAllowBlank(doesValueAllowBlank);
+        idType.setAllowBlank(doesTypeAllowBlank);
     }
 }

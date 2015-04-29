@@ -7,7 +7,8 @@ import gov.nist.hit.ds.docentryeditor.shared.model.*;
  * Created by onh2 on 10/2/2014.
  */
 public class ClientTestHelper {
-    public final static ClientTestHelper instance = new ClientTestHelper();
+    public static final ClientTestHelper INSTANCE = new ClientTestHelper();
+    public static final String DATE_TIME_FORMAT = "yyyyMMddHHmmss";
     private XdsDocumentEntry docentry;
 
     private ClientTestHelper() {
@@ -49,7 +50,7 @@ public class ClientTestHelper {
         NameValueDTM creation = new NameValueDTM();
         creation.setName(new String256("creationTime"));
         creation.getValues().clear();
-        creation.getValues().add(new DTM((DateTimeFormat.getFormat("yyyyMMddHHmmss").parse("20131126214203"))));
+        creation.getValues().add(new DTM(DateTimeFormat.getFormat(DATE_TIME_FORMAT).parse("20131126214203")));
         docentry.setCreationTime(creation);
         // ---- EVENT CODES
         docentry.getEventCode().add(new CodedTerm("Op-1", "Operations", "urn:uuid:f4f85eac-e6cb-4883-b524-f2705395555d"));
@@ -75,13 +76,13 @@ public class ClientTestHelper {
         NameValueDTM start = new NameValueDTM();
         start.setName(new String256("startTime"));
         start.getValues().clear();
-        start.getValues().add(new DTM((DateTimeFormat.getFormat("yyyyMMddHHmmss").parse("20131202201000"))));
+        start.getValues().add(new DTM(DateTimeFormat.getFormat("yyyyMMddHHmmss").parse("20131202201000")));
         docentry.setServiceStartTime(start);
         // ---- SERVICE STOP TIME
         NameValueDTM stop = new NameValueDTM();
         stop.setName(new String256("stopTime"));
         stop.getValues().clear();
-        stop.getValues().add(new DTM((DateTimeFormat.getFormat("yyyyMMddHHmmss").parse("20140213101500"))));
+        stop.getValues().add(new DTM(DateTimeFormat.getFormat("yyyyMMddHHmmss").parse("20140213101500")));
         docentry.setServiceStopTime(stop);
         // ---- SIZE
         docentry.getSize().setName(new String256("size"));

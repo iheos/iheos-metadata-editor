@@ -15,7 +15,7 @@ import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.Submissi
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.AuthorWidgets.AuthorsListEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer;
-import gov.nist.hit.ds.docentryeditor.client.home.WelcomeActivity;
+import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomeActivity;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.client.root.CenterPanel;
 import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
@@ -38,7 +38,7 @@ import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadMVP;
 @GinModules(MetadataEditorGinModule.class)
 public interface MetadataEditorGinInjector extends Ginjector {
 
-    public static MetadataEditorGinInjector INSTANCE = GWT.create(MetadataEditorGinInjector.class);
+    MetadataEditorGinInjector INSTANCE = GWT.create(MetadataEditorGinInjector.class);
 
     // -----------------------------------------
     // ~ Utils
@@ -51,7 +51,6 @@ public interface MetadataEditorGinInjector extends Ginjector {
     // ~ Root
     MetadataEditorAppView getMetadataEditorAppView();
     CenterPanel getCenterPanel();
-    // NorthPanel getNorthPanel();
 
     // ------------------------------------------
     // ~ Various widgets

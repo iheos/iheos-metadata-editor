@@ -2,20 +2,13 @@ package gov.nist.hit.ds.docentryeditor.client.root.submission;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceController;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.web.bindery.requestfactory.shared.Receiver;
-import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.widget.core.client.Dialog;
-import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import gov.nist.hit.ds.docentryeditor.client.editor.documentEntryEditor.DocEntryEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.submissionSetEditor.SubmissionSetEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.event.*;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
-import gov.nist.hit.ds.docentryeditor.client.home.WelcomePlace;
+import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
@@ -231,20 +224,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                         logger.info("saveAsXMLFile call succeed");
                         logger.info("Generated filename sent to the client \n" + response);
                         logger.info("File's URL: " + GWT.getHostPageBaseURL() + "files/" + response);
-                        Window.open(GWT.getHostPageBaseURL() + "files/" + response, response + " Metadata File", "enabled");
-                        Dialog d = new Dialog();
-                        HTMLPanel htmlP = new HTMLPanel("<a href='" + GWT.getHostPageBaseURL() + "files/" + response + "'>"
-                                + GWT.getHostPageBaseURL() + "files/" + response + "</a>");
-                        VerticalLayoutContainer vp = new VerticalLayoutContainer();
-                        vp.add(new Label("Your download is in progress, please allow this application to open popups with your browser..."),
-                                new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(10, 5, 10, 5)));
-                        vp.add(htmlP, new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(10, 5, 10, 5)));
-                        d.add(vp);
-                        d.setPredefinedButtons(Dialog.PredefinedButton.OK);
-                        d.setButtonAlign(BoxLayoutContainer.BoxLayoutPack.CENTER);
-                        d.setHideOnButtonClick(true);
-                        d.setHeadingText("XML Metadata File Download");
-                        d.show();
+                        view.openPopup(response);
                     }
                 });
             }

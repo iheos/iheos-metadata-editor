@@ -30,8 +30,8 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
     private Metadata m;
     private XdsMetadata xdsMetadata;
 
-    private final static Logger LOGGER = Logger.getLogger(XdsMetadataParserServicesImpl.class.getName());
-    private final static List<String> SCHEMES = new ArrayList<String>();
+    private static final Logger LOGGER = Logger.getLogger(XdsMetadataParserServicesImpl.class.getName());
+    private static final List<String> SCHEMES = new ArrayList<String>();
     private Map<String, List<String>> codes = null;
 
     public XdsMetadataParserServicesImpl(){
@@ -173,7 +173,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         de.setUri(new String256(asString(m.getSlotValue(ele, "URI", 0))));
 
         String sizeString=asString(m.getSlotValue(ele, "size", 0));
-        if (sizeString!=null&&!sizeString.equals("")) {
+        if (sizeString!=null&&!sizeString.isEmpty()) {
             de.getSize().getValues().clear();
             de.getSize().getValues().add(Integer.parseInt(sizeString));
         }
@@ -260,16 +260,18 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             List<String> specialties = m.getSlotValues(authorClas, "authorSpecialty");
             Author a = new Author();
             a.setAuthorPerson(new String256(name));
-            for (String s:institutions)
+            for (String s:institutions) {
                 a.getAuthorInstitutions().add(new String256(s));
-            for (String s:roles)
+            }
+            for (String s:roles) {
                 a.getAuthorRoles().add(new String256(s));
-            for (String s:specialties)
+            }
+            for (String s:specialties) {
                 a.getAuthorSpecialties().add(new String256(s));
+            }
             // TODO telecommunication is missing
             authors.add(a);
         }
-
         return authors;
     }
 
@@ -293,10 +295,10 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                 subSet.getContentTypeCode().getDisplayName().toString(),
                 subSet.getContentTypeCode().getCode().toString());
         m.addExternalId(regPackage,MetadataSupport.XDSSubmissionSet_sourceid_uuid,subSet.getSourceId().getValue().toString(),"sourceId");
-        if (subSet.getHomeCommunityId()!=null && !subSet.getHomeCommunityId().toString().equals("")){
+        if (subSet.getHomeCommunityId()!=null && !subSet.getHomeCommunityId().toString().isEmpty()){
             m.setHome(regPackage,subSet.getHomeCommunityId().toString());
         }
-        if (subSet.getAvailabilityStatus()!=null && !subSet.getAvailabilityStatus().toString().equals("")){
+        if (subSet.getAvailabilityStatus()!=null && !subSet.getAvailabilityStatus().toString().isEmpty()){
             m.setStatus(regPackage,subSet.getAvailabilityStatus().toString());
         }
         if (!subSet.getIntendedRecipient().getValues().isEmpty()) {
@@ -320,22 +322,22 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             if (documentEntry.getCreationTime().getValues().get(0) != null) {
                 m.addSlot(extObj, "creationTime", formatDate(documentEntry.getCreationTime().getValues().get(0).getDtm()));
             }
-            if (documentEntry.getHash() != null && !documentEntry.getHash().toString().equals("")) {
+            if (documentEntry.getHash() != null && !documentEntry.getHash().toString().isEmpty()) {
                 m.addSlot(extObj, "hash", documentEntry.getHash().toString());
             }
             if (documentEntry.getSize().getValues().get(0) != null) {
                 m.addSlot(extObj, "size", documentEntry.getSize().getValues().get(0).toString());
             }
-            if (documentEntry.getRepoUId() != null && !documentEntry.getRepoUId().toString().equals("")) {
+            if (documentEntry.getRepoUId() != null && !documentEntry.getRepoUId().toString().isEmpty()) {
                 m.addSlot(extObj, "repositoryUniqueId", documentEntry.getRepoUId().toString());
             }
-            if (documentEntry.getUri() != null && !documentEntry.getUri().toString().equals("")) {
+            if (documentEntry.getUri() != null && !documentEntry.getUri().toString().isEmpty()) {
                 m.addSlot(extObj, "URI", documentEntry.getUri().toString());
             }
-            if (documentEntry.getHomeCommunityId() != null && !documentEntry.getHomeCommunityId().toString().equals("")) {
+            if (documentEntry.getHomeCommunityId() != null && !documentEntry.getHomeCommunityId().toString().isEmpty()) {
                 m.setHome(extObj, documentEntry.getHomeCommunityId().toString());
             }
-            if (documentEntry.getAvailabilityStatus() != null && !documentEntry.getAvailabilityStatus().toString().equals("")) {
+            if (documentEntry.getAvailabilityStatus() != null && !documentEntry.getAvailabilityStatus().toString().isEmpty()) {
                 m.setStatus(extObj, documentEntry.getAvailabilityStatus().toString());
             }
             if (documentEntry.getLegalAuthenticator().getValues().get(0) != null) {
@@ -414,13 +416,16 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
 
     private String splitLast(String in, String separator) {
         String[] parts = in.split(separator);
-        if (parts.length <= 1)
+        if (parts.length <= 1) {
             return in;
+        }
         return parts[parts.length - 1];
     }
 
     private String asString(String in) {
-        if (in == null) return "";
+        if (in == null){
+            return "";
+        }
         return in;
     }
 }

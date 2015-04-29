@@ -160,7 +160,7 @@ public enum LanguageCode {
 
     public static LanguageCode getValueOf(String languageCode) {
         for (LanguageCode l : LanguageCode.values()) {
-            if (l.toString().toLowerCase().equals(languageCode.toLowerCase())) {
+            if (l.toString().equalsIgnoreCase(languageCode)) {
                 return l;
             }
         }

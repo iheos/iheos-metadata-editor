@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class SaveFileService implements Serializable {
 
-    private final static Logger LOGGER = Logger.getLogger(SaveFileService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SaveFileService.class.getName());
     private static final long serialVersionUID = 1L;
     private static File FILE_REPOSITORY;
 
@@ -59,8 +59,6 @@ public class SaveFileService implements Serializable {
 
         // return created file's name
         return saveAsXMLFile(filename,fileContent.replace("displayName","name"));
-
-//        return filename;
     }
 
     /**
@@ -76,10 +74,12 @@ public class SaveFileService implements Serializable {
 
         // Random name created for save on server
         String fileName = filename;
-        if (fileName == null || fileName.equals(""))
+        if (fileName == null || fileName.isEmpty()) {
             fileName = UUID.randomUUID().toString();
-        if (!(fileName.matches(".*(\\.[0-9A-Za-z]+)$") || fileName.matches(".*\\.xml$")))
+        }
+        if (!(fileName.matches(".*(\\.[0-9A-Za-z]+)$") || fileName.matches(".*\\.xml$"))) {
             fileName += ".xml";
+        }
 
         // Save xml file content into "files" repository
         LOGGER.info("Metadata xml file creation...");

@@ -8,20 +8,17 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
-import gov.nist.hit.ds.docentryeditor.client.home.WelcomePlace;
+import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
 import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
 import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorActivityMapper;
 import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorAppPlaceHistoryMapper;
 import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorGinInjector;
-
-import java.util.logging.Logger;
 
 /**
  * This is the class to use to create the application.
  */
 public class MetadataEditorApp implements IsWidget {
     private static final MetadataEditorGinInjector INJECTOR = MetadataEditorGinInjector.INSTANCE;
-    protected static final Logger LOGGER = Logger.getLogger(MetadataEditorApp.class.getName());
     private final MetadataEditorEventBus eventBus = INJECTOR.getEventBus();
 
     private SimplePanel activityPanel = new SimplePanel();

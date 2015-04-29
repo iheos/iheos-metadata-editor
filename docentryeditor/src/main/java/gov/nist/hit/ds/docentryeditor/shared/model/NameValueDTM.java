@@ -111,8 +111,12 @@ public class NameValueDTM implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof NameValueDTM)) return false;
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof NameValueDTM)){
+            return false;
+        }
         NameValueDTM that = (NameValueDTM) o;
         if (name != null ? !name.equals(that.name) : that.name != null){
             return false;
