@@ -8,22 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>
- * <b> This class represents a NameValue.</b><br>
- * A NameValue depends on a type T which is implemented during the instantiation
- * </p>
- * <p>
- * It contains a toXML method to return the NameValue in XML format.<br>
- * This class also contains getters/setters.</br> In addition, it has verify
- * method to check its syntax.
- * </p>
- * <p/>
- * <p>
- * <b>See below each method mentioned above.</b> <br>
- * {@link #verify() method verify}</br> {@link #toXML() method toXML} <br>
- * </p>
+ * <b> This class represents a NameValue.</b><br/>
  *
- * @see XdsDocumentEntry class DocumentModel
  * @see ModelElement class ModelElement
  */
 public class NameValueDTM implements ModelElement, Serializable {
@@ -32,9 +18,6 @@ public class NameValueDTM implements ModelElement, Serializable {
     /**
      * <b>String256 name</b> - The name of the NameValue [Mandatory].<br>
      * Type: {@link String256}</br> </p>
-     *
-     * @see String256 class String256
-     * @see NameValueDTM
      */
     @NotNull
     private String256 name;
@@ -42,13 +25,14 @@ public class NameValueDTM implements ModelElement, Serializable {
     /**
      * <b>ArrayList(DTM)</b> - A list of values [Mandatory].<br>
      * Type: ArrayList of {@link DTM}
-     *
-     * @see NameValueDTM
      */
     @NotNull
     @NotEmpty
     private List<DTM> values;
 
+    /**
+     * Default constructor.
+     */
     public NameValueDTM() {
         name = new String256();
         values = new ArrayList<DTM>();
@@ -73,14 +57,10 @@ public class NameValueDTM implements ModelElement, Serializable {
 
     /**
      * <p>
-     * <b>Method toXML</b> <br>
-     * This method will be called to build a XML file by the
-     * {@link XdsDocumentEntry} with the information taken from the local
-     * {@link NameValueDTM}.<br>
-     * </p>
+     * <b>Method toXML</b> <br/>
+     * Generates the XML of the NameValue for DTM type that correspond to the object.
      *
      * @return String which contains the NameValue in XML format
-     * @see NameValueDTM class NameValue
      */
     public String toXML() {
         String answer = "\t\t<namevalue>\n\t\t\t<name>" + name.toString() + "</name>\n\t\t\t<values>\n";
@@ -95,13 +75,11 @@ public class NameValueDTM implements ModelElement, Serializable {
     /**
      * <p>
      * <b>Method verify</b> <br>
-     * This method will be called to check whether the syntax's
-     * {@link NameValueDTM} is correct </br>
+     * This method will be called to check whether the syntax of NameValue for DTM type is correct </br>
      * </p>
      *
      * @return boolean true if the syntax is correct, else return false
      * @throws String256Exception if there is a String256 with more than 256 characters
-     * @see NameValueDTM
      */
     @Override
     public boolean verify() throws String256Exception {

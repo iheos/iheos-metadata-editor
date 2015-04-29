@@ -30,7 +30,11 @@ public class XdsMetadata implements Serializable{
         this.submissionSet = submissionSet;
     }
 
-    public List<XdsDocumentEntry> getDocumentEntries(){return documentEntries;}
+    public List<XdsDocumentEntry> getDocumentEntries(){
+        return documentEntries;
+    }
 
-    public void setDocumentEntries(List<XdsDocumentEntry> documentEntries){this.documentEntries=documentEntries;}
+    public void setDocumentEntries(List<XdsDocumentEntry> documentEntries){
+        this.documentEntries=documentEntries;
+    }
 }

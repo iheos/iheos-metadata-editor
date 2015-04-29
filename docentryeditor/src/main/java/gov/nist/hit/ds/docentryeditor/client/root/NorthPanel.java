@@ -107,8 +107,6 @@ public class NorthPanel extends ContentPanel {
 			@Override
 			public void onSelect(SelectEvent event) {
 				saveButton.enable();
-//                eventBus.fireEditNewEvent(new EditNewEvent());
-//				placeController.goTo(new EditorPlace());
             }
 
 		});

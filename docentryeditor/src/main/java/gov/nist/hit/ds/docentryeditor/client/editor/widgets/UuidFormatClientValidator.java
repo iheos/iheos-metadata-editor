@@ -4,6 +4,7 @@ import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.EditorError;
 import com.sencha.gxt.widget.core.client.form.validator.AbstractValidator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -14,7 +15,7 @@ import java.util.logging.Logger;
 public class UuidFormatClientValidator extends AbstractValidator<String> {
     private static final Logger LOGGER = Logger.getLogger(UuidFormatClientValidator.class.getName());
 
-    static private boolean isLCHexString(String value) {
+    private static boolean isLCHexString(String value) {
         for (int i = 0; i < value.length(); i++) {
             char c = value.charAt(i);
             switch (c) {
@@ -44,8 +45,9 @@ public class UuidFormatClientValidator extends AbstractValidator<String> {
 
     @Override
     public List<EditorError> validate(Editor<String> editor, String value) {
-        if (value == null)
+        if (value == null) {
             return createError(editor, "Can not be null", value);
+        }
         else if (!value.startsWith("urn:uuid:")) {
             if (value.length() == 36) {
                 String tmp = value;
@@ -54,7 +56,6 @@ public class UuidFormatClientValidator extends AbstractValidator<String> {
                     return createError(editor, "Value is not a correct UUID. It does not have the right number of characters. It should be 45 and start with 'urn:uuid:'.", value);
                 }
             }
-//            return createError(editor, "Value does not start with 'urn:uuid:'. It should.", value);
         } else {
             if (value.length() != 45) {
                 String tmp = value;
@@ -62,47 +63,53 @@ public class UuidFormatClientValidator extends AbstractValidator<String> {
                     return createError(editor, "Value is not a correct UUID. It does not have the right number of characters. It should be 45 and start with 'urn:uuid:'.", value);
                 }
             } else {
-                LOGGER.info("else");
                 String rest;
                 rest = value.substring(9);
 
-                if (!isLCHexString(rest.substring(0, 8)))
+                if (!isLCHexString(rest.substring(0, 8))) {
                     return createError(editor, "Value should be Hexadecimal.", value);
+                }
                 rest = rest.substring(8);
 
-                if (!(rest.charAt(0) == '-'))
+                if (!(rest.charAt(0) == '-')) {
                     return createError(editor, "Value's 10th character should be a dash (-).", value);
+                }
                 rest = rest.substring(1);
 
-                if (!isLCHexString(rest.substring(0, 4)))
+                if (!isLCHexString(rest.substring(0, 4))) {
                     return createError(editor, "Value should be Hexadecimal.", value);
+                }
                 rest = rest.substring(4);
 
-                if (!(rest.charAt(0) == '-'))
+                if (!(rest.charAt(0) == '-')) {
                     return createError(editor, "Value's 15th character should be a dash (-).", value);
+                }
 
                 rest = rest.substring(1);
-                if (!isLCHexString(rest.substring(0, 4)))
+                if (!isLCHexString(rest.substring(0, 4))) {
                     return createError(editor, "Value should be Hexadecimal.", value);
+                }
                 rest = rest.substring(4);
 
-                if (!(rest.charAt(0) == '-'))
+                if (!(rest.charAt(0) == '-')) {
                     return createError(editor, "Value's 20th character should be a dash (-).", value);
-
+                }
                 rest = rest.substring(1);
-                if (!isLCHexString(rest.substring(0, 4)))
+                if (!isLCHexString(rest.substring(0, 4))) {
                     return createError(editor, "Value should be Hexadecimal.", value);
+                }
                 rest = rest.substring(4);
 
-                if (!(rest.charAt(0) == '-'))
+                if (!(rest.charAt(0) == '-')) {
                     return createError(editor, "Value's 25th character should be a dash (-).", value);
-
+                }
                 rest = rest.substring(1);
-                if (!isLCHexString(rest.substring(0, 12)))
+                if (!isLCHexString(rest.substring(0, 12))) {
                     return createError(editor, "Value should be Hexadecimal.", value);
+                }
             }
         }
-        return null;
+        return new ArrayList<EditorError>();
     }
 
 }

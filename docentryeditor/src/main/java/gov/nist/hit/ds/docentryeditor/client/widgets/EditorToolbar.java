@@ -17,6 +17,7 @@ public class EditorToolbar extends HorizontalLayoutContainer {
     private static final int SAVE_BUTTON_WIDTH = 60;
     private static final int CANCEL_BUTTON_WIDTH = 110;
     private static final int POPULATE_BUTTON_WIDTH = 85;
+    private static final int TOOBAR_HEIGHT = 35;
 
     private HomeButton homeButton;
     private ToolbarIconButton saveButton;
@@ -39,7 +40,7 @@ public class EditorToolbar extends HorizontalLayoutContainer {
         this.addButton(saveButton);
         this.addButton(cancelButton);
         this.addButton(populateButton);
-
+        this.setHeight(TOOBAR_HEIGHT);
     }
 
     public HandlerRegistration addSaveHandler(SelectEvent.SelectHandler handler){

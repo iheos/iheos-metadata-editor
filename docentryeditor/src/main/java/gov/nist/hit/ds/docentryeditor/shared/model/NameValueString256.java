@@ -9,22 +9,9 @@ import java.util.List;
 
 /**
  * <p>
- * <b> This class represents a NameValueString256.</b><br>
- * A NameValueString256 depends on a type T which is implemented during the
- * instantiation
- * </p>
- * <p>
- * It contains a toXML method to return the NameValueString256 in XML format.<br>
- * This class also contains getters/setters.</br> In addition, it has verify
- * method to check its syntax.
- * </p>
- * <p/>
- * <p>
- * <b>See below each method mentioned above.</b> <br>
- * {@link #verify() method verify}</br> {@link #toXML() method toXML} <br>
+ * <b> This class represents a NameValue for type String256.</b><br>
  * </p>
  *
- * @see XdsDocumentEntry class DocumentModel
  * @see ModelElement class ModelElement
  */
 public class NameValueString256 implements ModelElement, Serializable {
@@ -34,32 +21,36 @@ public class NameValueString256 implements ModelElement, Serializable {
      * <b>String256 name</b> - The name of the NameValueString256 [Mandatory].<br>
      * Type: {@link String256}</br>
      *
-     * @see String256 class String256
-     * @see NameValueString256
      */
     @NotNull
     private String256 name;
 
     /**
-     * <b>ArrayList(String256)</b> - A list of values [Mandatory].<br>
-     * Type: ArrayList of T</br> T could be {@link Integer} or {@link String256}
-     * or {@link DTM}
-     *
-     * @see NameValueString256
+     * A list of values [Mandatory].<br/>
      */
     @NotNull
     @NotEmpty
     private List<String256> values = new ArrayList<String256>();
 
+    /**
+     * Default constructor
+     */
     public NameValueString256() {
         name = new String256();
-        values = new ArrayList<String256>();
     }
 
+    /**
+     * Getter that return a list of String256 objects
+     * @return list of String256 objects
+     */
     public List<String256> getValues() {
         return values;
     }
 
+    /**
+     * This a method is a setter to assign a new list of values (String256)
+     * @param values a list of String256 objects
+     */
     public void setValues(List<String256> values) {
         this.values = values;
     }
@@ -75,13 +66,10 @@ public class NameValueString256 implements ModelElement, Serializable {
     /**
      * <p>
      * <b>Method toXML</b> <br>
-     * This method will be called to build a XML file by the
-     * {@link XdsDocumentEntry} with the information taken from the local
-     * {@link NameValueString256}.<br>
+     * This method will be called to build a XML file (custom format).
      * </p>
      *
      * @return String which contains the NameValueString256 in XML format
-     * @see NameValueString256 class NameValueString256
      */
     public String toXML() {
         String answer = "\t\t<namevalue>\n\t\t\t<name>" + name.toString() + "</name>\n\t\t\t<values>\n";
@@ -96,13 +84,12 @@ public class NameValueString256 implements ModelElement, Serializable {
     /**
      * <p>
      * <b>Method verify</b> <br>
-     * This method will be called to check whether the syntax's
-     * {@link NameValueString256} is correct </br>
+     * This method will be called to check whether the syntax of the String256 NameValue object
+     * is correct or not. </br>
      * </p>
      *
      * @return boolean true if the syntax is correct, else return false
      * @throws String256Exception if there is a String256 with more than 256 characters
-     * @see NameValueString256 class NameValueString256
      */
     @Override
     public boolean verify() throws String256Exception {
@@ -112,8 +99,12 @@ public class NameValueString256 implements ModelElement, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof NameValueString256)) return false;
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof NameValueString256)){
+            return false;
+        }
         NameValueString256 that = (NameValueString256) o;
         if (name != null ? !name.equals(that.name) : that.name != null) {
             return false;

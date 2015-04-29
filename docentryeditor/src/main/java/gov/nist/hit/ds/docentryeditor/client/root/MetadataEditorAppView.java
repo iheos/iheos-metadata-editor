@@ -23,8 +23,8 @@ import javax.inject.Inject;
 public class MetadataEditorAppView extends Viewport {
     private static final int WEST_PANEL_WIDTH = 200;
     private static final int PANELS_MARGINS = 5;
-
-    private CenterPanel center; // main edtior fields
+    // main panel
+    private CenterPanel center;
     private GenericMVP<SubmissionMenuData, SubmissionPanelView, SubmissionPanelPresenter> submissionMVP;
 
     private SimpleContainer simpleContainer;
@@ -61,11 +61,10 @@ public class MetadataEditorAppView extends Viewport {
 
 
         simpleContainer = new SimpleContainer();
-        simpleContainer.add(con, new MarginData(0, 0, /*8*/0, 0));
+        simpleContainer.add(con, new MarginData(0));
         simpleContainer.setWidget(con);
         add(simpleContainer);
 
-        //  north.start();
         submissionMVP.start();
     }
 

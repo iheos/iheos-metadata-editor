@@ -154,10 +154,6 @@ public enum LanguageCode {
 		this.rfcCode = rfcCode;
 	}
 
-	private LanguageCode() {
-		rfcCode = this.name();
-	}
-
     public static LanguageCode getValueOf(String languageCode) {
         for (LanguageCode l : LanguageCode.values()) {
             if (l.toString().equalsIgnoreCase(languageCode)) {
