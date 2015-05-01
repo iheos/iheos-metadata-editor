@@ -64,6 +64,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
     private static final int LISTS_RIGHT_MARGIN = 10;
     private static final String DELETE_ENTRY_TEXT = "Delete entry";
     private static final String ADD_ENTRY_TEXT = "Add";
+    public static final int SAVE_POPUP_WIDTH = 300;
     // instance of the driver for the edition of an author (used for the edition
     // the selected author in authors list)
     private final AuthorEditorDriver authorEditorDriver = GWT.create(AuthorEditorDriver.class);
@@ -685,7 +686,7 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
             d.add(new Label(authorEditorDriver.getErrors().toString()));
             d.getBody().addClassName("pad-text");
             d.setHideOnButtonClick(true);
-            d.setWidth(300);
+            d.setWidth(SAVE_POPUP_WIDTH);
             d.show();
         }
     }

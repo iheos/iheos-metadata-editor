@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 public class DocEntryEditorActivity extends AbstractActivity {
 
+    public static final int VALIDATION_PANEL_HEIGHT = 250;
     @Inject
     private ActivityDisplayer displayer;
 
@@ -85,7 +86,7 @@ public class DocEntryEditorActivity extends AbstractActivity {
 
         blc.setCenterWidget(center);
 
-        BorderLayoutData southData = new BorderLayoutData(250);
+        BorderLayoutData southData = new BorderLayoutData(VALIDATION_PANEL_HEIGHT);
         southData.setCollapsible(true);
         southData.setSplit(true);
         southData.setCollapsed(true);

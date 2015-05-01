@@ -47,6 +47,7 @@ import java.util.Map;
  * @see gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocumentEntryEditorPresenter
  */
 public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPresenter> implements Editor<XdsDocumentEntry> {
+    private static final int FIELD_BOTTOM_MARGIN = 10;
     private final VerticalLayoutContainer form = new VerticalLayoutContainer();
 
     private VerticalLayoutContainer requiredFields = new VerticalLayoutContainer();
@@ -158,9 +159,9 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         container.add(editorTopToolbar, new VerticalLayoutData(-1,-1));
         container.add(new HtmlLayoutContainer("<h2>Document Entry Editor</h2>"));
         container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"));
-        container.add(fp1, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
+        container.add(fp1, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"));
-        container.add(fp2, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
+        container.add(fp2, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
 
         // //////////////////////////////////////
         // Simple fields label and options (init)
@@ -222,7 +223,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // //////////////////////////////////////////////////////////
         VerticalLayoutContainer filePropertiesFieldsContainer = new VerticalLayoutContainer();
         filePropertiesFieldsContainer.add(hashLabel, new VerticalLayoutData(1, -1));
-        filePropertiesFieldsContainer.add(size.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
+        filePropertiesFieldsContainer.add(size.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
 
         VerticalLayoutContainer repositoryAttributesFieldsContainer = new VerticalLayoutContainer();
         repositoryAttributesFieldsContainer.add(uriLabel, new VerticalLayoutData(1, -1));
@@ -302,25 +303,25 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // Adding and ordering fieldsets in REQUIRED panel
         // /////////////////////////////////////////////////////////
         /* simple required fields added to FramedPanel container */
-        requiredFields.add(generalRequiredFieldSet, new VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
-        requiredFields.add(creationTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
+        requiredFields.add(generalRequiredFieldSet, new VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        requiredFields.add(creationTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
 
         // /////////////////////////////////////////////////////////
         // Adding and ordering fieldsets in OPTIONAL fields panel
         // /////////////////////////////////////////////////////////
         /* simple optional fields added to FramedPanel container */
-        optionalFields.add(filePropertiesFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(repositoryAttributesFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(titlesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(commentsGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(authorsFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(legalAuthenticator.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(sourcePatientId.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(sourcePatientInfo.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(confidentialityCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(eventCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(serviceStartTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
-        optionalFields.add(serviceStopTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
+        optionalFields.add(filePropertiesFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(repositoryAttributesFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(titlesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(commentsGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(authorsFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(legalAuthenticator.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(sourcePatientId.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(sourcePatientInfo.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(confidentialityCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(eventCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(serviceStartTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(serviceStopTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
 
         SimpleContainer bottomToolbarContainer = new SimpleContainer();
         bottomToolbarContainer.add(editorBottomToolbar);
@@ -533,7 +534,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
                 "<center><i>M Male - F Female - O Other - U Unknown</i></center>" +
                 "<b>PID-11</b> should include the patient address.<br/>" +
                 "PID-2, PID-4, PID-12 and PID-19 should not be used.<br/>"));
-        sourcePatientInfo.addFieldValidator(new RegExValidator("^PID-(((3|5|11|2|4|12|19)\\|)|(8\\|(M|F|O|U)$)|(7\\|(((19|20)\\d\\d)(0?[1-9]|1[012])(0?[1-9]|[12][0-9]|3[01])))$)", "This value is not a correct source patient info."));
+//        sourcePatientInfo.addFieldValidator(new RegExValidator("^PID-(((3|5|11|2|4|12|19)\\|)|(8\\|(M|F|O|U)$)|(7\\|(((19|20)\\d\\d)(0?[1-9]|1[012])(0?[1-9]|[12][0-9]|3[01])))$)", "This value is not a correct source patient info."));
         // title
         titlesGrid.setToolbarHelpButtonTooltip(new ToolTipConfig("Help on Titles", "Represents the title of the document. Clinical documents often do not " +
                 "have a title, and are collectively referred to by the display name of the " +

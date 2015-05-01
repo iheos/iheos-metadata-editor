@@ -35,7 +35,7 @@ public abstract class GenericEditableListView<M, N> extends GenericEditableGrid<
     @Override
     protected ColumnModel<M> buildColumnModel() {
         List<ColumnConfig<M, ?>> columnsConfigs = new ArrayList<ColumnConfig<M, ?>>();
-        cc1 = new ColumnConfig<M, N>(getValueProvider(), COLUMN_WIDTH);
+        cc1 = new ColumnConfig<M, N>(getValueProvider(), COLUMN_WIDTH,"Value");
         columnsConfigs.add(cc1);
 
         return new ColumnModel<M>(columnsConfigs);
@@ -43,25 +43,12 @@ public abstract class GenericEditableListView<M, N> extends GenericEditableGrid<
 
     public void addEditorConfig(Field<N> field) {
         // TODO consider exit edition on ENTER key press
-        editing.addEditor(cc1, field);
+        addColumnEditorConfig(cc1, field);
     }
 
     public <O> void addEditorConfig(Converter<N, O> converter, final Field<O> field) {
         // TODO consider exit edition on ENTER key press
         editing.addEditor(cc1, converter, field);
-    }
-
-    /**
-     * Should not be used, use addEditorConfig(Field<N> field) instead.
-     *
-     * @deprecated use #addEditorConfig(Field<N> field) instead.
-     * @param columnConfig Grid's Column Configuration which will be associated to a type of editable field
-     * @param field        Editable field which will be used to edit the grid's Column
-     */
-    @Deprecated
-    @Override
-    public <N> void addColumnEditorConfig(ColumnConfig<M, N> columnConfig, final Field<N> field) {
-        super.addColumnEditorConfig(columnConfig, field);
     }
 
     public void setOneClickToEdit() {

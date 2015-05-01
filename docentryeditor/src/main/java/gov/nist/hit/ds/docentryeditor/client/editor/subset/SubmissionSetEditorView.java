@@ -46,6 +46,7 @@ import java.util.Map;
  * Created by onh2 on 3/2/2015.
  */
 public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPresenter> implements Editor<XdsSubmissionSet>{
+    public static final int FIELD_BOTTOM_MARGIN = 10;
     private final VerticalLayoutContainer mainContainer = new VerticalLayoutContainer();
 
     private VerticalLayoutContainer requiredFields = new VerticalLayoutContainer();
@@ -130,9 +131,9 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         container.add(editorTopToolbar, new VerticalLayoutContainer.VerticalLayoutData(-1, -1));
         container.add(new HtmlLayoutContainer("<h2>Submission Set Editor</h2>"));
         container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"));
-        container.add(requiredFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
+        container.add(requiredFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"));
-        container.add(optionalFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, 10, 0)));
+        container.add(optionalFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
 
         // /////////////////////////////////////// //
         // - Required "simple" fields.
@@ -183,14 +184,14 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         authorsFieldSet.add(authors.asWidget());
 
         // Add every required fields to the required fields panel.
-        requiredFields.add(simpleRequiredFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, 10, 0)));
-        requiredFields.add(submissionTime.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, 10, 0)));
+        requiredFields.add(simpleRequiredFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        requiredFields.add(submissionTime.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         // Add every optional fields to the optional fields panel.
-        optionalFields.add(simpleOptionalFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
-        optionalFields.add(authorsFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
-        optionalFields.add(intendedRecipient.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
-        optionalFields.add(titleGrid.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
-        optionalFields.add(commentsGrid.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,10,0)));
+        optionalFields.add(simpleOptionalFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        optionalFields.add(authorsFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        optionalFields.add(intendedRecipient.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        optionalFields.add(titleGrid.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        optionalFields.add(commentsGrid.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
 
         // configure help information and client validations for the entire editor.
         setWidgetsInfo();
