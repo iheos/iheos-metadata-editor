@@ -403,6 +403,14 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         // EDITING //
         editing = new GridRowEditing<M>(this);
         editing.setClicksToEdit(clicksToEdit);
+        TextButton saveButton=new TextButton("Save with errors");
+        editing.getButtonBar().add(saveButton);
+        saveButton.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent selectEvent) {
+                editing.completeEditing();
+            }
+        });
         editing.addCompleteEditHandler(new CompleteEditEvent.CompleteEditHandler<M>() {
             @Override
             public void onCompleteEdit(CompleteEditEvent<M> completeEditEvent) {
