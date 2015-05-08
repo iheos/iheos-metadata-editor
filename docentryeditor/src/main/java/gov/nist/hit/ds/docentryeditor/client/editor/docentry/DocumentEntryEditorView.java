@@ -41,7 +41,7 @@ import java.util.Map;
  * This class represents the view of the Document Entry editor.
  * It only handles the different widgets used to build the final
  * complete view of the editor.
- * It work with a presenter to handle the XdsDocumentEntry model.
+ * It works with a presenter to handle the XdsDocumentEntry model.
  *
  * @see gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry
  * @see gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocumentEntryEditorPresenter
@@ -121,7 +121,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     /**
      * This is the abstract method implementation that builds a collection of objects
      * mapping a String key to a Widget for the Document Entry editor view.
-     * @return Map of widgets for the Submission Set editor view.
+     * @return Map of widgets for the Document entry editor view.
      */
     @Override
     protected Map<String, Widget> getPathToWidgetsMap() {
@@ -138,7 +138,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     /**
      * This is the implementation of an abstract method supposed to construct
      * the Document Entry editor view as a widget.
-     * @return Submission Set editor view as a Widget.
+     * @return Document entry editor view as a Widget.
      */
     @Override
     protected Widget buildUI() {

@@ -4,24 +4,17 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.google.gwt.place.shared.PlaceController;
-import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocEntryEditorActivity;
-import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocumentEntryEditorMVP;
-import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocumentEntryEditorPresenter;
-import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocumentEntryEditorView;
-import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorActivity;
-import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorMVP;
-import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorPresenter;
-import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorView;
+import gov.nist.hit.ds.docentryeditor.client.editor.association.*;
+import gov.nist.hit.ds.docentryeditor.client.editor.docentry.*;
+import gov.nist.hit.ds.docentryeditor.client.editor.subset.*;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.author.AuthorsListEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer;
-import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomeActivity;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.client.root.CenterPanel;
 import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
-import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelMVP;
-import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelPresenter;
-import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelView;
+import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomeActivity;
+import gov.nist.hit.ds.docentryeditor.client.root.submission.*;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
 import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadMVP;
 
@@ -63,6 +56,7 @@ public interface MetadataEditorGinInjector extends Ginjector {
     WelcomeActivity getWelcomeActivity();
     SubmissionSetEditorActivity getSubmissionSetEditorActivity();
     DocEntryEditorActivity getDocEntryEditorActivity();
+    AssociationEditorActivity getAssociationEditorActivity();
 
     // SubmissionSet editor
     SubmissionSetEditorMVP getSubmissionSetEditorMVP();
@@ -73,6 +67,11 @@ public interface MetadataEditorGinInjector extends Ginjector {
     DocumentEntryEditorMVP getDocumentEntryEditorMVP();
     DocumentEntryEditorView getDocumentEntryEditorView();
     DocumentEntryEditorPresenter getDocumentEntryEditorPresenter();
+
+    // Association editor
+    AssociationEditorMVP getAssociationEditorMVP();
+    AssociationEditorView getAssociationEditorView();
+    AssociationEditorPresenter getAssociationEditorPresenter();
 
     // Submission panel
     SubmissionPanelMVP getSubmissionPanelMVP();

@@ -43,7 +43,7 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
 
     /**
      * Method that initializes the editor with a document entry object.
-     * @param model
+     * @param model instance of XdsDocumentEntry to display in the editor.
      */
     private void initDriver(XdsDocumentEntry model) {
         this.model = model;
