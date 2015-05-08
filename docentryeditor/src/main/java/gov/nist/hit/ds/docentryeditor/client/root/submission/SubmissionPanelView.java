@@ -3,11 +3,13 @@ package gov.nist.hit.ds.docentryeditor.client.root.submission;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.data.shared.IconProvider;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.Dialog;
@@ -24,6 +26,8 @@ import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadDialog;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -98,6 +102,7 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         vlc.add(toolbar);
         getPresenter().initSubmissionSet();
         tree.getStyle().setLeafIcon(AppImages.INSTANCE.file());
+        tree.setIconProvider(new XdsSubmissionTreeNodeIconProvider());
         tree.expandAll();
         tree.setAutoExpand(true);
         vlc.add(tree);
@@ -194,6 +199,26 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
      */
     public TreeStore<SubmissionMenuData> getTreeStore() {
         return treeStore;
+    }
+
+    public class XdsSubmissionTreeNodeIconProvider implements IconProvider<SubmissionMenuData> {
+
+        /**
+         * Returns the icon for the given model.
+         *
+         * @param model the target model
+         * @return the icon
+         */
+        @Override
+        public ImageResource getIcon(SubmissionMenuData model) {
+            if (model.getModel() instanceof XdsDocumentEntry){
+                return AppImages.INSTANCE.file();
+            }
+            if (model.getModel() instanceof XdsSubmissionSet){
+                return AppImages.INSTANCE.subset();
+            }
+            return tree.getStyle().getNodeOpenIcon();
+        }
     }
 
 }

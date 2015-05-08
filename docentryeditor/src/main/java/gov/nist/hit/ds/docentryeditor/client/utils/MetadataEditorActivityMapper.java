@@ -4,6 +4,8 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
+import gov.nist.hit.ds.docentryeditor.client.editor.association.AssociationEditorActivity;
+import gov.nist.hit.ds.docentryeditor.client.editor.association.AssociationEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocEntryEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
@@ -42,6 +44,8 @@ public class MetadataEditorActivityMapper implements ActivityMapper {
             activity = INJECTOR.getSubmissionSetEditorActivity();
         } else if (place instanceof DocEntryEditorPlace) {
             activity = INJECTOR.getDocEntryEditorActivity();
+        } else if(place instanceof AssociationEditorPlace){
+            activity = INJECTOR.getAssociationEditorActivity();
         }
         return activity;
     }
