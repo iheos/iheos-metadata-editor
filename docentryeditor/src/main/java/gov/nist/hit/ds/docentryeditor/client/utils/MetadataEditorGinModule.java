@@ -6,10 +6,13 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocEntryEditorActivity;
+import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorActivity;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer.MetadataEditorAppDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
+import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionPanelPresenter;
 
 import javax.inject.Inject;
 
@@ -35,6 +38,8 @@ public class MetadataEditorGinModule extends AbstractGinModule {
 
         bind(ActivityDisplayer.class).to(MetadataEditorAppDisplayer.class).in(Singleton.class);
         bind(MetadataEditorAppView.class).in(Singleton.class);
+        bind(SubmissionSetEditorActivity.class).in(Singleton.class);
+        bind(DocEntryEditorActivity.class).in(Singleton.class);
     }
 
     /**

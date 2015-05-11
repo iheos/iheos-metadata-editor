@@ -47,6 +47,10 @@ public enum ToolTipResources {
         return "Clear submission set from all elements.";
     }
 
+    public String getClearAssociationsListToolTip() {
+        return "Remove all associations from the list.";
+    }
+
     public String getString256ToolTip() {
         return "It should contain less than 256 characters";
     }

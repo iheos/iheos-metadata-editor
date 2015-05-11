@@ -18,13 +18,14 @@ public class XdsAssociation implements Serializable, XdsModelElement{
     @NotNull
     @NotEmpty
     private XdsAssociationType type; // URN => use an enum
-    @NotNull
-    @NotEmpty
     private String256 source; // UUID
-    @NotNull
-    @NotEmpty
     private String256 target; // UUID
     private String256 status; // URN[0..1]
+
+    public XdsAssociation(){
+        id=new String256();
+        type=XdsAssociationType.HAS_MEMBER;
+    }
 
     public String256 getId() {
         return id;

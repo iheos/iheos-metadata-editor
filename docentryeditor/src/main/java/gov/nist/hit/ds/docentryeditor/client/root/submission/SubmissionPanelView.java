@@ -4,15 +4,19 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.cell.core.client.SimpleSafeHtmlCell;
+import com.sencha.gxt.core.client.Style;
 import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.data.shared.IconProvider;
-import com.sencha.gxt.data.shared.TreeStore;
+import com.sencha.gxt.data.shared.*;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.ListView;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
@@ -22,10 +26,14 @@ import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import com.sencha.gxt.widget.core.client.tree.Tree;
+import gov.nist.hit.ds.docentryeditor.client.editor.association.AssociationEditorPlace;
+import gov.nist.hit.ds.docentryeditor.client.editor.properties.XdsAssociationProperties;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadDialog;
+import gov.nist.hit.ds.docentryeditor.shared.model.String256;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
@@ -40,18 +48,28 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
     private static final int RIGHT_N_LEFT_LBL_MARGIN = 5;
     private static final int UP_N_DOWN_LBL_MARGIN = 10;
 
-    private final TreeStore<SubmissionMenuData> treeStore = new TreeStore<SubmissionMenuData>(SubmissionMenuData.PROPS.key());
-    private final Tree<SubmissionMenuData, String> tree = new Tree<SubmissionMenuData, String>(treeStore, SubmissionMenuData.PROPS.value());
+    // ~ Tree structure for submission set, folder and document entries
+    private final TreeStore<SubmissionMenuData> submissionTreeStore = new TreeStore<SubmissionMenuData>(SubmissionMenuData.PROPS.key());
+    private final Tree<SubmissionMenuData, String> submissionTree = new Tree<SubmissionMenuData, String>(submissionTreeStore, SubmissionMenuData.PROPS.value());
     private final ToolBar toolbar = new ToolBar();
 
     private final TextButton uploadFileButton = new TextButton();
     private final TextButton removeDocEntryButton = new TextButton();
     private final TextButton clearDocEntriesButton = new TextButton();
     private final TextButton saveDocEntriesButton = new TextButton();
-    private final TextButton helpButton = new TextButton();
+    private final TextButton submissionHelpButton = new TextButton();
 
     private final MenuItem addEmptyDocEntry = new MenuItem("Create an empty document entry");
     private final MenuItem addPrefilledDocEntry = new MenuItem("Create a pre-filled document entry");
+
+    // ~ List of Associations
+    private ListView<XdsAssociation,String>  associationListView;
+    private ListStore<XdsAssociation> associationListStore;
+    private ToolBar associationPanelToolbar=new ToolBar();
+    private final TextButton addAssociationButton = new TextButton();
+    private final TextButton removeAssociationButton = new TextButton();
+    private final TextButton clearAssociationsButton = new TextButton();
+    private final TextButton associationHelpButton = new TextButton();
 
     @Inject
     private FileUploadDialog fileUploadDialog;
@@ -91,21 +109,62 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         clearDocEntriesButton.setToolTip(ToolTipResources.INSTANCE.getClearSubmissionSetToolTip());
         saveDocEntriesButton.setIcon(AppImages.INSTANCE.save());
         saveDocEntriesButton.setToolTip(ToolTipResources.INSTANCE.getSaveButtonToolTip());
-        helpButton.setIcon(AppImages.INSTANCE.help());
-        helpButton.setToolTip(ToolTipResources.INSTANCE.getHelpButtonToolTip());
+        submissionHelpButton.setIcon(AppImages.INSTANCE.help());
+        submissionHelpButton.setToolTip(ToolTipResources.INSTANCE.getHelpButtonToolTip());
         toolbar.add(uploadFileButton);
         toolbar.add(addDocEntryButton);
         toolbar.add(removeDocEntryButton);
         toolbar.add(clearDocEntriesButton);
         toolbar.add(saveDocEntriesButton);
-        toolbar.add(helpButton);
+        toolbar.add(submissionHelpButton);
         vlc.add(toolbar);
         getPresenter().initSubmissionSet();
-        tree.getStyle().setLeafIcon(AppImages.INSTANCE.file());
-        tree.setIconProvider(new XdsSubmissionTreeNodeIconProvider());
-        tree.expandAll();
-        tree.setAutoExpand(true);
-        vlc.add(tree);
+        submissionTree.setIconProvider(new XdsSubmissionTreeNodeIconProvider());
+        submissionTree.expandAll();
+        submissionTree.setAutoExpand(true);
+
+        // Association
+        associationListStore=new ListStore<XdsAssociation>(XdsAssociationProperties.PROPS.key());
+        associationListView=new ListView<XdsAssociation,String>(associationListStore,XdsAssociationProperties.PROPS.id());
+        associationListView.setBorders(false);
+        associationListView.getSelectionModel().setSelectionMode(Style.SelectionMode.SINGLE);
+        associationListView.setCell(new SimpleSafeHtmlCell<String>(new AssociationListItemRenderer()));
+
+        ContentPanel associationPanel = new ContentPanel();
+        associationPanel.setHeadingText("Associations");
+        associationPanel.setBorders(false);
+        associationPanel.setBodyBorder(false);
+        associationPanel.setCollapsible(false);
+
+        addAssociationButton.setIcon(AppImages.INSTANCE.add());
+        addAssociationButton.setToolTip(ToolTipResources.INSTANCE.getGridAddToolTip());
+        removeAssociationButton.setIcon(AppImages.INSTANCE.delete());
+        removeAssociationButton.setToolTip(ToolTipResources.INSTANCE.getGridDeleteToolTip().split("(s)\\.")[0]);
+        clearAssociationsButton.setIcon(AppImages.INSTANCE.clear());
+        clearAssociationsButton.setToolTip(ToolTipResources.INSTANCE.getClearAssociationsListToolTip());
+        associationHelpButton.setIcon(AppImages.INSTANCE.help());
+        associationHelpButton.setToolTip(ToolTipResources.INSTANCE.getHelpButtonToolTip());
+        associationPanelToolbar.add(addAssociationButton);
+        associationPanelToolbar.add(removeAssociationButton);
+        associationPanelToolbar.add(clearAssociationsButton);
+        associationPanelToolbar.add(associationHelpButton);
+
+        VerticalLayoutContainer associationWidgetsContainer=new VerticalLayoutContainer();
+        associationWidgetsContainer.add(associationPanelToolbar);
+        associationWidgetsContainer.add(associationListView);
+        associationPanel.add(associationWidgetsContainer);
+
+        ////////////// TODO REMOVER THIS BLOCK /////////////////////
+        XdsAssociation asso=new XdsAssociation();
+        asso.setId(new String256("Id2"));
+        XdsAssociation asso2=new XdsAssociation();
+        asso2.setId(new String256("Id3"));
+        associationListStore.add(asso);
+        associationListStore.add(asso2);
+        ////////////////////////////////////////////////////////////
+
+        vlc.add(submissionTree,new VerticalLayoutContainer.VerticalLayoutData(-1,0.6));
+        vlc.add(associationPanel,new VerticalLayoutContainer.VerticalLayoutData(-1,0.4));
 
         cp.setWidget(vlc);
 
@@ -117,6 +176,56 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
      */
     @Override
     protected void bindUI() {
+        bindSubmissionToolbar();
+        bindAssociationToolbar();
+        submissionTree.getSelectionModel().addSelectionHandler(new SelectionHandler<SubmissionMenuData>() {
+            @Override
+            public void onSelection(SelectionEvent<SubmissionMenuData> event) {
+                presenter.loadSelectedEntryEditor(event.getSelectedItem());
+            }
+        });
+        associationListView.getSelectionModel().addSelectionHandler(new SelectionHandler<XdsAssociation>() {
+            @Override
+            public void onSelection(SelectionEvent<XdsAssociation> selectionEvent) {
+                presenter.loadSelectedAssociationEditor(selectionEvent.getSelectedItem());
+            }
+        });
+    }
+
+    /**
+     * This method ties the association toolbar buttons with their actions in the view or with actions defined in the presenter.
+     */
+    private void bindAssociationToolbar() {
+        addAssociationButton.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                presenter.createNewAssociation();
+            }
+        });
+        removeAssociationButton.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                associationListStore.remove(associationListView.getSelectionModel().getSelectedItem());
+                if (presenter.getCurrentPlace() instanceof AssociationEditorPlace) {
+                    presenter.goToHomePage();
+                }
+            }
+        });
+        clearAssociationsButton.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                presenter.clearAssociationStore();
+                if (presenter.getCurrentPlace() instanceof AssociationEditorPlace) {
+                    presenter.goToHomePage();
+                }
+            }
+        });
+    }
+
+    /**
+     * This method ties the submission panel toolbar buttons with their actions in the view or with actions defined in the presenter.
+     */
+    private void bindSubmissionToolbar() {
         addEmptyDocEntry.addSelectionHandler(new SelectionHandler<Item>() {
             @Override
             public void onSelection(SelectionEvent<Item> event) {
@@ -126,8 +235,8 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         removeDocEntryButton.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {
-                tree.getStore().remove(tree.getSelectionModel().getSelectedItem());
-                tree.getSelectionModel().select(tree.getStore().getFirstChild(presenter.getSubmissionSetTreeNode()), false);
+                submissionTree.getStore().remove(submissionTree.getSelectionModel().getSelectedItem());
+                submissionTree.getSelectionModel().select(submissionTree.getStore().getFirstChild(presenter.getSubmissionSetTreeNode()), false);
             }
         });
         clearDocEntriesButton.addSelectHandler(new SelectEvent.SelectHandler() {
@@ -135,12 +244,6 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
             public void onSelect(SelectEvent event) {
                 presenter.clearSubmissionSet();
                 presenter.goToHomePage();
-            }
-        });
-        tree.getSelectionModel().addSelectionHandler(new SelectionHandler<SubmissionMenuData>() {
-            @Override
-            public void onSelection(SelectionEvent<SubmissionMenuData> event) {
-                presenter.loadSelectedEntryEditor(event.getSelectedItem());
             }
         });
         addPrefilledDocEntry.addSelectionHandler(new SelectionHandler<Item>() {
@@ -166,7 +269,12 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         });
     }
 
-    public void openPopup(String fileNameOnServer) {
+    /**
+     * This method open new browser window with the ebRim XML file
+     * representing the XDS Metadata being saved.
+     * @param fileNameOnServer name of the ebRim XML file of XDS Metadata.
+     */
+    public void openFileSavedPopup(String fileNameOnServer) {
         String fileURI=GWT.getHostPageBaseURL() + "files/" + fileNameOnServer;
         Window.open(fileURI, fileNameOnServer + " Metadata File", "enabled");
         Dialog d = new Dialog();
@@ -188,8 +296,8 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
      *
      * @return submission set tree
      */
-    public Tree<SubmissionMenuData, String> getTree() {
-        return tree;
+    public Tree<SubmissionMenuData, String> getSubmissionTree() {
+        return submissionTree;
     }
 
     /**
@@ -197,10 +305,34 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
      *
      * @return submission set tree store
      */
-    public TreeStore<SubmissionMenuData> getTreeStore() {
-        return treeStore;
+    public TreeStore<SubmissionMenuData> getSubmissionTreeStore() {
+        return submissionTreeStore;
     }
 
+    /**
+     * This method returns the list widget, which contains all the associations involved
+     * in the submission.
+     *
+     * @return list widget of associations
+     */
+    public ListView<XdsAssociation, String> getAssociationList() {
+        return associationListView;
+    }
+
+    /**
+     * This method returns the association list store, which contains all the association data.
+     *
+     * @return association list store
+     */
+    public ListStore<XdsAssociation> getAssociationStore() {
+        return associationListStore;
+    }
+
+    /**
+     * This class is an icon provider for the Xds Submission Tree.
+     * It provides a different icon to be displayed before each object in the tree
+     * regarding the type of this object.
+     */
     public class XdsSubmissionTreeNodeIconProvider implements IconProvider<SubmissionMenuData> {
 
         /**
@@ -217,8 +349,23 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
             if (model.getModel() instanceof XdsSubmissionSet){
                 return AppImages.INSTANCE.subset();
             }
-            return tree.getStyle().getNodeOpenIcon();
+            return submissionTree.getStyle().getNodeOpenIcon();
         }
     }
 
+    /**
+     * HTML Renderer for each cell of the association list widget.
+     * It adds an icon before the "id" of the association.
+     */
+    public class AssociationListItemRenderer extends AbstractSafeHtmlRenderer<String> {
+        @Override
+        public SafeHtml render(final String s) {
+             return new SafeHtml() {
+                @Override
+                public String asString() {
+                    return "<div style=\"margin-left:5px;\"><img style=\"margin-right:5px;\" src=\"" + AppImages.INSTANCE.association().getSafeUri().asString() + "\"/>" + s + "</div>";
+                }
+             };
+        }
+    }
 }
