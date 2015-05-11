@@ -34,7 +34,7 @@ public class EditorToolbar extends HorizontalLayoutContainer {
         cancelButton = new ToolbarIconButton("Cancel changes",AppImages.INSTANCE.back(),CANCEL_BUTTON_WIDTH);
         cancelButton.setToolTip(ToolTipResources.INSTANCE.getCancelButtonToolTip());
         populateButton =new ToolbarIconButton("Populate",AppImages.INSTANCE.pen(), POPULATE_BUTTON_WIDTH);
-        populateButton.setToolTip("Populate the submission set editor form with test data.");
+        populateButton.setToolTip("Populate the editor form with test data.");
 
         this.addButton(this.homeButton);
         this.addButton(saveButton);

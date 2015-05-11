@@ -1,6 +1,7 @@
 package gov.nist.hit.ds.docentryeditor.client.root.submission;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.requestfactory.shared.Receiver;
@@ -13,9 +14,7 @@ import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
 import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorRequestFactory;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
+import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import javax.inject.Inject;
 
@@ -38,6 +37,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
 
     private SubmissionMenuData currentlyEdited;
     private int nextIndex = 1;
+    private int associationIndex=1;
 
     // RPC services declaration
     private final XdsParserServicesAsync xdsParserServices = GWT.create(XdsParserServices.class);
@@ -64,15 +64,15 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
             @Override
             public void onNewFileLoaded(NewFileLoadedEvent event) {
                 clearSubmissionSet();
-                view.getTreeStore().getRootItems().get(0).setModel(event.getMetadata().getSubmissionSet());
+                view.getSubmissionTreeStore().getRootItems().get(0).setModel(event.getMetadata().getSubmissionSet());
                 for (XdsDocumentEntry docEntry : event.getMetadata().getDocumentEntries()) {
                     currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, docEntry);
                     nextIndex++;
-                    view.getTreeStore().add(view.getTreeStore().getRootItems().get(0), currentlyEdited);
+                    view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
                 }
                 currentlyEdited=submissionSetTreeNode;
-                view.getTree().expandAll();
-                view.getTree().getSelectionModel().select(submissionSetTreeNode, false);
+                view.getSubmissionTree().expandAll();
+                view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode, false);
             }
         });
         // this event catches that a Document entry has been loaded from the user's file system.
@@ -81,9 +81,9 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
             public void onCreateNewDocumentEntry(CreateNewDocEntryEvent event) {
                 currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, event.getDocument());
                 nextIndex++;
-                view.getTreeStore().add(view.getTreeStore().getRootItems().get(0), currentlyEdited);
-                view.getTree().expandAll();
-                view.getTree().getSelectionModel().select(currentlyEdited, false);
+                view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
+                view.getSubmissionTree().expandAll();
+                view.getSubmissionTree().getSelectionModel().select(currentlyEdited, false);
             }
         });
         // this catches that the XDS Document entry editor view has loaded.
@@ -101,7 +101,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                     }
                 } else {
                     if (placeController.getWhere() instanceof SubmissionSetEditorPlace){
-                        view.getTree().getSelectionModel().select(submissionSetTreeNode,false);
+                        view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode,false);
                     }else {
                         // if no doc. entry is currently under edition, it means the app (editor view) has been loaded from
                         // by its URL from the browser navigation bar (external link).
@@ -131,7 +131,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         eventBus.addHandler(SelectSubmissionSetEvent.TYPE, new SelectSubmissionSetEvent.SelectSubmissionSetEventHandler() {
             @Override
             public void onSelectSubmissionSet(SelectSubmissionSetEvent event) {
-                view.getTree().getSelectionModel().select(submissionSetTreeNode,false);
+                view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode,false);
             }
         });
     }
@@ -142,9 +142,32 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      */
     public void initSubmissionSet() {
         submissionSetTreeNode.setModel(new XdsSubmissionSet());
-        if (view.getTreeStore().getAll().isEmpty()) {
-            view.getTreeStore().add(submissionSetTreeNode);
+        if (view.getSubmissionTreeStore().getAll().isEmpty()) {
+            view.getSubmissionTreeStore().add(submissionSetTreeNode);
         }
+    }
+
+
+    /**
+     * This method loads the adequate editor interface with the selected entry
+     * from the submission tree. It can be a XdsSubmissionSet, a XdsDocumentEntry.
+     *
+     * @param selectedItem selected tree node
+     */
+    public void loadSelectedEntryEditor(SubmissionMenuData selectedItem) {
+        ((MetadataEditorEventBus) eventBus).firePlaceChangeEvent();
+        currentlyEdited = selectedItem;
+        startEditing();
+    }
+
+    /**
+     * This method loads the association editor interface with the selected entry
+     * from the list of association objects.
+     *
+     * @param selectedItem selected association
+     */
+    public void loadSelectedAssociationEditor(XdsAssociation selectedItem) {
+        // TODO
     }
 
     /**
@@ -154,22 +177,22 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         logger.info("Create new document entry");
         currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, new XdsDocumentEntry());
         nextIndex++;
-        view.getTreeStore().add(view.getTreeStore().getRootItems().get(0), currentlyEdited);
-        view.getTree().expandAll();
-        view.getTree().getSelectionModel().select(currentlyEdited, false);
+        view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
+        view.getSubmissionTree().expandAll();
+        view.getSubmissionTree().getSelectionModel().select(currentlyEdited, false);
     }
 
     /**
-     * This method loads the adequate editor interface with the selected entry
-     * from the submission tree. It can be a XdsSubmissionSet, a XdsDocumentEntry
-     * or a XdsAssociation.
-     *
-     * @param selectedItem selected tree node
+     * This method creates a new Association and adds it to the list of association in the Submission panel.
      */
-    public void loadSelectedEntryEditor(SubmissionMenuData selectedItem) {
-        ((MetadataEditorEventBus) eventBus).firePlaceChangeEvent();
-        currentlyEdited = selectedItem;
-        startEditing();
+    public void createNewAssociation() {
+        // TODO
+        logger.info("Create new association");
+        XdsAssociation association=new XdsAssociation();
+        association.setId(new String256(association.getType().toString().split(":")[association.getType().toString().split(":").length-1]+" "+associationIndex));
+        associationIndex++;
+        view.getAssociationStore().add(association);
+        view.getAssociationList().getSelectionModel().select(association,false);
     }
 
     /**
@@ -182,18 +205,26 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         XdsDocumentEntry newDoc=prefilledDocEntry.copy();
         currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, newDoc);
         nextIndex++;
-        view.getTreeStore().add(view.getTreeStore().getRootItems().get(0), currentlyEdited);
-        view.getTree().expandAll();
-        view.getTree().getSelectionModel().select(currentlyEdited, false);
+        view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
+        view.getSubmissionTree().expandAll();
+        view.getSubmissionTree().getSelectionModel().select(currentlyEdited, false);
     }
 
     /**
      * Clear the submission set from all its data.
      */
     public void clearSubmissionSet() {
-        view.getTreeStore().clear();
+        view.getSubmissionTreeStore().clear();
         nextIndex=1;
         initSubmissionSet();
+    }
+
+    /**
+     * Clear the association list from all its data.
+     */
+    public void clearAssociationStore() {
+        view.getAssociationStore().clear();
+        associationIndex=1;
     }
 
     /**
@@ -203,7 +234,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         // set XdsMetadata object from the submission tree data.
         XdsMetadata m=new XdsMetadata();
         m.setSubmissionSet((XdsSubmissionSet) getSubmissionSetTreeNode().getModel());
-        for (SubmissionMenuData subData:view.getTreeStore().getChildren(getSubmissionSetTreeNode())){
+        for (SubmissionMenuData subData:view.getSubmissionTreeStore().getChildren(getSubmissionSetTreeNode())){
             if (subData.getModel() instanceof XdsDocumentEntry) {
                 m.getDocumentEntries().add((XdsDocumentEntry) subData.getModel());
             }
@@ -224,7 +255,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                         logger.info("saveAsXMLFile call succeed");
                         logger.info("Generated filename sent to the client \n" + response);
                         logger.info("File's URL: " + GWT.getHostPageBaseURL() + "files/" + response);
-                        view.openPopup(response);
+                        view.openFileSavedPopup(response);
                     }
                 });
             }
@@ -255,7 +286,8 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * This method handle the navigation back to the home page of the application.
      */
     public void goToHomePage() {
-        getView().getTree().getSelectionModel().deselectAll();
+        getView().getSubmissionTree().getSelectionModel().deselectAll();
+        getView().getAssociationList().getSelectionModel().deselectAll();
         placeController.goTo(new WelcomePlace());
     }
 
@@ -276,4 +308,13 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
     public SubmissionMenuData getSubmissionSetTreeNode() {
         return submissionSetTreeNode;
     }
+
+    /**
+     * This method return the Place currently loaded.
+     * @return place currently displayed.
+     */
+    public Place getCurrentPlace() {
+        return placeController.getWhere();
+    }
+
 }

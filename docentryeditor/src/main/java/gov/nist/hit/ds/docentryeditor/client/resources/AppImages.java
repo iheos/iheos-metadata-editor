@@ -70,4 +70,6 @@ public interface AppImages extends ClientBundle {
     @Source("baseResources/pen.png")
     ImageResource pen();
 
+    @Source("baseResources/link-12.png")
+    ImageResource association();
 }
