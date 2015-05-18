@@ -1,27 +1,23 @@
 package gov.nist.hit.ds.docentryeditor.client.root.submission;
 
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.cell.core.client.LabelProviderSafeHtmlRenderer;
 import com.sencha.gxt.cell.core.client.SimpleSafeHtmlCell;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
-import com.sencha.gxt.cell.core.client.form.ValueBaseInputCell;
 import com.sencha.gxt.core.client.Style;
-import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.data.shared.*;
+import com.sencha.gxt.data.shared.IconProvider;
+import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.data.shared.StringLabelProvider;
+import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.ListView;
@@ -181,7 +177,7 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         associationWidgetsContainer.add(filterFL, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
         associationPanel.add(associationWidgetsContainer);
 
-        ////////////// TODO REMOVER THIS BLOCK /////////////////////
+        ////////////// TODO REMOVE THIS BLOCK //////////////////////
         XdsAssociation asso=new XdsAssociation();
         asso.setId(new String256("Id2"));
         XdsAssociation asso2=new XdsAssociation();
@@ -396,31 +392,3 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         }
     }
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////
-//, new ValueProvider<SubmissionMenuData, SafeHtml>() {
-//@Override
-//public SafeHtml getValue(SubmissionMenuData object) {
-//        if (object.isActiveLink()){
-//        return SafeHtmlUtils.fromTrustedString("<span style='color:blue;'>"+object.getValue()+"</span>");
-//        }else{
-//        return SafeHtmlUtils.fromTrustedString(object.getValue());
-//        }
-//        }
-//
-//@Override
-//public void setValue(SubmissionMenuData object, SafeHtml value) {
-//        String[] s=value.asString().split(">");
-//        if (s.length>1){
-//        String str=s[1];
-//        object.setValue(str.split("<")[0]);
-//        }else {
-//        object.setValue(value.asString());
-//        }
-//        }
-//
-//@Override
-//public String getPath() {
-//        return "value";
-//        }
-//        }

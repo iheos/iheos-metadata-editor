@@ -13,6 +13,7 @@ import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.editor.EditionMode;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
+import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
 
 /**
@@ -61,9 +62,9 @@ public class CodedTermEditorWidget extends Composite implements Editor<CodedTerm
         EditorFieldLabel codingSchemeLabel = new EditorFieldLabel(codingScheme, "Coding Scheme");
 
         setEmptyTexts("ex: General Medicine", "ex: Outpatient", "ex: urn:uuid:vvvh6285-8b07-6s88-f36d-df545z654jgf");
-        setToolTipConfigs(new ToolTipConfig("Display Name is a string", "it should contain less than 256 characters"), new ToolTipConfig(
-                "Code is a string", "it should contain less than 256 characters"), new ToolTipConfig("Coding Scheme is a string",
-                "it should contain less than 256 characters"));
+        setToolTipConfigs(new ToolTipConfig("Display Name is a string", ToolTipResources.INSTANCE.getString256ToolTip()), new ToolTipConfig(
+                "Code is a string", ToolTipResources.INSTANCE.getString256ToolTip()), new ToolTipConfig("Coding Scheme is a string",
+                ToolTipResources.INSTANCE.getString256ToolTip()));
         codedTermEditorVContainer.add(displayNameLabel, new VerticalLayoutData(1, -1));
         codedTermEditorVContainer.add(codeLabel, new VerticalLayoutData(1, -1));
         codedTermEditorVContainer.add(codingSchemeLabel, new VerticalLayoutData(1, -1));

@@ -264,19 +264,7 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         newItemButton.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent selectEvent) {
-                // try to fire an event
-                if (getStore().size() < storeMaxLength || storeMaxLength == 0) {
-                    editing.cancelEditing();
-                    // this method should work I don't understand why there is a problem.
-                    // M element = GWT.create(clazzM);
-                    M element = getModelFactory().newInstance();
-                    getStore().add(0, element);
-                    int index = checkBoxEnabled ? 1 : 0;
-                    editing.startEditing(new Grid.GridCell(getStore().indexOf(element), index));
-                    if (getStore().size() >= storeMaxLength && storeMaxLength != 0) {
-                        disableNewButton();
-                    }
-                }
+                createNewItem();
             }
         });
         deleteItemsButton.addSelectHandler(new SelectEvent.SelectHandler() {
@@ -313,6 +301,24 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
                 });
             }
         });
+    }
+
+    /**
+     * Method that creates and adds a new item to the grid.
+     */
+    private void createNewItem(){
+        if (getStore().size() < storeMaxLength || storeMaxLength == 0) {
+            editing.cancelEditing();
+            // this method should work I don't understand why there is a problem.
+            // M element = GWT.create(clazzM);
+            M element = getModelFactory().newInstance();
+            getStore().add(0, element);
+            int index = checkBoxEnabled ? 1 : 0;
+            editing.startEditing(new Grid.GridCell(getStore().indexOf(element), index));
+            if (getStore().size() >= storeMaxLength && storeMaxLength != 0) {
+                disableNewButton();
+            }
+        }
     }
 
     /**

@@ -118,30 +118,13 @@ public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements 
     private void bindUI() {
         // Author entry select handler for the list of authors.
         listViewAuthors.getSelectionModel().addSelectionChangedHandler(new SelectionChangedEvent.SelectionChangedHandler<Author>() {
-
             @Override
             public void onSelectionChanged(SelectionChangedEvent<Author> event) {
-                if (listViewAuthors.getSelectionModel().getSelectedItem() != null) {
-                    // set the widget into display mode (editable fields disabled).
-                    author.setEditionMode(EditionMode.DISPLAY);
-                    // set the object (selected entry in the list) that must be handled.
-                    // by the AuthorEditorWidget
-                    author.edit(listViewAuthors.getSelectionModel().getSelectedItem());
-                    // set the widget into edition mode (editable fields enabled).
-                    author.setEditionMode(EditionMode.EDIT);
-                    // set the list action buttons in edition mode (edit button disabled).
-                    enableAuthorButtonWidgets(EditionMode.EDIT);
-                } else {
-                    // set the widget into NODATA selected mode (editable fields disabled).
-                    author.setEditionMode(EditionMode.NODATA);
-                    // set the list action buttons in NODATA selected mode (Only the new button is enabled).
-                    enableAuthorButtonWidgets(EditionMode.NODATA);
-                }
+                refreshAuthorEditor();
             }
         });
         // action handler for click on new entry button.
         newAuthorWidget.addSelectHandler(new SelectEvent.SelectHandler() {
-
             @Override
             public void onSelect(SelectEvent event) {
                 // start the edition of a new Author instance.
@@ -150,7 +133,6 @@ public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements 
         });
         // action handler for the click on the edit button.
         editAuthorWidget.addSelectHandler(new SelectEvent.SelectHandler() {
-
             @Override
             public void onSelect(SelectEvent event) {
                 // set the widget into edition mode (editable fields enabled).
@@ -161,7 +143,6 @@ public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements 
         });
         // action handler for the click on the cancel button during edition.
         cancelAuthorWidget.addSelectHandler(new SelectEvent.SelectHandler() {
-
             @Override
             public void onSelect(SelectEvent event) {
                 // set the list action buttons in NODATA selected mode (Only the new button is enabled).
@@ -242,6 +223,25 @@ public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements 
                 }
             }
         });
+    }
+
+    private void refreshAuthorEditor() {
+        if (listViewAuthors.getSelectionModel().getSelectedItem() != null) {
+            // set the widget into display mode (editable fields disabled).
+            author.setEditionMode(EditionMode.DISPLAY);
+            // set the object (selected entry in the list) that must be handled.
+            // by the AuthorEditorWidget
+            author.edit(listViewAuthors.getSelectionModel().getSelectedItem());
+            // set the widget into edition mode (editable fields enabled).
+            author.setEditionMode(EditionMode.EDIT);
+            // set the list action buttons in edition mode (edit button disabled).
+            enableAuthorButtonWidgets(EditionMode.EDIT);
+        } else {
+            // set the widget into NODATA selected mode (editable fields disabled).
+            author.setEditionMode(EditionMode.NODATA);
+            // set the list action buttons in NODATA selected mode (Only the new button is enabled).
+            enableAuthorButtonWidgets(EditionMode.NODATA);
+        }
     }
 
     /**

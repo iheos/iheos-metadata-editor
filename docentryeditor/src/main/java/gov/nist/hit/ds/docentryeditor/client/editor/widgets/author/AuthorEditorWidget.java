@@ -400,48 +400,16 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
      * Method that binds the UI widget's actions.
      */
     private void bindUI() {
-        // /////////////////////////////
-        // --- List selection binding
-        // /////////////////////////////
-        // institution selection handler
-        listViewAuthInstitutions.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<String256>() {
-            @Override
-            public void onSelectionChanged(SelectionChangedEvent<String256> event) {
-                if (listViewAuthInstitutions.isEnabled()) {
-                    if (listViewAuthInstitutions.getSelectionModel().getSelectedItem() != null) {
-                        deleteInstitutionButton.enable();
-                    } else {
-                        deleteInstitutionButton.disable();
-                    }
-                }
-            }
-        });
-        // role selection handler
-        listViewAuthRoles.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<String256>() {
-            @Override
-            public void onSelectionChanged(SelectionChangedEvent<String256> event) {
-                if (listViewAuthRoles.isEnabled()) {
-                    if (listViewAuthRoles.getSelectionModel().getSelectedItem() != null) {
-                        deleteRoleButton.enable();
-                    } else {
-                        deleteRoleButton.disable();
-                    }
-                }
-            }
-        });
-        // specialty selection handler
-        listViewAuthSpecialties.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<String256>() {
-            @Override
-            public void onSelectionChanged(SelectionChangedEvent<String256> event) {
-                if (listViewAuthSpecialties.isEnabled()) {
-                    if (listViewAuthSpecialties.getSelectionModel().getSelectedItem() != null) {
-                        deleteSpecialtyButton.enable();
-                    } else {
-                        deleteSpecialtyButton.disable();
-                    }
-                }
-            }
-        });
+        bindInstitutionHandler();
+        bindRoleWidgetsHandler();
+        bindSpecialyWidgetsHandler();
+        bindTelecommunicationWidgetsHandlers();
+    }
+
+    /**
+     * Method that binds the widgets related to Telecommunication from the UI using handlers.
+     */
+    private void bindTelecommunicationWidgetsHandlers() {
         // telecommunication selection handler
         listViewAuthTelecommunications.getSelectionModel().addSelectionChangedHandler(
                 new SelectionChangedHandler<String256>() {
@@ -456,48 +424,114 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
                         }
                     }
                 });
-
-        // ////////////////////////////////////////////////////
-        // --- Add and delete value from lists handlers
-        // ////////////////////////////////////////////////////
-
-        // Add Institution value handlers
-        addInstitutionButton.addSelectHandler(new SelectHandler() {
+        // Add Telecommunication value handlers
+        addTelecommunicationButton.addSelectHandler(new SelectHandler() {
 
             @Override
             public void onSelect(SelectEvent event) {
-                addAuthorInstitutionToListStore();
+                addAuthorTelecommunicationToListStore();
             }
         });
-        authorInstitution.getField().addKeyDownHandler(new KeyDownHandler() {
+        authorTelecommunication.getField().addKeyDownHandler(new KeyDownHandler() {
 
             @Override
             public void onKeyDown(KeyDownEvent event) {
                 if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-                    LOGGER.info("ENTER KEY PRESSED on Institution Field");
-                    addAuthorInstitutionToListStore();
+                    LOGGER.info("ENTER KEY PRESSED on Telecommunication field");
+                    addAuthorTelecommunicationToListStore();
                 }
             }
         });
-        // Delete Institution Value handler
-        deleteInstitutionButton.addSelectHandler(new SelectHandler() {
+        // Delete Telecommunication Value handler
+        deleteTelecommunicationButton.addSelectHandler(new SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {
-                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthInstitutions.getSelectionModel().getSelectedItem().getString());
+                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthTelecommunications.getSelectionModel()                        .getSelectedItem().getString());
                 cdd.show();
                 cdd.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
-
                     @Override
                     public void onDialogHide(DialogHideEvent event) {
                         if (event.getHideButton() == PredefinedButton.YES) {
                             // perform YES action
-                            authorInstitutions.getStore().remove(listViewAuthInstitutions.getSelectionModel().getSelectedItem());
+                            authorTelecommunications.getStore().remove(listViewAuthTelecommunications.getSelectionModel().getSelectedItem());
                         }
                     }
                 });
             }
         });
+    }
 
+    /**
+     * Method that bind the widget from the UI related to Specialty using handlers.
+     */
+    private void bindSpecialyWidgetsHandler() {
+        // specialty selection handler
+        listViewAuthSpecialties.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<String256>() {
+            @Override
+            public void onSelectionChanged(SelectionChangedEvent<String256> event) {
+                if (listViewAuthSpecialties.isEnabled()) {
+                    if (listViewAuthSpecialties.getSelectionModel().getSelectedItem() != null) {
+                        deleteSpecialtyButton.enable();
+                    } else {
+                        deleteSpecialtyButton.disable();
+                    }
+                }
+            }
+        });
+        // Add Specialty value handlers
+        addSpecialtyButton.addSelectHandler(new SelectHandler() {
+
+            @Override
+            public void onSelect(SelectEvent event) {
+                addAuthorSpecialtyToListStore();
+            }
+        });
+        authorSpecialty.getField().addKeyDownHandler(new KeyDownHandler() {
+
+            @Override
+            public void onKeyDown(KeyDownEvent event) {
+                if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+                    LOGGER.info("ENTER KEY PRESSED on Specialty field");
+                    addAuthorSpecialtyToListStore();
+                }
+            }
+        });
+        // Delete Specialty Value handler
+        deleteSpecialtyButton.addSelectHandler(new SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthSpecialties.getSelectionModel().getSelectedItem().getString());
+                cdd.show();
+                cdd.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
+                    @Override
+                    public void onDialogHide(DialogHideEvent event) {
+                        if (event.getHideButton() == PredefinedButton.YES) {
+                            // perform YES action
+                            authorSpecialties.getStore().remove(listViewAuthSpecialties.getSelectionModel().getSelectedItem());
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Method thats bind the widget related to Role from the UI using handlers.
+     */
+    private void bindRoleWidgetsHandler() {
+        // role selection handler
+        listViewAuthRoles.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<String256>() {
+            @Override
+            public void onSelectionChanged(SelectionChangedEvent<String256> event) {
+                if (listViewAuthRoles.isEnabled()) {
+                    if (listViewAuthRoles.getSelectionModel().getSelectedItem() != null) {
+                        deleteRoleButton.enable();
+                    } else {
+                        deleteRoleButton.disable();
+                    }
+                }
+            }
+        });
         // Add Role value handlers
         addRoleButton.addSelectHandler(new SelectHandler() {
 
@@ -534,72 +568,56 @@ public class AuthorEditorWidget extends Composite implements Editor<Author> {
                 });
             }
         });
+    }
 
-        // Add Specialty value handlers
-        addSpecialtyButton.addSelectHandler(new SelectHandler() {
-
+    /**
+     * Method that bind the UI institution related widgets using handlers.
+     */
+    private void bindInstitutionHandler() {
+        // institution selection handler
+        listViewAuthInstitutions.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<String256>() {
             @Override
-            public void onSelect(SelectEvent event) {
-                addAuthorSpecialtyToListStore();
-            }
-        });
-        authorSpecialty.getField().addKeyDownHandler(new KeyDownHandler() {
-
-            @Override
-            public void onKeyDown(KeyDownEvent event) {
-                if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-                    LOGGER.info("ENTER KEY PRESSED on Specialty field");
-                    addAuthorSpecialtyToListStore();
-                }
-            }
-        });
-        // Delete Specialty Value handler
-        deleteSpecialtyButton.addSelectHandler(new SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthSpecialties.getSelectionModel().getSelectedItem().getString());
-                cdd.show();
-                cdd.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
-                    @Override
-                    public void onDialogHide(DialogHideEvent event) {
-                        if (event.getHideButton() == PredefinedButton.YES) {
-                            // perform YES action
-                            authorSpecialties.getStore().remove(listViewAuthSpecialties.getSelectionModel().getSelectedItem());
-                        }
+            public void onSelectionChanged(SelectionChangedEvent<String256> event) {
+                if (listViewAuthInstitutions.isEnabled()) {
+                    if (listViewAuthInstitutions.getSelectionModel().getSelectedItem() != null) {
+                        deleteInstitutionButton.enable();
+                    } else {
+                        deleteInstitutionButton.disable();
                     }
-                });
+                }
             }
         });
-        // Add Telecommunication value handlers
-        addTelecommunicationButton.addSelectHandler(new SelectHandler() {
+        // Add Institution value handlers
+        addInstitutionButton.addSelectHandler(new SelectHandler() {
 
             @Override
             public void onSelect(SelectEvent event) {
-                addAuthorTelecommunicationToListStore();
+                addAuthorInstitutionToListStore();
             }
         });
-        authorTelecommunication.getField().addKeyDownHandler(new KeyDownHandler() {
+        authorInstitution.getField().addKeyDownHandler(new KeyDownHandler() {
 
             @Override
             public void onKeyDown(KeyDownEvent event) {
                 if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-                    LOGGER.info("ENTER KEY PRESSED on Telecommunication field");
-                    addAuthorTelecommunicationToListStore();
+                    LOGGER.info("ENTER KEY PRESSED on Institution Field");
+                    addAuthorInstitutionToListStore();
                 }
             }
         });
-        // Delete Telecommunication Value handler
-        deleteTelecommunicationButton.addSelectHandler(new SelectHandler() {
+        // Delete Institution Value handler
+        deleteInstitutionButton.addSelectHandler(new SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {
-                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthTelecommunications.getSelectionModel()                        .getSelectedItem().getString());
+                final ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(listViewAuthInstitutions.getSelectionModel().getSelectedItem().getString());
                 cdd.show();
                 cdd.addDialogHideHandler(new DialogHideEvent.DialogHideHandler() {
+
                     @Override
                     public void onDialogHide(DialogHideEvent event) {
                         if (event.getHideButton() == PredefinedButton.YES) {
                             // perform YES action
-                            authorTelecommunications.getStore().remove(listViewAuthTelecommunications.getSelectionModel().getSelectedItem());
+                            authorInstitutions.getStore().remove(listViewAuthInstitutions.getSelectionModel().getSelectedItem());
                         }
                     }
                 });

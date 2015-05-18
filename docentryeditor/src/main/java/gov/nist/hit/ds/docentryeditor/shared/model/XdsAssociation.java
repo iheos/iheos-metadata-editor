@@ -91,10 +91,10 @@ public class XdsAssociation implements Serializable, XdsModelElement{
 
     public enum XdsAssociationType {
         HAS_MEMBER("urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember"),
-        RPLC("urn:ihe:iti:2007:AssociationType:RPLC"),// rename replace?
-        XFRM("urn:ihe:iti:2007:AssociationType:XFRM"),// rename transform?
-        APND("urn:ihe:iti:2007:AssociationType:APND"),// rename append?
-        XFRM_RPLC("urn:ihe:iti:2007:AssociationType:XFRM_RPLC"),// rename TRANSFORM_REPLACE?
+        RPLC("urn:ihe:iti:2007:AssociationType:RPLC"),// replace?
+        XFRM("urn:ihe:iti:2007:AssociationType:XFRM"),// transform?
+        APND("urn:ihe:iti:2007:AssociationType:APND"),// append?
+        XFRM_RPLC("urn:ihe:iti:2007:AssociationType:XFRM_RPLC"),// TRANSFORM_REPLACE?
         SIGNS("urn:ihe:iti:2007:AssociationType:signs");
         // TODO check this, some types might be missing
         private final String text;

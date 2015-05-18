@@ -418,14 +418,6 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         return date;
     }
 
-    private String splitLast(String in, String separator) {
-        String[] parts = in.split(separator);
-        if (parts.length <= 1) {
-            return in;
-        }
-        return parts[parts.length - 1];
-    }
-
     private String asString(String in) {
         if (in == null){
             return "";

@@ -175,8 +175,9 @@ public enum PredefinedCodesParser {
             for (int i = 0; i < n.getLength(); i++) {
                 String256 code = new String256().setString(((Element) n.item(i)).getAttribute("code"));
 
-                if (!mimeTypes.contains(code))
+                if (!mimeTypes.contains(code)) {
                     mimeTypes.add(code);
+                }
             }
             Collections.sort(mimeTypes, new Comparator<String256>() {
                 @Override

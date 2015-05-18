@@ -4,12 +4,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.sencha.gxt.widget.core.client.info.Info;
+import gov.nist.hit.ds.docentryeditor.client.event.ChangePlaceEvent;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsAssociationEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsSubmissionSetEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
 import java.util.logging.Logger;
 
@@ -45,6 +44,7 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
         editorDriver.initialize(view);
         LOGGER.info("Init association editor driver with: " + model.toString());
         editorDriver.edit(model);
+        editorDriver.flush();
     }
 
     /**
@@ -63,13 +63,11 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
         });
         // this event tells the presenter the application Place is about to change.
         // TODO redesign this
-        getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
+        getEventBus().addHandler(ChangePlaceEvent.TYPE, new ChangePlaceEvent.ChangePlaceEventHandler() {
             @Override
-            public void onPlaceChange(PlaceChangeEvent placeChangeEvent) {
+            public void onPlaceChange(ChangePlaceEvent event) {
                 // auto save on Place change.
-                logger.info("Association metadata auto save on Place change.");
-                Info.display("Auto save",
-                        "Association automatically saved when changing page.");
+                logger.info("Association metadata automatically saved on Place change.");
                 final XdsAssociation tmp = editorDriver.flush();
                 model=tmp;
             }
