@@ -1,8 +1,15 @@
 package gov.nist.hit.ds.docentryeditor.client.editor.association;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.place.shared.PlaceChangeEvent;
+import com.sencha.gxt.widget.core.client.info.Info;
+import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsAssociationEvent;
+import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsSubmissionSetEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
 import java.util.logging.Logger;
 
@@ -18,7 +25,7 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
 
     protected XdsAssociation model = new XdsAssociation();
 
-    private AssociationEditorDriver editorDriver;
+    private AssociationEditorDriver editorDriver= GWT.create(AssociationEditorDriver.class);
 
     /**
      * Method that initializes the editor on association editor view start.
@@ -44,7 +51,29 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
      * Method that ties actions and view together. It mostly handles gwt event form the event bus.
      */
     private void bind() {
+        // this event provides the presenter a association to edit and triggers its display in the association editor view.
+        ((MetadataEditorEventBus) getEventBus()).addStartEditXdsAssociationHandler(new StartEditXdsAssociationEvent.StartEditXdsAssociationHandler() {
 
+            @Override
+            public void onStartEdit(StartEditXdsAssociationEvent event) {
+                logger.info("... receive Start Edit Event");
+                logger.info(event.getAssociation().toString());
+                initDriver(event.getAssociation());
+            }
+        });
+        // this event tells the presenter the application Place is about to change.
+        // TODO redesign this
+        getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
+            @Override
+            public void onPlaceChange(PlaceChangeEvent placeChangeEvent) {
+                // auto save on Place change.
+                logger.info("Association metadata auto save on Place change.");
+                Info.display("Auto save",
+                        "Association automatically saved when changing page.");
+                final XdsAssociation tmp = editorDriver.flush();
+                model=tmp;
+            }
+        });
     }
 
     /**

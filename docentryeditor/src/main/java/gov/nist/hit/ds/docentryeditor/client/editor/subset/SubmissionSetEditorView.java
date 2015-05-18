@@ -47,8 +47,8 @@ import java.util.Map;
  */
 public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPresenter> implements Editor<XdsSubmissionSet>{
     public static final int FIELD_BOTTOM_MARGIN = 10;
-    private final VerticalLayoutContainer mainContainer = new VerticalLayoutContainer();
 
+    private final VerticalLayoutContainer mainContainer = new VerticalLayoutContainer();
     private VerticalLayoutContainer requiredFields = new VerticalLayoutContainer();
     private VerticalLayoutContainer optionalFields = new VerticalLayoutContainer();
 

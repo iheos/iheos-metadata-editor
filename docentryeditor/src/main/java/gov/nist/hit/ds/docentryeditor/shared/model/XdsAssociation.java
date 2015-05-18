@@ -20,13 +20,17 @@ public class XdsAssociation implements Serializable, XdsModelElement{
     private XdsAssociationType type; // URN => use an enum
     private String256 source; // UUID
     private String256 target; // UUID
-    private String256 status; // URN[0..1]
+    private AvailabilityStatus availabilityStatus; // URN[0..1]
+    private SubmissionSetStatus submissionSetStatus;
 
     public XdsAssociation(){
         id=new String256();
         type=XdsAssociationType.HAS_MEMBER;
+        availabilityStatus=AvailabilityStatus.APPROVED;
+        submissionSetStatus=SubmissionSetStatus.ORIGINAL;
     }
 
+    @Override
     public String256 getId() {
         return id;
     }
@@ -59,14 +63,21 @@ public class XdsAssociation implements Serializable, XdsModelElement{
         this.target = target;
     }
 
-    public String256 getStatus() {
-        return status;
+    public AvailabilityStatus getAvailabilityStatus() {
+        return availabilityStatus;
     }
 
-    public void setStatus(String256 status) {
-        this.status = status;
+    public void setAvailabilityStatus(AvailabilityStatus availabilityStatus) {
+        this.availabilityStatus = availabilityStatus;
     }
 
+    public SubmissionSetStatus getSubmissionSetStatus() {
+        return submissionSetStatus;
+    }
+
+    public void setSubmissionSetStatus(SubmissionSetStatus submissionSetStatus) {
+        this.submissionSetStatus = submissionSetStatus;
+    }
 
     @Override
     public boolean verify() {

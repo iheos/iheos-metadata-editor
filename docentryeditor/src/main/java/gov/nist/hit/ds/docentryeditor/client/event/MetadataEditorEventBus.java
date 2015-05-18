@@ -4,10 +4,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent.NewFileLoadedHandler;
 import gov.nist.hit.ds.docentryeditor.client.event.SaveFileEvent.SaveFileEventHandler;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsModelElement;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
+import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 /**
  * This is the application event bus. It is used through the entire application.
@@ -165,5 +162,22 @@ public class MetadataEditorEventBus extends SimpleEventBus {
 
     public void fireSelectSubmissionSetEvent() {
         fireEvent(new SelectSubmissionSetEvent());
+    }
+
+    /**
+     * This method adds an handler that will enable to trigger actions when a association starts to be edited.
+     * @param handler
+     * @return
+     */
+    public HandlerRegistration addStartEditXdsAssociationHandler(StartEditXdsAssociationEvent.StartEditXdsAssociationHandler handler) {
+        return addHandler(StartEditXdsAssociationEvent.TYPE,handler);
+    }
+
+    /**
+     * This methods signals to the event bus a request to start editing a specific association.
+     * @param association
+     */
+    public void fireStartEditXdsAssociationEvent(XdsAssociation association) {
+        fireEvent(new StartEditXdsAssociationEvent(association));
     }
 }

@@ -1,6 +1,7 @@
 package gov.nist.hit.ds.docentryeditor.client.widgets;
 
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
@@ -57,6 +58,24 @@ public class EditorToolbar extends HorizontalLayoutContainer {
 
     public void addButton(ToolbarIconButton button){
         this.add(button,new HorizontalLayoutData(-1,-1,new Margins(0,BUTTON_RIGHT_MARGIN,0,0)));
+    }
+
+    public void removeButton(int buttonIndex){
+        this.remove(buttonIndex);
+    }
+
+    public void removeButton(boolean removeHomeButton,boolean removeSaveButton,
+                             boolean removeCancelButton, boolean removePopulateButton){
+        removeWidget(removeHomeButton, homeButton);
+        removeWidget(removeSaveButton, saveButton);
+        removeWidget(removeCancelButton, cancelButton);
+        removeWidget(removePopulateButton, populateButton);
+    }
+
+    private void removeWidget(boolean removeWidget, Widget widget) {
+        if (removeWidget){
+            this.remove(widget);
+        }
     }
 
 }

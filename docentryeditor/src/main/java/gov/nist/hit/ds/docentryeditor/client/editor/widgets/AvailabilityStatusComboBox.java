@@ -7,6 +7,7 @@ import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 import gov.nist.hit.ds.docentryeditor.shared.model.AvailabilityStatus;
+import gov.nist.hit.ds.docentryeditor.shared.model.String256;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
 
 import java.util.Arrays;
@@ -15,29 +16,29 @@ import java.util.Arrays;
  * Combo box widget that enable the user to select a association type value
  * among several possible defined values.
  */
-public class AssociationTypeComboBox extends ComboBox<XdsAssociation.XdsAssociationType> {
+public class AvailabilityStatusComboBox extends ComboBox<AvailabilityStatus> {
     /**
      * Creates a combo box with the different possible values for an XDS Association type
      * added to the selection list.
      */
-    public AssociationTypeComboBox() {
-        super(new ListStore<XdsAssociation.XdsAssociationType>(
-                new ModelKeyProvider<XdsAssociation.XdsAssociationType>() {
+    public AvailabilityStatusComboBox() {
+        super(new ListStore<AvailabilityStatus>(
+                new ModelKeyProvider<AvailabilityStatus>() {
 
                     @Override
-                    public String getKey(XdsAssociation.XdsAssociationType item) {
+                    public String getKey(AvailabilityStatus item) {
                         return item.toString();
                     }
-                }), new LabelProvider<XdsAssociation.XdsAssociationType>() {
+                }), new LabelProvider<AvailabilityStatus>() {
 
             @Override
-            public String getLabel(XdsAssociation.XdsAssociationType item) {
+            public String getLabel(AvailabilityStatus item) {
                 return item.toString();
             }
         });
         getStore().clear();
-        // add possible type values to the combo box widget
-        getStore().addAll(Arrays.asList(XdsAssociation.XdsAssociationType.values()));
+        // add possible status values to the combo box widget
+        getStore().addAll(Arrays.asList(AvailabilityStatus.values()));
         setTriggerAction(ComboBoxCell.TriggerAction.ALL);
     }
 }

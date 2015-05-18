@@ -5,14 +5,15 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.requestfactory.shared.Receiver;
+import gov.nist.hit.ds.docentryeditor.client.editor.association.AssociationEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocEntryEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.event.*;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
-import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
+import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
 import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorRequestFactory;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
@@ -102,12 +103,18 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                 } else {
                     if (placeController.getWhere() instanceof SubmissionSetEditorPlace){
                         view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode,false);
-                    }else {
+                    }else if(placeController.getWhere() instanceof DocEntryEditorPlace){
                         // if no doc. entry is currently under edition, it means the app (editor view) has been loaded from
                         // by its URL from the browser navigation bar (external link).
                         logger.info("No Document Entry in Submission Set");
                         // a new doc. entry is create in the submission tree.
                         createNewDocumentEntry();
+                    }else{
+                        // if no association is currently under edition, it means the app (asso. editor view) has been loaded from
+                        // its URL from the browser navigation bar (external link).
+                        logger.info("No association");
+                        // a new doc. entry is create in the submission tree.
+                        createNewAssociation();
                     }
                 }
             }
@@ -131,7 +138,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         eventBus.addHandler(SelectSubmissionSetEvent.TYPE, new SelectSubmissionSetEvent.SelectSubmissionSetEventHandler() {
             @Override
             public void onSelectSubmissionSet(SelectSubmissionSetEvent event) {
-                view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode,false);
+                view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode, false);
             }
         });
     }
@@ -154,8 +161,10 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      *
      * @param selectedItem selected tree node
      */
-    public void loadSelectedEntryEditor(SubmissionMenuData selectedItem) {
+    public void loadSelectedTreeEntryEditor(SubmissionMenuData selectedItem) {
+        resetFontColor();
         ((MetadataEditorEventBus) eventBus).firePlaceChangeEvent();
+        view.getAssociationList().getSelectionModel().deselectAll();
         currentlyEdited = selectedItem;
         startEditing();
     }
@@ -167,8 +176,31 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * @param selectedItem selected association
      */
     public void loadSelectedAssociationEditor(XdsAssociation selectedItem) {
+        resetFontColor();
+        ((MetadataEditorEventBus) eventBus).firePlaceChangeEvent();
+        view.getSubmissionTree().getSelectionModel().deselectAll();
+        currentlyEdited=new SubmissionMenuData(selectedItem.getId().toString(),selectedItem.getId().toString(),selectedItem);
+        // change the font color of the target item involved in the association
+        if (selectedItem.getSource()!=null && !selectedItem.getSource().getString().isEmpty()) {
+            SubmissionMenuData sourceSubData = searchForSubmissionData(selectedItem.getSource());
+            if (sourceSubData != null) {
+                sourceSubData.setIsActiveLink(true);
+            }
+            getView().getSubmissionTree().refresh(sourceSubData);
+        }
+        // change the font color of the target item involved in the association
+        if (selectedItem.getTarget()!=null && !selectedItem.getTarget().getString().isEmpty()) {
+            SubmissionMenuData targetSubData = searchForSubmissionData(selectedItem.getTarget());
+            if (targetSubData != null) {
+                targetSubData.setIsActiveLink(true);
+
+            }
+            getView().getSubmissionTree().refresh(targetSubData);
+        }
+        startEditing();
         // TODO
     }
+
 
     /**
      * This method creates a new Document Entry and adds it to the submissionSet tree.
@@ -192,7 +224,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         association.setId(new String256(association.getType().toString().split(":")[association.getType().toString().split(":").length-1]+" "+associationIndex));
         associationIndex++;
         view.getAssociationStore().add(association);
-        view.getAssociationList().getSelectionModel().select(association,false);
+        view.getAssociationList().getSelectionModel().select(association, false);
     }
 
     /**
@@ -279,6 +311,13 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
             logger.info("Fire Start Edit selected (" + currentlyEdited.getValue() + ") submission set event...");
             logger.info(currentlyEdited.getModel().toString());
             ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsSubmissionSetEvent((XdsSubmissionSet) currentlyEdited.getModel());
+        }else if(currentlyEdited.getModel() instanceof XdsAssociation){
+            if (!(placeController.getWhere() instanceof AssociationEditorPlace)){
+                placeController.goTo(new AssociationEditorPlace());
+            }
+            logger.info("Fire Start Edit selected (" + currentlyEdited.getValue() + ") association event...");
+            logger.info(currentlyEdited.getModel().toString());
+            ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsAssociationEvent((XdsAssociation) currentlyEdited.getModel());
         }
     }
 
@@ -289,6 +328,33 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         getView().getSubmissionTree().getSelectionModel().deselectAll();
         getView().getAssociationList().getSelectionModel().deselectAll();
         placeController.goTo(new WelcomePlace());
+    }
+
+    /**
+     * Switch back to black the color of the font for the submission tree items.
+     */
+    private void resetFontColor() {
+        for (SubmissionMenuData subData:this.getView().getSubmissionTreeStore().getAll()){
+            if (subData.isActiveLink()){
+                subData.setIsActiveLink(false);
+                this.getView().getSubmissionTree().refresh(subData);
+            }
+        }
+    }
+
+    /**
+     * This method search a submission tree item by its model id.
+     * @param id - ID of the XdsModel to find.
+     * @return SubmissionMenuData whose model id is the id given as parameter if found.
+     *          null otherwise.
+     */
+    public SubmissionMenuData searchForSubmissionData(String256 id) {
+        for (SubmissionMenuData subData:this.getView().getSubmissionTreeStore().getAll()){
+            if (id.equals(subData.getModel().getId())){
+                return subData;
+            }
+        }
+        return null;
     }
 
     /**
