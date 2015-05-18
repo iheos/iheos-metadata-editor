@@ -11,7 +11,6 @@ import com.sencha.gxt.widget.core.client.form.FieldSet;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.*;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
-import gov.nist.hit.ds.docentryeditor.shared.model.AvailabilityStatus;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
 
 import javax.inject.Inject;
@@ -154,6 +153,6 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
      */
     @Override
     protected void bindUI() {
-
+        // TODO
     }
 }

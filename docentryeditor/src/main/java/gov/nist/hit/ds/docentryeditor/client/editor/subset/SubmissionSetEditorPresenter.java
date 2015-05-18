@@ -7,6 +7,7 @@ import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
 import com.sencha.gxt.widget.core.client.info.Info;
+import gov.nist.hit.ds.docentryeditor.client.event.ChangePlaceEvent;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsSubmissionSetEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
@@ -40,6 +41,7 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
         getView().authors.getAuthorWidget().initEditorDriver();
         logger.info("Init driver with: " + model.toString());
         editorDriver.edit(model);
+        editorDriver.flush();
         getView().refreshGridButtonsDisplay();
         getView().authors.editNewAuthor();
     }
@@ -58,13 +60,11 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
             }
         });
         // this event tells the presenter the application Place is about to change.
-        getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
+        getEventBus().addHandler(ChangePlaceEvent.TYPE, new ChangePlaceEvent.ChangePlaceEventHandler() {
             @Override
-            public void onPlaceChange(PlaceChangeEvent placeChangeEvent) {
+            public void onPlaceChange(ChangePlaceEvent event) {
                 // auto save on Place change.
-                logger.info("Submission set metadata auto save on Place change.");
-                Info.display("Auto save",
-                        "Submission set automatically saved when changing page.");
+                logger.info("Submission set metadata automatically saved on Place change.");
                 final XdsSubmissionSet tmp = editorDriver.flush();
                 model=tmp;
             }

@@ -6,7 +6,6 @@ import com.sencha.gxt.widget.core.client.form.validator.AbstractValidator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Bill's UUID format validator adapted for client side validation in the editor.
@@ -46,8 +45,7 @@ public class UuidFormatClientValidator extends AbstractValidator<String> {
     public List<EditorError> validate(Editor<String> editor, String value) {
         if (value == null) {
             return createError(editor, "Can not be null", value);
-        }
-        else if (!value.startsWith("urn:uuid:")) {
+        } else if (!value.startsWith("urn:uuid:")) {
             if (value.length() == 36) {
                 String tmp = value;
                 tmp.replaceAll("-", "");

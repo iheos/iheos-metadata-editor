@@ -5,6 +5,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.requestfactory.shared.Receiver;
+import com.sencha.gxt.widget.core.client.info.Info;
 import gov.nist.hit.ds.docentryeditor.client.editor.association.AssociationEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocEntryEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorPlace;
@@ -163,7 +164,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      */
     public void loadSelectedTreeEntryEditor(SubmissionMenuData selectedItem) {
         resetFontColor();
-        ((MetadataEditorEventBus) eventBus).firePlaceChangeEvent();
+        fireChangePlaceEvent();
         view.getAssociationList().getSelectionModel().deselectAll();
         currentlyEdited = selectedItem;
         startEditing();
@@ -177,7 +178,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      */
     public void loadSelectedAssociationEditor(XdsAssociation selectedItem) {
         resetFontColor();
-        ((MetadataEditorEventBus) eventBus).firePlaceChangeEvent();
+        fireChangePlaceEvent();
         view.getSubmissionTree().getSelectionModel().deselectAll();
         currentlyEdited=new SubmissionMenuData(selectedItem.getId().toString(),selectedItem.getId().toString(),selectedItem);
         // change the font color of the target item involved in the association
@@ -327,7 +328,22 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
     public void goToHomePage() {
         getView().getSubmissionTree().getSelectionModel().deselectAll();
         getView().getAssociationList().getSelectionModel().deselectAll();
+        fireChangePlaceEvent();
         placeController.goTo(new WelcomePlace());
+    }
+
+    public void fireChangePlaceEvent(){
+        String type="Metadata ";
+        if (currentlyEdited.getModel() instanceof XdsDocumentEntry){
+            type="Document entry ";
+        }else if (currentlyEdited.getModel() instanceof XdsSubmissionSet){
+            type="Submission set ";
+        }else if (currentlyEdited.getModel() instanceof XdsAssociation){
+            type = "Association ";
+        }
+        Info.display("Auto save",
+                type+"automatically saved when changing page.");
+        ((MetadataEditorEventBus) eventBus).firePlaceChangeEvent();
     }
 
     /**

@@ -5,8 +5,6 @@ import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
-import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
-import gov.nist.hit.ds.docentryeditor.shared.model.AvailabilityStatus;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
 
 import java.util.Arrays;

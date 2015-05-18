@@ -52,12 +52,9 @@ public class IdentifierOIDEditorWidget extends Composite implements
      * Sets the widget's tool tip with the given config
      *
      * @param valueConfig
-     * @param idTypeConfig
      */
-    public void setToolTipConfigs(ToolTipConfig valueConfig,
-                                  ToolTipConfig idTypeConfig) {
+    public void setToolTipConfigs(ToolTipConfig valueConfig) {
         value.setToolTipConfig(valueConfig);
-        idType.setToolTipConfig(idTypeConfig);
     }
 
     /**
@@ -72,4 +69,5 @@ public class IdentifierOIDEditorWidget extends Composite implements
         value.setAllowBlank(doesValueAllowBlank);
         idType.setAllowBlank(doesTypeAllowBlank);
     }
+
 }
