@@ -7,7 +7,7 @@ import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 
 /**
- * Created by onh2 on 5/18/2015.
+ * Property access class for the SubmissionMenuData type.
  */
 public interface SubmissionMenuDataProperties extends PropertyAccess<SubmissionMenuData> {
 
@@ -18,6 +18,9 @@ public interface SubmissionMenuDataProperties extends PropertyAccess<SubmissionM
 
     ValueProvider<SubmissionMenuData, String> value();
 
+    /**
+     * Value provider for the SubmissionMenuData type.
+     */
     class SubmissionValueProvider implements ValueProvider<SubmissionMenuData,SubmissionMenuData>{
 
         /**
