@@ -1,17 +1,25 @@
 package gov.nist.hit.ds.docentryeditor.client.root.submission;
 
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.cell.core.client.LabelProviderSafeHtmlRenderer;
 import com.sencha.gxt.cell.core.client.SimpleSafeHtmlCell;
+import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
+import com.sencha.gxt.cell.core.client.form.ValueBaseInputCell;
 import com.sencha.gxt.core.client.Style;
+import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.shared.*;
 import com.sencha.gxt.widget.core.client.ContentPanel;
@@ -21,6 +29,8 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
@@ -47,10 +57,11 @@ import java.util.Map;
 public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> {
     private static final int RIGHT_N_LEFT_LBL_MARGIN = 5;
     private static final int UP_N_DOWN_LBL_MARGIN = 10;
+    private static final int FILTER_LABEL_WIDTH = 50;
 
     // ~ Tree structure for submission set, folder and document entries
     private final TreeStore<SubmissionMenuData> submissionTreeStore = new TreeStore<SubmissionMenuData>(SubmissionMenuData.PROPS.key());
-    private final Tree<SubmissionMenuData, String> submissionTree = new Tree<SubmissionMenuData, String>(submissionTreeStore, SubmissionMenuData.PROPS.value());
+    private  Tree<SubmissionMenuData, SubmissionMenuData> submissionTree;
     private final ToolBar toolbar = new ToolBar();
 
     private final TextButton uploadFileButton = new TextButton();
@@ -73,6 +84,7 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
 
     @Inject
     private FileUploadDialog fileUploadDialog;
+    private SimpleComboBox<String> filterComboBox;
 
     @Override
     protected Map<String, Widget> getPathToWidgetsMap() {
@@ -86,6 +98,9 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         cp.setHeadingText("Submission");
         cp.setHeaderVisible(true);
         cp.setBorders(false);
+
+        submissionTree = new Tree<SubmissionMenuData, SubmissionMenuData>(submissionTreeStore, new SubmissionMenuDataProperties.SubmissionValueProvider());
+        submissionTree.setCell(new SubmissionTreeCellRenderer());
 
         VerticalLayoutContainer vlc = new VerticalLayoutContainer();
 
@@ -149,9 +164,21 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         associationPanelToolbar.add(clearAssociationsButton);
         associationPanelToolbar.add(associationHelpButton);
 
+        filterComboBox=new SimpleComboBox<String>(new StringLabelProvider<String>());
+        filterComboBox.add("All associations");
+        filterComboBox.add("Internal asso. only");
+        filterComboBox.add("External asso. only");
+        filterComboBox.setMinChars(3);
+        filterComboBox.setValue(filterComboBox.getStore().get(0));
+        filterComboBox.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
+        FieldLabel filterFL=new FieldLabel(filterComboBox,"Filter");
+        filterFL.setLabelWidth(FILTER_LABEL_WIDTH);
+        filterFL.addStyleName("topBorder");
+
         VerticalLayoutContainer associationWidgetsContainer=new VerticalLayoutContainer();
-        associationWidgetsContainer.add(associationPanelToolbar);
-        associationWidgetsContainer.add(associationListView);
+        associationWidgetsContainer.add(associationPanelToolbar, new VerticalLayoutContainer.VerticalLayoutData(-1, -1));
+        associationWidgetsContainer.add(associationListView, new VerticalLayoutContainer.VerticalLayoutData(-1, 1));
+        associationWidgetsContainer.add(filterFL, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
         associationPanel.add(associationWidgetsContainer);
 
         ////////////// TODO REMOVER THIS BLOCK /////////////////////
@@ -163,8 +190,8 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         associationListStore.add(asso2);
         ////////////////////////////////////////////////////////////
 
-        vlc.add(submissionTree,new VerticalLayoutContainer.VerticalLayoutData(-1,0.6));
-        vlc.add(associationPanel,new VerticalLayoutContainer.VerticalLayoutData(-1,0.4));
+        vlc.add(submissionTree, new VerticalLayoutContainer.VerticalLayoutData(-1, 0.6));
+        vlc.add(associationPanel, new VerticalLayoutContainer.VerticalLayoutData(-1, 0.4));
 
         cp.setWidget(vlc);
 
@@ -181,7 +208,7 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         submissionTree.getSelectionModel().addSelectionHandler(new SelectionHandler<SubmissionMenuData>() {
             @Override
             public void onSelection(SelectionEvent<SubmissionMenuData> event) {
-                presenter.loadSelectedEntryEditor(event.getSelectedItem());
+                presenter.loadSelectedTreeEntryEditor(event.getSelectedItem());
             }
         });
         associationListView.getSelectionModel().addSelectionHandler(new SelectionHandler<XdsAssociation>() {
@@ -296,7 +323,7 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
      *
      * @return submission set tree
      */
-    public Tree<SubmissionMenuData, String> getSubmissionTree() {
+    public Tree<SubmissionMenuData, SubmissionMenuData> getSubmissionTree() {
         return submissionTree;
     }
 
@@ -360,12 +387,40 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
     public class AssociationListItemRenderer extends AbstractSafeHtmlRenderer<String> {
         @Override
         public SafeHtml render(final String s) {
-             return new SafeHtml() {
+            return new SafeHtml() {
                 @Override
                 public String asString() {
                     return "<div style=\"margin-left:5px;\"><img style=\"margin-right:5px;\" src=\"" + AppImages.INSTANCE.association().getSafeUri().asString() + "\"/>" + s + "</div>";
                 }
-             };
+            };
         }
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//, new ValueProvider<SubmissionMenuData, SafeHtml>() {
+//@Override
+//public SafeHtml getValue(SubmissionMenuData object) {
+//        if (object.isActiveLink()){
+//        return SafeHtmlUtils.fromTrustedString("<span style='color:blue;'>"+object.getValue()+"</span>");
+//        }else{
+//        return SafeHtmlUtils.fromTrustedString(object.getValue());
+//        }
+//        }
+//
+//@Override
+//public void setValue(SubmissionMenuData object, SafeHtml value) {
+//        String[] s=value.asString().split(">");
+//        if (s.length>1){
+//        String str=s[1];
+//        object.setValue(str.split("<")[0]);
+//        }else {
+//        object.setValue(value.asString());
+//        }
+//        }
+//
+//@Override
+//public String getPath() {
+//        return "value";
+//        }
+//        }

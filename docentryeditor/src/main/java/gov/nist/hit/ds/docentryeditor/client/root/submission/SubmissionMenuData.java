@@ -2,6 +2,7 @@ package gov.nist.hit.ds.docentryeditor.client.root.submission;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
@@ -15,10 +16,11 @@ import gov.nist.hit.ds.docentryeditor.shared.model.XdsModelElement;
  * Created by onh2 on 7/11/2014.
  */
 public class SubmissionMenuData<M extends XdsModelElement> {
-    public static final SubmissionMenuData.SubmissionMenuDataProperties PROPS = GWT.create(SubmissionMenuData.SubmissionMenuDataProperties.class);
+    public static final SubmissionMenuDataProperties PROPS = GWT.create(SubmissionMenuDataProperties.class);
     private String key;
     private String value;
     private M model;
+    private boolean isActiveLink=false;
 
     public SubmissionMenuData(String key, String value, M model) {
         this.key = key;
@@ -50,6 +52,14 @@ public class SubmissionMenuData<M extends XdsModelElement> {
         this.model = model;
     }
 
+    public boolean isActiveLink() {
+        return isActiveLink;
+    }
+
+    public void setIsActiveLink(boolean isActiveLink) {
+        this.isActiveLink = isActiveLink;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){
@@ -73,15 +83,4 @@ public class SubmissionMenuData<M extends XdsModelElement> {
         return result;
     }
 
-    public interface SubmissionMenuDataProperties extends PropertyAccess<SubmissionMenuData> {
-
-        ModelKeyProvider<SubmissionMenuData> key();
-
-        @Editor.Path("value")
-        LabelProvider<SubmissionMenuData> valueLabel();
-
-        ValueProvider<SubmissionMenuData, String> value();
-
-
-    }
 }

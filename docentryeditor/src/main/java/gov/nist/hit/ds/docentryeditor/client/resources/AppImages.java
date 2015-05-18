@@ -67,9 +67,12 @@ public interface AppImages extends ClientBundle {
     @Source("baseResources/back-16.png")
     ImageResource back();
 
-    @Source("baseResources/pen.png")
+    @Source("baseResources/populate.png")
     ImageResource pen();
 
     @Source("baseResources/link-12.png")
     ImageResource association();
+
+    @Source("baseResources/select-linked-bg.png")
+    ImageResource linkedBG();
 }

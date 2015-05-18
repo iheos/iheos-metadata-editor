@@ -38,8 +38,6 @@ public class MetadataEditorGinModule extends AbstractGinModule {
 
         bind(ActivityDisplayer.class).to(MetadataEditorAppDisplayer.class).in(Singleton.class);
         bind(MetadataEditorAppView.class).in(Singleton.class);
-        bind(SubmissionSetEditorActivity.class).in(Singleton.class);
-        bind(DocEntryEditorActivity.class).in(Singleton.class);
     }
 
     /**

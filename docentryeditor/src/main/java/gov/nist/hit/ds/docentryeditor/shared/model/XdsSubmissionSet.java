@@ -122,6 +122,10 @@ public class XdsSubmissionSet  implements XdsModelElement,Serializable {
 
     //////////////////////////////////////////////////////////////////////////////
     //-------------------------\/ GETTERS & SETTERS \/--------------------------//
+    @Override
+    public String256 getId(){
+        return entryUUID;
+    }
     public List<Author> getAuthors() {
         return authors;
     }
