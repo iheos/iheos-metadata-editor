@@ -1,17 +1,27 @@
 package gov.nist.hit.ds.docentryeditor.client.editor.association;
 
 import com.google.gwt.editor.client.Editor;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
+import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.*;
+import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
+import gov.nist.hit.ds.docentryeditor.shared.model.String256;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsModelElement;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -41,14 +51,12 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
     AvailabilityStatusComboBox availabilityStatus;
     @Inject
     SubmissionSetStatusComboBox submissionSetStatus;
-    @Inject
-    String256EditorWidget source;
-    @Inject
-    String256EditorWidget target;
+
+    SimpleComboBox<String256> source;
+    SimpleComboBox<String256> target;
 
     @Inject
     private EditorToolbar editorTopToolbar;
-    // TODO Create a combobox widget for enum XdsAssociationTypes?
 
     /**
      * This is the abstract method implementation that builds a collection of objects
@@ -101,6 +109,20 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
         // - Required fields.
         EditorFieldLabel idLabel = new EditorFieldLabel(id,"Association ID");
         EditorFieldLabel typeLabel = new EditorFieldLabel(type,"Association type");
+        LabelProvider<String256> xdsModelElementLabelProvider=new LabelProvider<String256>() {
+            @Override
+            public String getLabel(String256 item) {
+                return item.toString();
+            }
+        };
+        source=new SimpleComboBox<String256>(xdsModelElementLabelProvider);
+        source.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
+        source.setForceSelection(true);
+        source.setTypeAhead(true);
+        target=new SimpleComboBox<String256>(xdsModelElementLabelProvider);
+        target.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
+        target.setForceSelection(true);
+        target.setTypeAhead(true);
         EditorFieldLabel sourceLabel = new EditorFieldLabel(source,"Source object");
         EditorFieldLabel targetLabel = new EditorFieldLabel(target,"Target object");
 
@@ -153,6 +175,25 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
      */
     @Override
     protected void bindUI() {
-        // TODO
+        source.addSelectionHandler(new SelectionHandler<String256>() {
+            @Override
+            public void onSelection(SelectionEvent<String256> event) {
+                presenter.fireAssociatedNodesChangedEvent();
+                source.finishEditing();
+            }
+        });
+        target.addSelectionHandler(new SelectionHandler<String256>() {
+            @Override
+            public void onSelection(SelectionEvent<String256> event) {
+                presenter.fireAssociatedNodesChangedEvent();
+                target.finishEditing();
+            }
+        });
+        editorTopToolbar.addCancelHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                presenter.rollbackChanges();
+            }
+        });
     }
 }
