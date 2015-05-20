@@ -2,14 +2,17 @@ package gov.nist.hit.ds.docentryeditor.client.editor.association;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.place.shared.PlaceChangeEvent;
-import com.sencha.gxt.widget.core.client.info.Info;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import gov.nist.hit.ds.docentryeditor.client.event.ChangePlaceEvent;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsAssociationEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
+import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionMenuData;
+import gov.nist.hit.ds.docentryeditor.shared.model.String256;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -56,7 +59,8 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
 
             @Override
             public void onStartEdit(StartEditXdsAssociationEvent event) {
-                logger.info("... receive Start Edit Event");
+                logger.info("... receive Start Edit Event (association)");
+                initSourceAndTargetComboBoxes(event.getObjectInSubmission());
                 logger.info(event.getAssociation().toString());
                 initDriver(event.getAssociation());
             }
@@ -69,9 +73,29 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
                 // auto save on Place change.
                 logger.info("Association metadata automatically saved on Place change.");
                 final XdsAssociation tmp = editorDriver.flush();
-                model=tmp;
+                model = tmp;
             }
         });
+    }
+
+    private void initSourceAndTargetComboBoxes(List<SubmissionMenuData> availableObjectInSubmission) {
+        view.source.clear();
+        view.target.clear();
+        for (int i=0;i<availableObjectInSubmission.size();i++) {
+            if (!view.source.getStore().getAll().contains(availableObjectInSubmission.get(i).getModel().getId())) {
+                view.source.add(availableObjectInSubmission.get(i).getModel().getId());
+            }
+            if (!view.target.getStore().getAll().contains(availableObjectInSubmission.get(i).getModel().getId())) {
+                view.target.add(availableObjectInSubmission.get(i).getModel().getId());
+            }
+        }
+    }
+
+    /**
+     * This method fires an event to notify that the associated elements in the association have changed.
+     */
+    public void fireAssociatedNodesChangedEvent() {
+        ((MetadataEditorEventBus) getEventBus()).fireAssociatedElementsChanged(view.source.getText(), view.target.getText());
     }
 
     /**
@@ -80,6 +104,15 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
      */
     public XdsAssociation getModel() {
         return model;
+    }
+
+    /**
+     * Method that cancels the changes made to the association object in edition since the last save.
+     */
+    public void rollbackChanges() {
+        LOGGER.info("Cancel association changes.");
+        initDriver(model);
+        fireAssociatedNodesChangedEvent();
     }
 
     /**

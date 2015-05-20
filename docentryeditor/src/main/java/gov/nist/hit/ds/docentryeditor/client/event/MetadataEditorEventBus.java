@@ -4,7 +4,10 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent.NewFileLoadedHandler;
 import gov.nist.hit.ds.docentryeditor.client.event.SaveFileEvent.SaveFileEventHandler;
+import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionMenuData;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
+
+import java.util.List;
 
 /**
  * This is the application event bus. It is used through the entire application.
@@ -177,7 +180,15 @@ public class MetadataEditorEventBus extends SimpleEventBus {
      * This methods signals to the event bus a request to start editing a specific association.
      * @param association
      */
-    public void fireStartEditXdsAssociationEvent(XdsAssociation association) {
-        fireEvent(new StartEditXdsAssociationEvent(association));
+    public void fireStartEditXdsAssociationEvent(XdsAssociation association,List<SubmissionMenuData> objectsAvailableInSubmission) {
+        fireEvent(new StartEditXdsAssociationEvent(association,objectsAvailableInSubmission));
+    }
+
+    public void fireAssociatedElementsChanged(String source, String target) {
+        fireEvent(new AssociatedElementsChangedEvent(source,target));
+    }
+
+    public HandlerRegistration addAssociatedElementsChangedHandler(AssociatedElementsChangedEvent.AssociatedElementsChangedHandler handler) {
+        return addHandler(AssociatedElementsChangedEvent.TYPE,handler);
     }
 }

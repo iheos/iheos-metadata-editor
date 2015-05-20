@@ -72,7 +72,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                     nextIndex++;
                     view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
                 }
-                currentlyEdited=submissionSetTreeNode;
+                currentlyEdited = submissionSetTreeNode;
                 view.getSubmissionTree().expandAll();
                 view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode, false);
             }
@@ -98,19 +98,19 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                     if (currentlyEdited.getModel() instanceof XdsDocumentEntry) {
                         logger.info("A document is already selected. Loading it...");
                         ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsDocumentEvent((XdsDocumentEntry) currentlyEdited.getModel());
-                    }else if (currentlyEdited.getModel() instanceof XdsSubmissionSet){
+                    } else if (currentlyEdited.getModel() instanceof XdsSubmissionSet) {
                         ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsSubmissionSetEvent((XdsSubmissionSet) currentlyEdited.getModel());
                     }
                 } else {
-                    if (placeController.getWhere() instanceof SubmissionSetEditorPlace){
-                        view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode,false);
-                    }else if(placeController.getWhere() instanceof DocEntryEditorPlace){
+                    if (placeController.getWhere() instanceof SubmissionSetEditorPlace) {
+                        view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode, false);
+                    } else if (placeController.getWhere() instanceof DocEntryEditorPlace) {
                         // if no doc. entry is currently under edition, it means the app (editor view) has been loaded from
                         // by its URL from the browser navigation bar (external link).
                         logger.info("No Document Entry in Submission Set");
                         // a new doc. entry is create in the submission tree.
                         createNewDocumentEntry();
-                    }else{
+                    } else {
                         // if no association is currently under edition, it means the app (asso. editor view) has been loaded from
                         // its URL from the browser navigation bar (external link).
                         logger.info("No association");
@@ -133,6 +133,13 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
             @Override
             public void onFileSave(SaveFileEvent event) {
                 doSave();
+            }
+        });
+        // signal that associated node with the association being edited has changed
+        ((MetadataEditorEventBus) getEventBus()).addAssociatedElementsChangedHandler(new AssociatedElementsChangedEvent.AssociatedElementsChangedHandler() {
+            @Override
+            public void onAssociatedElementsChange(AssociatedElementsChangedEvent event) {
+                changeAssociatedNodesFontColor(new String256(event.getSourceElement()),new String256(event.getTargetElement()));
             }
         });
         // start edit submission set from home page
@@ -163,8 +170,10 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * @param selectedItem selected tree node
      */
     public void loadSelectedTreeEntryEditor(SubmissionMenuData selectedItem) {
+        // restore nodes default font color.
         resetFontColor();
         fireChangePlaceEvent();
+        // deselect all associations.
         view.getAssociationList().getSelectionModel().deselectAll();
         currentlyEdited = selectedItem;
         startEditing();
@@ -177,31 +186,15 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * @param selectedItem selected association
      */
     public void loadSelectedAssociationEditor(XdsAssociation selectedItem) {
+        // restore nodes default font color.
         resetFontColor();
         fireChangePlaceEvent();
+        // deselect all element in submission set.
         view.getSubmissionTree().getSelectionModel().deselectAll();
         currentlyEdited=new SubmissionMenuData(selectedItem.getId().toString(),selectedItem.getId().toString(),selectedItem);
-        // change the font color of the target item involved in the association
-        if (selectedItem.getSource()!=null && !selectedItem.getSource().getString().isEmpty()) {
-            SubmissionMenuData sourceSubData = searchForSubmissionData(selectedItem.getSource());
-            if (sourceSubData != null) {
-                sourceSubData.setIsActiveLink(true);
-            }
-            getView().getSubmissionTree().refresh(sourceSubData);
-        }
-        // change the font color of the target item involved in the association
-        if (selectedItem.getTarget()!=null && !selectedItem.getTarget().getString().isEmpty()) {
-            SubmissionMenuData targetSubData = searchForSubmissionData(selectedItem.getTarget());
-            if (targetSubData != null) {
-                targetSubData.setIsActiveLink(true);
-
-            }
-            getView().getSubmissionTree().refresh(targetSubData);
-        }
+        changeAssociatedNodesFontColor(selectedItem.getSource(),selectedItem.getTarget());
         startEditing();
-        // TODO
     }
-
 
     /**
      * This method creates a new Document Entry and adds it to the submissionSet tree.
@@ -219,7 +212,6 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * This method creates a new Association and adds it to the list of association in the Submission panel.
      */
     public void createNewAssociation() {
-        // TODO
         logger.info("Create new association");
         XdsAssociation association=new XdsAssociation();
         association.setId(new String256(association.getType().toString().split(":")[association.getType().toString().split(":").length-1]+" "+associationIndex));
@@ -318,7 +310,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
             }
             logger.info("Fire Start Edit selected (" + currentlyEdited.getValue() + ") association event...");
             logger.info(currentlyEdited.getModel().toString());
-            ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsAssociationEvent((XdsAssociation) currentlyEdited.getModel());
+            ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsAssociationEvent((XdsAssociation) currentlyEdited.getModel(),view.getSubmissionTreeStore().getAll());
         }
     }
 
@@ -326,6 +318,8 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      * This method handle the navigation back to the home page of the application.
      */
     public void goToHomePage() {
+        // restore all nodes default font color.
+        resetFontColor();
         getView().getSubmissionTree().getSelectionModel().deselectAll();
         getView().getAssociationList().getSelectionModel().deselectAll();
         fireChangePlaceEvent();
@@ -334,16 +328,46 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
 
     public void fireChangePlaceEvent(){
         String type="Metadata ";
-        if (currentlyEdited.getModel() instanceof XdsDocumentEntry){
-            type="Document entry ";
-        }else if (currentlyEdited.getModel() instanceof XdsSubmissionSet){
-            type="Submission set ";
-        }else if (currentlyEdited.getModel() instanceof XdsAssociation){
-            type = "Association ";
+        if (currentlyEdited!=null) {
+            if (currentlyEdited.getModel() instanceof XdsDocumentEntry) {
+                type = "Document entry ";
+            } else if (currentlyEdited.getModel() instanceof XdsSubmissionSet) {
+                type = "Submission set ";
+            } else if (currentlyEdited.getModel() instanceof XdsAssociation) {
+                type = "Association ";
+            }
         }
         Info.display("Auto save",
-                type+"automatically saved when changing page.");
+                type + "automatically saved when changing page.");
         ((MetadataEditorEventBus) eventBus).firePlaceChangeEvent();
+    }
+
+    /**
+     * This method change the font color the different nodes involved in the association
+     * under edition as source and target objects.
+     *
+     * @param source id of the source object, whose font color has to be changed.
+     * @param target id of the target object, whose font color has to be changed.
+     */
+    private void changeAssociatedNodesFontColor(String256 source,String256 target) {
+        // restore default font color
+        resetFontColor();
+        // change the font color of the target item involved in the association
+        if (source!=null && !source.toString().isEmpty()) {
+            SubmissionMenuData sourceSubData = searchForSubmissionData(source);
+            if (sourceSubData != null) {
+                sourceSubData.setIsActiveLink(true);
+            }
+            getView().getSubmissionTree().refresh(sourceSubData);
+        }
+        // change the font color of the target item involved in the association
+        if (target!=null && !target.toString().isEmpty()) {
+            SubmissionMenuData targetSubData = searchForSubmissionData(target);
+            if (targetSubData != null) {
+                targetSubData.setIsActiveLink(true);
+            }
+            getView().getSubmissionTree().refresh(targetSubData);
+        }
     }
 
     /**

@@ -14,10 +14,7 @@ import com.sencha.gxt.cell.core.client.SimpleSafeHtmlCell;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.core.client.Style;
 import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.data.shared.IconProvider;
-import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.data.shared.StringLabelProvider;
-import com.sencha.gxt.data.shared.TreeStore;
+import com.sencha.gxt.data.shared.*;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.ListView;
@@ -38,10 +35,7 @@ import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadDialog;
-import gov.nist.hit.ds.docentryeditor.shared.model.String256;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
+import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -84,8 +78,7 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
 
     @Override
     protected Map<String, Widget> getPathToWidgetsMap() {
-        Map<String, Widget> map = new HashMap<String, Widget>();
-        return map;
+        return new HashMap<String, Widget>();
     }
 
     @Override
@@ -211,6 +204,26 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
             @Override
             public void onSelection(SelectionEvent<XdsAssociation> selectionEvent) {
                 presenter.loadSelectedAssociationEditor(selectionEvent.getSelectedItem());
+            }
+        });
+        filterComboBox.addSelectionHandler(new SelectionHandler<String>() {
+            @Override
+            public void onSelection(final SelectionEvent<String> event) {
+                associationListStore.removeFilters();
+                associationListStore.addFilter(new Store.StoreFilter<XdsAssociation>() {
+                    @Override
+                    public boolean select(Store<XdsAssociation> store, XdsAssociation parent, XdsAssociation item) {
+                        switch (event.getSelectedItem()) {
+                            case "Internal asso. only":
+                                return item.getSubmissionSetStatus().equals(SubmissionSetStatus.ORIGINAL);
+                            case "External asso. only":
+                                return item.getSubmissionSetStatus().equals(SubmissionSetStatus.REFERENCED);
+                            default:
+                                return true;
+                        }
+                    }
+                });
+                associationListStore.setEnableFilters(true);
             }
         });
     }

@@ -63,33 +63,4 @@ public class UploadFileServlet extends HttpServlet {
             throw new ServletException(ex);
         }
     }
-
-    /**
-     * A better solution without writing a temporary file has been implemented.
-     *
-     * @deprecated
-     * @param item
-     * @return filename
-     * @throws IOException
-     */
-    @SuppressWarnings("unused")
-    @Deprecated
-    private String writeTemporaryFile(FileItemStream item) throws IOException {
-        // Random name created for save on server
-        String filename = UUID.randomUUID().toString() + ".xml";
-
-        // Recovery of submitted file and save it into "files" repository
-        LOGGER.info("Temporary metadata xml file creation...");
-
-        FileOutputStream out = new FileOutputStream(new File(FILE_REPOSITORY,
-                filename));
-        InputStream is = item.openStream();
-        out.write(IOUtils.toByteArray(is));
-        out.close();
-
-        LOGGER.fine("... temporary file created: " + FILE_REPOSITORY + "/"
-                + filename);
-
-        return filename;
-    }
 }
