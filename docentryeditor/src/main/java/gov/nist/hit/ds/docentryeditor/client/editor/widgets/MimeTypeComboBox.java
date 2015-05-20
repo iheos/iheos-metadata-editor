@@ -5,6 +5,7 @@ import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
+import gov.nist.hit.ds.docentryeditor.client.event.SelectionChangeEditorHandler;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodesParser;
 import gov.nist.hit.ds.docentryeditor.shared.model.String256;
 
@@ -52,5 +53,11 @@ public class MimeTypeComboBox extends ComboBox<String256> {
         setTriggerAction(ComboBoxCell.TriggerAction.ALL);
         setForceSelection(true);
         setTypeAhead(true);
+
+        bind();
+    }
+
+    private void bind() {
+        this.addSelectionHandler(new SelectionChangeEditorHandler());
     }
 }

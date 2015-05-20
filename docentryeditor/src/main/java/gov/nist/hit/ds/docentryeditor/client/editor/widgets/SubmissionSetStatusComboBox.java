@@ -5,6 +5,7 @@ import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
+import gov.nist.hit.ds.docentryeditor.client.event.SelectionChangeEditorHandler;
 import gov.nist.hit.ds.docentryeditor.shared.model.SubmissionSetStatus;
 
 import java.util.Arrays;
@@ -37,5 +38,11 @@ public class SubmissionSetStatusComboBox extends ComboBox<SubmissionSetStatus> {
         // add possible status values to the combo box widget
         getStore().addAll(Arrays.asList(SubmissionSetStatus.values()));
         setTriggerAction(ComboBoxCell.TriggerAction.ALL);
+
+        bind();
+    }
+
+    private void bind() {
+        this.addSelectionHandler(new SelectionChangeEditorHandler());
     }
 }

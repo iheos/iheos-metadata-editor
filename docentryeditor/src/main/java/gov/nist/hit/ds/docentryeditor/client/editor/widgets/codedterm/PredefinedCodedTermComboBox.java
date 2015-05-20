@@ -18,6 +18,7 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import gov.nist.hit.ds.docentryeditor.client.editor.EditionMode;
+import gov.nist.hit.ds.docentryeditor.client.event.SelectionChangeEditorHandler;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodesParser;
 import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
@@ -142,6 +143,7 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
                 }
             }
         });
+        this.addSelectionHandler(new SelectionChangeEditorHandler());
         editCustomedValueBtn.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {

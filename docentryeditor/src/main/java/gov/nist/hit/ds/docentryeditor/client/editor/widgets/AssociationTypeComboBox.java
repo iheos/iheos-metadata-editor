@@ -5,6 +5,7 @@ import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
+import gov.nist.hit.ds.docentryeditor.client.event.SelectionChangeEditorHandler;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
 
 import java.util.Arrays;
@@ -37,5 +38,10 @@ public class AssociationTypeComboBox extends ComboBox<XdsAssociation.XdsAssociat
         // add possible type values to the combo box widget
         getStore().addAll(Arrays.asList(XdsAssociation.XdsAssociationType.values()));
         setTriggerAction(ComboBoxCell.TriggerAction.ALL);
+        bind();
+    }
+
+    private void bind() {
+        this.addSelectionHandler(new SelectionChangeEditorHandler());
     }
 }
