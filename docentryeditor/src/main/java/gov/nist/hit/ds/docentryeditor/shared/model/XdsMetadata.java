@@ -17,9 +17,11 @@ public class XdsMetadata implements Serializable{
 
     private XdsSubmissionSet submissionSet;
     private List<XdsDocumentEntry> documentEntries;
+    private List<XdsAssociation> associations;
 
     public XdsMetadata(){
         documentEntries=new ArrayList<XdsDocumentEntry>();
+        associations=new ArrayList<XdsAssociation>();
     }
 
     public XdsSubmissionSet getSubmissionSet() {
@@ -36,5 +38,13 @@ public class XdsMetadata implements Serializable{
 
     public void setDocumentEntries(List<XdsDocumentEntry> documentEntries){
         this.documentEntries=documentEntries;
+    }
+
+    public List<XdsAssociation> getAssociations() {
+        return associations;
+    }
+
+    public void setAssociations(List<XdsAssociation> associations) {
+        this.associations = associations;
     }
 }
