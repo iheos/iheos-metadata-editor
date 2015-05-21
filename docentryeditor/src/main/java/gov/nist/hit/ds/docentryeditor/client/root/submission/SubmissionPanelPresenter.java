@@ -267,6 +267,9 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                 m.getDocumentEntries().add((XdsDocumentEntry) subData.getModel());
             }
         }
+        for (XdsAssociation association:view.getAssociationStore().getAll()){
+            m.getAssociations().add(association);
+        }
         // rpc server call to translate metadata java object into an ebRim xml String.
         xdsParserServices.toEbRim(m, new AsyncCallback<String>() {
             @Override

@@ -173,6 +173,12 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
     @Override
     protected void bindUI() {
         initComboBoxesSelectionChangeHandlers();
+        editorTopToolbar.addSaveHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent selectEvent) {
+                presenter.doSave();
+            }
+        });
         editorTopToolbar.addCancelHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {
