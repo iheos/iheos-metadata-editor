@@ -106,6 +106,28 @@ public class XdsAssociation implements Serializable, XdsModelElement{
             this.text = text;
         }
 
+        public static XdsAssociationType getValueOf(String value){
+            if (value.equals(HAS_MEMBER.toString())){
+                return HAS_MEMBER;
+            }
+            if (value.equals(APND.toString())){
+                return APND;
+            }
+            if (value.equals(RPLC.toString())){
+                return RPLC;
+            }
+            if (value.equals(SIGNS.toString())){
+                return SIGNS;
+            }
+            if (value.equals(XFRM.toString())){
+                return XFRM;
+            }
+            if (value.equals(XFRM_RPLC.toString())){
+                return XFRM_RPLC;
+            }
+            return null;
+        }
+
         /* (non-Javadoc)
          * @see java.lang.Enum#toString()
          */

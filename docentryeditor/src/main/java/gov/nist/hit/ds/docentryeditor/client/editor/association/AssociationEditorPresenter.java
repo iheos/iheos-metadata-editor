@@ -4,6 +4,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
 import gov.nist.hit.ds.docentryeditor.client.event.ChangePlaceEvent;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsAssociationEvent;
@@ -11,6 +14,7 @@ import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresente
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionMenuData;
 import gov.nist.hit.ds.docentryeditor.shared.model.String256;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -92,6 +96,38 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
     }
 
     /**
+     * Method to handle edited metadata file download with editor's validation check.
+     */
+    public void doSave() {
+        if (editorDriver.isDirty()) {
+            final XdsAssociation tmp = editorDriver.flush();
+            LOGGER.info("Saving document entry: ");
+            LOGGER.info(model.toString());
+
+            if (editorDriver.hasErrors()) {
+                final ConfirmMessageBox cmb = new ConfirmMessageBox("Error", "There are errors in your editor. Are you sure you want to download a copy of these data? They may not be usable.");
+                cmb.show();
+                cmb.addDialogHideHandler(new SaveDialogHandler(tmp));
+            } else {
+                model=tmp;
+                save();
+            }
+        } else {
+            final ConfirmMessageBox cmb = new ConfirmMessageBox("", "Data has not changed. Are you sure you want to download a copy of this metadata entry?");
+            cmb.show();
+            cmb.addDialogHideHandler(new SaveDialogHandler(model));
+        }
+    }
+
+    /**
+     * Method which actually handle saving (on server) and download for the edited metadata file.
+     */
+    private void save() {
+        ((MetadataEditorEventBus) eventBus).fireSaveFileEvent();
+    }
+
+
+    /**
      * This method fires an event to notify that the associated elements in the association have changed.
      */
     public void fireAssociatedNodesChangedEvent() {
@@ -119,5 +155,25 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
      * Interface of a XDS Document Entry Editor Driver
      */
     interface AssociationEditorDriver extends SimpleBeanEditorDriver<XdsAssociation, AssociationEditorView> {
+    }
+
+    /**
+     * Handler for save dialog.
+     */
+    private class SaveDialogHandler implements DialogHideEvent.DialogHideHandler{
+        XdsAssociation documentEntry;
+        public SaveDialogHandler(XdsAssociation docentry){
+            documentEntry=docentry;
+        }
+        @Override
+        public void onDialogHide(DialogHideEvent event) {
+            if (event.getHideButton() == Dialog.PredefinedButton.YES) {
+                // perform YES action
+                model=documentEntry;
+                save();
+            } else if (event.getHideButton() == Dialog.PredefinedButton.NO) {
+                // perform NO action
+            }
+        }
     }
 }

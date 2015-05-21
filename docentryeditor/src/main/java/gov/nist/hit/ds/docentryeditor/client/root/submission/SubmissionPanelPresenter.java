@@ -72,6 +72,9 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                     nextIndex++;
                     view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
                 }
+                for (XdsAssociation asso:event.getMetadata().getAssociations()){
+                    view.getAssociationStore().add(asso);
+                }
                 currentlyEdited = submissionSetTreeNode;
                 view.getSubmissionTree().expandAll();
                 view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode, false);

@@ -65,12 +65,30 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             for(OMElement eo : m.getExtrinsicObjects()){
                 xdsMetadata.getDocumentEntries().add(parseDocumentEntry(eo));
             }
+            for (OMElement oe:m.getAssociations()){
+                xdsMetadata.getAssociations().add(parseAssociation(oe));
+            }
         } catch (XdsInternalException e) {
             LOGGER.warning(e.getMessage());
         } catch (MetadataException e) {
             LOGGER.warning(e.getMessage());
         }
         return xdsMetadata;
+    }
+
+    private XdsAssociation parseAssociation(OMElement oe) {
+        XdsAssociation association = new XdsAssociation();
+        association.setId(new String256(m.getId(oe)));
+        association.setSource(new String256(m.getAssocSource(oe)));
+        association.setSubmissionSetStatus(SubmissionSetStatus.valueOf(m.getSlotValues(oe, "SubmissionSetStatus").get(0).toUpperCase()));
+        association.setTarget(new String256(m.getAssocTarget(oe)));
+        // TODO
+        association.setType(XdsAssociation.XdsAssociationType.getValueOf(m.getAssocType(oe)));
+        String status=m.getStatus(oe);
+        if (status!=null) {
+            association.setAvailabilityStatus(AvailabilityStatus.valueOf(status.toUpperCase()));
+        }
+        return association;
     }
 
     /**
@@ -184,7 +202,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             de.setPatientID(new IdentifierString256(new String256(asString(m.getPatientId(ele))),new String256("urn:uuid:6b5aea1a-874d-4603-a4bc-96a0a7b38446")));
             de.setUniqueId(new IdentifierOID(new OID(new String256(asString(m.getUniqueIdValue(ele)))),new String256("urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab")));
         } catch (MetadataException e) {
-           LOGGER.warning(e.getMessage());
+            LOGGER.warning(e.getMessage());
         }
         de.getSourcePatientId().getValues().add(new String256(asString(m.getSlotValue(ele, "sourcePatientId", 0))));
         for(String s:m.getSlotValues(ele, "sourcePatientInfo")){
@@ -389,7 +407,15 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                     metadataTemp.addSlotValue(authorTelecommunicationClassification, telecommunication.toString());
                 }
             }
-            metadataTemp.addAssociation(metadataTemp.mkAssociation(MetadataSupport.assoctype_has_member, subSet.getEntryUUID().toString(), documentEntry.getId().toString()));
+            for (XdsAssociation asso:metadata.getAssociations()){
+                // TODO
+                if (asso.getSource()!=null && asso.getTarget()!=null) {
+                    OMElement assoElement = metadataTemp.mkAssociation(asso.getType().toString(), asso.getSource().toString(), asso.getTarget().toString());
+                    metadataTemp.addSlot(assoElement, "SubmissionSetStatus", asso.getSubmissionSetStatus().toString());
+                    metadataTemp.setStatus(assoElement, asso.getAvailabilityStatus().toString());
+                    metadataTemp.addAssociation(assoElement);
+                }
+            }
         }
         String result="<xdsb:ProvideAndRegisterDocumentSetRequest xmlns:xdsb=\"urn:ihe:iti:xds-b:2007\">\n" +
                 "    <lcm:SubmitObjectsRequest xmlns:lcm=\"urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0\">\n" +
