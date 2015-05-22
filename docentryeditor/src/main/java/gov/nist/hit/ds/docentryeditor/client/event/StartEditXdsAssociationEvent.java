@@ -4,6 +4,7 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionMenuData;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsModelElement;
 
 import java.util.List;
 
@@ -15,9 +16,9 @@ public class StartEditXdsAssociationEvent extends GwtEvent<StartEditXdsAssociati
 
     public static final Type<StartEditXdsAssociationHandler> TYPE = new Type<StartEditXdsAssociationHandler>();
     private XdsAssociation association;
-    private List<SubmissionMenuData> objectInSubmission;
+    private List<XdsModelElement> objectInSubmission;
 
-    public StartEditXdsAssociationEvent(XdsAssociation association,List<SubmissionMenuData> objectsInSubmission) {
+    public StartEditXdsAssociationEvent(XdsAssociation association,List<XdsModelElement> objectsInSubmission) {
         this.association = association;
         this.objectInSubmission=objectsInSubmission;
     }
@@ -36,7 +37,7 @@ public class StartEditXdsAssociationEvent extends GwtEvent<StartEditXdsAssociati
         return association;
     }
 
-    public List<SubmissionMenuData> getObjectInSubmission() {
+    public List<XdsModelElement> getObjectInSubmission() {
         return objectInSubmission;
     }
 
