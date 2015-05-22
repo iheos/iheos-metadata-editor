@@ -209,6 +209,13 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
         view.getSubmissionTree().expandAll();
         view.getSubmissionTree().getSelectionModel().select(currentlyEdited, false);
+        // add an association to link the new doc entry to the submission set.
+        XdsAssociation asso=new XdsAssociation();
+        asso.setSource(submissionSetTreeNode.getModel().getId());
+        asso.setTarget(currentlyEdited.getModel().getId());
+        asso.setId(new String256("HasMember " + associationIndex));
+        associationIndex++;
+        view.getAssociationStore().add(asso);
     }
 
     /**
@@ -232,10 +239,18 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         logger.info("Create new pre-filled document entry");
         XdsDocumentEntry newDoc=prefilledDocEntry.copy();
         currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, newDoc);
+        prefilledDocEntry.setId(new String256("DocEntry0"+nextIndex));
         nextIndex++;
         view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
         view.getSubmissionTree().expandAll();
         view.getSubmissionTree().getSelectionModel().select(currentlyEdited, false);
+        // add an association to link the new doc entry to the submission set.
+        XdsAssociation asso=new XdsAssociation();
+        asso.setSource(submissionSetTreeNode.getModel().getId());
+        asso.setTarget(currentlyEdited.getModel().getId());
+        asso.setId(new String256("HasMember " + associationIndex));
+        associationIndex++;
+        view.getAssociationStore().add(asso);
     }
 
     /**
@@ -245,6 +260,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         view.getSubmissionTreeStore().clear();
         nextIndex=1;
         initSubmissionSet();
+        clearAssociationStore();
     }
 
     /**

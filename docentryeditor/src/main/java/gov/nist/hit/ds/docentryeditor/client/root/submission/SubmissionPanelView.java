@@ -170,15 +170,6 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         associationWidgetsContainer.add(filterFL, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
         associationPanel.add(associationWidgetsContainer);
 
-        ////////////// TODO REMOVE THIS BLOCK //////////////////////
-        XdsAssociation asso=new XdsAssociation();
-        asso.setId(new String256("Id2"));
-        XdsAssociation asso2=new XdsAssociation();
-        asso2.setId(new String256("Id3"));
-        associationListStore.add(asso);
-        associationListStore.add(asso2);
-        ////////////////////////////////////////////////////////////
-
         vlc.add(submissionTree, new VerticalLayoutContainer.VerticalLayoutData(-1, 0.6));
         vlc.add(associationPanel, new VerticalLayoutContainer.VerticalLayoutData(-1, 0.4));
 
