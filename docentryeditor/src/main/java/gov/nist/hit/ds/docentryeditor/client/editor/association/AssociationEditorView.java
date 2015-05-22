@@ -2,7 +2,6 @@ package gov.nist.hit.ds.docentryeditor.client.editor.association;
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
@@ -18,7 +17,8 @@ import gov.nist.hit.ds.docentryeditor.client.editor.widgets.*;
 import gov.nist.hit.ds.docentryeditor.client.event.SelectionChangeEditorHandler;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
-import gov.nist.hit.ds.docentryeditor.shared.model.*;
+import gov.nist.hit.ds.docentryeditor.shared.model.String256;
+import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
 
 import javax.inject.Inject;
 import java.util.HashMap;

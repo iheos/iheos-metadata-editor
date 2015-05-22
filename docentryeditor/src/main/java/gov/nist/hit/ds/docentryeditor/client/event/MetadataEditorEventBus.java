@@ -180,7 +180,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
      * This methods signals to the event bus a request to start editing a specific association.
      * @param association
      */
-    public void fireStartEditXdsAssociationEvent(XdsAssociation association,List<SubmissionMenuData> objectsAvailableInSubmission) {
+    public void fireStartEditXdsAssociationEvent(XdsAssociation association,List<XdsModelElement> objectsAvailableInSubmission) {
         fireEvent(new StartEditXdsAssociationEvent(association,objectsAvailableInSubmission));
     }
 

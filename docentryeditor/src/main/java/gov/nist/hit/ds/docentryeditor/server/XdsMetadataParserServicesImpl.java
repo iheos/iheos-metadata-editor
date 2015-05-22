@@ -80,7 +80,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         XdsAssociation association = new XdsAssociation();
         association.setId(new String256(m.getId(oe)));
         association.setSource(new String256(m.getAssocSource(oe)));
-        if (m.getSlotValues(oe, "SubmissionSetStatus").size()>0) {
+        if (!m.getSlotValues(oe, "SubmissionSetStatus").isEmpty()) {
             association.setSubmissionSetStatus(SubmissionSetStatus.valueOf(m.getSlotValues(oe, "SubmissionSetStatus").get(0).toUpperCase()));
         }// TODO throw exception otherwise
         association.setTarget(new String256(m.getAssocTarget(oe)));

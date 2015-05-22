@@ -19,6 +19,8 @@ import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorRequestFactory;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class presents the submission panel. It handles the mechanic of the submission set tree of the SubmissionPanelView.
@@ -332,7 +334,11 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
             }
             logger.info("Fire Start Edit selected (" + currentlyEdited.getValue() + ") association event...");
             logger.info(currentlyEdited.getModel().toString());
-            ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsAssociationEvent((XdsAssociation) currentlyEdited.getModel(),view.getSubmissionTreeStore().getAll());
+            List<XdsModelElement> l=new ArrayList<XdsModelElement>();
+            for (SubmissionMenuData s:view.getSubmissionTreeStore().getAll()){
+                l.add(s.getModel());
+            }
+            ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsAssociationEvent((XdsAssociation) currentlyEdited.getModel(),l);
         }
     }
 
