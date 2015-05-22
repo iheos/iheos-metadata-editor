@@ -109,7 +109,7 @@ public class XdsSubmissionSet  implements XdsModelElement,Serializable {
         availabilityStatus=new String256();
         comments=new ArrayList<InternationalString>();
         contentTypeCode=new CodedTerm();
-        entryUUID=new String256();
+        entryUUID=new String256("SubmissionSet01");
         homeCommunityId=new String256();
         intendedRecipient=new NameValueString256();
         intendedRecipient.setName(new String256("intendedRecipient"));

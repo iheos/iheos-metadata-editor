@@ -518,20 +518,20 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
 
     public XdsDocumentEntry() {
         languageCode=LanguageCode.ENGLISH_UNITED_STATES;
-        classCode = new CodedTerm();
+//        classCode = new CodedTerm();
         creationTime = new NameValueDTM();
         creationTime.setName(new String256().setString("creationTime"));
         id = new String256();
-        formatCode = new CodedTerm();
+//        formatCode = new CodedTerm();
         hash = new String256();
-        healthcareFacilityType = new CodedTerm();
+//        healthcareFacilityType = new CodedTerm();
         legalAuthenticator = new NameValueString256();
         legalAuthenticator.setName(new String256()
                 .setString("legalAuthenticator"));
-        mimeType = new String256();
+//        mimeType = new String256();
         patientID = new IdentifierString256();
         patientID.setIdType(new String256().setString("urn:uuid:6b5aeala-874d-4603-a4bc-96a0a7b38446"));
-        practiceSettingCode = new CodedTerm();
+//        practiceSettingCode = new CodedTerm();
         repoUId = new OID();
         serviceStartTime = new NameValueDTM();
         serviceStartTime.setName(new String256().setString("serviceStartTime"));
@@ -543,7 +543,7 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         sourcePatientId.setName(new String256().setString("sourcePatientId"));
         sourcePatientInfo = new NameValueString256();
         sourcePatientInfo.setName(new String256().setString("sourcePatientInfo"));
-        typeCode = new CodedTerm();
+//        typeCode = new CodedTerm();
         uniqueId = new IdentifierOID();
         uniqueId.setIdType(new String256().setString("urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab"));
         uri = new String256();
