@@ -143,7 +143,6 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
                 }
             }
         });
-        this.addSelectionHandler(new SelectionChangeEditorHandler());
         editCustomedValueBtn.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {

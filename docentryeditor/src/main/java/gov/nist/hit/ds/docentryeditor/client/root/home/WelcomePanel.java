@@ -69,7 +69,7 @@ public class WelcomePanel extends VerticalLayoutContainer {
         newDocEntryBtn.setToolTip(ToolTipResources.INSTANCE.getNewDocEntryTooltip());
         loadPreFilledDocEntryBtn = new HomeIconButton("New pre-filled doc. entry",AppImages.INSTANCE.preFilled());
         loadPreFilledDocEntryBtn.setToolTip(ToolTipResources.INSTANCE.getNewPrefilledDocEntryTooltip());
-        uploadFileBtn = new HomeIconButton("Upload submission set",AppImages.INSTANCE.loadFile());
+        uploadFileBtn = new HomeIconButton("Upload submission",AppImages.INSTANCE.loadFile());
         uploadFileBtn.setToolTip(ToolTipResources.INSTANCE.getUploadFileTooltip());
 
         // - organize buttons layout
