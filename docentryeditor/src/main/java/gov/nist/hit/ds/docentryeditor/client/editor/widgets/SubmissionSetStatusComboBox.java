@@ -38,11 +38,5 @@ public class SubmissionSetStatusComboBox extends ComboBox<SubmissionSetStatus> {
         // add possible status values to the combo box widget
         getStore().addAll(Arrays.asList(SubmissionSetStatus.values()));
         setTriggerAction(ComboBoxCell.TriggerAction.ALL);
-
-        bind();
-    }
-
-    private void bind() {
-        this.addSelectionHandler(new SelectionChangeEditorHandler());
     }
 }

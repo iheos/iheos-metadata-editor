@@ -38,10 +38,6 @@ public class AssociationTypeComboBox extends ComboBox<XdsAssociation.XdsAssociat
         // add possible type values to the combo box widget
         getStore().addAll(Arrays.asList(XdsAssociation.XdsAssociationType.values()));
         setTriggerAction(ComboBoxCell.TriggerAction.ALL);
-        bind();
     }
 
-    private void bind() {
-        this.addSelectionHandler(new SelectionChangeEditorHandler());
-    }
 }

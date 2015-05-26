@@ -41,7 +41,6 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
         editorDriver.edit(model);
         editorDriver.flush();
         getView().refreshGridButtonsDisplay();
-        getView().authors.editNewAuthor();
     }
 
     /**
@@ -55,6 +54,7 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
             public void onStartEdit(StartEditXdsSubmissionSetEvent event) {
                 logger.info("... receive Start Edit Event");
                 initDriver(event.getSumissionSet());
+                getView().authors.editNewAuthor();
             }
         });
         // this event tells the presenter the application Place is about to change.
