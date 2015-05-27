@@ -2,14 +2,19 @@ package gov.nist.hit.ds.docentryeditor.client.editor.association;
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.shared.LabelProvider;
+import com.sencha.gxt.widget.core.client.box.PromptMessageBox;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
@@ -18,6 +23,7 @@ import gov.nist.hit.ds.docentryeditor.client.event.SelectionChangeEditorHandler;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
 import gov.nist.hit.ds.docentryeditor.shared.model.String256;
+import gov.nist.hit.ds.docentryeditor.shared.model.SubmissionSetStatus;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
 
 import javax.inject.Inject;
@@ -35,6 +41,7 @@ import java.util.Map;
  */
 public class AssociationEditorView extends AbstractView<AssociationEditorPresenter> implements Editor<XdsAssociation> {
     private static final int FIELD_BOTTOM_MARGIN = 10;
+    private static final int WIDGET_HEIGHT = 22;
 
     private final VerticalLayoutContainer mainContainer = new VerticalLayoutContainer();
     private final VerticalLayoutContainer requiredFields = new VerticalLayoutContainer();
@@ -54,6 +61,8 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
 
     @Inject
     private EditorToolbar editorTopToolbar;
+
+    private TextButton addReferencedTarget;
 
     /**
      * This is the abstract method implementation that builds a collection of objects
@@ -116,12 +125,21 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
         source.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
         source.setForceSelection(true);
         source.setTypeAhead(true);
+
+        SimpleContainer targetWidgetContainer=new SimpleContainer();
+        targetWidgetContainer.setHeight(WIDGET_HEIGHT);
+        HorizontalLayoutContainer targetHContainer=new HorizontalLayoutContainer();
         target=new SimpleComboBox<String256>(xdsModelElementLabelProvider);
         target.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
         target.setForceSelection(true);
         target.setTypeAhead(true);
+        addReferencedTarget = new TextButton("Add reference");
+        targetHContainer.add(target, new HorizontalLayoutContainer.HorizontalLayoutData(1, -1, new Margins(0, 2, 0, 0)));
+        targetHContainer.add(addReferencedTarget, new HorizontalLayoutContainer.HorizontalLayoutData(-1, -1, new Margins(0, 1, 0, 2)));
+        targetWidgetContainer.add(targetHContainer);
+
         EditorFieldLabel sourceLabel = new EditorFieldLabel(source,"Source object");
-        EditorFieldLabel targetLabel = new EditorFieldLabel(target,"Target object");
+        EditorFieldLabel targetLabel = new EditorFieldLabel(targetWidgetContainer,"Target object");
 
         // - Optional fields.
         EditorFieldLabel availabilityStatusLabel = new EditorFieldLabel(availabilityStatus,"Availability status");
@@ -185,6 +203,18 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
                 presenter.rollbackChanges();
             }
         });
+        addReferencedTarget.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                createPrompt();
+            }
+        });
+        target.addSelectionHandler(new SelectionHandler<String256>() {
+            @Override
+            public void onSelection(SelectionEvent<String256> event) {
+                submissionSetStatus.setValue(SubmissionSetStatus.ORIGINAL);
+            }
+        });
     }
 
     /**
@@ -194,19 +224,31 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
      * to the association have changed.
      */
     private void initComboBoxesSelectionChangeHandlers() {
-        source.addSelectionHandler(new SelectionChangeEditorHandler(){
+        source.addSelectionHandler(new SelectionChangeEditorHandler() {
             @Override
             public void onSelection(SelectionEvent event) {
                 super.onSelection(event);
                 presenter.fireAssociatedNodesChangedEvent();
             }
         });
-        target.addSelectionHandler(new SelectionChangeEditorHandler(){
+        target.addSelectionHandler(new SelectionChangeEditorHandler() {
             @Override
             public void onSelection(SelectionEvent event) {
                 super.onSelection(event);
                 presenter.fireAssociatedNodesChangedEvent();
             }
         });
+    }
+    private void createPrompt() {
+        final PromptMessageBox messageBox = new PromptMessageBox("Target ID", "Please enter the UUID of the object you want to make a reference to:");
+        messageBox.getTextField().addValidator(new UuidFormatClientValidator(true));
+        messageBox.addHideHandler(new HideEvent.HideHandler() {
+            @Override
+            public void onHide(HideEvent event) {
+                target.setValue(new String256(messageBox.getValue()));
+                submissionSetStatus.setValue(SubmissionSetStatus.REFERENCE);
+            }
+        });
+        messageBox.show();
     }
 }

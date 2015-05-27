@@ -16,7 +16,6 @@ public class SelectionChangeEditorHandler<T> implements SelectionHandler<T> {
      */
     @Override
     public void onSelection(SelectionEvent event) {
-        ((Field) event.getSource()).validate();
         ((Field) event.getSource()).finishEditing();
     }
 }

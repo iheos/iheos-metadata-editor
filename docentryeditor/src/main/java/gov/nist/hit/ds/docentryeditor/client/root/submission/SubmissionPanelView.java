@@ -208,7 +208,7 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
                             case "Internal asso. only":
                                 return item.getSubmissionSetStatus().equals(SubmissionSetStatus.ORIGINAL);
                             case "External asso. only":
-                                return item.getSubmissionSetStatus().equals(SubmissionSetStatus.REFERENCED);
+                                return item.getSubmissionSetStatus().equals(SubmissionSetStatus.REFERENCE);
                             default:
                                 return true;
                         }

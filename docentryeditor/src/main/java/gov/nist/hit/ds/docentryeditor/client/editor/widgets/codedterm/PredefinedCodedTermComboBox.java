@@ -1,7 +1,8 @@
 package gov.nist.hit.ds.docentryeditor.client.editor.widgets.codedterm;
 
-import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
-import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.core.client.util.Margins;
@@ -17,11 +18,13 @@ import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
+import com.sencha.gxt.widget.core.client.form.Field;
 import gov.nist.hit.ds.docentryeditor.client.editor.EditionMode;
 import gov.nist.hit.ds.docentryeditor.client.event.SelectionChangeEditorHandler;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodesParser;
 import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
+import org.apache.bcel.classfile.Code;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +86,7 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
         getStore().clear();
 
         this.setEmptyText("Select a code...");
+        this.setToolTip("Display format of the coded term is: \"display name\", \"code\" and \"coding scheme\".");
 
         // retrieve required predefined coded terms regarding the predefined code type specified.
         List<CodedTerm> l = PredefinedCodesParser.INSTANCE.getCodes(predefinedCodes);
@@ -107,6 +111,14 @@ public class PredefinedCodedTermComboBox extends ComboBox<CodedTerm> {
      * This method binds the UI widgets w/ actions.
      */
     private void bind() {
+        this.addSelectionHandler(new SelectionHandler<CodedTerm>() {
+            @Override
+            public void onSelection(SelectionEvent<CodedTerm> event) {
+                blur();
+                flush();
+                doAutoValidate();
+            }
+        });
         this.addBeforeSelectionHandler(new BeforeSelectionHandler<CodedTerm>() {
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<CodedTerm> event) {

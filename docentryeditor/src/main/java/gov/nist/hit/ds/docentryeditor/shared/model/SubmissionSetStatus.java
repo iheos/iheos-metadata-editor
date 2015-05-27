@@ -5,7 +5,7 @@ package gov.nist.hit.ds.docentryeditor.shared.model;
  * in Xds Association type.
  */
 public enum SubmissionSetStatus {
-    ORIGINAL("Original"),REFERENCED("Referenced");
+    ORIGINAL("Original"), REFERENCE("Reference");
     private final String text;
 
     /**

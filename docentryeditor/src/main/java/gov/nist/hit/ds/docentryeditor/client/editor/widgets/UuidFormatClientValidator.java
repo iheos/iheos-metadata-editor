@@ -13,6 +13,16 @@ import java.util.List;
  */
 public class UuidFormatClientValidator extends AbstractValidator<String> {
 
+    private final boolean uuidOnly;
+
+    public UuidFormatClientValidator(boolean uuidOnly) {
+        this.uuidOnly=uuidOnly;
+    }
+
+    public UuidFormatClientValidator() {
+        uuidOnly=false;
+    }
+
     private static boolean isLCHexString(String value) {
         for (int i = 0; i < value.length(); i++) {
             char c = value.charAt(i);
@@ -53,11 +63,17 @@ public class UuidFormatClientValidator extends AbstractValidator<String> {
                     return createError(editor, "Value is not a correct UUID. It does not have the right number of characters. It should be 45 and start with 'urn:uuid:'.", value);
                 }
             }
+            if (uuidOnly) {
+                return createError(editor, "This Value is not a valid UUID. It should be an hexadecimal value and start with \'urn:uuid:\"",value);
+            }
         } else {
             if (value.length() != 45) {
                 String tmp = value;
                 if (isLCHexString(tmp.replaceAll("-", ""))) {
                     return createError(editor, "Value is not a correct UUID. It does not have the right number of characters. It should be 45 and start with 'urn:uuid:'.", value);
+                }
+                if (uuidOnly) {
+                    return createError(editor, "This Value is not a valid UUID. It should be an hexadecimal value and start with \'urn:uuid:\"",value);
                 }
             } else {
                 String rest;
