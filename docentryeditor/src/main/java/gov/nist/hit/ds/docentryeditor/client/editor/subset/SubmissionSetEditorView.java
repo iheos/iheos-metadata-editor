@@ -163,32 +163,15 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
 
         // - simple optional fields container.
         VerticalLayoutContainer simpleOptionalFieldsContainer = new VerticalLayoutContainer();
-        simpleOptionalFieldsContainer.add(availabilityStatusLabel, new VerticalLayoutContainer.VerticalLayoutData(1,-1));
+        simpleOptionalFieldsContainer.add(availabilityStatusLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         simpleOptionalFieldsContainer.add(homeCommunityIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1,-1));
 
-        // - Required field set.
-        FieldSet simpleRequiredFieldSet = new FieldSet();
-        simpleRequiredFieldSet.setHeadingText("General");
-        simpleRequiredFieldSet.setCollapsible(true);
-        simpleRequiredFieldSet.add(simpleRequiredFieldsContainer);
-
-        // - Optional field sets.
-        FieldSet simpleOptionalFieldSet = new FieldSet();
-        simpleOptionalFieldSet.setHeadingText("General");
-        simpleOptionalFieldSet.setCollapsible(true);
-        simpleOptionalFieldSet.add(simpleOptionalFieldsContainer);
-
-        FieldSet authorsFieldSet = new FieldSet();
-        authorsFieldSet.setHeadingText("Authors");
-        authorsFieldSet.setCollapsible(true);
-        authorsFieldSet.add(authors.asWidget());
-
         // Add every required fields to the required fields panel.
-        requiredFields.add(simpleRequiredFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        requiredFields.add(simpleRequiredFieldsContainer,new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         requiredFields.add(submissionTime.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         // Add every optional fields to the optional fields panel.
-        optionalFields.add(simpleOptionalFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
-        optionalFields.add(authorsFieldSet,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        optionalFields.add(simpleOptionalFieldsContainer,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        optionalFields.add(authors.asWidget(), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         optionalFields.add(intendedRecipient.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
         optionalFields.add(titleGrid.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
         optionalFields.add(commentsGrid.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));

@@ -14,9 +14,11 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
+import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
 import gov.nist.hit.ds.docentryeditor.client.editor.EditionMode;
@@ -36,12 +38,12 @@ import gov.nist.hit.ds.docentryeditor.shared.model.Author;
  */
 public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements IsWidget {
     // instance of the property access for the Author entity attributes (for the GXT Store).
-    @Ignore
     private static final AuthorProperties AUTHOR_PROPERTIES = GWT.create(AuthorProperties.class);
     private static final int AUTHOR_LIST_HEIGHT = 150;
+    private static final int WIDGET_HEIGHT = 485;
     // Widget's container.
     @Ignore
-    private SimpleContainer authorGridEditorWidget;
+    private ContentPanel authorGridEditorWidget;
 
     // Widget that handles the list of Authors.
     @Ignore
@@ -103,12 +105,14 @@ public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements 
         authorCP.setButtonAlign(BoxLayoutContainer.BoxLayoutPack.END);
 
         VerticalLayoutContainer vcon = new VerticalLayoutContainer();
-        vcon.add(listViewAuthors, new VerticalLayoutContainer.VerticalLayoutData(1, AUTHOR_LIST_HEIGHT));
-        vcon.add(authorFS, new VerticalLayoutContainer.VerticalLayoutData(0.999, -1, new Margins(10, 0, 0, 0)));
-        vcon.add(authorCP, new VerticalLayoutContainer.VerticalLayoutData(-1, 30));
-        authorGridEditorWidget = new SimpleContainer();
-        authorGridEditorWidget.setHeight(485);
+        vcon.add(listViewAuthors, new VerticalLayoutData(1, AUTHOR_LIST_HEIGHT));
+        vcon.add(authorFS, new VerticalLayoutData(0.999, -1, new Margins(10, 5, 0,5)));
+        vcon.add(authorCP, new VerticalLayoutData(-1, 30));
+        authorGridEditorWidget = new ContentPanel();
+        authorGridEditorWidget.setHeadingText("Authors");
+        authorGridEditorWidget.setCollapsible(true);
         authorGridEditorWidget.add(vcon);
+        authorGridEditorWidget.setHeight(WIDGET_HEIGHT);
     }
 
     /**

@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.client.editor.ListStoreEditor;
+import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
@@ -222,23 +223,23 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // --- Adding OPTIONAL simple fields labels to containers
         // //////////////////////////////////////////////////////////
         VerticalLayoutContainer filePropertiesFieldsContainer = new VerticalLayoutContainer();
-        filePropertiesFieldsContainer.add(hashLabel, new VerticalLayoutData(1, -1));
-        filePropertiesFieldsContainer.add(size.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        filePropertiesFieldsContainer.add(hashLabel, new VerticalLayoutData(1, -1,new Margins(5,5,0,5)));
+        filePropertiesFieldsContainer.add(size.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
 
         VerticalLayoutContainer repositoryAttributesFieldsContainer = new VerticalLayoutContainer();
-        repositoryAttributesFieldsContainer.add(uriLabel, new VerticalLayoutData(1, -1));
-        repositoryAttributesFieldsContainer.add(repositoryLabel, new VerticalLayoutData(1, -1));
+        repositoryAttributesFieldsContainer.add(uriLabel, new VerticalLayoutData(1, -1,new Margins(5,5,0,5)));
+        repositoryAttributesFieldsContainer.add(repositoryLabel, new VerticalLayoutData(1, -1,new Margins(0,5,5,5)));
 
 		/* OPTIONAL container added to a fieldset */
-        FieldSet filePropertiesFieldSet = new FieldSet();
-        filePropertiesFieldSet.setHeadingText("Files properties");
+        ContentPanel filePropertiesFieldSet = new ContentPanel();
+        filePropertiesFieldSet.setHeadingText("File properties");
         filePropertiesFieldSet.setCollapsible(true);
-        filePropertiesFieldSet.add(filePropertiesFieldsContainer);
+        filePropertiesFieldSet.add(filePropertiesFieldsContainer, new VerticalLayoutData(1, -1,new Margins(0,0,5,0)));
 
-        FieldSet repositoryAttributesFieldSet = new FieldSet();
+        ContentPanel repositoryAttributesFieldSet = new ContentPanel();
         repositoryAttributesFieldSet.setHeadingText("Repository attributes");
         repositoryAttributesFieldSet.setCollapsible(true);
-        repositoryAttributesFieldSet.add(repositoryAttributesFieldsContainer, new VerticalLayoutData(1, -1));
+        repositoryAttributesFieldSet.add(repositoryAttributesFieldsContainer, new VerticalLayoutData(1, -1,new Margins(0,0,5,0)));
 
         // //////////////////////////////////////////////////////
         // Other fields and options (init)
@@ -276,10 +277,10 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         creationTime.setListMaxSize(1);
 
         // AUTHORS (Optional)
-        FieldSet authorsFieldSet = new FieldSet();
-        authorsFieldSet.setHeadingText("Authors");
-        authorsFieldSet.setCollapsible(true);
-        authorsFieldSet.add(authors.asWidget());
+//        FieldSet authorsFieldSet = new FieldSet();
+//        authorsFieldSet.setHeadingText("Authors");
+//        authorsFieldSet.setCollapsible(true);
+//        authorsFieldSet.add(authors.asWidget());
 
         // TITLES (Optional)
         titlesGrid = new InternationalStringEditableGrid("Titles");
@@ -313,7 +314,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         optionalFields.add(repositoryAttributesFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         optionalFields.add(titlesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         optionalFields.add(commentsGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(authorsFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(authors.asWidget(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         optionalFields.add(legalAuthenticator.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         optionalFields.add(sourcePatientId.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         optionalFields.add(sourcePatientInfo.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
@@ -446,7 +447,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         mimeType.setEmptyText("Select a mime type...");
         mimeType.setToolTipConfig(new ToolTipConfig("Mime Type is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
         // patient id
-        patientID.setEmptyTexts("ex: 76cc^^1.3.6367.2005.3.7&ISO", "ex: urn:uuid:6b5aea1a-625s-5631-v4se-96a0a7b38446");
+        patientID.setEmptyTexts("ex: 76cc^^^&1.3.6367.2005.3.7&ISO", "ex: urn:uuid:6b5aea1a-625s-5631-v4se-96a0a7b38446");
         patientID.setToolTipConfigs(ToolTipResources.INSTANCE.getPatientIdTooltipConfig());
         patientID.setAllowBlanks(false, false);
         patientID.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getPatientIDRegExpValidator());
