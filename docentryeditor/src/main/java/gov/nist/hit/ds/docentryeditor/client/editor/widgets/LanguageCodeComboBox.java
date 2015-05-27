@@ -64,6 +64,12 @@ public class LanguageCodeComboBox extends ComboBox<LanguageCode> {
 		setTriggerAction(TriggerAction.ALL);
 		setForceSelection(true);
 		setTypeAhead(true);
+
+		bind();
 	}
+
+    private void bind() {
+        this.addSelectionHandler(new SelectionChangeEditorHandler());
+    }
 
 }

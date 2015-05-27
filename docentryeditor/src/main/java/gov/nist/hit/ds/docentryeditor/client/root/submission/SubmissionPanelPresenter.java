@@ -206,7 +206,9 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
      */
     public void createNewDocumentEntry() {
         logger.info("Create new document entry");
-        currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, new XdsDocumentEntry());
+        XdsDocumentEntry newDocEntry=new XdsDocumentEntry();
+        newDocEntry.setId(new String256(new String("DocumentEntry"+(nextIndex<10?"0"+nextIndex:nextIndex))));
+        currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, newDocEntry.getId().getString(), newDocEntry);
         nextIndex++;
         view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
         view.getSubmissionTree().expandAll();
@@ -240,8 +242,8 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         //------------------------------------------- MIGHT CHANGE
         logger.info("Create new pre-filled document entry");
         XdsDocumentEntry newDoc=prefilledDocEntry.copy();
-        currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, newDoc);
-        prefilledDocEntry.setId(new String256("DocEntry0"+nextIndex));
+        newDoc.setId(new String256(new String("DocumentEntry"+(nextIndex<10?"0"+nextIndex:nextIndex))));
+        currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, newDoc.getId().getString(), newDoc);
         nextIndex++;
         view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
         view.getSubmissionTree().expandAll();

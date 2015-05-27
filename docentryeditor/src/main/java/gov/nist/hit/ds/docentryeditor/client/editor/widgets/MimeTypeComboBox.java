@@ -53,5 +53,11 @@ public class MimeTypeComboBox extends ComboBox<String256> {
         setTriggerAction(ComboBoxCell.TriggerAction.ALL);
         setForceSelection(true);
         setTypeAhead(true);
+
+        bind();
+    }
+
+    private void bind() {
+        this.addSelectionHandler(new SelectionChangeEditorHandler());
     }
 }
