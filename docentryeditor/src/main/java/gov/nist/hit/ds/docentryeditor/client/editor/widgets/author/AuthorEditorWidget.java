@@ -56,8 +56,8 @@ import java.util.logging.Logger;
  */
 public class AuthorEditorWidget extends Composite implements Editor<Author> {
     private static final int FIELDS_HEIGHT = 30;
-    private static final int LIST_EDITOR_WIDGET_HEIGHT = 230;
-    private static final int LISTS_HEIGHT = 150;
+    private static final int LIST_EDITOR_WIDGET_HEIGHT = 200;
+    private static final int LISTS_HEIGHT = 125;
     // class logger
     private static final Logger LOGGER = Logger.getLogger(AuthorEditorWidget.class.getName());
     private static final int ADD_ENTRY_FIELD_RIGHT_MARGIN = 10;
