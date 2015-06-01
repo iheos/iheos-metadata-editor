@@ -408,14 +408,14 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                     metadataTemp.addSlotValue(authorTelecommunicationClassification, telecommunication.toString());
                 }
             }
-            for (XdsAssociation asso:metadata.getAssociations()){
-                // TODO
-                if (asso.getSource()!=null && asso.getTarget()!=null) {
-                    OMElement assoElement = metadataTemp.mkAssociation(asso.getType().toString(), asso.getSource().toString(), asso.getTarget().toString());
-                    metadataTemp.addSlot(assoElement, "SubmissionSetStatus", asso.getSubmissionSetStatus().toString());
-                    metadataTemp.setStatus(assoElement, asso.getAvailabilityStatus().toString());
-                    metadataTemp.addAssociation(assoElement);
-                }
+        }
+        for (XdsAssociation asso:metadata.getAssociations()){
+            // TODO
+            if (asso.getSource()!=null && asso.getTarget()!=null) {
+                OMElement assoElement = metadataTemp.mkAssociation(asso.getType().toString(), asso.getSource().toString(), asso.getTarget().toString());
+                metadataTemp.addSlot(assoElement, "SubmissionSetStatus", asso.getSubmissionSetStatus().toString());
+                metadataTemp.setStatus(assoElement, asso.getAvailabilityStatus().toString());
+                metadataTemp.addAssociation(assoElement);
             }
         }
         String result="<xdsb:ProvideAndRegisterDocumentSetRequest xmlns:xdsb=\"urn:ihe:iti:xds-b:2007\">\n" +
