@@ -152,34 +152,46 @@ public class Author implements ModelElement, Serializable {
      */
     @Override
     public String toString() {
-        String author = "Author: " + authorPerson.toString() + ", AuthorInstitutions=\"";
-        int counter=0;
-        for (String256 str : authorInstitutions) {
-            counter++;
-            author = author + str.toString();
-            if(counter<authorInstitutions.size()) {
-                author += ",";
-            }
+        String author = new String();
+        if (!authorPerson.getString().isEmpty()){
+            author+=authorPerson.toString();
         }
-        author = author + "\", AuthorRoles=\"";
-        counter=0;
-        for (String256 str : authorRoles) {
-            counter++;
-            author = author + str.toString();
-            if(counter<authorRoles.size()) {
-                author += ",";
+        if (!authorInstitutions.isEmpty()){
+            author+= ", AuthorInstitutions={";
+            int counter=0;
+            for (String256 str : authorInstitutions) {
+                counter++;
+                author += "\""+ str.toString() +"\"";
+                if(counter<authorInstitutions.size()) {
+                    author += ",";
+                }
             }
+            author+="}";
         }
-        author = author + "\", AuthorSpecialties=\"";
-        counter=0;
-        for (String256 str : authorSpecialties) {
-            author = author + str.toString();
-            if (counter<authorSpecialties.size()) {
-                author += ",";
+        if (!authorRoles.isEmpty()) {
+            author = author + ", AuthorRoles={";
+            int counter = 0;
+            for (String256 str : authorRoles) {
+                counter++;
+                author += "\""+ str.toString()+"\"";
+                if (counter < authorRoles.size()) {
+                    author += ",";
+                }
             }
+            author+="}";
         }
-        author = author + "\"";
-
+        if (!authorSpecialties.isEmpty()) {
+            author = author + ", AuthorSpecialties={";
+            int counter = 0;
+            for (String256 str : authorSpecialties) {
+                counter++;
+                author += "\""+ str.toString() + "\"";
+                if (counter < authorSpecialties.size()) {
+                    author += ",";
+                }
+            }
+            author+="}";
+        }
         return author;
     }
 

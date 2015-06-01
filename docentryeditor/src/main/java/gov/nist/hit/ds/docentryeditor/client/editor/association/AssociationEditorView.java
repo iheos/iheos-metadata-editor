@@ -160,13 +160,13 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
         // - Required fields set.
         FieldSet simpleRequiredFieldSet = new FieldSet();
         simpleRequiredFieldSet.setHeadingText("General");
-        simpleRequiredFieldSet.setCollapsible(true);
+        simpleRequiredFieldSet.setCollapsible(false);
         simpleRequiredFieldSet.add(simpleRequiredFieldsContainer);
 
         // - Optional fields set.
         FieldSet statusOptionalFieldSet = new FieldSet();
         statusOptionalFieldSet.setHeadingText("Status");
-        statusOptionalFieldSet.setCollapsible(true);
+        statusOptionalFieldSet.setCollapsible(false);
         statusOptionalFieldSet.add(simpleOptionalFieldsContainer);
 
         // Add every required fields to the required fields panel.

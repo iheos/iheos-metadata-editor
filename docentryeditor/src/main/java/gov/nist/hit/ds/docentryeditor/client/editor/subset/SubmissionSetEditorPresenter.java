@@ -41,6 +41,7 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
         editorDriver.edit(model);
         editorDriver.flush();
         getView().refreshGridButtonsDisplay();
+        getView().collapseAll();
     }
 
     /**

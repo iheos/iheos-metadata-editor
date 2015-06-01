@@ -93,6 +93,11 @@ public class InternationalString implements ModelElement, Serializable {
                 + "</information>\n\t\t</internationalstring>\n";
     }
 
+    @Override
+    public String toString() {
+        return  langCode + ": " + value;
+    }
+
     /**
      * <p>
      * <b>Method verify</b> <br>

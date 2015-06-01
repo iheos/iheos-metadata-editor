@@ -65,4 +65,8 @@ public class OIDEditorWidget extends Composite implements Editor<OID> {
     public void setAllowBlank(boolean allowBlank) {
         oid.setAllowBlank(allowBlank);
     }
+
+    public String getText(){
+        return oid.getField().getText();
+    }
 }

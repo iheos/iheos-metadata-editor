@@ -68,6 +68,7 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
     // private Class<M> clazzM;
 
     // --- UI Widgets.
+    private final ContentPanel pane;
     private final VerticalLayoutContainer gridContainer = new VerticalLayoutContainer();
     // Toolbar elements.
     private final ToolBar toolBar = new ToolBar();
@@ -75,12 +76,12 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
     private final TextButton deleteItemsButton = new TextButton();
     private final TextButton clearButton = new TextButton();
     private final TextButton helpButton = new TextButton();
-    private final ContentPanel pane = new ContentPanel();
     private final ToolTipConfig helpTooltipConfig = new ToolTipConfig();
     // grid editing.
     protected GridRowEditing<M> editing;
 
     // widget configuration variables.
+    private final String gridHeader;
     private int storeMaxLength = 0;
     private boolean checkBoxEnabled = false;
     private boolean hasExtraWidget = false;
@@ -108,8 +109,21 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
         super(listStore, new ColumnModel<M>(new ArrayList<ColumnConfig<M, ?>>()));
 
         this.cm = buildColumnModel();
+        this.gridHeader =gridTitle;
 
         // clazzM = parametrizedClass;
+        pane= new ContentPanel(){
+            @Override
+            public void onCollapse(){
+                super.onCollapse();
+                updatePanelHeader();
+            }
+            @Override
+            public void onExpand(){
+                super.onExpand();
+                this.setHeadingText(gridHeader);
+            }
+        };
         pane.setHeadingText(gridTitle);
         pane.setBorders(false);
         pane.setCollapsible(true);
@@ -158,6 +172,7 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
 
         bindUI();
     }
+
 
     /**
      * Abstract method meant to build the model that will define the different columns of the grid.
@@ -345,6 +360,34 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
     public void disableEditing() {
         disableToolbar();
         editing.clearEditors();
+    }
+
+    /**
+     * This method collapses the title panel that contains the grid.
+     */
+    public void collapse(){
+        pane.collapse();
+        updatePanelHeader();
+    }
+
+    /**
+     * This mehtod expands the title panel that contains the grid.
+     */
+    public void expand(){
+        pane.expand();
+    }
+
+    /**
+     * This method changes the header text of the grid's panel on collapse.
+     */
+    private void updatePanelHeader() {
+        if (!store.getAll().isEmpty()){
+            String etc=new String();
+            if (store.getAll().size()>1){
+                etc=", ...";
+            }
+            pane.setHeadingText(gridHeader + " (" + store.get(0).toString() + etc + ")");
+        }
     }
 
     /**

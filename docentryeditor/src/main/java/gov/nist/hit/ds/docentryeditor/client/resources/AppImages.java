@@ -73,4 +73,9 @@ public interface AppImages extends ClientBundle {
     @Source("baseResources/link-12.png")
     ImageResource association();
 
+    @Source("baseResources/collapse.png")
+    ImageResource collapse();
+
+    @Source("baseResources/expand.png")
+    ImageResource expand();
 }
