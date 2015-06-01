@@ -12,13 +12,11 @@ import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.ListView;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
-import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
 import gov.nist.hit.ds.docentryeditor.client.editor.EditionMode;
@@ -41,8 +39,8 @@ public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements 
     private static final AuthorProperties AUTHOR_PROPERTIES = GWT.create(AuthorProperties.class);
     private static final int AUTHOR_LIST_HEIGHT = 150;
     private static final int WIDGET_HEIGHT = 485;
+    private final static String HEADING_TEXT ="Authors";
     // Widget's container.
-    @Ignore
     private ContentPanel authorGridEditorWidget;
 
     // Widget that handles the list of Authors.
@@ -108,8 +106,19 @@ public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements 
         vcon.add(listViewAuthors, new VerticalLayoutData(1, AUTHOR_LIST_HEIGHT));
         vcon.add(authorFS, new VerticalLayoutData(0.999, -1, new Margins(10, 5, 0,5)));
         vcon.add(authorCP, new VerticalLayoutData(-1, 30));
-        authorGridEditorWidget = new ContentPanel();
-        authorGridEditorWidget.setHeadingText("Authors");
+        authorGridEditorWidget = new ContentPanel(){
+            @Override
+            public void onCollapse(){
+                super.onCollapse();
+                updatePanelHeader();
+            }
+            @Override
+            public void onExpand(){
+                super.onExpand();
+                this.setHeadingText(HEADING_TEXT);
+            }
+        };
+        authorGridEditorWidget.setHeadingText(HEADING_TEXT);
         authorGridEditorWidget.setCollapsible(true);
         authorGridEditorWidget.add(vcon);
         authorGridEditorWidget.setHeight(WIDGET_HEIGHT);
@@ -318,5 +327,33 @@ public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements 
     @Ignore
     public AuthorEditorWidget getAuthorWidget(){
         return author;
+    }
+
+    /**
+     * This method changes the header text of the authors panel on collapse.
+     */
+    private void updatePanelHeader() {
+        if (!this.getStore().getAll().isEmpty()){
+            String etc=new String();
+            if (this.getStore().getAll().size()>1){
+                etc=", ...";
+            }
+            authorGridEditorWidget.setHeadingText(HEADING_TEXT + " (" + this.getStore().get(0).toString() + etc + ")");
+        }
+    }
+
+    /**
+     * This method collapses the panel containing the authors widgets.
+     */
+    public void collapse() {
+        authorGridEditorWidget.collapse();
+        updatePanelHeader();
+    }
+
+    /**
+     * This method expands the panel containing the authors widgets.
+     */
+    public void expand() {
+        authorGridEditorWidget.expand();
     }
 }

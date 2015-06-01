@@ -36,6 +36,7 @@ import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 
 import javax.inject.Inject;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -118,6 +119,8 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     private EditorToolbar editorTopToolbar;
     @Inject
     private EditorToolbar editorBottomToolbar;
+    private ContentPanel filePropertiesPanel;
+    private ContentPanel repositoryAttributesPanel;
 
     /**
      * This is the abstract method implementation that builds a collection of objects
@@ -223,23 +226,45 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // --- Adding OPTIONAL simple fields labels to containers
         // //////////////////////////////////////////////////////////
         VerticalLayoutContainer filePropertiesFieldsContainer = new VerticalLayoutContainer();
-        filePropertiesFieldsContainer.add(hashLabel, new VerticalLayoutData(1, -1,new Margins(5,5,0,5)));
+        filePropertiesFieldsContainer.add(hashLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
         filePropertiesFieldsContainer.add(size.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
 
         VerticalLayoutContainer repositoryAttributesFieldsContainer = new VerticalLayoutContainer();
-        repositoryAttributesFieldsContainer.add(uriLabel, new VerticalLayoutData(1, -1,new Margins(5,5,0,5)));
-        repositoryAttributesFieldsContainer.add(repositoryLabel, new VerticalLayoutData(1, -1,new Margins(0,5,5,5)));
+        repositoryAttributesFieldsContainer.add(uriLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
+        repositoryAttributesFieldsContainer.add(repositoryLabel, new VerticalLayoutData(1, -1, new Margins(0, 5, 5, 5)));
 
 		/* OPTIONAL container added to a fieldset */
-        ContentPanel filePropertiesFieldSet = new ContentPanel();
-        filePropertiesFieldSet.setHeadingText("File properties");
-        filePropertiesFieldSet.setCollapsible(true);
-        filePropertiesFieldSet.add(filePropertiesFieldsContainer, new VerticalLayoutData(1, -1,new Margins(0,0,5,0)));
+        filePropertiesPanel = new ContentPanel(){
+            @Override
+            public void onCollapse(){
+                super.onCollapse();
+                updateFilePropertiesPanelHeader();
+            }
+            @Override
+            public void onExpand(){
+                super.onExpand();
+                this.setHeadingText("File properties");
+            }
+        };
+        filePropertiesPanel.setCollapsible(true);
+        filePropertiesPanel.setHeadingText("File properties");
+        filePropertiesPanel.add(filePropertiesFieldsContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
 
-        ContentPanel repositoryAttributesFieldSet = new ContentPanel();
-        repositoryAttributesFieldSet.setHeadingText("Repository attributes");
-        repositoryAttributesFieldSet.setCollapsible(true);
-        repositoryAttributesFieldSet.add(repositoryAttributesFieldsContainer, new VerticalLayoutData(1, -1,new Margins(0,0,5,0)));
+        repositoryAttributesPanel = new ContentPanel(){
+            @Override
+            public void onCollapse(){
+                super.onCollapse();
+                updateRepositoryAttributesPanelHeader();
+            }
+            @Override
+            public void onExpand(){
+                super.onExpand();
+                this.setHeadingText("Repository attributes");
+            }
+        };
+        repositoryAttributesPanel.setHeadingText("Repository attributes");
+        repositoryAttributesPanel.setCollapsible(true);
+        repositoryAttributesPanel.add(repositoryAttributesFieldsContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
 
         // //////////////////////////////////////////////////////
         // Other fields and options (init)
@@ -310,8 +335,8 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // Adding and ordering fieldsets in OPTIONAL fields panel
         // /////////////////////////////////////////////////////////
         /* simple optional fields added to FramedPanel container */
-        optionalFields.add(filePropertiesFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(repositoryAttributesFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(filePropertiesPanel, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        optionalFields.add(repositoryAttributesPanel, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         optionalFields.add(titlesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         optionalFields.add(commentsGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         optionalFields.add(authors.asWidget(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
@@ -373,6 +398,22 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         };
         editorTopToolbar.addPopulateHandler(populateHandler);
         editorBottomToolbar.addPopulateHandler(populateHandler);
+        SelectHandler expandHandler=new SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                expandAll();
+            }
+        };
+        editorTopToolbar.addExpandHandler(expandHandler);
+        editorBottomToolbar.addExpandHandler(expandHandler);
+        SelectHandler collapseHandler=new SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                collapseAll();
+            }
+        };
+        editorTopToolbar.addCollapseHandler(collapseHandler);
+        editorBottomToolbar.addCollapseHandler(collapseHandler);
     }
 
     public void refreshGridButtonsDisplay() {
@@ -399,6 +440,92 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         if (titlesGrid!=null) {
             titlesGrid.refreshNewButton();
         }
+    }
+
+    /**
+     * This method update the header of the panel for file properties on collapse.
+     */
+    private void updateFilePropertiesPanelHeader() {
+        if (filePropertiesPanel!=null) {
+            String s = new String();
+            if (!hash.getField().getText().isEmpty()) {
+                s += "Hash: " + hash.getField().getText();
+            }
+            s += ", Size: " + size.getStore().get(0).toString();
+            filePropertiesPanel.setHeadingText("File properties (" + s + ")");
+        }
+    }
+
+    /**
+     * This method update the header of the panel for repository attributes on collapse.
+     */
+    private void updateRepositoryAttributesPanelHeader() {
+        if (repositoryAttributesPanel!=null) {
+            String s = new String();
+            if (!uri.getField().getText().isEmpty()) {
+                s += "URI: " + uri.getField().getText();
+                if (!repoUId.getText().isEmpty()) {
+                    s += ", Repository Unique ID: " + repoUId.getText();
+                }
+            } else if (!repoUId.getText().isEmpty()) {
+                s += "Repository Unique ID: " + repoUId.getText();
+            }
+            repositoryAttributesPanel.setHeadingText("Repository attributes (" + s + ")");
+        }
+    }
+
+    /**
+     * This method collapses all the collapsible panel in the Document entry editor view.
+     */
+    public void collapseAll(){
+        creationTime.collapse();
+        size.collapse();
+        if (titlesGrid!=null) {
+            titlesGrid.collapse();
+        }
+        if(commentsGrid!=null) {
+            commentsGrid.collapse();
+        }
+        authors.collapse();
+        legalAuthenticator.collapse();
+        sourcePatientId.collapse();
+        sourcePatientInfo.collapse();
+        if (confidentialityCodesGrid!=null) {
+            confidentialityCodesGrid.collapse();
+        }
+        if (eventCodesGrid!=null) {
+            eventCodesGrid.collapse();
+        }
+        serviceStartTime.collapse();
+        serviceStopTime.collapse();
+        if(filePropertiesPanel!=null) {
+            filePropertiesPanel.collapse();
+        }
+        if (repositoryAttributesPanel!=null){
+            repositoryAttributesPanel.collapse();
+        }
+        updateFilePropertiesPanelHeader();
+        updateRepositoryAttributesPanelHeader();
+    }
+
+    /**
+     * This method collapses all the collapsible panel in the Sbumission Set editor view.
+     */
+    public void expandAll() {
+        creationTime.expand();
+        size.expand();
+        titlesGrid.expand();
+        commentsGrid.expand();
+        authors.expand();
+        legalAuthenticator.expand();
+        sourcePatientId.expand();
+        sourcePatientInfo.expand();
+        confidentialityCodesGrid.expand();
+        eventCodesGrid.expand();
+        serviceStartTime.expand();
+        serviceStopTime.expand();
+        filePropertiesPanel.expand();
+        repositoryAttributesPanel.expand();
     }
 
     /**

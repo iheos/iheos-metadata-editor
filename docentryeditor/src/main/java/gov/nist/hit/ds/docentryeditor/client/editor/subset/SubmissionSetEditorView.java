@@ -11,7 +11,6 @@ import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
@@ -227,6 +226,48 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         };
         editorTopToolbar.addPopulateHandler(populateHandler);
         editorBottomToolbar.addPopulateHandler(populateHandler);
+        SelectEvent.SelectHandler expandHandler= new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                expandAll();
+            }
+        };
+        editorBottomToolbar.addExpandHandler(expandHandler);
+        editorTopToolbar.addExpandHandler(expandHandler);
+        SelectEvent.SelectHandler collapseHandler=new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                collapseAll();
+            }
+        };
+        editorTopToolbar.addCollapseHandler(collapseHandler);
+        editorBottomToolbar.addCollapseHandler(collapseHandler);
+    }
+
+    /**
+     * This method collapses all the collapsible panel in the Sbumission Set editor view.
+     */
+    public void collapseAll() {
+        submissionTime.collapse();
+        authors.collapse();
+        intendedRecipient.collapse();
+        if (titleGrid!=null) {
+            titleGrid.collapse();
+        }
+        if (commentsGrid!=null) {
+            commentsGrid.collapse();
+        }
+    }
+
+    /**
+     * This method collapses all the collapsible panel in the Sbumission Set editor view.
+     */
+    public void expandAll() {
+        submissionTime.expand();
+        authors.expand();
+        intendedRecipient.expand();
+        titleGrid.expand();
+        commentsGrid.expand();
     }
 
     public void refreshGridButtonsDisplay() {

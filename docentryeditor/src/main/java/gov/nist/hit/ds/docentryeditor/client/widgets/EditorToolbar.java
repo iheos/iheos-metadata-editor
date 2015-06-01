@@ -24,6 +24,8 @@ public class EditorToolbar extends HorizontalLayoutContainer {
     private ToolbarIconButton saveButton;
     private ToolbarIconButton cancelButton;
     private ToolbarIconButton populateButton;
+    private ToolbarIconButton expandAllButton;
+    private ToolbarIconButton collapseAllButton;
 
 
     @Inject
@@ -36,11 +38,17 @@ public class EditorToolbar extends HorizontalLayoutContainer {
         cancelButton.setToolTip(ToolTipResources.INSTANCE.getCancelButtonToolTip());
         populateButton =new ToolbarIconButton("Populate",AppImages.INSTANCE.pen(), POPULATE_BUTTON_WIDTH);
         populateButton.setToolTip("Populate the editor form with test data.");
+        expandAllButton =new ToolbarIconButton("Expand all",AppImages.INSTANCE.expand(), POPULATE_BUTTON_WIDTH);
+        expandAllButton.setToolTip("Expand all widgets of the editor.");
+        collapseAllButton =new ToolbarIconButton("Collapse all",AppImages.INSTANCE.collapse(), POPULATE_BUTTON_WIDTH);
+        collapseAllButton.setToolTip("Collapse all widgets of the editor.");
 
         this.addButton(this.homeButton);
         this.addButton(saveButton);
         this.addButton(cancelButton);
         this.addButton(populateButton);
+        this.addButton(expandAllButton);
+        this.addButton(collapseAllButton);
         this.setHeight(TOOBAR_HEIGHT);
     }
 
@@ -54,6 +62,14 @@ public class EditorToolbar extends HorizontalLayoutContainer {
 
     public HandlerRegistration addPopulateHandler(SelectEvent.SelectHandler handler) {
         return populateButton.addSelectHandler(handler);
+    }
+
+    public HandlerRegistration addExpandHandler(SelectEvent.SelectHandler handler){
+        return expandAllButton.addSelectHandler(handler);
+    }
+
+    public HandlerRegistration addCollapseHandler(SelectEvent.SelectHandler handler){
+        return collapseAllButton.addSelectHandler(handler);
     }
 
     public void addButton(ToolbarIconButton button){

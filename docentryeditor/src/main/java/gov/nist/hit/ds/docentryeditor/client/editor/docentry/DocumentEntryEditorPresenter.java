@@ -52,6 +52,7 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
         editorDriver.edit(model);
         editorDriver.flush();
         getView().refreshGridButtonsDisplay();
+        view.collapseAll();
     }
 
     /**
