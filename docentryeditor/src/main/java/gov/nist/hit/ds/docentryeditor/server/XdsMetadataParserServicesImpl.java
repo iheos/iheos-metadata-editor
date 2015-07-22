@@ -3,12 +3,13 @@ package gov.nist.hit.ds.docentryeditor.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
-import gov.nist.hit.ds.ebMetadata.Metadata;
-import gov.nist.hit.ds.ebMetadata.MetadataParser;
-import gov.nist.hit.ds.ebMetadata.MetadataSupport;
-import gov.nist.hit.ds.utilities.xml.OMFormatter;
-import gov.nist.hit.ds.xdsExceptions.MetadataException;
-import gov.nist.hit.ds.xdsExceptions.XdsInternalException;
+import gov.nist.toolkit.registrymetadata.Metadata;
+import gov.nist.toolkit.registrymetadata.MetadataParser;
+import gov.nist.toolkit.registrysupport.MetadataSupport;
+import gov.nist.toolkit.utilities.xml.OMFormatter;
+import gov.nist.toolkit.utilities.xml.XmlUtil2;
+import gov.nist.toolkit.xdsexception.MetadataException;
+import gov.nist.toolkit.xdsexception.XdsInternalException;
 import org.apache.axiom.om.OMElement;
 
 import java.text.DateFormat;
@@ -112,6 +113,8 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         if (home!=null){
             subSet.setHomeCommunityId(new String256(home));
         }
+        subSet.setComments(parseComments(oe));
+        subSet.setTitle(parseTitles(oe));
         NameValueDTM submissionTime=new NameValueDTM();
         submissionTime.getValues().clear();
         String submissionTimeString=asString(m.getSlotValue(oe, "submissionTime", 0));
@@ -160,12 +163,8 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         de.setAvailabilityStatus(new String256(asString(m.getStatus(ele))));
         de.setHomeCommunityId(new String256(asString(m.getHome(ele))));
 
-        // FIXME should be a list
-//        de.title = asString(m.getNameValue(ele));
-//        de.titleX = new OMFormatter(MetadataSupport.firstChildWithLocalName(ele, "Name")).toHtml();
-        //FIXME should be a list
-//        de.comments = asString(m.getDescriptionValue(ele));
-//        de.commentsX = new OMFormatter(MetadataSupport.firstChildWithLocalName(ele, "Description")).toHtml();
+        de.setTitles(parseTitles(ele));
+        de.setComments(parseComments(ele));
 
         de.setMimeType(new String256(asString(m.getMimeType(ele))));
         de.setHash(new String256(asString(m.getSlotValue(ele, "hash", 0))));
@@ -256,10 +255,6 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         try {
             List<OMElement> authorClassifications = m.getClassifications(ele, MetadataSupport.XDSDocumentEntry_author_uuid);
             de.setAuthors(parseAuthors(authorClassifications));
-            for (OMElement auEle : authorClassifications) {
-                // TODO
-                // de.authorsX.add(new OMFormatter(auEle).toHtml());
-            }
         } catch (Exception e) {
             LOGGER.warning(e.getMessage());
         }
@@ -268,19 +263,68 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
     }
 
     /**
+     * This method parse the ebRim xml node named 'Description' and returns a list of InternationStrings (comments).
+     * This can be used for DocumentEntry 'Description' as well as SubmissionSet 'Description'.
+     * @param ele parent node to explore (either extrinsicObject or RegistryPackage)
+     * @return list of comments extracted from ebRim xml.
+     */
+    private List<InternationalString> parseComments(OMElement ele) {
+        List<InternationalString> comments=new ArrayList<InternationalString>();
+        // find 'Description' node among the parent node children
+        OMElement descriptionNode=XmlUtil2.firstChildWithLocalName(ele, "Description");
+        if (descriptionNode != null) {
+            // get a list of LocalizedString (list of 'Description' children).
+            List<OMElement> localizedStrings = XmlUtil2.childrenWithLocalName(descriptionNode, "LocalizedString");
+            for (OMElement locStr : localizedStrings) {
+                InternationalString intStr = new InternationalString(
+                        LanguageCode.getValueOf(locStr.getAttributeValue(MetadataSupport.lang_qname)),
+                        new String256(locStr.getAttributeValue(MetadataSupport.value_qname)));
+                comments.add(intStr);
+            }
+        }
+        return comments;
+    }
+
+    /**
+     * This method parse the ebRim xml node named 'Name' and returns a list of InternationalStrings (a list of titles).
+     * This can be used for DocumentEntry 'Name' as well as SubmissionSet 'Name'.
+     * @param ele parent node to explore (either extrinsicObject or RegistryPackage)
+     * @return list of titles extracted from ebRim xml.
+     */
+    private List<InternationalString> parseTitles(OMElement ele) {
+        List<InternationalString> titles=new ArrayList<InternationalString>();
+        // find 'Name' node among the parent node children
+        OMElement nameNode=XmlUtil2.firstChildWithLocalName(ele, "Name");
+        if (nameNode != null) {
+            // get a list of LocalizedString (list of 'Name' children).
+            List<OMElement> localizedStrings = XmlUtil2.childrenWithLocalName(nameNode, "LocalizedString");
+            for (OMElement locStr : localizedStrings) {
+                InternationalString intStr = new InternationalString(
+                        LanguageCode.getValueOf(locStr.getAttributeValue(MetadataSupport.lang_qname)),
+                        new String256(locStr.getAttributeValue(MetadataSupport.value_qname)));
+                titles.add(intStr);
+            }
+        }
+        return titles;
+    }
+
+    /**
      * Method that parses a list of ebRim author classification
      * to return a list of Author java objects.
      * @param authorClassifications list of ebRim author classification.
      * @return a list of Author java objects.
      */
-    List<Author> parseAuthors(List<OMElement> authorClassifications) {
+    // TODO add telecommunications
+    public List<Author> parseAuthors(List<OMElement> authorClassifications) {
         List<Author> authors = new ArrayList<Author>();
 
         for (OMElement authorClas : authorClassifications) {
             String name = m.getSlotValue(authorClas, "authorPerson", 0);
+            LOGGER.info(name);
             List<String> institutions = m.getSlotValues(authorClas, "authorInstitution");
             List<String> roles = m.getSlotValues(authorClas, "authorRole");
             List<String> specialties = m.getSlotValues(authorClas, "authorSpecialty");
+            // List<String> telecommunications = m.getSlotValues(authorClas, "authorTelecommunications");
             Author a = new Author();
             a.setAuthorPerson(new String256(name));
             for (String s:institutions) {
@@ -292,7 +336,9 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             for (String s:specialties) {
                 a.getAuthorSpecialties().add(new String256(s));
             }
-            // TODO telecommunication is missing
+            // for (String s:telecommunications) {
+            //    a.getAuthorTelecommunications().add(new String256(s));
+            // }
             authors.add(a);
         }
         return authors;
@@ -328,6 +374,29 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             OMElement intendedRecipient = metadataTemp.addSlot(regPackage, "intendedRecipient");
             for (String256 r : subSet.getIntendedRecipient().getValues()) {
                 metadataTemp.addSlotValue(intendedRecipient, r.toString());
+            }
+        }
+        for (InternationalString intStr:subSet.getTitle()){
+            metadataTemp.addName(regPackage,intStr.getLangCode().toString(),intStr.getValue().toString());
+        }
+        for (Author author : subSet.getAuthors()) {
+            OMElement authorClassification = metadataTemp.addExtClassification(regPackage, MetadataSupport.XDSSubmissionSet_author_uuid);
+            metadataTemp.addSlot(authorClassification, "authorPerson", author.getAuthorPerson().toString());
+            OMElement authorInstitutionClassification = metadataTemp.addSlot(authorClassification, "authorInstitution");
+            for (String256 institution : author.getAuthorInstitutions()) {
+                metadataTemp.addSlotValue(authorInstitutionClassification, institution.toString());
+            }
+            OMElement authorRoleClassification = metadataTemp.addSlot(authorClassification, "authorRole");
+            for (String256 role : author.getAuthorRoles()) {
+                metadataTemp.addSlotValue(authorRoleClassification, role.toString());
+            }
+            OMElement authorSpecialtyClassification = metadataTemp.addSlot(authorClassification, "authorSpecialty");
+            for (String256 specialty : author.getAuthorSpecialties()) {
+                metadataTemp.addSlotValue(authorSpecialtyClassification, specialty.toString());
+            }
+            OMElement authorTelecommunicationClassification = metadataTemp.addSlot(authorClassification, "authorTelecommunication");
+            for (String256 telecommunication : author.getAuthorTelecommunications()) {
+                metadataTemp.addSlotValue(authorTelecommunicationClassification, telecommunication.toString());
             }
         }
         // DocEntries
@@ -387,9 +456,9 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             if (documentEntry.getServiceStopTime().getValues().get(0) != null) {
                 metadataTemp.addSlot(extObj, "serviceStopTime", formatDate(documentEntry.getServiceStopTime().getValues().get(0).getDtm()));
             }
-            // FIXME this is not working
+            // FIXME this is working (subset author is missing)
             for (Author author : documentEntry.getAuthors()) {
-                OMElement authorClassification = metadataTemp.addIntClassification(extObj, MetadataSupport.XDSDocumentEntry_author_uuid);
+                OMElement authorClassification = metadataTemp.addExtClassification(extObj, MetadataSupport.XDSDocumentEntry_author_uuid);
                 metadataTemp.addSlot(authorClassification, "authorPerson", author.getAuthorPerson().toString());
                 OMElement authorInstitutionClassification = metadataTemp.addSlot(authorClassification, "authorInstitution");
                 for (String256 institution : author.getAuthorInstitutions()) {
@@ -408,9 +477,13 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                     metadataTemp.addSlotValue(authorTelecommunicationClassification, telecommunication.toString());
                 }
             }
+            // TODO add titles and comments
+            for (InternationalString intStr:documentEntry.getTitles()){
+                metadataTemp.addName(extObj,intStr.getLangCode().toString(),intStr.getValue().toString());
+            }
         }
         for (XdsAssociation asso:metadata.getAssociations()){
-            // TODO
+            // TODO not complete yet
             if (asso.getSource()!=null && asso.getTarget()!=null) {
                 OMElement assoElement = metadataTemp.mkAssociation(asso.getType().toString(), asso.getSource().toString(), asso.getTarget().toString());
                 metadataTemp.addSlot(assoElement, "SubmissionSetStatus", asso.getSubmissionSetStatus().toString());
