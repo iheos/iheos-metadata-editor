@@ -48,7 +48,7 @@ public class UploadFileServlet extends HttpServlet {
                             ByteBuffer.wrap(encoded)).toString();
 
                     // Return file content to the client
-                    LOGGER.info(fileContent);
+                    // LOGGER.info(fileContent);
                     resp.getOutputStream().print(fileContent);
 
 

@@ -160,7 +160,7 @@ public enum LanguageCode {
                 return l;
             }
         }
-        return null;
+        return getValueOf("en-US");
     }
 
     @Override
