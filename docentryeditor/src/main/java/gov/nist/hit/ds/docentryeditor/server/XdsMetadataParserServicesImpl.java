@@ -379,6 +379,9 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         for (InternationalString intStr:subSet.getTitle()){
             metadataTemp.addName(regPackage,intStr.getLangCode().toString(),intStr.getValue().toString());
         }
+        for (InternationalString intStr:subSet.getComments()){
+            metadataTemp.addDescription(regPackage,intStr.getLangCode().toString(),intStr.getValue().toString());
+        }
         for (Author author : subSet.getAuthors()) {
             OMElement authorClassification = metadataTemp.addExtClassification(regPackage, MetadataSupport.XDSSubmissionSet_author_uuid);
             metadataTemp.addSlot(authorClassification, "authorPerson", author.getAuthorPerson().toString());
@@ -456,7 +459,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             if (documentEntry.getServiceStopTime().getValues().get(0) != null) {
                 metadataTemp.addSlot(extObj, "serviceStopTime", formatDate(documentEntry.getServiceStopTime().getValues().get(0).getDtm()));
             }
-            // FIXME this is working (subset author is missing)
+            // TODO Refactor authors
             for (Author author : documentEntry.getAuthors()) {
                 OMElement authorClassification = metadataTemp.addExtClassification(extObj, MetadataSupport.XDSDocumentEntry_author_uuid);
                 metadataTemp.addSlot(authorClassification, "authorPerson", author.getAuthorPerson().toString());
@@ -480,6 +483,9 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             // TODO add titles and comments
             for (InternationalString intStr:documentEntry.getTitles()){
                 metadataTemp.addName(extObj,intStr.getLangCode().toString(),intStr.getValue().toString());
+            }
+            for (InternationalString intStr:documentEntry.getComments()){
+                metadataTemp.addDescription(extObj,intStr.getLangCode().toString(),intStr.getValue().toString());
             }
         }
         for (XdsAssociation asso:metadata.getAssociations()){
