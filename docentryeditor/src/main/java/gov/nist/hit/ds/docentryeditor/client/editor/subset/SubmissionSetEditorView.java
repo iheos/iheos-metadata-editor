@@ -7,15 +7,18 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.client.editor.ListStoreEditor;
+import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.UuidFormatClientValidator;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.author.AuthorsListEditorWidget;
+import gov.nist.hit.ds.docentryeditor.client.editor.widgets.codedterm.CodedTermsEditableGridWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.codedterm.PredefinedCodedTermComboBox;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.identifier.IdentifierOIDEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.identifier.IdentifierString256EditorWidget;
@@ -27,6 +30,8 @@ import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
 import gov.nist.hit.ds.docentryeditor.client.resources.ClientFormatValidationResource;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
+import gov.nist.hit.ds.docentryeditor.client.widgets.StandardSelector;
+import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
 import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
@@ -84,6 +89,11 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
     @Inject
     private EditorToolbar editorBottomToolbar;
 
+    @Inject
+    private StandardSelector selector;
+    private Map<String, String> selectedStandardProperties;
+    private VerticalLayoutContainer container;
+
     /**
      * This is the abstract method implementation that builds a collection of objects
      * mapping a String key to a Widget for the Submission Set editor view.
@@ -98,12 +108,12 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         map.put("submissionTime",submissionTime);
         map.put("patientId",patientId);
         map.put("contentTypeCode",contentTypeCode);
-        map.put("authors",authors.asWidget());
-        map.put("intendedRecipient",intendedRecipient);
-        map.put("title",titleGrid);
-        map.put("comments",commentsGrid);
-        map.put("availabilityStatus",availabilityStatus);
-        map.put("homeCommunityId",homeCommunityId);
+        map.put("authors", authors.asWidget());
+        map.put("intendedRecipient", intendedRecipient);
+        map.put("title", titleGrid);
+        map.put("comments", commentsGrid);
+        map.put("availabilityStatus", availabilityStatus);
+        map.put("homeCommunityId", homeCommunityId);
         return map;
     }
 
@@ -114,74 +124,11 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
      */
     @Override
     protected Widget buildUI() {
-        VerticalLayoutContainer container=new VerticalLayoutContainer();
+        container = new VerticalLayoutContainer();
         container.getElement().setMargins(10);
         container.setBorders(false);
 
-        SimpleContainer requiredFieldsContainer = new SimpleContainer();
-        requiredFieldsContainer.setTitle("Required fields");
-        SimpleContainer optionalFieldsContainer = new SimpleContainer();
-        optionalFieldsContainer.setTitle("Optional fields");
-
-        requiredFieldsContainer.add(requiredFields);
-        optionalFieldsContainer.add(optionalFields);
-
-        // Adding required and optional fields panels to the main container of editor view.
-        container.add(editorTopToolbar, new VerticalLayoutContainer.VerticalLayoutData(-1, -1));
-        container.add(new HtmlLayoutContainer("<h2>Submission Set Editor</h2>"));
-        container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"));
-        container.add(requiredFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"));
-        container.add(optionalFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-
-        // /////////////////////////////////////// //
-        // - Required "simple" fields.
-        EditorFieldLabel entryUUIDLabel = new EditorFieldLabel(entryUUID,"Entry UUID");
-        EditorFieldLabel uniqueIdLabel = new EditorFieldLabel(uniqueId,"Unique ID");
-        EditorFieldLabel sourceIdlabel = new EditorFieldLabel(sourceId,"Source ID");
-        EditorFieldLabel patientIdLabel = new EditorFieldLabel(patientId,"Patient ID");
-        EditorFieldLabel contentTypeCodeLabel = new EditorFieldLabel(contentTypeCode.getDisplay(),"Content type code");
-
-        // - Optional "simple" fields.
-        EditorFieldLabel availabilityStatusLabel = new EditorFieldLabel(availabilityStatus,"Availability status");
-        EditorFieldLabel homeCommunityIdLabel = new EditorFieldLabel(homeCommunityId,"Home community ID");
-
-        // - Optional widget fields.
-        titleGrid = new InternationalStringEditableGrid("Titles");
-        title = new ListStoreEditor<InternationalString>(titleGrid.getStore());
-        commentsGrid = new InternationalStringEditableGrid("Comments");
-        comments = new ListStoreEditor<InternationalString>(commentsGrid.getStore());
-
-        // - simple required fields container.
-        VerticalLayoutContainer simpleRequiredFieldsContainer = new VerticalLayoutContainer();
-        simpleRequiredFieldsContainer.add(entryUUIDLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        simpleRequiredFieldsContainer.add(uniqueIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        simpleRequiredFieldsContainer.add(sourceIdlabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        simpleRequiredFieldsContainer.add(patientIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        simpleRequiredFieldsContainer.add(contentTypeCodeLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-
-        // - simple optional fields container.
-        VerticalLayoutContainer simpleOptionalFieldsContainer = new VerticalLayoutContainer();
-        simpleOptionalFieldsContainer.add(availabilityStatusLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-        simpleOptionalFieldsContainer.add(homeCommunityIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1,-1));
-
-        // Add every required fields to the required fields panel.
-        requiredFields.add(simpleRequiredFieldsContainer,new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        requiredFields.add(submissionTime.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        // Add every optional fields to the optional fields panel.
-        optionalFields.add(simpleOptionalFieldsContainer,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
-        optionalFields.add(authors.asWidget(), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(intendedRecipient.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
-        optionalFields.add(titleGrid.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
-        optionalFields.add(commentsGrid.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
-
-        // configure help information and client validations for the entire editor.
-        setWidgetsInfo();
-
-        // Bottom toolbar container.
-        SimpleContainer bottomToolbarContainer = new SimpleContainer();
-        bottomToolbarContainer.add(editorBottomToolbar);
-        optionalFields.add(bottomToolbarContainer);
+        updateEditorUI(selector.getStdPropertiesMap());
 
         mainContainer.setScrollMode(ScrollMode.AUTO);
         mainContainer.add(container);
@@ -289,7 +236,7 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
      */
     private void setWidgetsInfo() {
         // availability status
-        availabilityStatus.setAllowBlank(true);
+        availabilityStatus.setAllowBlank(!isRequired("subSetAvailabilityStatus"));
         availabilityStatus.setEmptyText("ex: urn:oasis:names:tc:ebxml-regrep:StatusType:Approved");
         availabilityStatus.setToolTipConfig(ToolTipResources.INSTANCE.getAvailabilityStatusToolTipConfig());
         // comments
@@ -297,13 +244,13 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         // content type code
         contentTypeCode.setEmptyText("Select a content type...");
         contentTypeCode.clear();
-        contentTypeCode.setAllowBlank(false);
+        contentTypeCode.setAllowBlank(!isRequired("subSetContentTypeCode"));
         // entry uuid
         entryUUID.setToolTipConfig(new ToolTipConfig("Entry UUID is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
-        entryUUID.setAllowBlank(false);
+        entryUUID.setAllowBlank(!isRequired("subSetEntryUUID"));
         entryUUID.addValidator(new UuidFormatClientValidator());
         // home community id
-        homeCommunityId.setAllowBlank(true);
+        homeCommunityId.setAllowBlank(!isRequired("subSetHomeCommunityId"));
         homeCommunityId.setEmptyText("ex: urn:oid:1.2.3");
         homeCommunityId.addValidator(ClientFormatValidationResource.INSTANCE.getHomeCommunityIdRegExpValidator());
         homeCommunityId.setToolTipConfig(ToolTipResources.INSTANCE.getHomeCommunityIdTooltipConfig());
@@ -315,10 +262,10 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         // patient id
         patientId.setEmptyTexts("ex: 76cc^^1.3.6367.2005.3.7&ISO", "ex: urn:uuid:6b5aea1a-625s-5631-v4se-96a0a7b38446");
         patientId.setToolTipConfigs(ToolTipResources.INSTANCE.getPatientIdTooltipConfig());
-        patientId.setAllowBlanks(false, false);
+        patientId.setAllowBlanks(!isRequired("subSetPatientID"));
         patientId.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getPatientIDRegExpValidator());
         // source id
-        sourceId.setAllowBlanks(false,false);
+        sourceId.setAllowBlanks(!isRequired("subSetSourceID"));
         sourceId.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getSourceIdRegExpValidator());
         sourceId.setEmptyTexts("ex: 1.3.6.1.4.1.21367.2005.3.7", "ex: 1.3.6.1.4.1.21367.2005.3.7");
         sourceId.setToolTipConfigs(ToolTipResources.INSTANCE.getSourceIdTooltipConfig());
@@ -327,9 +274,136 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         // title
         titleGrid.setToolbarHelpButtonTooltip(ToolTipResources.INSTANCE.getSubSetTitleTooltipConfig());
         // Unique ID
-        uniqueId.setAllowBlanks(false, false);
+        uniqueId.setAllowBlanks(!isRequired("subSetUniqueID"));
         uniqueId.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getUniqueIdRegExpValidator());
         uniqueId.setEmptyTexts("ex: 2008.8.1.35447^5846", "ex: 2008.8.1.35447");
         uniqueId.setToolTipConfigs(ToolTipResources.INSTANCE.getUniqueIdTooltipConfig());
+    }
+
+    public void updateEditorUI(Map<String, String> selectedStandardProperties) {
+        this.selectedStandardProperties = selectedStandardProperties;
+        mainContainer.clear();
+        requiredFields.clear();
+        optionalFields.clear();
+
+        SimpleContainer requiredFieldsContainer = new SimpleContainer();
+        requiredFieldsContainer.setTitle("Required fields");
+        SimpleContainer optionalFieldsContainer = new SimpleContainer();
+        optionalFieldsContainer.setTitle("Optional fields");
+
+        requiredFieldsContainer.add(requiredFields);
+        optionalFieldsContainer.add(optionalFields);
+
+        // Adding required and optional fields panels to the main container of editor view.
+        container.add(editorTopToolbar, new VerticalLayoutContainer.VerticalLayoutData(-1, -1));
+        container.add(new HtmlLayoutContainer("<h2>Submission Set Editor</h2>"));
+        container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"));
+        container.add(requiredFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"));
+        container.add(optionalFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+
+        // /////////////////////////////////////// //
+        // - Required "simple" fields.
+        EditorFieldLabel entryUUIDLabel = new EditorFieldLabel(entryUUID,"Entry UUID");
+        EditorFieldLabel uniqueIdLabel = new EditorFieldLabel(uniqueId,"Unique ID");
+        EditorFieldLabel sourceIdlabel = new EditorFieldLabel(sourceId,"Source ID");
+        EditorFieldLabel patientIdLabel = new EditorFieldLabel(patientId,"Patient ID");
+        EditorFieldLabel contentTypeCodeLabel = new EditorFieldLabel(contentTypeCode.getDisplay(),"Content type code");
+
+        // - Optional "simple" fields.
+        EditorFieldLabel availabilityStatusLabel = new EditorFieldLabel(availabilityStatus,"Availability status");
+        EditorFieldLabel homeCommunityIdLabel = new EditorFieldLabel(homeCommunityId,"Home community ID");
+
+        // - Optional widget fields.
+        titleGrid = new InternationalStringEditableGrid("Titles");
+        title = new ListStoreEditor<InternationalString>(titleGrid.getStore());
+        commentsGrid = new InternationalStringEditableGrid("Comments");
+        comments = new ListStoreEditor<InternationalString>(commentsGrid.getStore());
+
+        // - simple required fields container.
+        VerticalLayoutContainer simpleRequiredFieldsContainer = new VerticalLayoutContainer();
+        VerticalLayoutContainer simpleOptionalFieldsContainer = new VerticalLayoutContainer();
+        if (isRequired("subSetEntryUUID")) {
+            simpleRequiredFieldsContainer.add(entryUUIDLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }else{
+            simpleOptionalFieldsContainer.add(entryUUIDLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }
+        if (isRequired("subSetUniqueID")) {
+            simpleRequiredFieldsContainer.add(uniqueIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }else{
+            simpleOptionalFieldsContainer.add(uniqueIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }
+        if (isRequired("subSetSourceID")) {
+            simpleRequiredFieldsContainer.add(sourceIdlabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }else{
+            simpleOptionalFieldsContainer.add(sourceIdlabel,new VerticalLayoutContainer.VerticalLayoutData(1,-1));
+        }
+        if (isRequired("subSetPatientID")) {
+            simpleRequiredFieldsContainer.add(patientIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }else{
+            simpleOptionalFieldsContainer.add(patientIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1,-1));
+        }
+        if (isRequired("subSetContentTypeCode")) {
+            simpleRequiredFieldsContainer.add(contentTypeCodeLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }else{
+            simpleOptionalFieldsContainer.add(contentTypeCodeLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }
+        if (isRequired("subSetAvailabilityStatus")) {
+            simpleRequiredFieldsContainer.add(availabilityStatusLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }else{
+            simpleOptionalFieldsContainer.add(availabilityStatusLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }
+        if (isRequired("subSetHomeCommunityId")) {
+            simpleRequiredFieldsContainer.add(homeCommunityIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }else{
+            simpleOptionalFieldsContainer.add(homeCommunityIdLabel, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        }
+
+        // Add every required fields to the required fields panel.
+        requiredFields.add(simpleRequiredFieldsContainer,new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        if (isRequired("subSetSubmissionTime")) {
+            requiredFields.add(submissionTime.getDisplay(), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(submissionTime.getDisplay(),new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        }
+        // Add every optional fields to the optional fields panel.
+        optionalFields.add(simpleOptionalFieldsContainer,new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        if (isRequired("subSetAuthors")) {
+            requiredFields.add(authors.asWidget(), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(authors.asWidget(), new VerticalLayoutContainer.VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        }
+        if (isRequired("subSetIntendedRecipient")) {
+            requiredFields.add(intendedRecipient.getDisplay(), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(intendedRecipient.getDisplay(), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("subSetTitles")) {
+            requiredFields.add(titleGrid.getDisplay(), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(titleGrid.getDisplay(), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("subSetComments")) {
+            requiredFields.add(commentsGrid.getDisplay(), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(commentsGrid.getDisplay(), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+
+        // configure help information and client validations for the entire editor.
+        setWidgetsInfo();
+
+        // Bottom toolbar container.
+        SimpleContainer bottomToolbarContainer = new SimpleContainer();
+        bottomToolbarContainer.add(editorBottomToolbar);
+        optionalFields.add(bottomToolbarContainer);
+
+        collapseAll();
+
+        setWidgetsInfo();
+
+    }
+
+    private boolean isRequired(String attributeId) {
+        return "R".equals(selectedStandardProperties.get(attributeId));
     }
 }

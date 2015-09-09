@@ -8,6 +8,7 @@ import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionMenuData;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is the application event bus. It is used through the entire application.
@@ -190,5 +191,22 @@ public class MetadataEditorEventBus extends SimpleEventBus {
 
     public HandlerRegistration addAssociatedElementsChangedHandler(AssociatedElementsChangedEvent.AssociatedElementsChangedHandler handler) {
         return addHandler(AssociatedElementsChangedEvent.TYPE,handler);
+    }
+
+    /**
+     * This method fire an event to notify that the selected standard for the editor has changed.
+     * @param
+     */
+    public void fireSelectedStandardChangedEvent(Map<String,String> selectedStandardPropertiesMap) {
+        fireEvent(new SelectedStandardChangedEvent(selectedStandardPropertiesMap));
+    }
+
+    /**
+     * This method adds an handler that will handle this actions required when the selected standard changes.
+     * @param handler
+     * @return
+     */
+    public HandlerRegistration addSelectedStandardChangedEventHandler(SelectedStandardChangedEvent.SelectedStandardChangedEventHandler handler) {
+        return addHandler(SelectedStandardChangedEvent.TYPE,handler);
     }
 }

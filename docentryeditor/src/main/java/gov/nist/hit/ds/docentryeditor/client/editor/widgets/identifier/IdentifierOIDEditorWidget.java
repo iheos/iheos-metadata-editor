@@ -63,11 +63,10 @@ public class IdentifierOIDEditorWidget extends Composite implements
      * input anything in field which does not allow blank.
      *
      * @param doesValueAllowBlank  true to allow blank to the value field, false otherwise
-     * @param doesTypeAllowBlank true to allow blank to the idType field, false otherwise
      */
-    public void setAllowBlanks(boolean doesValueAllowBlank, boolean doesTypeAllowBlank) {
+    public void setAllowBlanks(boolean doesValueAllowBlank/*, boolean doesTypeAllowBlank*/) {
         value.setAllowBlank(doesValueAllowBlank);
-        idType.setAllowBlank(doesTypeAllowBlank);
+//        idType.setAllowBlank(doesTypeAllowBlank);
     }
 
 }

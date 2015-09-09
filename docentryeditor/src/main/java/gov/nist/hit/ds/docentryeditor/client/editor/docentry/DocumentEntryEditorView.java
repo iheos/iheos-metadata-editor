@@ -3,12 +3,14 @@ package gov.nist.hit.ds.docentryeditor.client.editor.docentry;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.client.editor.ListStoreEditor;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
@@ -31,14 +33,15 @@ import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
 import gov.nist.hit.ds.docentryeditor.client.resources.ClientFormatValidationResource;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
+import gov.nist.hit.ds.docentryeditor.client.widgets.StandardSelector;
 import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
 import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * This class represents the view of the Document Entry editor.
  * It only handles the different widgets used to build the final
@@ -75,6 +78,9 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     IdentifierOIDEditorWidget uniqueId;
     @Inject
     IdentifierString256EditorWidget patientID;
+    @Inject
+    @Ignore
+    StandardSelector standardSelector;
 
     /* coded terms declaration */
     // Could be injected using FactoryProvider assisted inject
@@ -119,8 +125,17 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     private EditorToolbar editorTopToolbar;
     @Inject
     private EditorToolbar editorBottomToolbar;
-    private ContentPanel filePropertiesPanel;
-    private ContentPanel repositoryAttributesPanel;
+
+    private ContentPanel filePropertiesRPanel;
+    private ContentPanel filePropertiesOPanel;
+    private ContentPanel repositoryAttributesOPanel;
+    private ContentPanel repositoryAttributesRPanel;
+
+    private VerticalLayoutContainer container;
+
+    @Inject
+    private StandardSelector selector;
+    private Map<String, String> selectedStandardProperties;
 
     /**
      * This is the abstract method implementation that builds a collection of objects
@@ -146,213 +161,11 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
      */
     @Override
     protected Widget buildUI() {
-        final VerticalLayoutContainer container = new VerticalLayoutContainer();
+        container = new VerticalLayoutContainer();
         container.getElement().setMargins(10);
         container.setBorders(false);
 
-        SimpleContainer fp1 = new SimpleContainer();
-        SimpleContainer fp2 = new SimpleContainer();
-
-        fp1.add(requiredFields);
-        fp2.add(optionalFields);
-
-        fp1.setTitle("Required fields");
-        fp2.setTitle("Optional fields");
-
-        // Adding required and optional fields panels to the main container of editor view
-        container.add(editorTopToolbar, new VerticalLayoutData(-1,-1));
-        container.add(new HtmlLayoutContainer("<h2>Document Entry Editor</h2>"));
-        container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"));
-        container.add(fp1, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"));
-        container.add(fp2, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-
-        // //////////////////////////////////////
-        // Simple fields label and options (init)
-        // /////////////////////////////////////
-        // ID Field (required)
-        EditorFieldLabel idLabel = new EditorFieldLabel(id, "Entry UUID");
-        // Hash Field (required)
-        EditorFieldLabel hashLabel = new EditorFieldLabel(hash, "Hash");
-        // Language Code Field (required)
-        EditorFieldLabel languageCodeLabel = new EditorFieldLabel(languageCode, "Language Code");
-        // Mime Type Field (required)
-        EditorFieldLabel mimeTypeLabel = new EditorFieldLabel(mimeType, "Mime Type");
-        // Class Code Field (required)
-        EditorFieldLabel classCodeLabel = new EditorFieldLabel(classCode.getDisplay(), "Class Code");
-        // Format Code Field (required)
-        EditorFieldLabel formatCodeLabel = new EditorFieldLabel(formatCode.getDisplay(), "Format Code");
-        // healthcare facility Code Field (required)
-        EditorFieldLabel healthcareFacilityTypeLabel = new EditorFieldLabel(healthcareFacilityType.getDisplay(), "Healthcare Facility");
-        // practiceSettingCode Field (required)
-        EditorFieldLabel practiceSettingCodeLabel = new EditorFieldLabel(practiceSettingCode.getDisplay(), "Practice Setting Code");
-        // type Code Field (required)
-        EditorFieldLabel typeCodeLabel = new EditorFieldLabel(typeCode.getDisplay(), "Type Code");
-        // Repository Unique ID Field (optional)
-        EditorFieldLabel repositoryLabel = new EditorFieldLabel(repoUId, "Repository Unique ID");
-        // URI Field (optional)
-        EditorFieldLabel uriLabel = new EditorFieldLabel(uri, "URI");
-
-		/* ********************************* */
-        /* identifiers options and fieldset */
-        /* ********************************* */
-        // Patient ID Fields (required)
-        EditorFieldLabel patientIdLabel = new EditorFieldLabel(patientID, "Patient ID");
-        // Unique ID Fieds (required)
-        EditorFieldLabel uniqueIdLabel = new EditorFieldLabel(uniqueId, "Unique ID");
-
-        // ////////////////////////////////////////////////////
-        // --- Adding REQUIRED simple fields labels to containers
-        // ////////////////////////////////////////////////////
-        VerticalLayoutContainer simpleRequiredFieldsContainer = new VerticalLayoutContainer();
-        simpleRequiredFieldsContainer.add(idLabel, new VerticalLayoutData(1, -1));
-        simpleRequiredFieldsContainer.add(uniqueIdLabel, new VerticalLayoutData(1, -1));
-        simpleRequiredFieldsContainer.add(patientIdLabel, new VerticalLayoutData(1, -1));
-        simpleRequiredFieldsContainer.add(languageCodeLabel, new VerticalLayoutData(1, -1));
-        simpleRequiredFieldsContainer.add(mimeTypeLabel, new VerticalLayoutData(1, -1));
-        simpleRequiredFieldsContainer.add(classCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
-        simpleRequiredFieldsContainer.add(typeCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
-        simpleRequiredFieldsContainer.add(formatCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
-        simpleRequiredFieldsContainer.add(healthcareFacilityTypeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
-        simpleRequiredFieldsContainer.add(practiceSettingCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
-
-		/* REQUIRED container added to a fieldset */
-        FieldSet generalRequiredFieldSet = new FieldSet();
-        generalRequiredFieldSet.setHeadingText("General");
-        generalRequiredFieldSet.setCollapsible(true);
-        generalRequiredFieldSet.add(simpleRequiredFieldsContainer);
-
-        // //////////////////////////////////////////////////////////
-        // --- Adding OPTIONAL simple fields labels to containers
-        // //////////////////////////////////////////////////////////
-        VerticalLayoutContainer filePropertiesFieldsContainer = new VerticalLayoutContainer();
-        filePropertiesFieldsContainer.add(hashLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
-        filePropertiesFieldsContainer.add(size.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
-
-        VerticalLayoutContainer repositoryAttributesFieldsContainer = new VerticalLayoutContainer();
-        repositoryAttributesFieldsContainer.add(uriLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
-        repositoryAttributesFieldsContainer.add(repositoryLabel, new VerticalLayoutData(1, -1, new Margins(0, 5, 5, 5)));
-
-		/* OPTIONAL container added to a fieldset */
-        filePropertiesPanel = new ContentPanel(){
-            @Override
-            public void onCollapse(){
-                super.onCollapse();
-                updateFilePropertiesPanelHeader();
-            }
-            @Override
-            public void onExpand(){
-                super.onExpand();
-                this.setHeadingText("File properties");
-            }
-        };
-        filePropertiesPanel.setCollapsible(true);
-        filePropertiesPanel.setHeadingText("File properties");
-        filePropertiesPanel.add(filePropertiesFieldsContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
-
-        repositoryAttributesPanel = new ContentPanel(){
-            @Override
-            public void onCollapse(){
-                super.onCollapse();
-                updateRepositoryAttributesPanelHeader();
-            }
-            @Override
-            public void onExpand(){
-                super.onExpand();
-                this.setHeadingText("Repository attributes");
-            }
-        };
-        repositoryAttributesPanel.setHeadingText("Repository attributes");
-        repositoryAttributesPanel.setCollapsible(true);
-        repositoryAttributesPanel.add(repositoryAttributesFieldsContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
-
-        // //////////////////////////////////////////////////////
-        // Other fields and options (init)
-        // //////////////////////////////////////////////////////
-
-
-		/* ********************************** */
-        /* coded terms options and fieldset */
-        /* ********************************** */
-
-		/* ****************************** */
-        /* name values options and fields */
-        /* ****************************** */
-        // Legal Authenticator (optional)
-        legalAuthenticator.setListMaxSize(1);
-
-        // Source Patient ID (optional)
-        sourcePatientId.setListMaxSize(1);
-
-        // Source Patient Info
-        sourcePatientInfo.setListMaxSize(10);
-
-        // Service Start Time (optional)
-        serviceStartTime.setListMaxSize(1);
-
-        // Service Stop Time (optional)
-        serviceStopTime.setListMaxSize(1);
-
-        // Size (optional)
-        size.disableToolbar();
-        size.setListMaxSize(1);
-
-        // Creation Time (required)
-        creationTime.disableToolbar();
-        creationTime.setListMaxSize(1);
-
-        // AUTHORS (Optional)
-//        FieldSet authorsFieldSet = new FieldSet();
-//        authorsFieldSet.setHeadingText("Authors");
-//        authorsFieldSet.setCollapsible(true);
-//        authorsFieldSet.add(authors.asWidget());
-
-        // TITLES (Optional)
-        titlesGrid = new InternationalStringEditableGrid("Titles");
-        titles = new ListStoreEditor<InternationalString>(titlesGrid.getStore());
-
-
-        // COMMENTS (Optional)
-        commentsGrid = new InternationalStringEditableGrid("Comments");
-        comments = new ListStoreEditor<InternationalString>(commentsGrid.getStore());
-
-        // CONFIDENTIALITY CODE (Optional)
-        confidentialityCodesGrid = new CodedTermsEditableGridWidget("Confidentiality Codes", PredefinedCodes.CONFIDENTIALITY_CODES);
-        confidentialityCodes = new ListStoreEditor<CodedTerm>(confidentialityCodesGrid.getStore());
-
-        // CONFIDENTIALITY CODE (Optional)
-        eventCodesGrid = new CodedTermsEditableGridWidget("Event Codes", PredefinedCodes.EVENT_CODES);
-        eventCode = new ListStoreEditor<CodedTerm>(eventCodesGrid.getStore());
-
-        // /////////////////////////////////////////////////////////
-        // Adding and ordering fieldsets in REQUIRED panel
-        // /////////////////////////////////////////////////////////
-        /* simple required fields added to FramedPanel container */
-        requiredFields.add(generalRequiredFieldSet, new VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
-        requiredFields.add(creationTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-
-        // /////////////////////////////////////////////////////////
-        // Adding and ordering fieldsets in OPTIONAL fields panel
-        // /////////////////////////////////////////////////////////
-        /* simple optional fields added to FramedPanel container */
-        optionalFields.add(filePropertiesPanel, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(repositoryAttributesPanel, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(titlesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(commentsGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(authors.asWidget(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(legalAuthenticator.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(sourcePatientId.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(sourcePatientInfo.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(confidentialityCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(eventCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(serviceStartTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        optionalFields.add(serviceStopTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-
-        SimpleContainer bottomToolbarContainer = new SimpleContainer();
-        bottomToolbarContainer.add(editorBottomToolbar);
-        optionalFields.add(bottomToolbarContainer);
-
-        setWidgetsInfo();
+        updateEditorUI(selector.getStdPropertiesMap());
 
         form.setScrollMode(ScrollMode.AUTO);
         form.add(container);
@@ -446,13 +259,13 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
      * This method update the header of the panel for file properties on collapse.
      */
     private void updateFilePropertiesPanelHeader() {
-        if (filePropertiesPanel!=null) {
+        if (filePropertiesOPanel !=null) {
             String s = new String();
             if (!hash.getField().getText().isEmpty()) {
                 s += "Hash: " + hash.getField().getText();
             }
             s += ", Size: " + size.getStore().get(0).toString();
-            filePropertiesPanel.setHeadingText("File properties (" + s + ")");
+            filePropertiesOPanel.setHeadingText("File properties (" + s + ")");
         }
     }
 
@@ -460,7 +273,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
      * This method update the header of the panel for repository attributes on collapse.
      */
     private void updateRepositoryAttributesPanelHeader() {
-        if (repositoryAttributesPanel!=null) {
+        if (repositoryAttributesOPanel !=null) {
             String s = new String();
             if (!uri.getField().getText().isEmpty()) {
                 s += "URI: " + uri.getField().getText();
@@ -470,7 +283,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
             } else if (!repoUId.getText().isEmpty()) {
                 s += "Repository Unique ID: " + repoUId.getText();
             }
-            repositoryAttributesPanel.setHeadingText("Repository attributes (" + s + ")");
+            repositoryAttributesOPanel.setHeadingText("Repository attributes (" + s + ")");
         }
     }
 
@@ -498,11 +311,11 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         }
         serviceStartTime.collapse();
         serviceStopTime.collapse();
-        if(filePropertiesPanel!=null) {
-            filePropertiesPanel.collapse();
+        if(filePropertiesOPanel !=null) {
+            filePropertiesOPanel.collapse();
         }
-        if (repositoryAttributesPanel!=null){
-            repositoryAttributesPanel.collapse();
+        if (repositoryAttributesOPanel !=null){
+            repositoryAttributesOPanel.collapse();
         }
         updateFilePropertiesPanelHeader();
         updateRepositoryAttributesPanelHeader();
@@ -524,8 +337,8 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         eventCodesGrid.expand();
         serviceStartTime.expand();
         serviceStopTime.expand();
-        filePropertiesPanel.expand();
-        repositoryAttributesPanel.expand();
+        filePropertiesOPanel.expand();
+        repositoryAttributesOPanel.expand();
     }
 
     /**
@@ -535,7 +348,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // class code
         classCode.setEmptyText("Select a class...");
         classCode.clear();
-        classCode.setAllowBlank(false);
+        classCode.setAllowBlank(isRequired("docEntryClassCode"));
         // comments
         commentsGrid.setToolbarHelpButtonTooltip(ToolTipResources.INSTANCE.getDocEntryCommentsTooltipConfig());
         // confidentiality codes
@@ -545,23 +358,23 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // format code
         formatCode.setEmptyText("Select a format...");
         formatCode.clear();
-        formatCode.setAllowBlank(false);
+        formatCode.setAllowBlank(isRequired("docEntryFormatCode"));
         // hash code
         hash.setEmptyText("ex: Hex456");
         hash.setToolTipConfig(new ToolTipConfig("Hash is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
-        hash.setAllowBlank(true);
+        hash.setAllowBlank(isRequired("docEntryHash"));
         hash.addValidator(ClientFormatValidationResource.INSTANCE.getHashCodeRegExpValidator());
         // healthcare facility
         healthcareFacilityType.setEmptyText("Select an healthcare facility...");
         healthcareFacilityType.clear();
-        healthcareFacilityType.setAllowBlank(false);
+        healthcareFacilityType.setAllowBlank(isRequired("docEntryHealthcareFacilityCode"));
         // entry uuid
         id.setEmptyText("ex: 123456789");
         id.setToolTipConfig(new ToolTipConfig("ID is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
-        id.setAllowBlank(false);
+        id.setAllowBlank(isRequired("docEntryEntryUUID"));
         id.addValidator(new UuidFormatClientValidator());
         // language code
-        languageCode.setAllowBlank(false);
+        languageCode.setAllowBlank(isRequired("docEntryLanguageCode"));
         languageCode.setEmptyText("Select a language...");
         languageCode.setToolTipConfig(new ToolTipConfig("LanguageCode from RFC3066", "Language code format is \"[a-z](2)-[A-Z](2)\""));
         // legal authenticator
@@ -570,22 +383,22 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         legalAuthenticator.addFieldValidator(ClientFormatValidationResource.INSTANCE.getLegalAuthenticatorRegExpValidator());
         legalAuthenticator.setToolbarHelpButtonTooltip(ToolTipResources.INSTANCE.getLegalAuthenticatorToolTipConfig());
         // mime type
-        mimeType.setAllowBlank(false);
+        mimeType.setAllowBlank(isRequired("docEntryMimeType"));
         mimeType.setEmptyText("Select a mime type...");
         mimeType.setToolTipConfig(new ToolTipConfig("Mime Type is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
         // patient id
         patientID.setEmptyTexts("ex: 76cc^^^&1.3.6367.2005.3.7&ISO", "ex: urn:uuid:6b5aea1a-625s-5631-v4se-96a0a7b38446");
         patientID.setToolTipConfigs(ToolTipResources.INSTANCE.getPatientIdTooltipConfig());
-        patientID.setAllowBlanks(false, false);
+        patientID.setAllowBlanks(isRequired("docEntryPatientID"));
         patientID.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getPatientIDRegExpValidator());
         // pratice setting code
         practiceSettingCode.setEmptyText("Select a practice setting...");
         practiceSettingCode.clear();
-        practiceSettingCode.setAllowBlank(false);
+        practiceSettingCode.setAllowBlank(isRequired("docEntryPracticeSettingCode"));
         // repository unique id
         repoUId.setEmptyText("ex: 1.2.7.0.3.2.37768.2007.2.2");
         repoUId.setToolTipConfig(ToolTipResources.INSTANCE.getRepoUniqueIdToolTipConfig());
-        repoUId.setAllowBlank(true);
+        repoUId.setAllowBlank(isRequired("docEntryRepositoryUniqueID"));
         repoUId.addOIDValidator(ClientFormatValidationResource.INSTANCE.getRepoOIDValidation());
         // service start time
         serviceStartTime.setToolbarHelpButtonTooltip(ToolTipResources.INSTANCE.getServiceStartTimeTooltipConfig());
@@ -603,16 +416,369 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // type code
         typeCode.setEmptyText("Select a type...");
         typeCode.clear();
-        typeCode.setAllowBlank(false);
+        typeCode.setAllowBlank(isRequired("docEntryTypeCode"));
         // unique id
-        uniqueId.setAllowBlanks(false, false);
+        uniqueId.setAllowBlanks(isRequired("docEntryUniqueID"));
         uniqueId.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getUniqueIdRegExpValidator());
         uniqueId.setEmptyTexts("ex: 2008.8.1.35447^5846", "ex: 2008.8.1.35447");
         uniqueId.setToolTipConfigs(ToolTipResources.INSTANCE.getUniqueIdTooltipConfig());
         // uri
-        uri.setAllowBlank(true);
+        uri.setAllowBlank(isRequired("docEntryURI"));
         uri.setEmptyText("ex: uriO");
         uri.setToolTipConfig(new ToolTipConfig("URI is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
         uri.addValidator(ClientFormatValidationResource.INSTANCE.getUriRegExpValidator());
+    }
+
+    public void updateEditorUI(Map<String, String> selectedStandardProperties) {
+        this.selectedStandardProperties = selectedStandardProperties;
+        container.clear();
+        requiredFields.clear();
+        optionalFields.clear();
+
+        SimpleContainer fp1 = new SimpleContainer();
+        SimpleContainer fp2 = new SimpleContainer();
+
+        fp1.add(requiredFields);
+        fp2.add(optionalFields);
+
+        fp1.setTitle("Required fields");
+        fp2.setTitle("Optional fields");
+        // //////////////////////////////////////
+        // Simple fields label and options (init)
+        // /////////////////////////////////////
+        // ID Field (required)
+        EditorFieldLabel idLabel = new EditorFieldLabel(id, "Entry UUID");
+        // Hash Field (required)
+        EditorFieldLabel hashLabel = new EditorFieldLabel(hash, "Hash");
+        // Language Code Field (required)
+        EditorFieldLabel languageCodeLabel = new EditorFieldLabel(languageCode, "Language Code");
+        // Mime Type Field (required)
+        EditorFieldLabel mimeTypeLabel = new EditorFieldLabel(mimeType, "Mime Type");
+        // Class Code Field (required)
+        EditorFieldLabel classCodeLabel = new EditorFieldLabel(classCode.getDisplay(), "Class Code");
+        // Format Code Field (required)
+        EditorFieldLabel formatCodeLabel = new EditorFieldLabel(formatCode.getDisplay(), "Format Code");
+        // healthcare facility Code Field (required)
+        EditorFieldLabel healthcareFacilityTypeLabel = new EditorFieldLabel(healthcareFacilityType.getDisplay(), "Healthcare Facility");
+        // practiceSettingCode Field (required)
+        EditorFieldLabel practiceSettingCodeLabel = new EditorFieldLabel(practiceSettingCode.getDisplay(), "Practice Setting Code");
+        // type Code Field (required)
+        EditorFieldLabel typeCodeLabel = new EditorFieldLabel(typeCode.getDisplay(), "Type Code");
+        // Repository Unique ID Field (optional)
+        EditorFieldLabel repositoryLabel = new EditorFieldLabel(repoUId, "Repository Unique ID");
+        // URI Field (optional)
+        EditorFieldLabel uriLabel = new EditorFieldLabel(uri, "URI");
+
+		/* ********************************* */
+        /* identifiers options and fieldset */
+        /* ********************************* */
+        // Patient ID Fields (required)
+        EditorFieldLabel patientIdLabel = new EditorFieldLabel(patientID, "Patient ID");
+        // Unique ID Fieds (required)
+        EditorFieldLabel uniqueIdLabel = new EditorFieldLabel(uniqueId, "Unique ID");
+
+        // ////////////////////////////////////////////////////
+        // --- Adding REQUIRED simple fields labels to containers
+        // ////////////////////////////////////////////////////
+        VerticalLayoutContainer simpleRequiredFieldsContainer = new VerticalLayoutContainer();
+        VerticalLayoutContainer simpleOptionalFieldsContainer = new VerticalLayoutContainer();
+        if (isRequired("docEntryEntryUUID")) {
+            simpleRequiredFieldsContainer.add(idLabel, new VerticalLayoutData(1, -1));
+        } else {
+            simpleOptionalFieldsContainer.add(idLabel, new VerticalLayoutData(1, -1));
+        }
+        if (isRequired("docEntryUniqueID")) {
+            simpleRequiredFieldsContainer.add(uniqueIdLabel, new VerticalLayoutData(1, -1));
+        } else {
+            simpleOptionalFieldsContainer.add(uniqueIdLabel, new VerticalLayoutData(1, -1));
+        }
+        if (isRequired("docEntryPatientID")) {
+            simpleRequiredFieldsContainer.add(patientIdLabel, new VerticalLayoutData(1, -1));
+        } else {
+            simpleOptionalFieldsContainer.add(patientIdLabel, new VerticalLayoutData(1, -1));
+        }
+        if (isRequired("docEntryLanguageCode")) {
+            simpleRequiredFieldsContainer.add(languageCodeLabel, new VerticalLayoutData(1, -1));
+        } else {
+            simpleOptionalFieldsContainer.add(languageCodeLabel, new VerticalLayoutData(1, -1));
+        }
+        if (isRequired("docEntryMimeType")) {
+            simpleRequiredFieldsContainer.add(mimeTypeLabel, new VerticalLayoutData(1, -1));
+        } else {
+            simpleOptionalFieldsContainer.add(mimeTypeLabel, new VerticalLayoutData(1, -1));
+        }
+        if (isRequired("docEntryClassCode")) {
+            simpleRequiredFieldsContainer.add(classCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
+        } else {
+            simpleOptionalFieldsContainer.add(classCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
+        }
+        if (isRequired("docEntryTypeCode")) {
+            simpleRequiredFieldsContainer.add(typeCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
+        } else {
+            simpleOptionalFieldsContainer.add(typeCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
+        }
+        if (isRequired("docEntryFormatCode")) {
+            simpleRequiredFieldsContainer.add(formatCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
+        } else {
+            simpleOptionalFieldsContainer.add(formatCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
+        }
+        if (isRequired("docEntryHealthcareFacilityCode")) {
+            simpleRequiredFieldsContainer.add(healthcareFacilityTypeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
+        } else {
+            simpleOptionalFieldsContainer.add(healthcareFacilityTypeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
+        }
+        if (isRequired("docEntryPracticeSettingCode")) {
+            simpleRequiredFieldsContainer.add(practiceSettingCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
+        }else{
+            simpleOptionalFieldsContainer.add(practiceSettingCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
+        }
+
+		/* REQUIRED container added to a fieldset */
+        FieldSet generalRequiredFieldSet = new FieldSet();
+        generalRequiredFieldSet.setHeadingText("General");
+        generalRequiredFieldSet.setCollapsible(true);
+        generalRequiredFieldSet.add(simpleRequiredFieldsContainer);
+
+        // //////////////////////////////////////////////////////////
+        // --- Adding OPTIONAL simple fields labels to containers
+        // //////////////////////////////////////////////////////////
+        VerticalLayoutContainer filePropertiesFieldsRContainer = new VerticalLayoutContainer();
+        VerticalLayoutContainer filePropertiesFieldsOContainer = new VerticalLayoutContainer();
+        if (isRequired("docEntryHash")) {
+            filePropertiesFieldsRContainer.add(hashLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
+        }else{
+            filePropertiesFieldsOContainer.add(hashLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
+        }
+        if (isRequired("docEntrySize")) {
+            filePropertiesFieldsRContainer.add(size.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
+        }else {
+            filePropertiesFieldsOContainer.add(size.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
+        }
+
+        VerticalLayoutContainer repositoryAttributesFieldsRContainer = new VerticalLayoutContainer();
+        VerticalLayoutContainer repositoryAttributesFieldsOContainer = new VerticalLayoutContainer();
+        if (isRequired("docEntryURI")) {
+            repositoryAttributesFieldsRContainer.add(uriLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
+        }else{
+            repositoryAttributesFieldsOContainer.add(uriLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
+        }
+        if (isRequired("docEntryRepositoryUniqueID")) {
+            repositoryAttributesFieldsRContainer.add(repositoryLabel, new VerticalLayoutData(1, -1, new Margins(0, 5, 5, 5)));
+        }else{
+            repositoryAttributesFieldsOContainer.add(repositoryLabel, new VerticalLayoutData(1, -1, new Margins(0, 5, 5, 5)));
+        }
+
+		/* OPTIONAL container added to a fieldset */
+        filePropertiesRPanel = new ContentPanel(){
+            @Override
+            public void onCollapse(){
+                super.onCollapse();
+                updateFilePropertiesPanelHeader();
+            }
+            @Override
+            public void onExpand(){
+                super.onExpand();
+                this.setHeadingText("File properties");
+            }
+        };
+        filePropertiesRPanel.setCollapsible(true);
+        filePropertiesRPanel.setHeadingText("File properties");
+        filePropertiesRPanel.add(filePropertiesFieldsRContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
+
+        filePropertiesOPanel = new ContentPanel(){
+            @Override
+            public void onCollapse(){
+                super.onCollapse();
+                updateFilePropertiesPanelHeader();
+            }
+            @Override
+            public void onExpand(){
+                super.onExpand();
+                this.setHeadingText("File properties");
+            }
+        };
+        filePropertiesOPanel.setCollapsible(true);
+        filePropertiesOPanel.setHeadingText("File properties");
+        filePropertiesOPanel.add(filePropertiesFieldsOContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
+
+        repositoryAttributesRPanel = new ContentPanel(){
+            @Override
+            public void onCollapse(){
+                super.onCollapse();
+                updateRepositoryAttributesPanelHeader();
+            }
+            @Override
+            public void onExpand(){
+                super.onExpand();
+                this.setHeadingText("Repository attributes");
+            }
+        };
+        repositoryAttributesRPanel.setHeadingText("Repository attributes");
+        repositoryAttributesRPanel.setCollapsible(true);
+        repositoryAttributesRPanel.add(repositoryAttributesFieldsRContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
+
+        repositoryAttributesOPanel = new ContentPanel(){
+            @Override
+            public void onCollapse(){
+                super.onCollapse();
+                updateRepositoryAttributesPanelHeader();
+            }
+            @Override
+            public void onExpand(){
+                super.onExpand();
+                this.setHeadingText("Repository attributes");
+            }
+        };
+        repositoryAttributesOPanel.setHeadingText("Repository attributes");
+        repositoryAttributesOPanel.setCollapsible(true);
+        repositoryAttributesOPanel.add(repositoryAttributesFieldsOContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
+
+        // //////////////////////////////////////////////////////
+        // Other fields and options (init)
+        // //////////////////////////////////////////////////////
+
+
+		/* ********************************** */
+        /* coded terms options and fieldset */
+        /* ********************************** */
+
+		/* ****************************** */
+        /* name values options and fields */
+        /* ****************************** */
+        // Legal Authenticator (optional)
+        legalAuthenticator.setListMaxSize(1);
+
+        // Source Patient ID (optional)
+        sourcePatientId.setListMaxSize(1);
+
+        // Source Patient Info
+        sourcePatientInfo.setListMaxSize(10);
+
+        // Service Start Time (optional)
+        serviceStartTime.setListMaxSize(1);
+
+        // Service Stop Time (optional)
+        serviceStopTime.setListMaxSize(1);
+
+        // Size (optional)
+        size.disableToolbar();
+        size.setListMaxSize(1);
+
+        // Creation Time (required)
+        creationTime.disableToolbar();
+        creationTime.setListMaxSize(1);
+
+        // TITLES (Optional)
+        titlesGrid = new InternationalStringEditableGrid("Titles");
+        titles = new ListStoreEditor<InternationalString>(titlesGrid.getStore());
+
+
+        // COMMENTS (Optional)
+        commentsGrid = new InternationalStringEditableGrid("Comments");
+        comments = new ListStoreEditor<InternationalString>(commentsGrid.getStore());
+
+        // CONFIDENTIALITY CODE (Optional)
+        confidentialityCodesGrid = new CodedTermsEditableGridWidget("Confidentiality Codes", PredefinedCodes.CONFIDENTIALITY_CODES);
+        confidentialityCodes = new ListStoreEditor<CodedTerm>(confidentialityCodesGrid.getStore());
+
+        // CONFIDENTIALITY CODE (Optional)
+        eventCodesGrid = new CodedTermsEditableGridWidget("Event Codes", PredefinedCodes.EVENT_CODES);
+        eventCode = new ListStoreEditor<CodedTerm>(eventCodesGrid.getStore());
+
+        // /////////////////////////////////////////////////////////
+        // Adding and ordering fieldsets in REQUIRED panel
+        // /////////////////////////////////////////////////////////
+        /* simple required fields added to FramedPanel container */
+        requiredFields.add(generalRequiredFieldSet, new VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        requiredFields.add(creationTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+
+        // /////////////////////////////////////////////////////////
+        // Adding and ordering fieldsets in OPTIONAL fields panel
+        // /////////////////////////////////////////////////////////
+        /* simple optional fields added to FramedPanel container */
+        optionalFields.add(simpleOptionalFieldsContainer);
+        if (isRequired("docEntryHash") || isRequired("docEntrySize")){
+            requiredFields.add(filePropertiesRPanel, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (!(isRequired("docEntryHash") && isRequired("docEntrySize"))) {
+            optionalFields.add(filePropertiesOPanel, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntryURI") || isRequired("docEntryRepositoryUniqueID")) {
+            requiredFields.add(repositoryAttributesRPanel, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (!(isRequired("docEntryURI") && isRequired("docEntryRepositoryUniqueID"))) {
+            optionalFields.add(repositoryAttributesOPanel, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntryTitles")) {
+            requiredFields.add(titlesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(titlesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntryComments")) {
+            requiredFields.add(commentsGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(commentsGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntryAuthors")) {
+            requiredFields.add(authors.asWidget(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(authors.asWidget(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntryLegalAuthenticator")) {
+            requiredFields.add(legalAuthenticator.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(legalAuthenticator.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntrySourcePatientID")) {
+            requiredFields.add(sourcePatientId.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(sourcePatientId.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntrySourcePatientInfo")) {
+            requiredFields.add(sourcePatientInfo.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(sourcePatientInfo.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntryConfidentialityCodes")) {
+            requiredFields.add(confidentialityCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(confidentialityCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntryEventCodes")) {
+            requiredFields.add(eventCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(eventCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntryServiceStartTime")) {
+            requiredFields.add(serviceStartTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(serviceStartTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+        if (isRequired("docEntryServiceStopTime")) {
+            requiredFields.add(serviceStopTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }else{
+            optionalFields.add(serviceStopTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        }
+
+        SimpleContainer bottomToolbarContainer = new SimpleContainer();
+        bottomToolbarContainer.add(editorBottomToolbar);
+        optionalFields.add(bottomToolbarContainer);
+
+        // Adding required and optional fields panels to the main container of editor view
+        container.add(editorTopToolbar, new VerticalLayoutData(-1, -1));
+        container.add(new HtmlLayoutContainer("<h2>Document Entry Editor</h2>"));
+        container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"));
+        container.add(fp1, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"));
+        container.add(fp2, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+
+        collapseAll();
+
+        setWidgetsInfo();
+
+    }
+
+    private boolean isRequired(String attributeId) {
+        return "R".equals(selectedStandardProperties.get(attributeId));
     }
 }

@@ -34,6 +34,7 @@ import gov.nist.hit.ds.docentryeditor.client.editor.properties.XdsAssociationPro
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
+import gov.nist.hit.ds.docentryeditor.client.widgets.StandardSelector;
 import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadDialog;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
@@ -74,6 +75,8 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
 
     @Inject
     private FileUploadDialog fileUploadDialog;
+    @Inject
+    private StandardSelector stdSelector;
     private SimpleComboBox<String> filterComboBox;
 
     @Override
@@ -84,14 +87,20 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
     @Override
     protected Widget buildUI() {
         ContentPanel cp = new ContentPanel();
-        cp.setHeadingText("Submission");
+        cp.setHeadingText("Standard");
         cp.setHeaderVisible(true);
         cp.setBorders(false);
 
-        submissionTree = new Tree<SubmissionMenuData, SubmissionMenuData>(submissionTreeStore, new SubmissionMenuDataProperties.SubmissionValueProvider());
-        submissionTree.setCell(new SubmissionTreeCellRenderer());
+        ContentPanel submissionPanel = new ContentPanel();
+        submissionPanel.setHeadingText("Submission");
+        submissionPanel.setBorders(false);
+        submissionPanel.setBodyBorder(false);
+        submissionPanel.setCollapsible(false);
 
         VerticalLayoutContainer vlc = new VerticalLayoutContainer();
+
+        submissionTree = new Tree<SubmissionMenuData, SubmissionMenuData>(submissionTreeStore, new SubmissionMenuDataProperties.SubmissionValueProvider());
+        submissionTree.setCell(new SubmissionTreeCellRenderer());
 
         uploadFileButton.setIcon(AppImages.INSTANCE.loadFile12px());
         uploadFileButton.setToolTip(ToolTipResources.INSTANCE.getUploadFileTooltip());
@@ -121,11 +130,16 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         toolbar.add(clearDocEntriesButton);
         toolbar.add(saveDocEntriesButton);
         toolbar.add(submissionHelpButton);
-        vlc.add(toolbar);
+
         getPresenter().initSubmissionSet();
         submissionTree.setIconProvider(new XdsSubmissionTreeNodeIconProvider());
         submissionTree.expandAll();
         submissionTree.setAutoExpand(true);
+
+        VerticalLayoutContainer submissionWidgetsContainer = new VerticalLayoutContainer();
+        submissionWidgetsContainer.add(toolbar);
+        submissionWidgetsContainer.add(submissionTree);
+        submissionPanel.add(submissionWidgetsContainer);
 
         // Association
         associationListStore=new ListStore<XdsAssociation>(XdsAssociationProperties.PROPS.key());
@@ -170,7 +184,8 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         associationWidgetsContainer.add(filterFL, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
         associationPanel.add(associationWidgetsContainer);
 
-        vlc.add(submissionTree, new VerticalLayoutContainer.VerticalLayoutData(-1, 0.6));
+        vlc.add(stdSelector, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+        vlc.add(submissionPanel, new VerticalLayoutContainer.VerticalLayoutData(-1, 0.6));
         vlc.add(associationPanel, new VerticalLayoutContainer.VerticalLayoutData(-1, 0.4));
 
         cp.setWidget(vlc);

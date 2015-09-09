@@ -16,6 +16,8 @@ import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
 import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
 import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorRequestFactory;
+import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServices;
+import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServicesAsync;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import javax.inject.Inject;

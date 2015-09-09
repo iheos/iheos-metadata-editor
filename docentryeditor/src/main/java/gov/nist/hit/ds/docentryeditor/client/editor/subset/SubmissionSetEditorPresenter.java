@@ -2,14 +2,22 @@ package gov.nist.hit.ds.docentryeditor.client.editor.subset;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
 import gov.nist.hit.ds.docentryeditor.client.event.ChangePlaceEvent;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.event.SelectedStandardChangedEvent;
 import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsSubmissionSetEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
+import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServices;
+import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServicesAsync;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is the presenter that handles all the actions and events related to the Submission Set Editor view.
@@ -17,7 +25,11 @@ import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
  */
 public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSetEditorView> {
     protected XdsSubmissionSet model=new XdsSubmissionSet();
+    Map<String, String> map = new HashMap<String,String>();
     private SubmissionSetEditorDriver editorDriver = GWT.create(SubmissionSetEditorDriver.class);
+
+    // RPC services declaration
+    private final StandardPropertiesServicesAsync stdPropertiesServices = GWT.create(StandardPropertiesServices.class);
 
     /**
      * Method that initializes the editor and the request factory on submission set activity start.
@@ -27,6 +39,17 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
         bind();
         initDriver(model);
         // init request factory w/ requestFactory.initialize(eventBus)
+        stdPropertiesServices.getStandardProperties("xds", new AsyncCallback<Map<String, String>>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                Window.alert(throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Map<String, String> stringStringMap) {
+                map = stringStringMap;
+            }
+        });
     }
 
     /**
@@ -49,7 +72,7 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
      */
     private void bind() {
         // this event provides the presenter a submission set to edit and triggers its display in the submission set editor view.
-        ((MetadataEditorEventBus) getEventBus()).addStartEditXdsSubmissionSetHandler(new StartEditXdsSubmissionSetEvent.StartEditXdsSubmissionSetHandler(){
+        ((MetadataEditorEventBus) getEventBus()).addStartEditXdsSubmissionSetHandler(new StartEditXdsSubmissionSetEvent.StartEditXdsSubmissionSetHandler() {
 
             @Override
             public void onStartEdit(StartEditXdsSubmissionSetEvent event) {
@@ -65,7 +88,13 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
                 // auto save on Place change.
                 logger.info("Submission set metadata automatically saved on Place change.");
                 final XdsSubmissionSet tmp = editorDriver.flush();
-                model=tmp;
+                model = tmp;
+            }
+        });
+        ((MetadataEditorEventBus) getEventBus()).addSelectedStandardChangedEventHandler(new SelectedStandardChangedEvent.SelectedStandardChangedEventHandler() {
+            @Override
+            public void onSelectedStandardChange(SelectedStandardChangedEvent event) {
+                view.updateEditorUI(event.getSelectedStandardProperties());
             }
         });
     }
@@ -111,6 +140,10 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
      */
     public XdsSubmissionSet getModel(){
         return model;
+    }
+
+    public Map<String,String> getStdProp(){
+        return map;
     }
 
     /**
