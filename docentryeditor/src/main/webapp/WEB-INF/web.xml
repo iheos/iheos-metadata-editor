@@ -28,19 +28,27 @@
 			<param-value>WEB-INF/classes/symbolMaps/</param-value>
 		</init-param>
 	</servlet>
-    <servlet>
-        <servlet-name>xdsParserServices</servlet-name>
-        <servlet-class>gov.nist.hit.ds.docentryeditor.server.XdsMetadataParserServicesImpl</servlet-class>
-    </servlet>
+	<servlet>
+		<servlet-name>xdsParserServices</servlet-name>
+		<servlet-class>gov.nist.hit.ds.docentryeditor.server.XdsMetadataParserServicesImpl</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>stdpropServices</servlet-name>
+		<servlet-class>gov.nist.hit.ds.docentryeditor.server.StandardPropertiesServiceImpl</servlet-class>
+	</servlet>
 
     <servlet-mapping>
 		<servlet-name>requestFactoryServlet</servlet-name>
 		<url-pattern>/gwtRequest</url-pattern>
 	</servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>xdsParserServices</servlet-name>
-        <url-pattern>/xdseditor/xdsparser</url-pattern>
-    </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>xdsParserServices</servlet-name>
+		<url-pattern>/xdseditor/xdsparser</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>stdpropServices</servlet-name>
+		<url-pattern>/xdseditor/stdprop</url-pattern>
+	</servlet-mapping>
 
     <!-- Default page to serve -->
 	<welcome-file-list>

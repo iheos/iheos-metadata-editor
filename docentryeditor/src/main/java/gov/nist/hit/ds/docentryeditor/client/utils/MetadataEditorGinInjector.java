@@ -16,6 +16,7 @@ import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
 import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomeActivity;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.*;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
+import gov.nist.hit.ds.docentryeditor.client.widgets.StandardSelector;
 import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadMVP;
 
 /**
@@ -50,6 +51,7 @@ public interface MetadataEditorGinInjector extends Ginjector {
     FileUploadMVP getFileUploadMVP();
     AuthorsListEditorWidget getAuthorsListEditorWidget();
     EditorToolbar getToolbar();
+    StandardSelector getStandardSelector();
 
     // ------------------------------------------
     // ~ ACTIVITIES

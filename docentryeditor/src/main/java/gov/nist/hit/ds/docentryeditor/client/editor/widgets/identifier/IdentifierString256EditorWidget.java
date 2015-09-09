@@ -62,10 +62,9 @@ public class IdentifierString256EditorWidget extends Composite implements Editor
      * input anything in field which does not allow blank.
      *
      * @param isValueBlank  true to allow blank to the value field, false otherwise
-     * @param isTypeBlank true to allow blank to the idType field, false otherwise
      */
-    public void setAllowBlanks(boolean isValueBlank, boolean isTypeBlank) {
+    public void setAllowBlanks(boolean isValueBlank/*, boolean isTypeBlank*/) {
         value.setAllowBlank(isValueBlank);
-        idType.setAllowBlank(isTypeBlank);
+//        idType.setAllowBlank(isTypeBlank);
     }
 }

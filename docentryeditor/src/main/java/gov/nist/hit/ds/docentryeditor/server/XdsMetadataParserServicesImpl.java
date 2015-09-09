@@ -355,15 +355,25 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         metadataTemp = new Metadata();
         // Submission Set
         XdsSubmissionSet subSet=metadata.getSubmissionSet();
-        OMElement regPackage= metadataTemp.mkSubmissionSet(subSet.getEntryUUID().toString());
-        metadataTemp.addSubmissionSetPatientId(regPackage, subSet.getPatientId().getValue().toString());
-        metadataTemp.addSubmissionSetUniqueId(regPackage, subSet.getUniqueId().getValue().toString());
-        metadataTemp.addSlot(regPackage, "submissionTime", formatDate(subSet.getSubmissionTime().getValues().get(0).getDtm()));
-        metadataTemp.addExtClassification(regPackage, MetadataSupport.XDSSubmissionSet_contentTypeCode_uuid,
-                subSet.getContentTypeCode().getCodingScheme().toString(),
-                subSet.getContentTypeCode().getDisplayName().toString(),
-                subSet.getContentTypeCode().getCode().toString());
-        metadataTemp.addSourceId(regPackage, subSet.getSourceId().getValue().toString());
+        OMElement regPackage = metadataTemp.mkSubmissionSet(subSet.getEntryUUID().toString());
+        if (subSet.getPatientId()!=null && subSet.getPatientId().getValue()!=null) {
+            metadataTemp.addSubmissionSetPatientId(regPackage, subSet.getPatientId().getValue().toString());
+        }
+        if (subSet.getUniqueId()!=null && subSet.getUniqueId().getValue()!=null) {
+            metadataTemp.addSubmissionSetUniqueId(regPackage, subSet.getUniqueId().getValue().toString());
+        }
+        if (!subSet.getSubmissionTime().getValues().isEmpty()) {
+            metadataTemp.addSlot(regPackage, "submissionTime", formatDate(subSet.getSubmissionTime().getValues().get(0).getDtm()));
+        }
+        if (subSet.getContentTypeCode()!=null && subSet.getContentTypeCode().getCode()!=null && subSet.getContentTypeCode().getCodingScheme()!=null && subSet.getContentTypeCode().getDisplayName()!=null) {
+            metadataTemp.addExtClassification(regPackage, MetadataSupport.XDSSubmissionSet_contentTypeCode_uuid,
+                    subSet.getContentTypeCode().getCodingScheme().toString(),
+                    subSet.getContentTypeCode().getDisplayName().toString(),
+                    subSet.getContentTypeCode().getCode().toString());
+        }
+        if (subSet.getSourceId().getValue()!=null) {
+            metadataTemp.addSourceId(regPackage, subSet.getSourceId().getValue().toString());
+        }
         if (subSet.getHomeCommunityId()!=null && !subSet.getHomeCommunityId().toString().isEmpty()){
             metadataTemp.setHome(regPackage, subSet.getHomeCommunityId().toString());
         }
@@ -388,10 +398,20 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         }
         // DocEntries
         for (XdsDocumentEntry documentEntry : metadata.getDocumentEntries()) {
-            OMElement extObj = metadataTemp.mkExtrinsicObject(documentEntry.getId().toString(), documentEntry.getMimeType().toString());
-            metadataTemp.addDocumentEntryPatientId(extObj, documentEntry.getPatientID().getValue().toString());
-            metadataTemp.addDocumentEntryUniqueId(extObj, documentEntry.getUniqueId().getValue().toString());
-            metadataTemp.addSlot(extObj, "languageCode", documentEntry.getLanguageCode().toString());
+            String mimeType=new String();
+            if (documentEntry.getMimeType()!=null){
+                mimeType=documentEntry.getMimeType().toString();
+            }
+            OMElement extObj = metadataTemp.mkExtrinsicObject(documentEntry.getId().toString(), mimeType);
+            if (documentEntry.getPatientID()!=null) {
+                metadataTemp.addDocumentEntryPatientId(extObj, documentEntry.getPatientID().getValue().toString());
+            }
+            if (documentEntry.getUniqueId()!=null && documentEntry.getUniqueId().getValue()!=null) {
+                metadataTemp.addDocumentEntryUniqueId(extObj, documentEntry.getUniqueId().getValue().toString());
+            }
+            if (documentEntry.getLanguageCode()!=null) {
+                metadataTemp.addSlot(extObj, "languageCode", documentEntry.getLanguageCode().toString());
+            }
             metadataTemp.addExtClassification(extObj, MetadataSupport.XDSDocumentEntry_classCode_uuid, documentEntry.getClassCode().getCodingScheme().toString(), documentEntry.getClassCode().getDisplayName().toString(), documentEntry.getClassCode().getCode().toString());
             metadataTemp.addExtClassification(extObj, MetadataSupport.XDSDocumentEntry_formatCode_uuid, documentEntry.getFormatCode().getCodingScheme().toString(), documentEntry.getFormatCode().getDisplayName().toString(), documentEntry.getFormatCode().getCode().toString());
             metadataTemp.addExtClassification(extObj, MetadataSupport.XDSDocumentEntry_hcftCode_uuid, documentEntry.getHealthcareFacilityType().getCodingScheme().toString(), documentEntry.getHealthcareFacilityType().getDisplayName().toString(), documentEntry.getHealthcareFacilityType().getCode().toString());

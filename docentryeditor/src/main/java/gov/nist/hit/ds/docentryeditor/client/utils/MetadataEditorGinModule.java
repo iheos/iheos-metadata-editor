@@ -10,6 +10,7 @@ import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer.MetadataEditorAppDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
+import gov.nist.hit.ds.docentryeditor.client.widgets.StandardSelector;
 
 import javax.inject.Inject;
 
@@ -35,6 +36,7 @@ public class MetadataEditorGinModule extends AbstractGinModule {
 
         bind(ActivityDisplayer.class).to(MetadataEditorAppDisplayer.class).in(Singleton.class);
         bind(MetadataEditorAppView.class).in(Singleton.class);
+        bind(StandardSelector.class).in(Singleton.class);
     }
 
     /**

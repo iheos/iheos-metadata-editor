@@ -19,11 +19,19 @@
         <!-- servlet path -->
         <servlet-class>gov.nist.hit.ds.docentryeditor.server.UploadFileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>stdpropServices</servlet-name>
+        <servlet-class>gov.nist.hit.ds.docentryeditor.server.StandardPropertiesServiceImpl</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>uploadServlet</servlet-name>
         <!-- Ce qu'on a mis dans la vue à uploadForm.setAction -->
         <url-pattern>/ServletUpload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>stdpropServices</servlet-name>
+        <url-pattern>/xdseditor/stdprop</url-pattern>
     </servlet-mapping>
 
     <servlet>
