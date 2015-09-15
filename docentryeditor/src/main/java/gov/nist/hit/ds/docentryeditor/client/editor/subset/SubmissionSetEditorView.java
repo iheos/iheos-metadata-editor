@@ -282,7 +282,7 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
 
     public void updateEditorUI(Map<String, String> selectedStandardProperties) {
         this.selectedStandardProperties = selectedStandardProperties;
-        mainContainer.clear();
+        container.clear();
         requiredFields.clear();
         optionalFields.clear();
 
