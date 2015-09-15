@@ -348,7 +348,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // class code
         classCode.setEmptyText("Select a class...");
         classCode.clear();
-        classCode.setAllowBlank(isRequired("docEntryClassCode"));
+        classCode.setAllowBlank(!isRequired("docEntryClassCode"));
         // comments
         commentsGrid.setToolbarHelpButtonTooltip(ToolTipResources.INSTANCE.getDocEntryCommentsTooltipConfig());
         // confidentiality codes
@@ -358,23 +358,23 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // format code
         formatCode.setEmptyText("Select a format...");
         formatCode.clear();
-        formatCode.setAllowBlank(isRequired("docEntryFormatCode"));
+        formatCode.setAllowBlank(!isRequired("docEntryFormatCode"));
         // hash code
         hash.setEmptyText("ex: Hex456");
         hash.setToolTipConfig(new ToolTipConfig("Hash is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
-        hash.setAllowBlank(isRequired("docEntryHash"));
+        hash.setAllowBlank(!isRequired("docEntryHash"));
         hash.addValidator(ClientFormatValidationResource.INSTANCE.getHashCodeRegExpValidator());
         // healthcare facility
         healthcareFacilityType.setEmptyText("Select an healthcare facility...");
         healthcareFacilityType.clear();
-        healthcareFacilityType.setAllowBlank(isRequired("docEntryHealthcareFacilityCode"));
+        healthcareFacilityType.setAllowBlank(!isRequired("docEntryHealthcareFacilityCode"));
         // entry uuid
         id.setEmptyText("ex: 123456789");
         id.setToolTipConfig(new ToolTipConfig("ID is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
-        id.setAllowBlank(isRequired("docEntryEntryUUID"));
+        id.setAllowBlank(!isRequired("docEntryEntryUUID"));
         id.addValidator(new UuidFormatClientValidator());
         // language code
-        languageCode.setAllowBlank(isRequired("docEntryLanguageCode"));
+        languageCode.setAllowBlank(!isRequired("docEntryLanguageCode"));
         languageCode.setEmptyText("Select a language...");
         languageCode.setToolTipConfig(new ToolTipConfig("LanguageCode from RFC3066", "Language code format is \"[a-z](2)-[A-Z](2)\""));
         // legal authenticator
@@ -383,22 +383,22 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         legalAuthenticator.addFieldValidator(ClientFormatValidationResource.INSTANCE.getLegalAuthenticatorRegExpValidator());
         legalAuthenticator.setToolbarHelpButtonTooltip(ToolTipResources.INSTANCE.getLegalAuthenticatorToolTipConfig());
         // mime type
-        mimeType.setAllowBlank(isRequired("docEntryMimeType"));
+        mimeType.setAllowBlank(!isRequired("docEntryMimeType"));
         mimeType.setEmptyText("Select a mime type...");
         mimeType.setToolTipConfig(new ToolTipConfig("Mime Type is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
         // patient id
         patientID.setEmptyTexts("ex: 76cc^^^&1.3.6367.2005.3.7&ISO", "ex: urn:uuid:6b5aea1a-625s-5631-v4se-96a0a7b38446");
         patientID.setToolTipConfigs(ToolTipResources.INSTANCE.getPatientIdTooltipConfig());
-        patientID.setAllowBlanks(isRequired("docEntryPatientID"));
+        patientID.setAllowBlanks(!isRequired("docEntryPatientID"));
         patientID.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getPatientIDRegExpValidator());
         // pratice setting code
         practiceSettingCode.setEmptyText("Select a practice setting...");
         practiceSettingCode.clear();
-        practiceSettingCode.setAllowBlank(isRequired("docEntryPracticeSettingCode"));
+        practiceSettingCode.setAllowBlank(!isRequired("docEntryPracticeSettingCode"));
         // repository unique id
         repoUId.setEmptyText("ex: 1.2.7.0.3.2.37768.2007.2.2");
         repoUId.setToolTipConfig(ToolTipResources.INSTANCE.getRepoUniqueIdToolTipConfig());
-        repoUId.setAllowBlank(isRequired("docEntryRepositoryUniqueID"));
+        repoUId.setAllowBlank(!isRequired("docEntryRepositoryUniqueID"));
         repoUId.addOIDValidator(ClientFormatValidationResource.INSTANCE.getRepoOIDValidation());
         // service start time
         serviceStartTime.setToolbarHelpButtonTooltip(ToolTipResources.INSTANCE.getServiceStartTimeTooltipConfig());
@@ -416,14 +416,14 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // type code
         typeCode.setEmptyText("Select a type...");
         typeCode.clear();
-        typeCode.setAllowBlank(isRequired("docEntryTypeCode"));
+        typeCode.setAllowBlank(!isRequired("docEntryTypeCode"));
         // unique id
-        uniqueId.setAllowBlanks(isRequired("docEntryUniqueID"));
+        uniqueId.setAllowBlanks(!isRequired("docEntryUniqueID"));
         uniqueId.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getUniqueIdRegExpValidator());
         uniqueId.setEmptyTexts("ex: 2008.8.1.35447^5846", "ex: 2008.8.1.35447");
         uniqueId.setToolTipConfigs(ToolTipResources.INSTANCE.getUniqueIdTooltipConfig());
         // uri
-        uri.setAllowBlank(isRequired("docEntryURI"));
+        uri.setAllowBlank(!isRequired("docEntryURI"));
         uri.setEmptyText("ex: uriO");
         uri.setToolTipConfig(new ToolTipConfig("URI is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
         uri.addValidator(ClientFormatValidationResource.INSTANCE.getUriRegExpValidator());
