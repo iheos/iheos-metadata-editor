@@ -28,6 +28,7 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
     Map<String, String> map = new HashMap<String,String>();
     private SubmissionSetEditorDriver editorDriver = GWT.create(SubmissionSetEditorDriver.class);
     private StandardPropertiesServicesAsync stdPropertiesServices= GWT.create(StandardPropertiesServices.class);
+    private String standard;
 
     /**
      * Method that initializes the editor and the request factory on submission set activity start.
@@ -43,7 +44,7 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
      * Method that initializes the editor with a document entry object.
      * @param model
      */
-    private void initDriver(XdsSubmissionSet model) {
+    public void initDriver(XdsSubmissionSet model) {
         this.model=model;
         editorDriver.initialize(view);
         getView().authors.getAuthorWidget().initEditorDriver();
@@ -81,7 +82,13 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
         ((MetadataEditorEventBus) getEventBus()).addSelectedStandardChangedEventHandler(new SelectedStandardChangedEvent.SelectedStandardChangedEventHandler() {
             @Override
             public void onSelectedStandardChange(SelectedStandardChangedEvent event) {
-                view.updateEditorUI(event.getSelectedStandardProperties());
+                if (event.getSelectedStandard()!=null){
+                    standard=event.getSelectedStandard();
+                    retrieveDefaultStandardProperties();
+                }
+                if (event.getSelectedStandardProperties()!=null) {
+                    view.updateEditorUI(event.getSelectedStandardProperties());
+                }
             }
         });
     }
@@ -142,7 +149,10 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
     }
 
     public void retrieveDefaultStandardProperties() {
-        stdPropertiesServices.getStandardProperties("XDS.b-DS", new AsyncCallback<Map<String, String>>() {
+        if (standard==null){
+            standard="XDS.b-DS";
+        }
+        stdPropertiesServices.getStandardProperties(standard, new AsyncCallback<Map<String, String>>() {
             @Override
             public void onFailure(Throwable caught) {
                 logger.warning(caught.getMessage());

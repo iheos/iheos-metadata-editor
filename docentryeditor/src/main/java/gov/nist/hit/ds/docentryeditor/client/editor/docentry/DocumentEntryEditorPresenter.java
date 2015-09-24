@@ -51,7 +51,7 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
      * Method that initializes the editor with a document entry object.
      * @param model instance of XdsDocumentEntry to display in the editor.
      */
-    private void initDriver(XdsDocumentEntry model) {
+    public void initDriver(XdsDocumentEntry model) {
         this.model = model;
         editorDriver.initialize(view);
         getView().authors.getAuthorWidget().initEditorDriver();
@@ -90,7 +90,9 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
         ((MetadataEditorEventBus) getEventBus()).addSelectedStandardChangedEventHandler(new SelectedStandardChangedEvent.SelectedStandardChangedEventHandler() {
             @Override
             public void onSelectedStandardChange(SelectedStandardChangedEvent event) {
-                view.updateEditorUI(event.getSelectedStandardProperties());
+                if (event.getSelectedStandardProperties()!=null) {
+                    view.updateEditorUI(event.getSelectedStandardProperties());
+                }
             }
         });
     }

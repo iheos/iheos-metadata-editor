@@ -806,9 +806,9 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         form.setScrollMode(ScrollMode.AUTO);
         form.add(container);
 
-
         form.forceLayout();
 
+        presenter.initDriver(presenter.getModel());
     }
 
     private boolean isRequired(String attributeId) {

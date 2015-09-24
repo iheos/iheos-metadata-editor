@@ -20,7 +20,9 @@ import com.sencha.gxt.widget.core.client.info.Info;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
+import gov.nist.hit.ds.docentryeditor.client.widgets.StandardSelector;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,11 +33,12 @@ public class FileUploadView extends AbstractView<FileUploadPresenter> {
     private TextButton btnSubmit;
     private TextButton btnCancel;
 
+    private StandardSelector selector=new StandardSelector();
     private FileUploadField file;
 
     private static final int FORM_MARGIN = 5;
     private static final int UPLOADER_WIDTH=500;
-    private static final int UPLOADER_HEIGHT=120;
+    private static final int UPLOADER_HEIGHT=150;
 
     @Override
     public Widget asWidget() {
@@ -96,6 +99,7 @@ public class FileUploadView extends AbstractView<FileUploadPresenter> {
         HtmlLayoutContainer uploadGuidance=new HtmlLayoutContainer(ToolTipResources.INSTANCE.getUploadFileTooltip());
         EditorFieldLabel fileField=new EditorFieldLabel(file, "Metadata file (*.xml)");
         vcontainer.add(uploadGuidance,new VerticalLayoutData(1,-1,new Margins(0,0, INSTRUCTIONS_BOTTOM_MARGIN,0)));
+        vcontainer.add(new EditorFieldLabel(selector,"Standard"), new VerticalLayoutData(1,-1,new Margins(0,0,0,0)));
         vcontainer.add(fileField, new VerticalLayoutData(1,-1,new Margins(0,0,0,0)));
 
         btnSubmit = new TextButton("Open");
@@ -122,10 +126,9 @@ public class FileUploadView extends AbstractView<FileUploadPresenter> {
 
         });
         form.addSubmitCompleteHandler(new SubmitCompleteHandler() {
-
             @Override
             public void onSubmitComplete(SubmitCompleteEvent event) {
-                getPresenter().fileUploaded(event.getResults());
+                getPresenter().fileUploaded(event.getResults(),selector.getSelectedStandard());
             }
         });
     }

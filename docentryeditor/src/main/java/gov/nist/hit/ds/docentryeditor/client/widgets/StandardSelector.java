@@ -9,6 +9,7 @@ import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.event.SelectedStandardChangedEvent;
 import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServices;
 import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServicesAsync;
 
@@ -71,8 +72,12 @@ public class StandardSelector extends SimpleComboBox<String> {
         this.add("XDR-minimum");
         this.add("XDM");
 //        this.add("XDM-minimum");
-        selectedStandard="XDS.b-DS";
-        stdPropertiesServices.getStandardProperties("XDS.b-DS", new AsyncCallback<Map<String, String>>() {
+        retrieveProperties("XDS.b-DS");
+    }
+
+    private void retrieveProperties(String s) {
+        selectedStandard=s;
+        stdPropertiesServices.getStandardProperties(s, new AsyncCallback<Map<String, String>>() {
             @Override
             public void onFailure(Throwable throwable) {
                 LOGGER.warning(throwable.getMessage());
@@ -91,5 +96,11 @@ public class StandardSelector extends SimpleComboBox<String> {
 
     public Map<String,String> getStdPropertiesMap(){
         return stdPropertiesMap;
+    }
+
+    public void setStandard(String standard) {
+        this.setValue(standard);
+        this.selectedStandard = standard;
+        retrieveProperties(standard);
     }
 }
