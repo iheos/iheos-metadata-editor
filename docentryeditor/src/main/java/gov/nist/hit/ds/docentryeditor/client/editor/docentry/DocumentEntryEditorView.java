@@ -135,7 +135,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
 
     @Inject
     private StandardSelector selector;
-    private Map<String, String> selectedStandardProperties;
+    Map<String, String> selectedStandardProperties;
 
     /**
      * This is the abstract method implementation that builds a collection of objects
@@ -161,16 +161,15 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
      */
     @Override
     protected Widget buildUI() {
-        container = new VerticalLayoutContainer();
-        container.getElement().setMargins(10);
+        container=new VerticalLayoutContainer();
         container.setBorders(false);
+        selectedStandardProperties=selector.getStdPropertiesMap();
+        if (selectedStandardProperties==null){
+            presenter.retrieveDefaultStandardProperties();
+        }else {
+            updateEditorUI(selectedStandardProperties);
+        }
 
-        updateEditorUI(selector.getStdPropertiesMap());
-
-        form.setScrollMode(ScrollMode.AUTO);
-        form.add(container);
-
-        form.forceLayout();
 
         return form;
     }
@@ -267,6 +266,14 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
             s += ", Size: " + size.getStore().get(0).toString();
             filePropertiesOPanel.setHeadingText("File properties (" + s + ")");
         }
+        if (filePropertiesRPanel !=null) {
+            String s = new String();
+            if (!hash.getField().getText().isEmpty()) {
+                s += "Hash: " + hash.getField().getText();
+            }
+            s += ", Size: " + size.getStore().get(0).toString();
+            filePropertiesRPanel.setHeadingText("File properties (" + s + ")");
+        }
     }
 
     /**
@@ -284,6 +291,18 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
                 s += "Repository Unique ID: " + repoUId.getText();
             }
             repositoryAttributesOPanel.setHeadingText("Repository attributes (" + s + ")");
+        }
+        if (repositoryAttributesRPanel !=null) {
+            String s = new String();
+            if (!uri.getField().getText().isEmpty()) {
+                s += "URI: " + uri.getField().getText();
+                if (!repoUId.getText().isEmpty()) {
+                    s += ", Repository Unique ID: " + repoUId.getText();
+                }
+            } else if (!repoUId.getText().isEmpty()) {
+                s += "Repository Unique ID: " + repoUId.getText();
+            }
+            repositoryAttributesRPanel.setHeadingText("Repository attributes (" + s + ")");
         }
     }
 
@@ -314,8 +333,14 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         if(filePropertiesOPanel !=null) {
             filePropertiesOPanel.collapse();
         }
+        if(filePropertiesRPanel !=null) {
+            filePropertiesRPanel.collapse();
+        }
         if (repositoryAttributesOPanel !=null){
             repositoryAttributesOPanel.collapse();
+        }
+        if (repositoryAttributesRPanel !=null){
+            repositoryAttributesRPanel.collapse();
         }
         updateFilePropertiesPanelHeader();
         updateRepositoryAttributesPanelHeader();
@@ -431,9 +456,11 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
 
     public void updateEditorUI(Map<String, String> selectedStandardProperties) {
         this.selectedStandardProperties = selectedStandardProperties;
-        container.clear();
         requiredFields.clear();
         optionalFields.clear();
+        container.clear();
+
+        container.setBorders(false);
 
         SimpleContainer fp1 = new SimpleContainer();
         SimpleContainer fp2 = new SimpleContainer();
@@ -765,20 +792,26 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         optionalFields.add(bottomToolbarContainer);
 
         // Adding required and optional fields panels to the main container of editor view
-        container.add(editorTopToolbar, new VerticalLayoutData(-1, -1));
-        container.add(new HtmlLayoutContainer("<h2>Document Entry Editor</h2>"));
-        container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"));
-        container.add(fp1, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"));
-        container.add(fp2, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
+        container.add(editorTopToolbar, new VerticalLayoutData(-1, -1,new Margins(FIELD_BOTTOM_MARGIN)));
+        container.add(new HtmlLayoutContainer("<h2>Document Entry Editor</h2>"),new VerticalLayoutData(-1,-1,new Margins(0,0,0,FIELD_BOTTOM_MARGIN)));
+        container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"),new VerticalLayoutData(-1,-1,new Margins(0,0,0,FIELD_BOTTOM_MARGIN)));
+        container.add(fp1, new VerticalLayoutData(1, -1, new Margins(5,20,20,10)));
+        container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"), new VerticalLayoutData(1, -1, new Margins(20,0,0,FIELD_BOTTOM_MARGIN)));
+        container.add(fp2, new VerticalLayoutData(1, -1, new Margins(5,20,0,10)));
 
         collapseAll();
 
         setWidgetsInfo();
 
+        form.setScrollMode(ScrollMode.AUTO);
+        form.add(container);
+
+
+        form.forceLayout();
+
     }
 
     private boolean isRequired(String attributeId) {
-        return "R".equals(selectedStandardProperties.get(attributeId));
+        return "R".equals(selector.getStdPropertiesMap().get(attributeId));
     }
 }

@@ -43,9 +43,9 @@ public class ClientTestHelper {
         // ---- CLASS CODE
         docentry.setClassCode(new CodedTerm("H25l", "test", "Connect-a-thon contentTypeCodes"));
         // ---- CONFIDENTIALITY CODES
-        docentry.getConfidentialityCodes().add(new CodedTerm("1.3.6.1.4.1.21367.2006.7.102", "Clinical-Staff", "urn:uuid:f4f85eac-e6cb-4883-b524-f2705394840f"));
-        docentry.getConfidentialityCodes().add(new CodedTerm("1.3.6.1.4.1.21367.2006.7.103", "Clinical-Staff-Allowed", "urn:uuid:f4f85eac-e6cb-4883-b524-f2705394840a"));
-        docentry.getConfidentialityCodes().add(new CodedTerm("1.3.6.1.4.1.21367.2006.7.104", "Clinical-Staff-Priority", "urn:uuid:f4f85eac-e6cb-4883-b524-f2705394840b"));
+        docentry.getConfidentialityCodes().add(new CodedTerm("1.3.6.1.4.1.21367.2006.7.102", "Clinical-Staff", "Connect-a-thon confidentialityCodes 1"));
+        docentry.getConfidentialityCodes().add(new CodedTerm("1.3.6.1.4.1.21367.2006.7.103", "Clinical-Staff-Allowed", "Connect-a-thon confidentialityCodes 2"));
+        docentry.getConfidentialityCodes().add(new CodedTerm("1.3.6.1.4.1.21367.2006.7.104", "Clinical-Staff-Priority", "Connect-a-thon confidentialityCodes 3"));
         // ---- CREATION TIME
         NameValueDTM creation = new NameValueDTM();
         creation.setName(new String256("creationTime"));
@@ -53,12 +53,12 @@ public class ClientTestHelper {
         creation.getValues().add(new DTM(DateTimeFormat.getFormat(DATE_TIME_FORMAT).parse("20131126214203")));
         docentry.setCreationTime(creation);
         // ---- EVENT CODES
-        docentry.getEventCode().add(new CodedTerm("Op-1", "Operations", "urn:uuid:f4f85eac-e6cb-4883-b524-f2705395555d"));
-        docentry.getEventCode().add(new CodedTerm("HEv-1.3.5", "Health Events", "urn:uuid:f4f85eac-e6cb-4883-b524-f2705395555e"));
+        docentry.getEventCode().add(new CodedTerm("Op-1", "Operations", "Connect-a-thon eventCodes 1"));
+        docentry.getEventCode().add(new CodedTerm("HEv-1.3.5", "Health Events", "Connect-a-thon eventCodes 2"));
         // ---- FORMAT CODE
-        docentry.setFormatCode(new CodedTerm("CDAR2/IHE 1.0", "CDAR2/IHE 1.0", "urn:uuid:a09d5840-386c-46f2-b5ad-9c3699a4309d"));
+        docentry.setFormatCode(new CodedTerm("CDAR2/IHE 1.0", "CDAR2/IHE 1.0", "Connect-a-thon formatCodes"));
         // ---- HEALTHCARE FACILITY TYPE
-        docentry.setHealthcareFacilityType(new CodedTerm("Outpatient", "Outpatient", "urn:uuid:f33fb8ac-18af-42cc-ae0e-ed0b0bdb91e1"));
+        docentry.setHealthcareFacilityType(new CodedTerm("Outpatient", "Outpatient", "Connect-a-thon healthcareFacilityCodes"));
         // ---- LANGUAGE CODE
         docentry.setLanguageCode(LanguageCode.getValueOf("en-GB"));
         // ---- LEGAL AUTHENTICATOR
@@ -69,7 +69,7 @@ public class ClientTestHelper {
         // ---- PATIENT ID
         docentry.setPatientID(new IdentifierString256(new String256("6578946^^^&1.3.6.1.4.1.21367.2005.3.7&ISO"), new String256("urn:uuid:6b5aea1a-874d-4603-a4bc-96a0a7b38446")));
         // ---- PRACTICE SETTING CODE
-        docentry.setPracticeSettingCode(new CodedTerm("General Medicine", "General Medicine", "urn:uuid:cccf5598-8b07-4b77-a05e-ae952c785ead"));
+        docentry.setPracticeSettingCode(new CodedTerm("General Medicine", "General Medicine", "Connect-a-thon practiceSettingCodes"));
         // ---- REPOSITORY UNIQUE ID
         docentry.setRepoUId(new OID(new String256("1.3.6.1.4.1.28867.2006.3.1")));
         // ---- SERVICE START TIME
@@ -101,7 +101,7 @@ public class ClientTestHelper {
         docentry.getSourcePatientInfo().getValues().add(new String256("PID-8|M"));
         docentry.getSourcePatientInfo().getValues().add(new String256("PID-11|100 MainSt^^BURLINGTON^MA^01803^USA"));
         // ---- TYPE CODE
-        docentry.setTypeCode(new CodedTerm("History and Physical", "History and Physical", "urn:uuid:aa543740-bdda-424e-8c96-df4873be8500"));
+        docentry.setTypeCode(new CodedTerm("History and Physical", "History and Physical", "Connect-a-thon typeCodes"));
         // ---- UNIQUE ID
         docentry.setUniqueId(new IdentifierOID(new OID(new String256("1.3.6.1.4.1.21367.2005.3.7^11379")), new String256("urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab")));
         // ---- URI

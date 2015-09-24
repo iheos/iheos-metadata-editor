@@ -27,9 +27,7 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
     protected XdsSubmissionSet model=new XdsSubmissionSet();
     Map<String, String> map = new HashMap<String,String>();
     private SubmissionSetEditorDriver editorDriver = GWT.create(SubmissionSetEditorDriver.class);
-
-    // RPC services declaration
-    private final StandardPropertiesServicesAsync stdPropertiesServices = GWT.create(StandardPropertiesServices.class);
+    private StandardPropertiesServicesAsync stdPropertiesServices= GWT.create(StandardPropertiesServices.class);
 
     /**
      * Method that initializes the editor and the request factory on submission set activity start.
@@ -39,17 +37,6 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
         bind();
         initDriver(model);
         // init request factory w/ requestFactory.initialize(eventBus)
-        stdPropertiesServices.getStandardProperties("xds", new AsyncCallback<Map<String, String>>() {
-            @Override
-            public void onFailure(Throwable throwable) {
-                Window.alert(throwable.getMessage());
-            }
-
-            @Override
-            public void onSuccess(Map<String, String> stringStringMap) {
-                map = stringStringMap;
-            }
-        });
     }
 
     /**
@@ -152,6 +139,20 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
     public void populate() {
         model.populate();
         initDriver(model);
+    }
+
+    public void retrieveDefaultStandardProperties() {
+        stdPropertiesServices.getStandardProperties("XDS.b-DS", new AsyncCallback<Map<String, String>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                logger.warning(caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Map<String, String> result) {
+                getView().updateEditorUI(result);
+            }
+        });
     }
 
     /**

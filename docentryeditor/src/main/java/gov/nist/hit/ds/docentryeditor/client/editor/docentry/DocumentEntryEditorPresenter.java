@@ -2,7 +2,6 @@ package gov.nist.hit.ds.docentryeditor.client.editor.docentry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
@@ -13,13 +12,9 @@ import gov.nist.hit.ds.docentryeditor.client.event.SelectedStandardChangedEvent;
 import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsDocumentEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
-import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
-import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
 import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServices;
 import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServicesAsync;
-import gov.nist.hit.ds.docentryeditor.shared.model.String256;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
-import org.apache.commons.collections.map.HashedMap;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -40,9 +35,7 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
     private DocEntryEditorDriver editorDriver = GWT.create(DocEntryEditorDriver.class);
     @Inject
     private XdsParser xdsParser;
-
-    // RPC services declaration
-    private final StandardPropertiesServicesAsync stdPropertiesServices = GWT.create(StandardPropertiesServices.class);
+    private StandardPropertiesServicesAsync stdPropertiesServices= GWT.create(StandardPropertiesServices.class);
 
     /**
      * Method that initializes the editor and the request factory on document entry editor view start.
@@ -52,17 +45,6 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
         bind();
         initDriver(model);
         // to initialize the request factory : requestFactory.initialize(eventBus)
-        stdPropertiesServices.getStandardProperties("xds", new AsyncCallback<Map<String, String>>() {
-            @Override
-            public void onFailure(Throwable throwable) {
-                Window.alert(throwable.getMessage());
-            }
-
-            @Override
-            public void onSuccess(Map<String, String> stringStringMap) {
-                map = stringStringMap;
-            }
-        });
     }
 
     /**
@@ -172,6 +154,20 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
 
     public Map<String,String> getStdProp(){
         return map;
+    }
+
+    public void retrieveDefaultStandardProperties() {
+        stdPropertiesServices.getStandardProperties("XDS.b-DS", new AsyncCallback<Map<String, String>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                logger.warning(caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Map<String, String> result) {
+                getView().updateEditorUI(result);
+            }
+        });
     }
 
     /**
