@@ -17,7 +17,7 @@ public class StandardPropertiesServiceImpl extends RemoteServiceServlet implemen
     public Map<String,String> getStandardProperties(String standard){
         Map<String,String> properties=new HashMap<String,String>();
         Properties prop=new Properties();
-        InputStream is = getClass().getResourceAsStream("/"+standard+".properties");
+        InputStream is = getClass().getResourceAsStream("/properties/"+standard+".properties");
         try {
             prop.load(is);
             properties.put("subSetEntryUUID", prop.getProperty("subSetEntryUUID"));

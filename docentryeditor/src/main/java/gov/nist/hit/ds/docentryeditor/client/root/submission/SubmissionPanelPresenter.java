@@ -88,11 +88,12 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         ((MetadataEditorEventBus) getEventBus()).addCreateNewDocEntryEventHandler(new CreateNewDocEntryEvent.CreateNewDocEntryEventHandler() {
             @Override
             public void onCreateNewDocumentEntry(CreateNewDocEntryEvent event) {
-                currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, event.getDocument());
-                nextIndex++;
-                view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
-                view.getSubmissionTree().expandAll();
-                view.getSubmissionTree().getSelectionModel().select(currentlyEdited, false);
+//                currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, event.getDocument());
+//                nextIndex++;
+//                view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
+//                view.getSubmissionTree().expandAll();
+//                view.getSubmissionTree().getSelectionModel().select(currentlyEdited, false);
+                createNewDocumentEntry();
             }
         });
         // this catches that the XDS Document entry editor view has loaded.

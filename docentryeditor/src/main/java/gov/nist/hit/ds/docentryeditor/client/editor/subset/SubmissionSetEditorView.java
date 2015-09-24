@@ -125,14 +125,15 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
     @Override
     protected Widget buildUI() {
         container = new VerticalLayoutContainer();
-        container.getElement().setMargins(10);
         container.setBorders(false);
 
+        selectedStandardProperties = selector.getStdPropertiesMap();
+        if (selectedStandardProperties==null){
+            presenter.retrieveDefaultStandardProperties();
+        }else{
+            updateEditorUI(selectedStandardProperties);
+        }
         updateEditorUI(selector.getStdPropertiesMap());
-
-        mainContainer.setScrollMode(ScrollMode.AUTO);
-        mainContainer.add(container);
-        mainContainer.forceLayout();
 
         return mainContainer;
     }
@@ -282,9 +283,11 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
 
     public void updateEditorUI(Map<String, String> selectedStandardProperties) {
         this.selectedStandardProperties = selectedStandardProperties;
-        container.clear();
         requiredFields.clear();
         optionalFields.clear();
+        container.clear();
+
+        container.setBorders(false);
 
         SimpleContainer requiredFieldsContainer = new SimpleContainer();
         requiredFieldsContainer.setTitle("Required fields");
@@ -293,14 +296,6 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
 
         requiredFieldsContainer.add(requiredFields);
         optionalFieldsContainer.add(optionalFields);
-
-        // Adding required and optional fields panels to the main container of editor view.
-        container.add(editorTopToolbar, new VerticalLayoutContainer.VerticalLayoutData(-1, -1));
-        container.add(new HtmlLayoutContainer("<h2>Submission Set Editor</h2>"));
-        container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"));
-        container.add(requiredFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"));
-        container.add(optionalFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
 
         // /////////////////////////////////////// //
         // - Required "simple" fields.
@@ -397,9 +392,21 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         bottomToolbarContainer.add(editorBottomToolbar);
         optionalFields.add(bottomToolbarContainer);
 
+        // Adding required and optional fields panels to the main container of editor view.
+        container.add(editorTopToolbar, new VerticalLayoutContainer.VerticalLayoutData(-1, -1,new Margins(FIELD_BOTTOM_MARGIN)));
+        container.add(new HtmlLayoutContainer("<h2>Submission Set Editor</h2>"),new VerticalLayoutContainer.VerticalLayoutData(-1,-1,new Margins(0,0,0,FIELD_BOTTOM_MARGIN)));
+        container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"),new VerticalLayoutContainer.VerticalLayoutData(-1,-1,new Margins(0,0,0,FIELD_BOTTOM_MARGIN)));
+        container.add(requiredFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 20, FIELD_BOTTOM_MARGIN, FIELD_BOTTOM_MARGIN)));
+        container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0,0,0,FIELD_BOTTOM_MARGIN)));
+        container.add(optionalFieldsContainer, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(0, 20, FIELD_BOTTOM_MARGIN, FIELD_BOTTOM_MARGIN)));
+
         collapseAll();
 
         setWidgetsInfo();
+
+        mainContainer.setScrollMode(ScrollMode.AUTO);
+        mainContainer.add(container);
+        mainContainer.forceLayout();
 
     }
 

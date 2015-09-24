@@ -65,12 +65,14 @@ public class StandardSelector extends SimpleComboBox<String> {
     }
 
     private void initValues() {
-        this.add("XDS.b");
+        this.add("XDS.b-DS");
+        this.add("XDS.b-DR");
         this.add("XDR");
-        this.add("XDR-minimum metadata");
+        this.add("XDR-minimum");
         this.add("XDM");
-        this.add("XDM-minimum metadata");
-        stdPropertiesServices.getStandardProperties("XDS.b", new AsyncCallback<Map<String, String>>() {
+//        this.add("XDM-minimum");
+        selectedStandard="XDS.b-DS";
+        stdPropertiesServices.getStandardProperties("XDS.b-DS", new AsyncCallback<Map<String, String>>() {
             @Override
             public void onFailure(Throwable throwable) {
                 LOGGER.warning(throwable.getMessage());
