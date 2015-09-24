@@ -76,7 +76,7 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
     @Inject
     private FileUploadDialog fileUploadDialog;
     @Inject
-    private StandardSelector stdSelector;
+    StandardSelector stdSelector;
     private SimpleComboBox<String> filterComboBox;
 
     @Override

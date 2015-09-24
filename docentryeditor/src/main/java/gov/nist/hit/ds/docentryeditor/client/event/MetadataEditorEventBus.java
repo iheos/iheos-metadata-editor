@@ -209,4 +209,9 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     public HandlerRegistration addSelectedStandardChangedEventHandler(SelectedStandardChangedEvent.SelectedStandardChangedEventHandler handler) {
         return addHandler(SelectedStandardChangedEvent.TYPE,handler);
     }
+
+    public void fireSelectedStandardChangedEvent(String std) {
+        fireEvent(new SelectedStandardChangedEvent(std));
+    }
+
 }

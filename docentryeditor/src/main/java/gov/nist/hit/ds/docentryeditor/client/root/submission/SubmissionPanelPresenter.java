@@ -76,7 +76,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                     nextIndex++;
                     view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
                 }
-                for (XdsAssociation asso:event.getMetadata().getAssociations()){
+                for (XdsAssociation asso : event.getMetadata().getAssociations()) {
                     view.getAssociationStore().add(asso);
                 }
                 currentlyEdited = submissionSetTreeNode;
@@ -148,6 +148,14 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
             @Override
             public void onAssociatedElementsChange(AssociatedElementsChangedEvent event) {
                 changeAssociatedNodesFontColor(new String256(event.getSourceElement()),new String256(event.getTargetElement()));
+            }
+        });
+        ((MetadataEditorEventBus) getEventBus()).addSelectedStandardChangedEventHandler(new SelectedStandardChangedEvent.SelectedStandardChangedEventHandler() {
+            @Override
+            public void onSelectedStandardChange(SelectedStandardChangedEvent event) {
+                if (event.getSelectedStandard()!=null){
+                    view.stdSelector.setStandard(event.getSelectedStandard());
+                }
             }
         });
         // start edit submission set from home page

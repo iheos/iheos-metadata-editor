@@ -10,15 +10,22 @@ import java.util.Map;
  */
 public class SelectedStandardChangedEvent extends GwtEvent<SelectedStandardChangedEvent.SelectedStandardChangedEventHandler> {
     public static final GwtEvent.Type<SelectedStandardChangedEventHandler> TYPE = new GwtEvent.Type<SelectedStandardChangedEventHandler>();
+    private String standard;
     private Map<String,String> selectedStandardProperties;
 
     public SelectedStandardChangedEvent(Map<String,String> stdPropertiesMap){
         selectedStandardProperties=stdPropertiesMap;
     }
 
+    public SelectedStandardChangedEvent(String std){
+        standard=std;
+    }
+
     public Map<String,String> getSelectedStandardProperties(){
         return selectedStandardProperties;
     }
+
+    public String getSelectedStandard(){return standard;}
 
     @Override
     public Type<SelectedStandardChangedEventHandler> getAssociatedType() {

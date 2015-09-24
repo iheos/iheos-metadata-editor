@@ -408,6 +408,7 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         mainContainer.add(container);
         mainContainer.forceLayout();
 
+        presenter.initDriver(presenter.getModel());
     }
 
     private boolean isRequired(String attributeId) {
