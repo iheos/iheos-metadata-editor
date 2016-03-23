@@ -259,20 +259,23 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
      */
     private void updateFilePropertiesPanelHeader() {
         if (filePropertiesOPanel !=null) {
-            String s = new String();
+            String s = new String("(");
             if (!hash.getField().getText().isEmpty()) {
-                s += "Hash: " + hash.getField().getText();
+                s += "Hash: " + hash.getField().getText()+", ";
             }
-            s += ", Size: " + size.getStore().get(0).toString();
-            filePropertiesOPanel.setHeadingText("File properties (" + s + ")");
+            s += "Size: " + size.getStore().get(0).toString();
+            s+=")";
+            filePropertiesOPanel.setHeadingText("File properties " + s );
         }
         if (filePropertiesRPanel !=null) {
             String s = new String();
+            s+="(";
             if (!hash.getField().getText().isEmpty()) {
-                s += "Hash: " + hash.getField().getText();
+                s += "Hash: " + hash.getField().getText()+", ";
             }
-            s += ", Size: " + size.getStore().get(0).toString();
-            filePropertiesRPanel.setHeadingText("File properties (" + s + ")");
+            s += "Size: " + size.getStore().get(0).toString();
+            s+=")";
+            filePropertiesRPanel.setHeadingText("File properties " + s );
         }
     }
 
@@ -282,27 +285,34 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     private void updateRepositoryAttributesPanelHeader() {
         if (repositoryAttributesOPanel !=null) {
             String s = new String();
+            s+="(";
             if (!uri.getField().getText().isEmpty()) {
                 s += "URI: " + uri.getField().getText();
                 if (!repoUId.getText().isEmpty()) {
-                    s += ", Repository Unique ID: " + repoUId.getText();
+                    s += ", Repository Unique ID: " + repoUId.getText() ;
                 }
+                s+=")";
             } else if (!repoUId.getText().isEmpty()) {
-                s += "Repository Unique ID: " + repoUId.getText();
+                s += "Repository Unique ID: " + repoUId.getText() +")";
             }
-            repositoryAttributesOPanel.setHeadingText("Repository attributes (" + s + ")");
+            else{
+                s="";
+            }
+            repositoryAttributesOPanel.setHeadingText("Repository attributes " + s );
         }
         if (repositoryAttributesRPanel !=null) {
             String s = new String();
+            s+="(";
             if (!uri.getField().getText().isEmpty()) {
                 s += "URI: " + uri.getField().getText();
                 if (!repoUId.getText().isEmpty()) {
                     s += ", Repository Unique ID: " + repoUId.getText();
                 }
+                s +=")";
             } else if (!repoUId.getText().isEmpty()) {
-                s += "Repository Unique ID: " + repoUId.getText();
+                s += "Repository Unique ID: " + repoUId.getText() + ")";
             }
-            repositoryAttributesRPanel.setHeadingText("Repository attributes (" + s + ")");
+            repositoryAttributesRPanel.setHeadingText("Repository attributes " + s );
         }
     }
 

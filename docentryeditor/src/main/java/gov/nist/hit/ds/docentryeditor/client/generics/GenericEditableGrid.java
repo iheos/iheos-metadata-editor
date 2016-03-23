@@ -387,6 +387,8 @@ public abstract class GenericEditableGrid<M> extends Grid<M> {
                 etc=", ...";
             }
             pane.setHeadingText(gridHeader + " (" + store.get(0).toString() + etc + ")");
+        }else{
+            pane.setHeadingText(gridHeader);
         }
     }
 

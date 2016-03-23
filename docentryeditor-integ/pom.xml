@@ -17,24 +17,24 @@
         <nexus-staging-maven-plugin.version>1.6.2</nexus-staging-maven-plugin.version>
     </properties>
     <url>http://maven.apache.org</url>
-    <repositories>
-        <repository>
-            <id>gwt-maven</id>
-            <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
-        </repository>
-        <repository>
-            <id>internal-nist-repo-releases</id>
-            <url>http://vm-070.nist.gov:8081/nexus/content/repositories/releases/</url>
-        </repository>
-        <repository>
-            <id>internal-nist-repo-third-party</id>
-            <url>http://vm-070.nist.gov:8081/nexus/content/repositories/thirdparty/</url>
-        </repository>
-        <repository>
-            <id>internal-nist-repo-snapshots</id>
-            <url>http://vm-070.nist.gov:8081/nexus/content/repositories/snapshots/</url>
-        </repository>
-    </repositories>
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>gwt-maven</id>-->
+            <!--<url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>internal-nist-repo-releases</id>-->
+            <!--<url>http://vm-070.nist.gov:8081/nexus/content/repositories/releases/</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>internal-nist-repo-third-party</id>-->
+            <!--<url>http://vm-070.nist.gov:8081/nexus/content/repositories/thirdparty/</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>internal-nist-repo-snapshots</id>-->
+            <!--<url>http://vm-070.nist.gov:8081/nexus/content/repositories/snapshots/</url>-->
+        <!--</repository>-->
+    <!--</repositories>-->
 
     <dependencies>
         <dependency>
