@@ -339,7 +339,8 @@ public class AuthorsListEditorWidget extends ListStoreEditor<Author> implements 
                 etc=", ...";
             }
             authorGridEditorWidget.setHeadingText(HEADING_TEXT + " (" + this.getStore().get(0).toString() + etc + ")");
-        }
+        }else
+            authorGridEditorWidget.setHeadingText(HEADING_TEXT);
     }
 
     /**

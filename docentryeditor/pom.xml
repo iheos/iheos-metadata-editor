@@ -36,12 +36,12 @@
         <repository>
             <id>gazelle-3rd-party</id>
             <name>gazelle nexus</name>
-            <url>http://gazelle.ihe.net/nexus/content/repositories/thirdparty</url>
+            <url>https://gazelle.ihe.net/nexus/content/repositories/thirdparty</url>
         </repository>
         <repository>
             <id>internal</id>
             <name>Internal Releases</name>
-            <url>http://gazelle.ihe.net/nexus/content/repositories/snapshots/</url>
+            <url>https://gazelle.ihe.net/nexus/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
@@ -170,6 +170,8 @@
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
         </dependency>
+
+        <!-- tk-deps -->
         <!--<dependency>-->
             <!--<groupId>gov.nist.hit.ds</groupId>-->
             <!--<artifactId>eb-metadata</artifactId>-->
