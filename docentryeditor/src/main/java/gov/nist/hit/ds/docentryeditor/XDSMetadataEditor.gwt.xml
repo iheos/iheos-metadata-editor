@@ -59,4 +59,11 @@
     <!-- ****************************** *** Entry point ****************************** -->
     <!--<entry-point class='gov.nist.hit.ds.docentryeditor.client.MetadataEditorApp'/>-->
 
+    <!-- DEBUG STUFF -->
+    <!-- Use Super Dev Mode -->
+    <add-linker name="xsiframe"/>
+    <set-configuration-property name="devModeRedirectEnabled" value="true"/>
+    <set-property name="compiler.useSourceMaps" value="true"/>
+
+    <collapse-all-properties />
 </module>
