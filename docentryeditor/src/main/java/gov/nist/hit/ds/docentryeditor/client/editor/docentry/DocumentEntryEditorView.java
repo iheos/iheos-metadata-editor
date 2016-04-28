@@ -3,14 +3,12 @@ package gov.nist.hit.ds.docentryeditor.client.editor.docentry;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.client.editor.ListStoreEditor;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
@@ -26,7 +24,6 @@ import gov.nist.hit.ds.docentryeditor.client.editor.widgets.identifier.Identifie
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.identifier.IdentifierString256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.internatinationalstring.InternationalStringEditableGrid;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.namevalue.NameValueDTMEditorWidget;
-import gov.nist.hit.ds.docentryeditor.client.editor.widgets.namevalue.NameValueIntegerEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.namevalue.NameValueString256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
@@ -54,10 +51,6 @@ import java.util.Map;
 public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPresenter> implements Editor<XdsDocumentEntry> {
     private static final int FIELD_BOTTOM_MARGIN = 10;
     private final VerticalLayoutContainer form = new VerticalLayoutContainer();
-
-    private VerticalLayoutContainer requiredFields = new VerticalLayoutContainer();
-    private VerticalLayoutContainer optionalFields = new VerticalLayoutContainer();
-
     /* simple fields declaration */
     @Inject
     String256EditorWidget id;
@@ -69,10 +62,10 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     LanguageCodeComboBox languageCode;
     @Inject
     MimeTypeComboBox mimeType;
-
+    @Inject
+    IntegerEditorWidget size;
     // Could be injected using FactoryProvider assisted inject
     OIDEditorWidget repoUId = new OIDEditorWidget(false);
-
     /* Identifiers declaration */
     @Inject
     IdentifierOIDEditorWidget uniqueId;
@@ -81,7 +74,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     @Inject
     @Ignore
     StandardSelector standardSelector;
-
     /* coded terms declaration */
     // Could be injected using FactoryProvider assisted inject
     PredefinedCodedTermComboBox classCode = new PredefinedCodedTermComboBox(PredefinedCodes.CLASS_CODES);
@@ -89,7 +81,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     PredefinedCodedTermComboBox healthcareFacilityType = new PredefinedCodedTermComboBox(PredefinedCodes.HEALTHCARE_FACILITY_TYPE_CODES);
     PredefinedCodedTermComboBox practiceSettingCode = new PredefinedCodedTermComboBox(PredefinedCodes.PRACTICE_SETTING_CODES);
     PredefinedCodedTermComboBox typeCode = new PredefinedCodedTermComboBox(PredefinedCodes.TYPE_CODES);
-
     /* name values declaration */
     // Could be injected using FactoryProvider assisted inject
     NameValueString256EditorWidget legalAuthenticator = new NameValueString256EditorWidget("Legal Authenticator");
@@ -98,48 +89,41 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     NameValueDTMEditorWidget creationTime = new NameValueDTMEditorWidget("Creation Time");
     NameValueDTMEditorWidget serviceStartTime = new NameValueDTMEditorWidget("Service Start Time");
     NameValueDTMEditorWidget serviceStopTime = new NameValueDTMEditorWidget("Service Stop Time");
-    NameValueIntegerEditorWidget size = new NameValueIntegerEditorWidget("File Size");
-
     /* Authors widget */
     @Inject
     AuthorsListEditorWidget authors;
-
     // ---- Titles WIDGETS
     ListStoreEditor<InternationalString> titles;
     InternationalStringEditableGrid titlesGrid;
-
     // ---- Comments WIDGETS
     ListStoreEditor<InternationalString> comments;
     InternationalStringEditableGrid commentsGrid;
-
     // ---- ConfidentialityCodes WIDGETS
     ListStoreEditor<CodedTerm> confidentialityCodes;
     CodedTermsEditableGridWidget confidentialityCodesGrid;
-
     // ---- EventCodes WIDGETS
     ListStoreEditor<CodedTerm> eventCode;
     CodedTermsEditableGridWidget eventCodesGrid;
-
+    Map<String, String> selectedStandardProperties;
+    private VerticalLayoutContainer requiredFields = new VerticalLayoutContainer();
+    private VerticalLayoutContainer optionalFields = new VerticalLayoutContainer();
     // -- Button toolbars
     @Inject
     private EditorToolbar editorTopToolbar;
     @Inject
     private EditorToolbar editorBottomToolbar;
-
     private ContentPanel filePropertiesRPanel;
     private ContentPanel filePropertiesOPanel;
     private ContentPanel repositoryAttributesOPanel;
     private ContentPanel repositoryAttributesRPanel;
-
     private VerticalLayoutContainer container;
-
     @Inject
     private StandardSelector selector;
-    Map<String, String> selectedStandardProperties;
 
     /**
      * This is the abstract method implementation that builds a collection of objects
      * mapping a String key to a Widget for the Document Entry editor view.
+     *
      * @return Map of widgets for the Document entry editor view.
      */
     @Override
@@ -157,16 +141,17 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     /**
      * This is the implementation of an abstract method supposed to construct
      * the Document Entry editor view as a widget.
+     *
      * @return Document entry editor view as a Widget.
      */
     @Override
     protected Widget buildUI() {
-        container=new VerticalLayoutContainer();
+        container = new VerticalLayoutContainer();
         container.setBorders(false);
-        selectedStandardProperties=selector.getStdPropertiesMap();
-        if (selectedStandardProperties==null){
+        selectedStandardProperties = selector.getStdPropertiesMap();
+        if (selectedStandardProperties == null) {
             presenter.retrieveDefaultStandardProperties();
-        }else {
+        } else {
             updateEditorUI(selectedStandardProperties);
         }
 
@@ -210,7 +195,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         };
         editorTopToolbar.addPopulateHandler(populateHandler);
         editorBottomToolbar.addPopulateHandler(populateHandler);
-        SelectHandler expandHandler=new SelectHandler() {
+        SelectHandler expandHandler = new SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {
                 expandAll();
@@ -218,7 +203,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         };
         editorTopToolbar.addExpandHandler(expandHandler);
         editorBottomToolbar.addExpandHandler(expandHandler);
-        SelectHandler collapseHandler=new SelectHandler() {
+        SelectHandler collapseHandler = new SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {
                 collapseAll();
@@ -231,25 +216,25 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     public void refreshGridButtonsDisplay() {
         serviceStartTime.refreshNewButton();
         serviceStopTime.refreshNewButton();
-        if (commentsGrid!=null) {
+        if (commentsGrid != null) {
             commentsGrid.refreshNewButton();
         }
-        if (confidentialityCodes!=null) {
+        if (confidentialityCodes != null) {
             confidentialityCodesGrid.refreshNewButton();
         }
-        if (eventCodesGrid!=null) {
+        if (eventCodesGrid != null) {
             eventCodesGrid.refreshNewButton();
         }
-        if (legalAuthenticator!=null) {
+        if (legalAuthenticator != null) {
             legalAuthenticator.refreshNewButton();
         }
-        if(sourcePatientId!=null) {
+        if (sourcePatientId != null) {
             sourcePatientId.refreshNewButton();
         }
-        if (sourcePatientInfo!=null) {
+        if (sourcePatientInfo != null) {
             sourcePatientInfo.refreshNewButton();
         }
-        if (titlesGrid!=null) {
+        if (titlesGrid != null) {
             titlesGrid.refreshNewButton();
         }
     }
@@ -258,24 +243,24 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
      * This method update the header of the panel for file properties on collapse.
      */
     private void updateFilePropertiesPanelHeader() {
-        if (filePropertiesOPanel !=null) {
+        if (filePropertiesOPanel != null) {
             String s = new String("(");
             if (!hash.getField().getText().isEmpty()) {
-                s += "Hash: " + hash.getField().getText()+", ";
+                s += "Hash: " + hash.getField().getText() + ", ";
             }
-            s += "Size: " + size.getStore().get(0).toString();
-            s+=")";
-            filePropertiesOPanel.setHeadingText("File properties " + s );
+            s += "Size: " + size.getValue().toString();
+            s += ")";
+            filePropertiesOPanel.setHeadingText("File properties " + s);
         }
-        if (filePropertiesRPanel !=null) {
+        if (filePropertiesRPanel != null) {
             String s = new String();
-            s+="(";
+            s += "(";
             if (!hash.getField().getText().isEmpty()) {
-                s += "Hash: " + hash.getField().getText()+", ";
+                s += "Hash: " + hash.getField().getText() + ", ";
             }
-            s += "Size: " + size.getStore().get(0).toString();
-            s+=")";
-            filePropertiesRPanel.setHeadingText("File properties " + s );
+            s += "Size: " + size.getValue().toString();
+            s += ")";
+            filePropertiesRPanel.setHeadingText("File properties " + s);
         }
     }
 
@@ -283,73 +268,72 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
      * This method update the header of the panel for repository attributes on collapse.
      */
     private void updateRepositoryAttributesPanelHeader() {
-        if (repositoryAttributesOPanel !=null) {
+        if (repositoryAttributesOPanel != null) {
             String s = new String();
-            s+="(";
-            if (!uri.getField().getText().isEmpty()) {
-                s += "URI: " + uri.getField().getText();
-                if (!repoUId.getText().isEmpty()) {
-                    s += ", Repository Unique ID: " + repoUId.getText() ;
-                }
-                s+=")";
-            } else if (!repoUId.getText().isEmpty()) {
-                s += "Repository Unique ID: " + repoUId.getText() +")";
-            }
-            else{
-                s="";
-            }
-            repositoryAttributesOPanel.setHeadingText("Repository attributes " + s );
-        }
-        if (repositoryAttributesRPanel !=null) {
-            String s = new String();
-            s+="(";
+            s += "(";
             if (!uri.getField().getText().isEmpty()) {
                 s += "URI: " + uri.getField().getText();
                 if (!repoUId.getText().isEmpty()) {
                     s += ", Repository Unique ID: " + repoUId.getText();
                 }
-                s +=")";
+                s += ")";
+            } else if (!repoUId.getText().isEmpty()) {
+                s += "Repository Unique ID: " + repoUId.getText() + ")";
+            } else {
+                s = "";
+            }
+            repositoryAttributesOPanel.setHeadingText("Repository attributes " + s);
+        }
+        if (repositoryAttributesRPanel != null) {
+            String s = new String();
+            s += "(";
+            if (!uri.getField().getText().isEmpty()) {
+                s += "URI: " + uri.getField().getText();
+                if (!repoUId.getText().isEmpty()) {
+                    s += ", Repository Unique ID: " + repoUId.getText();
+                }
+                s += ")";
             } else if (!repoUId.getText().isEmpty()) {
                 s += "Repository Unique ID: " + repoUId.getText() + ")";
             }
-            repositoryAttributesRPanel.setHeadingText("Repository attributes " + s );
+            repositoryAttributesRPanel.setHeadingText("Repository attributes " + s);
         }
     }
 
     /**
      * This method collapses all the collapsible panel in the Document entry editor view.
      */
-    public void collapseAll(){
+    public void collapseAll() {
         creationTime.collapse();
-        size.collapse();
-        if (titlesGrid!=null) {
+//        size.collapse();
+        if (titlesGrid != null) {
             titlesGrid.collapse();
         }
-        if(commentsGrid!=null) {
+        if (commentsGrid != null) {
             commentsGrid.collapse();
         }
         authors.collapse();
         legalAuthenticator.collapse();
         sourcePatientId.collapse();
         sourcePatientInfo.collapse();
-        if (confidentialityCodesGrid!=null) {
+        if (confidentialityCodesGrid != null) {
             confidentialityCodesGrid.collapse();
         }
-        if (eventCodesGrid!=null) {
+        if (eventCodesGrid != null) {
             eventCodesGrid.collapse();
         }
         serviceStartTime.collapse();
         serviceStopTime.collapse();
-        if(filePropertiesOPanel !=null) {
+        if (filePropertiesOPanel != null) {
             filePropertiesOPanel.collapse();
         }
-        if(filePropertiesRPanel !=null) {
+        if (filePropertiesRPanel != null) {
             filePropertiesRPanel.collapse();
         }
-        if (repositoryAttributesOPanel !=null){
+        if (repositoryAttributesOPanel != null) {
             repositoryAttributesOPanel.collapse();
         }
-        if (repositoryAttributesRPanel !=null){
+        if (repositoryAttributesRPanel != null) {
             repositoryAttributesRPanel.collapse();
         }
         updateFilePropertiesPanelHeader();
@@ -361,7 +345,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
      */
     public void expandAll() {
         creationTime.expand();
-        size.expand();
+//        size.expand();
         titlesGrid.expand();
         commentsGrid.expand();
         authors.expand();
@@ -485,7 +469,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // /////////////////////////////////////
         // ID Field (required)
         EditorFieldLabel idLabel = new EditorFieldLabel(id, "Entry UUID");
-        // Hash Field (required)
+        // Hash Field (optional)
         EditorFieldLabel hashLabel = new EditorFieldLabel(hash, "Hash");
         // Language Code Field (required)
         EditorFieldLabel languageCodeLabel = new EditorFieldLabel(languageCode, "Language Code");
@@ -503,6 +487,8 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         EditorFieldLabel typeCodeLabel = new EditorFieldLabel(typeCode.getDisplay(), "Type Code");
         // Repository Unique ID Field (optional)
         EditorFieldLabel repositoryLabel = new EditorFieldLabel(repoUId, "Repository Unique ID");
+        // Size filed (optional)
+        EditorFieldLabel sizeLabel = new EditorFieldLabel(size, "File size");
         // URI Field (optional)
         EditorFieldLabel uriLabel = new EditorFieldLabel(uri, "URI");
 
@@ -566,7 +552,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         }
         if (isRequired("docEntryPracticeSettingCode")) {
             simpleRequiredFieldsContainer.add(practiceSettingCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
-        }else{
+        } else {
             simpleOptionalFieldsContainer.add(practiceSettingCodeLabel, new VerticalLayoutData(1, -1/*, new Margins(0, 0, 5, 0)*/));
         }
 
@@ -583,37 +569,38 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         VerticalLayoutContainer filePropertiesFieldsOContainer = new VerticalLayoutContainer();
         if (isRequired("docEntryHash")) {
             filePropertiesFieldsRContainer.add(hashLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
-        }else{
+        } else {
             filePropertiesFieldsOContainer.add(hashLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
         }
         if (isRequired("docEntrySize")) {
-            filePropertiesFieldsRContainer.add(size.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
-        }else {
-            filePropertiesFieldsOContainer.add(size.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
+            filePropertiesFieldsRContainer.add(sizeLabel, new VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
+        } else {
+            filePropertiesFieldsOContainer.add(sizeLabel, new VerticalLayoutData(1, -1, new Margins(0, 5, 0, 5)));
         }
 
         VerticalLayoutContainer repositoryAttributesFieldsRContainer = new VerticalLayoutContainer();
         VerticalLayoutContainer repositoryAttributesFieldsOContainer = new VerticalLayoutContainer();
         if (isRequired("docEntryURI")) {
             repositoryAttributesFieldsRContainer.add(uriLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
-        }else{
+        } else {
             repositoryAttributesFieldsOContainer.add(uriLabel, new VerticalLayoutData(1, -1, new Margins(5, 5, 0, 5)));
         }
         if (isRequired("docEntryRepositoryUniqueID")) {
             repositoryAttributesFieldsRContainer.add(repositoryLabel, new VerticalLayoutData(1, -1, new Margins(0, 5, 5, 5)));
-        }else{
+        } else {
             repositoryAttributesFieldsOContainer.add(repositoryLabel, new VerticalLayoutData(1, -1, new Margins(0, 5, 5, 5)));
         }
 
 		/* OPTIONAL container added to a fieldset */
-        filePropertiesRPanel = new ContentPanel(){
+        filePropertiesRPanel = new ContentPanel() {
             @Override
-            public void onCollapse(){
+            public void onCollapse() {
                 super.onCollapse();
                 updateFilePropertiesPanelHeader();
             }
+
             @Override
-            public void onExpand(){
+            public void onExpand() {
                 super.onExpand();
                 this.setHeadingText("File properties");
             }
@@ -622,14 +609,15 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         filePropertiesRPanel.setHeadingText("File properties");
         filePropertiesRPanel.add(filePropertiesFieldsRContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
 
-        filePropertiesOPanel = new ContentPanel(){
+        filePropertiesOPanel = new ContentPanel() {
             @Override
-            public void onCollapse(){
+            public void onCollapse() {
                 super.onCollapse();
                 updateFilePropertiesPanelHeader();
             }
+
             @Override
-            public void onExpand(){
+            public void onExpand() {
                 super.onExpand();
                 this.setHeadingText("File properties");
             }
@@ -638,14 +626,15 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         filePropertiesOPanel.setHeadingText("File properties");
         filePropertiesOPanel.add(filePropertiesFieldsOContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
 
-        repositoryAttributesRPanel = new ContentPanel(){
+        repositoryAttributesRPanel = new ContentPanel() {
             @Override
-            public void onCollapse(){
+            public void onCollapse() {
                 super.onCollapse();
                 updateRepositoryAttributesPanelHeader();
             }
+
             @Override
-            public void onExpand(){
+            public void onExpand() {
                 super.onExpand();
                 this.setHeadingText("Repository attributes");
             }
@@ -654,14 +643,15 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         repositoryAttributesRPanel.setCollapsible(true);
         repositoryAttributesRPanel.add(repositoryAttributesFieldsRContainer, new VerticalLayoutData(1, -1, new Margins(0, 0, 5, 0)));
 
-        repositoryAttributesOPanel = new ContentPanel(){
+        repositoryAttributesOPanel = new ContentPanel() {
             @Override
-            public void onCollapse(){
+            public void onCollapse() {
                 super.onCollapse();
                 updateRepositoryAttributesPanelHeader();
             }
+
             @Override
-            public void onExpand(){
+            public void onExpand() {
                 super.onExpand();
                 this.setHeadingText("Repository attributes");
             }
@@ -698,8 +688,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         serviceStopTime.setListMaxSize(1);
 
         // Size (optional)
-        size.disableToolbar();
-        size.setListMaxSize(1);
 
         // Creation Time (required)
         creationTime.disableToolbar();
@@ -708,7 +696,6 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // TITLES (Optional)
         titlesGrid = new InternationalStringEditableGrid("Titles");
         titles = new ListStoreEditor<InternationalString>(titlesGrid.getStore());
-
 
         // COMMENTS (Optional)
         commentsGrid = new InternationalStringEditableGrid("Comments");
@@ -726,7 +713,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // Adding and ordering fieldsets in REQUIRED panel
         // /////////////////////////////////////////////////////////
         /* simple required fields added to FramedPanel container */
-        requiredFields.add(generalRequiredFieldSet, new VerticalLayoutData(1,-1,new Margins(0,0,FIELD_BOTTOM_MARGIN,0)));
+        requiredFields.add(generalRequiredFieldSet, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         requiredFields.add(creationTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
 
         // /////////////////////////////////////////////////////////
@@ -734,7 +721,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // /////////////////////////////////////////////////////////
         /* simple optional fields added to FramedPanel container */
         optionalFields.add(simpleOptionalFieldsContainer);
-        if (isRequired("docEntryHash") || isRequired("docEntrySize")){
+        if (isRequired("docEntryHash") || isRequired("docEntrySize")) {
             requiredFields.add(filePropertiesRPanel, new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
         if (!(isRequired("docEntryHash") && isRequired("docEntrySize"))) {
@@ -748,52 +735,52 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         }
         if (isRequired("docEntryTitles")) {
             requiredFields.add(titlesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        }else{
+        } else {
             optionalFields.add(titlesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
         if (isRequired("docEntryComments")) {
             requiredFields.add(commentsGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        }else{
+        } else {
             optionalFields.add(commentsGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
         if (isRequired("docEntryAuthors")) {
             requiredFields.add(authors.asWidget(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        }else{
+        } else {
             optionalFields.add(authors.asWidget(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
         if (isRequired("docEntryLegalAuthenticator")) {
             requiredFields.add(legalAuthenticator.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        }else{
+        } else {
             optionalFields.add(legalAuthenticator.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
         if (isRequired("docEntrySourcePatientID")) {
             requiredFields.add(sourcePatientId.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        }else{
+        } else {
             optionalFields.add(sourcePatientId.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
         if (isRequired("docEntrySourcePatientInfo")) {
             requiredFields.add(sourcePatientInfo.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        }else{
+        } else {
             optionalFields.add(sourcePatientInfo.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
         if (isRequired("docEntryConfidentialityCodes")) {
             requiredFields.add(confidentialityCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        }else{
+        } else {
             optionalFields.add(confidentialityCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
         if (isRequired("docEntryEventCodes")) {
             requiredFields.add(eventCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        }else{
+        } else {
             optionalFields.add(eventCodesGrid.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
         if (isRequired("docEntryServiceStartTime")) {
             requiredFields.add(serviceStartTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        }else{
+        } else {
             optionalFields.add(serviceStartTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
         if (isRequired("docEntryServiceStopTime")) {
             requiredFields.add(serviceStopTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
-        }else{
+        } else {
             optionalFields.add(serviceStopTime.getDisplay(), new VerticalLayoutData(1, -1, new Margins(0, 0, FIELD_BOTTOM_MARGIN, 0)));
         }
 
@@ -802,12 +789,12 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         optionalFields.add(bottomToolbarContainer);
 
         // Adding required and optional fields panels to the main container of editor view
-        container.add(editorTopToolbar, new VerticalLayoutData(-1, -1,new Margins(FIELD_BOTTOM_MARGIN)));
-        container.add(new HtmlLayoutContainer("<h2>Document Entry Editor</h2>"),new VerticalLayoutData(-1,-1,new Margins(0,0,0,FIELD_BOTTOM_MARGIN)));
-        container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"),new VerticalLayoutData(-1,-1,new Margins(0,0,0,FIELD_BOTTOM_MARGIN)));
-        container.add(fp1, new VerticalLayoutData(1, -1, new Margins(5,20,20,10)));
-        container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"), new VerticalLayoutData(1, -1, new Margins(20,0,0,FIELD_BOTTOM_MARGIN)));
-        container.add(fp2, new VerticalLayoutData(1, -1, new Margins(5,20,0,10)));
+        container.add(editorTopToolbar, new VerticalLayoutData(-1, -1, new Margins(FIELD_BOTTOM_MARGIN)));
+        container.add(new HtmlLayoutContainer("<h2>Document Entry Editor</h2>"), new VerticalLayoutData(-1, -1, new Margins(0, 0, 0, FIELD_BOTTOM_MARGIN)));
+        container.add(new HtmlLayoutContainer("<h3>Required fields</h3>"), new VerticalLayoutData(-1, -1, new Margins(0, 0, 0, FIELD_BOTTOM_MARGIN)));
+        container.add(fp1, new VerticalLayoutData(1, -1, new Margins(5, 20, 20, 10)));
+        container.add(new HtmlLayoutContainer("<h3>Optional fields</h3>"), new VerticalLayoutData(1, -1, new Margins(20, 0, 0, FIELD_BOTTOM_MARGIN)));
+        container.add(fp2, new VerticalLayoutData(1, -1, new Margins(5, 20, 0, 10)));
 
         collapseAll();
 
@@ -824,4 +811,5 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     private boolean isRequired(String attributeId) {
         return "R".equals(selector.getStdPropertiesMap().get(attributeId));
     }
+
 }
