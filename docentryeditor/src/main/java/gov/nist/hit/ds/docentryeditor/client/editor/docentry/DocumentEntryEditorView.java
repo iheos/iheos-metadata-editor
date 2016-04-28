@@ -21,7 +21,6 @@ import gov.nist.hit.ds.docentryeditor.client.editor.widgets.author.AuthorsListEd
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.codedterm.CodedTermsEditableGridWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.codedterm.PredefinedCodedTermComboBox;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.identifier.IdentifierOIDEditorWidget;
-import gov.nist.hit.ds.docentryeditor.client.editor.widgets.identifier.IdentifierString256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.internatinationalstring.InternationalStringEditableGrid;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.namevalue.NameValueDTMEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.namevalue.NameValueString256EditorWidget;
@@ -70,7 +69,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     @Inject
     IdentifierOIDEditorWidget uniqueId;
     @Inject
-    IdentifierString256EditorWidget patientID;
+    PatientIDEditorWidget patientID;
     @Inject
     @Ignore
     StandardSelector standardSelector;
@@ -406,10 +405,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         mimeType.setEmptyText("Select a mime type...");
         mimeType.setToolTipConfig(new ToolTipConfig("Mime Type is a string", ToolTipResources.INSTANCE.getString256ToolTip()));
         // patient id
-        patientID.setEmptyTexts("ex: 76cc^^^&1.3.6367.2005.3.7&ISO", "ex: urn:uuid:6b5aea1a-625s-5631-v4se-96a0a7b38446");
-        patientID.setToolTipConfigs(ToolTipResources.INSTANCE.getPatientIdTooltipConfig());
         patientID.setAllowBlanks(!isRequired("docEntryPatientID"));
-        patientID.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getPatientIDRegExpValidator());
         // pratice setting code
         practiceSettingCode.setEmptyText("Select a practice setting...");
         practiceSettingCode.clear();

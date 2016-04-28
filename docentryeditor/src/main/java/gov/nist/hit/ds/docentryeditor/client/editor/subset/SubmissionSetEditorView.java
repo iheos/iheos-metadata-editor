@@ -7,21 +7,18 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.client.editor.ListStoreEditor;
-import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
+import gov.nist.hit.ds.docentryeditor.client.editor.widgets.PatientIDEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.String256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.UuidFormatClientValidator;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.author.AuthorsListEditorWidget;
-import gov.nist.hit.ds.docentryeditor.client.editor.widgets.codedterm.CodedTermsEditableGridWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.codedterm.PredefinedCodedTermComboBox;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.identifier.IdentifierOIDEditorWidget;
-import gov.nist.hit.ds.docentryeditor.client.editor.widgets.identifier.IdentifierString256EditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.internatinationalstring.InternationalStringEditableGrid;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.namevalue.NameValueDTMEditorWidget;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.namevalue.NameValueString256EditorWidget;
@@ -31,7 +28,6 @@ import gov.nist.hit.ds.docentryeditor.client.resources.ClientFormatValidationRes
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
 import gov.nist.hit.ds.docentryeditor.client.widgets.StandardSelector;
-import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
 import gov.nist.hit.ds.docentryeditor.shared.model.InternationalString;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
@@ -65,7 +61,7 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
     IdentifierOIDEditorWidget sourceId;
     NameValueDTMEditorWidget submissionTime=new NameValueDTMEditorWidget("Submission Time",false,1);
     @Inject
-    IdentifierString256EditorWidget patientId;
+    PatientIDEditorWidget patientId;
     PredefinedCodedTermComboBox contentTypeCode=new PredefinedCodedTermComboBox(PredefinedCodes.CONTENT_TYPE_CODE);
     // Required if known R2 in XDS (DS and DR) and in XDS DS.
     @Inject
@@ -261,10 +257,7 @@ public class SubmissionSetEditorView extends AbstractView<SubmissionSetEditorPre
         intendedRecipient.setEmptyTexts("ex: \"Some Hospital^^^^^^^^^1.2.3.9.1789.45|^Wel^Marcus^^^Dr^MD|^^Internet^mwel@healthcare.example.org\"");
         intendedRecipient.setEditingFieldToolTip(ToolTipResources.INSTANCE.getIntendedRecipientEditorTooltip());
         // patient id
-        patientId.setEmptyTexts("ex: 76cc^^1.3.6367.2005.3.7&ISO", "ex: urn:uuid:6b5aea1a-625s-5631-v4se-96a0a7b38446");
-        patientId.setToolTipConfigs(ToolTipResources.INSTANCE.getPatientIdTooltipConfig());
         patientId.setAllowBlanks(!isRequired("subSetPatientID"));
-        patientId.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getPatientIDRegExpValidator());
         // source id
         sourceId.setAllowBlanks(!isRequired("subSetSourceID"));
         sourceId.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getSourceIdRegExpValidator());
