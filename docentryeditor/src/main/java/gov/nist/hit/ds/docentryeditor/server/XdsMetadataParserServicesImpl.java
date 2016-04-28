@@ -195,8 +195,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
 
         String sizeString=asString(m.getSlotValue(ele, "size", 0));
         if (sizeString!=null&&!sizeString.isEmpty()) {
-            de.getSize().getValues().clear();
-            de.getSize().getValues().add(Integer.parseInt(sizeString));
+            de.setSize(Integer.parseInt(sizeString));
         }
 
         try {
@@ -433,8 +432,8 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             if (documentEntry.getHash() != null && !documentEntry.getHash().toString().isEmpty()) {
                 metadataTemp.addSlot(extObj, "hash", documentEntry.getHash().toString());
             }
-            if (documentEntry.getSize().getValues().get(0) != null) {
-                metadataTemp.addSlot(extObj, "size", documentEntry.getSize().getValues().get(0).toString());
+            if (documentEntry.getSize() != null) {
+                metadataTemp.addSlot(extObj, "size", documentEntry.getSize().toString());
             }
             if (documentEntry.getRepoUId() != null && !documentEntry.getRepoUId().toString().isEmpty()) {
                 metadataTemp.addSlot(extObj, "repositoryUniqueId", documentEntry.getRepoUId().toString());

@@ -102,9 +102,7 @@ public class ServerTestHelper {
         }
         docentry.setServiceStopTime(stop);
         // ---- SIZE
-        docentry.getSize().setName(new String256("size"));
-        docentry.getSize().getValues().clear();
-        docentry.getSize().getValues().add(defautSize);
+        docentry.setSize(defautSize);
         // ---- SOURCE PATIENT ID
         docentry.getSourcePatientId().setName(new String256("SourcePatientID"));
         docentry.getSourcePatientId().getValues().clear();
@@ -248,7 +246,7 @@ public class ServerTestHelper {
 
         if (docentry.getSize() != null) {
             xml.append("\t<size>\n");
-            xml.append(docentry.getSize().toXML());
+            xml.append(docentry.getSize());
             xml.append("\t</size>\n");
         }
 

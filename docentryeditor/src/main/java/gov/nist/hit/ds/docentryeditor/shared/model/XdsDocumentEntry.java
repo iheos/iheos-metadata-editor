@@ -330,17 +330,16 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
     @Nullable
     private NameValueDTM serviceStopTime;
     /**
-     * <b>NameValueInteger size</b> - The size of the document [Optional].<br>
-     * Type: {@link NameValueInteger}</br> </p>
+     * <b>Integer size</b> - The size of the document [Optional].<br>
+     * Type: {@link Integer}</br> </p>
      * <p/>
      * <b>Cardinality:</b><br>
      * 0..1 </p>
      *
-     * @see NameValueInteger
      * @see XdsDocumentEntry
      */
     @Nullable
-    private NameValueInteger size;
+    private Integer size;
     /**
      * <b>NameValueString256 sourcePatientId</b> - The source patient id of the
      * document [Optional].<br>
@@ -518,32 +517,25 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
 
     public XdsDocumentEntry() {
         languageCode=LanguageCode.ENGLISH_UNITED_STATES;
-//        classCode = new CodedTerm();
         creationTime = new NameValueDTM();
         creationTime.setName(new String256().setString("creationTime"));
         id = new String256();
-//        formatCode = new CodedTerm();
         hash = new String256();
-//        healthcareFacilityType = new CodedTerm();
         legalAuthenticator = new NameValueString256();
         legalAuthenticator.setName(new String256()
                 .setString("legalAuthenticator"));
-//        mimeType = new String256();
         patientID = new IdentifierString256();
         patientID.setIdType(new String256().setString("urn:uuid:6b5aeala-874d-4603-a4bc-96a0a7b38446"));
-//        practiceSettingCode = new CodedTerm();
         repoUId = new OID();
         serviceStartTime = new NameValueDTM();
         serviceStartTime.setName(new String256().setString("serviceStartTime"));
         serviceStopTime = new NameValueDTM();
         serviceStopTime.setName(new String256().setString("serviceStopTime"));
-        size = new NameValueInteger();
-        size.setName(new String256().setString("size"));
+        size = new Integer(1);
         sourcePatientId = new NameValueString256();
         sourcePatientId.setName(new String256().setString("sourcePatientId"));
         sourcePatientInfo = new NameValueString256();
         sourcePatientInfo.setName(new String256().setString("sourcePatientInfo"));
-//        typeCode = new CodedTerm();
         uniqueId = new IdentifierOID();
         uniqueId.setIdType(new String256().setString("urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab"));
         uri = new String256();
@@ -732,11 +724,11 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         this.serviceStopTime = serviceStopTime;
     }
 
-    public NameValueInteger getSize() {
+    public Integer getSize() {
         return size;
     }
 
-    public void setSize(NameValueInteger size) {
+    public void setSize(Integer size) {
         this.size = size;
     }
 
@@ -820,7 +812,7 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         doc.setRepoUId(this.repoUId.copy());
         doc.setServiceStartTime(this.serviceStartTime.copy());
         doc.setServiceStopTime(this.serviceStopTime.copy());
-        doc.setSize(this.size.copy());
+        doc.setSize(this.size);
         doc.setSourcePatientId(this.sourcePatientId.copy());
         doc.setSourcePatientInfo(this.sourcePatientInfo.copy());
         doc.setTypeCode(this.typeCode.copy());
