@@ -58,7 +58,8 @@ public enum ToolTipResources {
     }
 
     public ToolTipConfig getUniqueIdTooltipConfig() {
-        return new ToolTipConfig("Unique ID is an OID", "As defined in the HL7 implementation for OID (http://www.hl7.org/implement/standards/product_brief.cfm?product_id=210)<br/>Unique ID format is \"[1-9](\\.[0-9]+)*]\"");
+        return new ToolTipConfig("Unique ID is an OID", "As defined in the HL7 implementation for OID (http://www.hl7.org/implement/standards/product_brief.cfm?product_id=210)<br/>Unique ID format is \"[0-2](\\.[0-9]+)*]\"");
+        // ^[1-9][0-9]*(\.[1-9][0-9]*)+
     }
 
     public ToolTipConfig getDocEntryTitleTooltipConfig() {
@@ -122,6 +123,7 @@ public enum ToolTipResources {
         return new ToolTipConfig("Repository Unique ID is an OID",
                 "As defined in the HL7 implementation for OID (http://www.hl7.org/implement/standards/product_brief.cfm?product_id=210) "
                         + "OID format is \"[1-9](\\.[0-9]+)*]\"");
+        // ^[1-9][0-9]*(\.[1-9][0-9]*)+
     }
 
     public ToolTipConfig getPatientIdTooltipConfig() {

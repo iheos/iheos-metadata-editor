@@ -435,7 +435,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         // unique id
         uniqueId.setAllowBlanks(!isRequired("docEntryUniqueID"));
         uniqueId.addValueFieldValidator(ClientFormatValidationResource.INSTANCE.getUniqueIdRegExpValidator());
-        uniqueId.setEmptyTexts("ex: 2008.8.1.35447^5846", "ex: 2008.8.1.35447");
+        uniqueId.setEmptyTexts("ex: 1.2008.8.1.35447^5846", "ex: 1.2008.8.1.35447");
         uniqueId.setToolTipConfigs(ToolTipResources.INSTANCE.getUniqueIdTooltipConfig());
         // uri
         uri.setAllowBlank(!isRequired("docEntryURI"));

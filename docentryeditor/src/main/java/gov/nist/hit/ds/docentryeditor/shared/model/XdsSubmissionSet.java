@@ -235,7 +235,7 @@ public class XdsSubmissionSet  implements XdsModelElement,Serializable {
 
     public void populate(){
         entryUUID.setString("SubmissionSet01");
-        uniqueId.setValue(new OID(new String256("2009.9.1.2456")));
+        uniqueId.setValue(new OID(new String256("1.2009.9.1.2456")));
         sourceId.setValue(new OID(new String256("1.3.6.1.4.1.21367.2009.1.2.1")));
         patientId.setValue(new String256("6578946^^^&1.3.6.1.4.1.21367.2005.3.7&ISO"));
         contentTypeCode=new CodedTerm("11502-2","LABORATORY REPORT.TOTAL","2.16.840.1.113883.6.1");
