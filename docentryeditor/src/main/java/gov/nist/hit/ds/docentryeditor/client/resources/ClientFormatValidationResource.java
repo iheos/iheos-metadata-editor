@@ -17,7 +17,7 @@ public enum ClientFormatValidationResource {
     }
 
     public RegExValidator getPatientIDRegExpValidator() {
-        return new RegExValidator("([1-9A-z])*.+\\^{3}&[1-9][0-9]*(\\.[1-9][0-9]*)+(&ISO)$", "Value's format is not a correct. \nIt should be like this: 6578946^^^&1.3.6.1.4.1.21367.2005.3.7&ISO.");
+        return new RegExValidator("([1-9A-z])+.*\\^{3}&[1-9][0-9]*(\\.[1-9][0-9]*)+(&ISO)$", "Value's format is not a correct. \nIt should be like this: 6578946^^^&1.3.6.1.4.1.21367.2005.3.7&ISO.");
     }
 
     public RegExValidator getRepoOIDValidation() {
@@ -34,7 +34,7 @@ public enum ClientFormatValidationResource {
     }
 
     public RegExValidator getUniqueIdRegExpValidator() {
-        return new RegExValidator("^[1-9][0-9]*(\\.[1-9][0-9]*)+(\\^[1-9][0-9]+)?$", "Value's format is not a correct. It is supposed to be a suite of figures separated by periods.");
+        return new RegExValidator("^[0-2](\\.[1-9][0-9]*)+(\\^[1-9][0-9]+)?$", "Value's format is not a correct. It is supposed to be a suite of figures separated by periods.");
     }
 
     public RegExValidator getUriRegExpValidator() {

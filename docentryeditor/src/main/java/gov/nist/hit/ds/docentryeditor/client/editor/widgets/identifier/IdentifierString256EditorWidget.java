@@ -16,8 +16,8 @@ import gov.nist.hit.ds.docentryeditor.shared.model.IdentifierString256;
  */
 public class IdentifierString256EditorWidget extends Composite implements Editor<IdentifierString256> {
     private VerticalLayoutContainer vcontainer = new VerticalLayoutContainer();
-    String256EditorWidget value = new String256EditorWidget();
-    String256EditorWidget idType = new String256EditorWidget();
+    public String256EditorWidget value = new String256EditorWidget();
+    public String256EditorWidget idType = new String256EditorWidget();
 
     /**
      * Default constructor.
