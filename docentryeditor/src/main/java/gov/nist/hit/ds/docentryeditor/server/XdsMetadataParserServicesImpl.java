@@ -195,7 +195,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
 
         String sizeString=asString(m.getSlotValue(ele, "size", 0));
         if (sizeString!=null&&!sizeString.isEmpty()) {
-            de.setSize(Integer.parseInt(sizeString));
+            de.setSize(new String256(sizeString));
         }
 
         try {

@@ -85,7 +85,7 @@ public class ClientTestHelper {
         stop.getValues().add(new DTM(DateTimeFormat.getFormat("yyyyMMddHHmmss").parse("20140213101500")));
         docentry.setServiceStopTime(stop);
         // ---- SIZE
-        docentry.setSize(65);
+        docentry.setSize(new String256("65"));
         // ---- SOURCE PATIENT ID
         docentry.getSourcePatientId().setName(new String256("SourcePatientID"));
         docentry.getSourcePatientId().getValues().clear();

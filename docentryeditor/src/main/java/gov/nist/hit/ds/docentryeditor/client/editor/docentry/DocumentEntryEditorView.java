@@ -62,7 +62,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
     @Inject
     MimeTypeComboBox mimeType;
     @Inject
-    IntegerEditorWidget size;
+    String256EditorWidget size;
     // Could be injected using FactoryProvider assisted inject
     OIDEditorWidget repoUId = new OIDEditorWidget(false);
     /* Identifiers declaration */
@@ -247,7 +247,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
             if (!hash.getField().getText().isEmpty()) {
                 s += "Hash: " + hash.getField().getText() + ", ";
             }
-            s += "Size: " + size.getValue().toString();
+            s += "Size: " + size.getField().getText();
             s += ")";
             filePropertiesOPanel.setHeadingText("File properties " + s);
         }
@@ -257,7 +257,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
             if (!hash.getField().getText().isEmpty()) {
                 s += "Hash: " + hash.getField().getText() + ", ";
             }
-            s += "Size: " + size.getValue().toString();
+            s += "Size: " + size.getField().getText();
             s += ")";
             filePropertiesRPanel.setHeadingText("File properties " + s);
         }

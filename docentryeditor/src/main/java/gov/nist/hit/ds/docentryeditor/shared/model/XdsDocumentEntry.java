@@ -339,7 +339,7 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
      * @see XdsDocumentEntry
      */
     @Nullable
-    private Integer size;
+    private String256 size;
     /**
      * <b>NameValueString256 sourcePatientId</b> - The source patient id of the
      * document [Optional].<br>
@@ -531,7 +531,7 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         serviceStartTime.setName(new String256().setString("serviceStartTime"));
         serviceStopTime = new NameValueDTM();
         serviceStopTime.setName(new String256().setString("serviceStopTime"));
-        size = new Integer(1);
+        size = new String256();
         sourcePatientId = new NameValueString256();
         sourcePatientId.setName(new String256().setString("sourcePatientId"));
         sourcePatientInfo = new NameValueString256();
@@ -724,11 +724,11 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
         this.serviceStopTime = serviceStopTime;
     }
 
-    public Integer getSize() {
+    public String256 getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(String256 size) {
         this.size = size;
     }
 

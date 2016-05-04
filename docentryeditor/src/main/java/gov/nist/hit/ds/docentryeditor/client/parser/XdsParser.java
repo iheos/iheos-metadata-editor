@@ -242,7 +242,7 @@ public class XdsParser {
                 xdsDocumentEntry.setServiceStopTime(parseNameValueDTM(nodeName));
                 break;
             case size:
-                xdsDocumentEntry.setSize(parseNameValueInteger(nodeName).getValues().get(0));
+                xdsDocumentEntry.setSize(new String256(parseNameValueInteger(nodeName).getValues().get(0).toString()));
                 break;
             case sourcepatientid:
                 xdsDocumentEntry.setSourcePatientId(parseNameValueString256(nodeName));
