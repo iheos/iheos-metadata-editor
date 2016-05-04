@@ -102,7 +102,7 @@ public class ServerTestHelper {
         }
         docentry.setServiceStopTime(stop);
         // ---- SIZE
-        docentry.setSize(defautSize);
+        docentry.setSize(new String256(Integer.toString(defautSize)));
         // ---- SOURCE PATIENT ID
         docentry.getSourcePatientId().setName(new String256("SourcePatientID"));
         docentry.getSourcePatientId().getValues().clear();
