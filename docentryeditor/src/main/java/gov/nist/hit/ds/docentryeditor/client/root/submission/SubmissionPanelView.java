@@ -39,7 +39,9 @@ import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadDialog;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -277,8 +279,14 @@ public class SubmissionPanelView extends AbstractView<SubmissionPanelPresenter> 
         removeDocEntryButton.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {
-                submissionTree.getStore().remove(submissionTree.getSelectionModel().getSelectedItem());
-                submissionTree.getSelectionModel().select(submissionTree.getStore().getFirstChild(presenter.getSubmissionSetTreeNode()), false);
+                if (submissionTree.getSelectionModel().getSelectedItems().contains(presenter.getSubmissionSetTreeNode())){
+                    presenter.clearSubmissionSet();
+                }else{
+                    for (SubmissionMenuData element  : submissionTree.getSelectionModel().getSelectedItems()) {
+                            submissionTreeStore.remove(element);
+                    }
+                    presenter.goToHomePage();
+                }
             }
         });
         clearDocEntriesButton.addSelectHandler(new SelectEvent.SelectHandler() {
