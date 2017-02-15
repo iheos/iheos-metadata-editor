@@ -1,128 +1,61 @@
 package gov.nist.hit.ds.docentryeditor.client.root;
 
+import com.sencha.gxt.cell.core.client.ButtonCell;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.Padding;
 import com.sencha.gxt.widget.core.client.ContentPanel;
-import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutData;
-import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
+import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer.HBoxLayoutAlign;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
-import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent.NewFileLoadedHandler;
-import gov.nist.hit.ds.docentryeditor.client.event.XdsEditorLoadedEvent;
-import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadMVP;
+import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
+import gov.nist.hit.ds.docentryeditor.client.widgets.configuration.ConfigurationDialog;
+import gov.nist.hit.ds.docentryeditor.client.widgets.EnvironmentSelectionWidget;
+import gov.nist.hit.ds.docentryeditor.client.widgets.SessionSelectionWidget;
 
 import javax.inject.Inject;
-import java.util.logging.Logger;
 
 // not used anymore
 public class NorthPanel extends ContentPanel {
+    private TextButton configBtn=new TextButton("Configure",AppImages.INSTANCE.delete());
+    private EnvironmentSelectionWidget environmentSelector;
+    private SessionSelectionWidget sessionSelector;
+    private ConfigurationDialog configurationDialog;
 
-    private final TextButton loadButton;
-    private final TextButton newButton;
-    private final TextButton saveButton;
-	@Inject
-    private FileUploadMVP fileUploadMVP;
-	@Inject
-    private MetadataEditorEventBus eventBus;
-	private Dialog loadingDialog;
+    @Inject
+    public NorthPanel(EnvironmentSelectionWidget environmentSelector,SessionSelectionWidget sessionSelector) {
+        this.environmentSelector=environmentSelector;
+        this.sessionSelector=sessionSelector;
 
-	public NorthPanel() {
-		setHeaderVisible(false);
-		setBorders(false);
+        setHeaderVisible(false);
+        setBorders(false);
+        HBoxLayoutContainer btnContainer=new HBoxLayoutContainer();
+        btnContainer.setPadding(new Padding(5,20,5,5));
+        btnContainer.setHBoxLayoutAlign(HBoxLayoutContainer.HBoxLayoutAlign.MIDDLE);
 
-		HBoxLayoutContainer c = new HBoxLayoutContainer();
-		c.setPadding(new Padding(5,20,5,5));
-		c.setHBoxLayoutAlign(HBoxLayoutAlign.MIDDLE);
-		c.setPack(BoxLayoutPack.END);
+        configBtn.setHeight(28);
+        configBtn.setWidth(85);
+        configBtn.setIconAlign(ButtonCell.IconAlign.LEFT);
 
-		BoxLayoutData layoutData = new BoxLayoutData(new Margins(0, 10, 0, 0));
+        btnContainer.add(environmentSelector,new BoxLayoutContainer.BoxLayoutData(new Margins(0, 65, 0, 0)));
+        btnContainer.add(sessionSelector,new BoxLayoutContainer.BoxLayoutData(new Margins(0, 10, 0, 0)));
+        btnContainer.add(configBtn);
 
-		newButton = new TextButton("New");
-		newButton.setSize("50", "-1");
-		c.add(newButton, layoutData);
+        this.add(btnContainer);
+        bindUI();
+    }
 
-		loadButton = new TextButton("Load");
-		loadButton.setSize("50", "-1");
-		c.add(loadButton, layoutData);
-
-		saveButton = new TextButton("Download file");
-		saveButton.setSize("50", "-1");
-		saveButton.disable();
-		c.add(saveButton, layoutData);
-
-		this.add(c);
-	}
-
-	private void bindUI() {
-		loadButton.addSelectHandler(new SelectHandler() {
-
-			@Override
-			public void onSelect(SelectEvent event) {
-				loadingDialog = new Dialog();
-				loadingDialog.setBodyBorder(false);
-				loadingDialog.setHeadingText("File Upload");
-				loadingDialog.setHideOnButtonClick(true);
-				loadingDialog.add(fileUploadMVP.getDisplay());
-
-				// delete the default button
-				loadingDialog.getButtonBar().remove(0);
-				loadingDialog.setModal(true);
-				loadingDialog.show();
-			}
-
-		});
-		fileUploadMVP.getView().getBtnCancel().addSelectHandler(new SelectHandler() {
-
-			@Override
-			public void onSelect(SelectEvent event) {
-				loadingDialog.hide();
-                Logger.getLogger(this.getClass().getName()).info("Dialog Hided");
-            }
-
-		});
-		eventBus.addNewFileLoadedHandler(new NewFileLoadedHandler() {
-
+    private void bindUI() {
+        configBtn.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
-            public void onNewFileLoaded(NewFileLoadedEvent event) {
-                if (loadingDialog != null) {
-                    loadingDialog.hide();
-                    saveButton.enable();
-                }
+            public void onSelect(SelectEvent event) {
+                configurationDialog.show();
             }
         });
-        eventBus.addXdsEditorLoadedEventtHandler(new XdsEditorLoadedEvent.XdsEditorLoadedEventHandler() {
-            @Override
-            public void onXdsEditorLoaded(XdsEditorLoadedEvent event) {
-                saveButton.enable();
-            }
-        });
-		newButton.addSelectHandler(new SelectHandler() {
+    }
 
-			@Override
-			public void onSelect(SelectEvent event) {
-				saveButton.enable();
-            }
-
-		});
-		saveButton.addSelectHandler(new SelectHandler() {
-
-			@Override
-			public void onSelect(SelectEvent event) {
-				eventBus.fireSaveFileEvent();
-			}
-		});
-
-	}
-
-	public void start() {
-		fileUploadMVP.init();
-		bindUI();
-	}
+    public void start() {
+        bindUI();
+    }
 
 }

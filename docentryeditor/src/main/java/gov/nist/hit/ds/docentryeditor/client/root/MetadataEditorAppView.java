@@ -25,6 +25,7 @@ public class MetadataEditorAppView extends Viewport {
     private static final int PANELS_MARGINS = 5;
     // main panel
     private CenterPanel center;
+    private NorthPanel north;
     private GenericMVP<SubmissionMenuData, SubmissionPanelView, SubmissionPanelPresenter> submissionMVP;
 
     private SimpleContainer simpleContainer;
@@ -32,7 +33,7 @@ public class MetadataEditorAppView extends Viewport {
     private SubmissionPanelPresenter submissionPanelPresenter;
 
     @Inject
-    public MetadataEditorAppView(SubmissionPanelView submissionPanelView,SubmissionPanelPresenter submissionPanelPresenter) {
+    public MetadataEditorAppView(SubmissionPanelView submissionPanelView,SubmissionPanelPresenter submissionPanelPresenter,NorthPanel north) {
         super();
 
         this.submissionPanelPresenter = submissionPanelPresenter;
@@ -41,10 +42,20 @@ public class MetadataEditorAppView extends Viewport {
         BorderLayoutContainer con = new BorderLayoutContainer();
         con.setBorders(true);
 
+        BorderLayoutContainer c = new BorderLayoutContainer();
+
+        // NORTH
+        this.north = north;
+        BorderLayoutData northData = new BorderLayoutData(50);
+        northData.setMargins(new Margins(PANELS_MARGINS));
+        northData.setCollapsible(false);
+        northData.setSplit(false);
+
+        c.setNorthWidget(north, northData);
+
         // CENTER
         center = new CenterPanel();
         MarginData centerData = new MarginData(PANELS_MARGINS);
-        BorderLayoutContainer c = new BorderLayoutContainer();
         c.setCenterWidget(center, centerData);
 
         con.setCenterWidget(c);
