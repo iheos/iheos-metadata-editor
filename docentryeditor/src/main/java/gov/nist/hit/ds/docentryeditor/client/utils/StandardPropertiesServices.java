@@ -10,5 +10,5 @@ import java.util.Map;
  */
 @RemoteServiceRelativePath("stdprop")
 public interface StandardPropertiesServices extends RemoteService{
-    public Map<String,String> getStandardProperties(String standard);
+    Map<String,String> getStandardProperties(String standard);
 }

@@ -20,6 +20,7 @@ public class NorthPanel extends ContentPanel {
     private TextButton configBtn=new TextButton("Configure",AppImages.INSTANCE.delete());
     private EnvironmentSelectionWidget environmentSelector;
     private SessionSelectionWidget sessionSelector;
+    @Inject
     private ConfigurationDialog configurationDialog;
 
     @Inject

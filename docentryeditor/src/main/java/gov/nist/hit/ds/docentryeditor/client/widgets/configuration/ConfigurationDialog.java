@@ -1,22 +1,47 @@
 package gov.nist.hit.ds.docentryeditor.client.widgets.configuration;
 
-import com.google.gwt.user.client.ui.Label;
 import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+
+import javax.inject.Inject;
 
 /**
  * Created by onh2 on 1/24/17.
  */
 public class ConfigurationDialog extends Dialog {
-//    private ConfigurationView configurationPanel=new ConfigurationView();
+    @Inject
+    private ApiConfigurationMVP apiConfigurationMVP;
+
     public ConfigurationDialog(){
         setHeadingText("Editor configuration dialog");
-        setWidth(300);
-        setResizable(false);
+        setWidth(400);
+        setBodyBorder(false);
         setHideOnButtonClick(true);
-        setPredefinedButtons(PredefinedButton.YES, PredefinedButton.NO);
-        setBodyStyleName("pad-text");
+        getButtonBar().remove(0);
+        setModal(true);
         getBody().addClassName("pad-text");
-        add(new Label("Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
-                "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."));
+    }
+
+    private void bind() {
+        apiConfigurationMVP.getView().getSaveButton().addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                hide();
+            }
+        });
+        apiConfigurationMVP.getView().getCancelButton().addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                hide();
+            }
+        });
+    }
+
+    @Override
+    public void show() {
+        apiConfigurationMVP.init();
+        add(apiConfigurationMVP.getDisplay());
+        bind();
+        super.show();
     }
 }
