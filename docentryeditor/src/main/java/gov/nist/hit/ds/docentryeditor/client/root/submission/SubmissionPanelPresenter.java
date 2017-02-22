@@ -9,13 +9,14 @@ import com.sencha.gxt.widget.core.client.info.Info;
 import gov.nist.hit.ds.docentryeditor.client.editor.association.AssociationEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocEntryEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorPlace;
-import gov.nist.hit.ds.docentryeditor.client.event.*;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.*;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.*;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
 import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
-import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorRequestFactory;
+import gov.nist.hit.ds.docentryeditor.client.utils.Services.MetadataEditorRequestFactory;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import javax.inject.Inject;
@@ -53,17 +54,17 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
     }
 
     /**
-     * Method that handles the different event fired in the event bus.
+     * Method that handles the different eventbus fired in the eventbus bus.
      */
     private void bind() {
-        // this event catches handle the navigation back to the home page.
+        // this eventbus catches handle the navigation back to the home page.
         ((MetadataEditorEventBus) getEventBus()).addBackToHomePageEventHandler(new BackToHomePageEvent.BackToHomePageEventHandler() {
             @Override
             public void onBackToHomePage(BackToHomePageEvent event) {
                 goToHomePage();
             }
         });
-        // this event catches that a Document entry has been loaded from the user's file system.
+        // this eventbus catches that a Document entry has been loaded from the user's file system.
         ((MetadataEditorEventBus) getEventBus()).addNewFileLoadedHandler(new NewFileLoadedEvent.NewFileLoadedHandler() {
             @Override
             public void onNewFileLoaded(NewFileLoadedEvent event) {
@@ -82,11 +83,11 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
                 view.getSubmissionTree().getSelectionModel().select(submissionSetTreeNode, false);
             }
         });
-        // this event catches that a Document entry has been loaded from the user's file system.
+        // this eventbus catches that a Document entry has been loaded from the user's file system.
         ((MetadataEditorEventBus) getEventBus()).addCreateNewDocEntryEventHandler(new CreateNewDocEntryEvent.CreateNewDocEntryEventHandler() {
             @Override
             public void onCreateNewDocumentEntry(CreateNewDocEntryEvent event) {
-//                currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, event.getDocument());
+//                currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, eventbus.getDocument());
 //                nextIndex++;
 //                view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
 //                view.getSubmissionTree().expandAll();
@@ -98,9 +99,9 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         ((MetadataEditorEventBus) getEventBus()).addXdsEditorLoadedEventtHandler(new XdsEditorLoadedEvent.XdsEditorLoadedEventHandler() {
             @Override
             public void onXdsEditorLoaded(XdsEditorLoadedEvent event) {
-                logger.info("... receive Editor loaded event.");
+                logger.info("... receive Editor loaded eventbus.");
                 if (currentlyEdited != null) {
-                    // if a doc. entry is currently under edition, an event is fired to transfer it to the editor.
+                    // if a doc. entry is currently under edition, an eventbus is fired to transfer it to the editor.
                     if (currentlyEdited.getModel() instanceof XdsDocumentEntry) {
                         logger.info("A document is already selected. Loading it...");
                         ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsDocumentEvent((XdsDocumentEntry) currentlyEdited.getModel());
@@ -330,20 +331,20 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
             if (!(placeController.getWhere() instanceof DocEntryEditorPlace)) {
                 placeController.goTo(new DocEntryEditorPlace());
             }
-            logger.info("Fire Start Edit selected (" + currentlyEdited.getValue() + ") document entry event...");
+            logger.info("Fire Start Edit selected (" + currentlyEdited.getValue() + ") document entry eventbus...");
             ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsDocumentEvent((XdsDocumentEntry) currentlyEdited.getModel());
         }else if(currentlyEdited.getModel() instanceof XdsSubmissionSet){
             if(!(placeController.getWhere() instanceof SubmissionSetEditorPlace)){
                 placeController.goTo(new SubmissionSetEditorPlace());
             }
-            logger.info("Fire Start Edit selected (" + currentlyEdited.getValue() + ") submission set event...");
+            logger.info("Fire Start Edit selected (" + currentlyEdited.getValue() + ") submission set eventbus...");
             logger.info(currentlyEdited.getModel().toString());
             ((MetadataEditorEventBus) getEventBus()).fireStartEditXdsSubmissionSetEvent((XdsSubmissionSet) currentlyEdited.getModel());
         }else if(currentlyEdited.getModel() instanceof XdsAssociation){
             if (!(placeController.getWhere() instanceof AssociationEditorPlace)){
                 placeController.goTo(new AssociationEditorPlace());
             }
-            logger.info("Fire Start Edit selected (" + currentlyEdited.getValue() + ") association event...");
+            logger.info("Fire Start Edit selected (" + currentlyEdited.getValue() + ") association eventbus...");
             logger.info(currentlyEdited.getModel().toString());
             List<XdsModelElement> l=new ArrayList<XdsModelElement>();
             for (SubmissionMenuData s:view.getSubmissionTreeStore().getAll()){

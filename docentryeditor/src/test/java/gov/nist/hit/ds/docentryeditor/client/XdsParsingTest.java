@@ -57,7 +57,7 @@ public class XdsParsingTest extends GWTTestCase {
         assertEquals("There has been a problem while parsing creation time", ClientTestHelper.INSTANCE.getDocEntry().getCreationTime(), model.getCreationTime());
         assertEquals("There has been a problem while parsing service start time", ClientTestHelper.INSTANCE.getDocEntry().getServiceStartTime(), model.getServiceStartTime());
         assertEquals("There has been a problem while parsing service stop time", ClientTestHelper.INSTANCE.getDocEntry().getServiceStopTime(), model.getServiceStopTime());
-        assertEquals("There has been a problem while parsing event codes", ClientTestHelper.INSTANCE.getDocEntry().getEventCode(), model.getEventCode());
+        assertEquals("There has been a problem while parsing eventbus codes", ClientTestHelper.INSTANCE.getDocEntry().getEventCode(), model.getEventCode());
         assertEquals("There has been a problem while parsing uuid", ClientTestHelper.INSTANCE.getDocEntry().getId(), model.getId());
         assertEquals("There has been a problem while parsing mime type", ClientTestHelper.INSTANCE.getDocEntry().getMimeType(), model.getMimeType());
         assertEquals("There has been a problem while parsing language code", ClientTestHelper.INSTANCE.getDocEntry().getLanguageCode(), model.getLanguageCode());

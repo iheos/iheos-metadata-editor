@@ -1,7 +1,7 @@
 package gov.nist.hit.ds.docentryeditor.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServices;
+import gov.nist.hit.ds.docentryeditor.client.utils.Services.StandardPropertiesServices;
 
 import java.io.IOException;
 import java.io.InputStream;

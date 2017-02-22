@@ -25,7 +25,7 @@ import java.util.Map;
  * {@link CodedTerm})) ;</li>
  * <li>{@link #creationTime}: A creation time ({@link NameValueDTM}) ;</li>
  * <li>{@link #id}: An id ({@link String256}) ;</li>
- * <li>{@link #eventCode}: An event code (ArrayList({@link CodedTerm})) ;</li>
+ * <li>{@link #eventCode}: An eventbus code (ArrayList({@link CodedTerm})) ;</li>
  * <li>{@link #formatCode}: A format code ({@link CodedTerm}) ;</li>
  * <li>{@link #hash}: An hash ({@link String256}) ;</li>
  * <li>{@link #healthcareFacilityType}: An health care facility type(
@@ -139,7 +139,7 @@ public class XdsDocumentEntry implements XdsModelElement,Serializable {
     @NotNull
     private NameValueDTM creationTime;
     /**
-     * <b>ArrayList(CodedTerm) eventCode</b> - The event code of the document
+     * <b>ArrayList(CodedTerm) eventCode</b> - The eventbus code of the document
      * [Optional].<br>
      * Type: {@link CodedTerm}</br> </p>
      * <p/>

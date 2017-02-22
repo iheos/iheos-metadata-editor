@@ -45,7 +45,7 @@ public abstract class AbstractView<P extends AbstractPresenter<?>> implements Is
         /*
         ResizeHandler resizeHandler=new ResizeHandler() {
             @Override
-            public void onResize(ResizeEvent event) {
+            public void onResize(ResizeEvent eventbus) {
                 for(Widget w : pathToWidgetsMap.values()){
                     //  w.setWidth("200");
                     cp.forceLayout();

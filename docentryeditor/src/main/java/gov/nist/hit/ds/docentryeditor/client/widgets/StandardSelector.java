@@ -8,10 +8,9 @@ import com.google.inject.Inject;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
-import gov.nist.hit.ds.docentryeditor.client.event.SelectedStandardChangedEvent;
-import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServices;
-import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServicesAsync;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.utils.Services.StandardPropertiesServices;
+import gov.nist.hit.ds.docentryeditor.client.utils.Services.StandardPropertiesServicesAsync;
 
 import java.util.Map;
 import java.util.logging.Logger;

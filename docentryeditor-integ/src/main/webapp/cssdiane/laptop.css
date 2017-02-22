@@ -35,7 +35,7 @@ See the loading condition dependent on the size of the viewport, inside XDS-Meta
     color: #fc0;
     text-shadow: none;
 }
-/* Name of the Connectathon event (or "Standard release"), if applicable, the release was made for.
+/* Name of the Connectathon eventbus (or "Standard release"), if applicable, the release was made for.
 Displayed to the right side of the dark blue bar. */
 #appevent{
     display: inline-block;

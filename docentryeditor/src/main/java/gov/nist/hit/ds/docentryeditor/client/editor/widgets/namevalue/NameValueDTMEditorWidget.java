@@ -71,14 +71,14 @@ public class NameValueDTMEditorWidget extends GenericEditableListView<DTM, Date>
         // not working asked a question on stackoverflow waiting for answers
 //        editing.addCompleteEditHandler(new CompleteEditEvent.CompleteEditHandler<DTM>() {
 //            @Override
-//            public void onCompleteEdit(CompleteEditEvent<DTM> event) {
+//            public void onCompleteEdit(CompleteEditEvent<DTM> eventbus) {
 //                df.clearInvalid();
 //                df.validate();
 //                if (df.getValue() == null || !df.isValid()) {
 //                    getStore().clear();
 //                    DTM e = GWT.create(DTM.class);
 //                    getStore().add(e);
-//                    editing.startEditing(event.getEditCell());
+//                    editing.startEditing(eventbus.getEditCell());
 //                    df.forceInvalid("This date does not respect the expeted format");
 //                } else {
 ////                    editing.cancelEditing();

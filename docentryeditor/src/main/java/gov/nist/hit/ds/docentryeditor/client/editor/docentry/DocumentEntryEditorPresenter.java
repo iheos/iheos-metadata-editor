@@ -6,14 +6,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.ChangePlaceEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
-import gov.nist.hit.ds.docentryeditor.client.event.SelectedStandardChangedEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsDocumentEvent;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.ChangePlaceEvent;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.SelectedStandardChangedEvent;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.StartEditXdsDocumentEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
-import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServices;
-import gov.nist.hit.ds.docentryeditor.client.utils.StandardPropertiesServicesAsync;
+import gov.nist.hit.ds.docentryeditor.client.utils.Services.StandardPropertiesServices;
+import gov.nist.hit.ds.docentryeditor.client.utils.Services.StandardPropertiesServicesAsync;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
 
 import javax.inject.Inject;
@@ -63,10 +63,10 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
     }
 
     /**
-     * Method that ties actions and view together. It mostly handles gwt event form the event bus.
+     * Method that ties actions and view together. It mostly handles gwt eventbus form the eventbus bus.
      */
     private void bind() {
-        // this event provides the presenter a document entry to edit and triggers its display in doc entry editor view.
+        // this eventbus provides the presenter a document entry to edit and triggers its display in doc entry editor view.
         ((MetadataEditorEventBus) getEventBus()).addStartEditXdsDocumentHandler(new StartEditXdsDocumentEvent.StartEditXdsDocumentHandler() {
 
             @Override
@@ -77,7 +77,7 @@ public class DocumentEntryEditorPresenter extends AbstractPresenter<DocumentEntr
                 getView().authors.editNewAuthor();
             }
         });
-        // this event tells the presenter the application Place is about to change.
+        // this eventbus tells the presenter the application Place is about to change.
         getEventBus().addHandler(ChangePlaceEvent.TYPE, new ChangePlaceEvent.ChangePlaceEventHandler() {
             @Override
             public void onPlaceChange(ChangePlaceEvent event) {

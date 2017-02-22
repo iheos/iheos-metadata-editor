@@ -2,14 +2,12 @@ package gov.nist.hit.ds.docentryeditor.client.widgets.uploader;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
-import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.NewFileLoadedEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
-
-import java.util.Map;
 
 public class FileUploadPresenter extends AbstractPresenter<FileUploadView> {
 

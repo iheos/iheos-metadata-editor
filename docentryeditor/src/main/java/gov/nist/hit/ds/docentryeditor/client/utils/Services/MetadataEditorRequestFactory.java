@@ -1,4 +1,4 @@
-package gov.nist.hit.ds.docentryeditor.client.utils;
+package gov.nist.hit.ds.docentryeditor.client.utils.Services;
 
 import com.google.web.bindery.requestfactory.shared.RequestFactory;
 

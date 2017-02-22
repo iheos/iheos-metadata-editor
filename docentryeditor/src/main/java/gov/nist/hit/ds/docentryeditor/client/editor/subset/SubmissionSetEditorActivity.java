@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.Style;
 import com.sencha.gxt.widget.core.client.*;
 import com.sencha.gxt.widget.core.client.container.*;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.*;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsSubmissionSet;
 
@@ -45,7 +45,7 @@ public class SubmissionSetEditorActivity extends AbstractActivity{
         Timer t = new Timer() {
             @Override
             public void run() {
-                Logger.getLogger(this.getClass().getName()).info("Fire Editor UI loaded event...");
+                Logger.getLogger(this.getClass().getName()).info("Fire Editor UI loaded eventbus...");
                 // signal that the editor view has loaded.
                 metadataEditorEventBus.fireXdsEditorLoadedEvent();
             }

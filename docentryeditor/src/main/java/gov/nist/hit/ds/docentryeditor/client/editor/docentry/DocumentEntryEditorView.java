@@ -371,7 +371,7 @@ public class DocumentEntryEditorView extends AbstractView<DocumentEntryEditorPre
         commentsGrid.setToolbarHelpButtonTooltip(ToolTipResources.INSTANCE.getDocEntryCommentsTooltipConfig());
         // confidentiality codes
         confidentialityCodesGrid.setToolbarHelpButtonTooltip(ToolTipResources.INSTANCE.getConfidentialityCodesToolTipConfig());
-        // event codes
+        // eventbus codes
         eventCodesGrid.setToolbarHelpButtonTooltip(ToolTipResources.INSTANCE.getEventCodesTooltipConfig());
         // format code
         formatCode.setEmptyText("Select a format...");

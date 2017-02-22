@@ -1,7 +1,5 @@
 package gov.nist.hit.ds.docentryeditor.client.editor.widgets.codedterm;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
@@ -18,13 +16,10 @@ import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
-import com.sencha.gxt.widget.core.client.form.Field;
 import gov.nist.hit.ds.docentryeditor.client.editor.EditionMode;
-import gov.nist.hit.ds.docentryeditor.client.event.SelectionChangeEditorHandler;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodes;
 import gov.nist.hit.ds.docentryeditor.client.parser.PredefinedCodesParser;
 import gov.nist.hit.ds.docentryeditor.shared.model.CodedTerm;
-import org.apache.bcel.classfile.Code;
 
 import java.util.ArrayList;
 import java.util.List;

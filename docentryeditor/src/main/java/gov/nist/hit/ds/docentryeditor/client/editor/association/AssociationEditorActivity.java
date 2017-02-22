@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.generics.GenericMVP;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
@@ -44,7 +44,7 @@ public class AssociationEditorActivity extends AbstractActivity{
         Timer t = new Timer() {
             @Override
             public void run() {
-                Logger.getLogger(this.getClass().getName()).info("Fire Doc. Entry Editor UI loaded event...");
+                Logger.getLogger(this.getClass().getName()).info("Fire Doc. Entry Editor UI loaded eventbus...");
                 // signal that the document entry editor view has loaded.
                 metadataEditorEventBus.fireXdsEditorLoadedEvent();
             }

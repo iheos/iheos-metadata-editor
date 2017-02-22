@@ -36,6 +36,10 @@
 		<servlet-name>stdpropServices</servlet-name>
 		<servlet-class>gov.nist.hit.ds.docentryeditor.server.StandardPropertiesServiceImpl</servlet-class>
 	</servlet>
+    <servlet>
+        <servlet-name>envServices</servlet-name>
+        <servlet-class>gov.nist.hit.ds.docentryeditor.server.EnvironmentServicesImpl</servlet-class>
+    </servlet>
 
     <servlet-mapping>
 		<servlet-name>requestFactoryServlet</servlet-name>
@@ -49,6 +53,10 @@
 		<servlet-name>stdpropServices</servlet-name>
 		<url-pattern>/xdseditor/stdprop</url-pattern>
 	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>envServices</servlet-name>
+        <url-pattern>/xdseditor/envServices</url-pattern>
+    </servlet-mapping>
 
     <!-- Default page to serve -->
 	<welcome-file-list>

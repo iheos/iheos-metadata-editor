@@ -9,7 +9,7 @@ import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 import gov.nist.hit.ds.docentryeditor.client.resources.ToolTipResources;
 import gov.nist.hit.ds.docentryeditor.client.widgets.PageWarningPanel;

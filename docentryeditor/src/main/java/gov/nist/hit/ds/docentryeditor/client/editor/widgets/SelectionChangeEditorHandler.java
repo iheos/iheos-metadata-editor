@@ -1,4 +1,4 @@
-package gov.nist.hit.ds.docentryeditor.client.event;
+package gov.nist.hit.ds.docentryeditor.client.editor.widgets;
 
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;

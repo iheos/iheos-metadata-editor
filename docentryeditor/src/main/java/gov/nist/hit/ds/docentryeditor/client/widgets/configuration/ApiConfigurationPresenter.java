@@ -1,7 +1,7 @@
 package gov.nist.hit.ds.docentryeditor.client.widgets.configuration;
 
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
-import gov.nist.hit.ds.docentryeditor.client.utils.CookiesManager;
+import gov.nist.hit.ds.docentryeditor.client.utils.Services.CookiesManager;
 
 
 /**

@@ -7,7 +7,7 @@ import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
 import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
 import gov.nist.hit.ds.docentryeditor.client.utils.MetadataEditorActivityMapper;
@@ -43,7 +43,7 @@ public class MetadataEditorApp implements IsWidget {
         historyHandler.handleCurrentHistory();
 //        appView.addResizeHandler(new ResizeHandler() {
 //            @Override
-//            public void onResize(ResizeEvent event) {
+//            public void onResize(ResizeEvent eventbus) {
 //                appView.forceLayout();
 //                appView.setResize(true);
 //            }

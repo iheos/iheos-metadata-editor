@@ -55,7 +55,7 @@ public enum PredefinedCodesParser {
     private final List<CodedTerm> typeCodes = new ArrayList<CodedTerm>();
     // list of existing confidentiality codes.
     private final List<CodedTerm> confidentialityCodes = new ArrayList<CodedTerm>();
-    // list of existing event codes.
+    // list of existing eventbus codes.
     private final List<CodedTerm> eventCodes = new ArrayList<CodedTerm>();
     // list of existing mime types.
     private final List<String256> mimeTypes = new ArrayList<String256>();
@@ -118,9 +118,9 @@ public enum PredefinedCodesParser {
             result= confidentialityCodes;
         } else if (predefinedCodes.equals(PredefinedCodes.EVENT_CODES)) {
             if (eventCodes.isEmpty()) {
-                LOGGER.info("Parsing codes file for event codes...");
+                LOGGER.info("Parsing codes file for eventbus codes...");
                 eventCodes.addAll(parseNode(ConfigCodeNodes.eventCodeList.toString()));
-                LOGGER.info("... event codes retrieved from file.");
+                LOGGER.info("... eventbus codes retrieved from file.");
             }
             result = eventCodes;
         }

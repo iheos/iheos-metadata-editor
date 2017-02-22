@@ -31,7 +31,7 @@ public abstract class AbstractPresenter<V extends AbstractView<?>> {
 
     /**
      * Constructor.
-     * @param eventBus Application event bus.
+     * @param eventBus Application eventbus bus.
      */
     @Inject
     public AbstractPresenter(EventBus eventBus) {
@@ -66,7 +66,7 @@ public abstract class AbstractPresenter<V extends AbstractView<?>> {
     }
 
     /**
-     * Getter that return the event bus of the presenter.
+     * Getter that return the eventbus bus of the presenter.
      * @return Event bus of the Presenter (same than the one of the Application)
      */
     public EventBus getEventBus() {
@@ -74,7 +74,7 @@ public abstract class AbstractPresenter<V extends AbstractView<?>> {
     }
 
     /**
-     * Method that sets the event bus of the presenter (should be the same than the one of the Application)
+     * Method that sets the eventbus bus of the presenter (should be the same than the one of the Application)
      * @param eventBus
      */
     public void setEventBus(EventBus eventBus) {

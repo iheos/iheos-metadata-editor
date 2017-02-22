@@ -12,7 +12,7 @@ import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderL
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import gov.nist.hit.ds.docentryeditor.client.editor.validation.ValidationPresenter;
 import gov.nist.hit.ds.docentryeditor.client.editor.validation.ValidationView;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.generics.GenericMVP;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsDocumentEntry;
@@ -57,7 +57,7 @@ public class DocEntryEditorActivity extends AbstractActivity {
         Timer t = new Timer() {
             @Override
             public void run() {
-                Logger.getLogger(this.getClass().getName()).info("Fire Doc. Entry Editor UI loaded event...");
+                Logger.getLogger(this.getClass().getName()).info("Fire Doc. Entry Editor UI loaded eventbus...");
                 // signal that the document entry editor view has loaded.
                 metadataEditorEventBus.fireXdsEditorLoadedEvent();
             }

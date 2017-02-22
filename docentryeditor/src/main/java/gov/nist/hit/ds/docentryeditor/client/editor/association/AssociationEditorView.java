@@ -19,7 +19,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.*;
-import gov.nist.hit.ds.docentryeditor.client.event.SelectionChangeEditorHandler;
+import gov.nist.hit.ds.docentryeditor.client.editor.widgets.SelectionChangeEditorHandler;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractView;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
 import gov.nist.hit.ds.docentryeditor.shared.model.String256;
@@ -220,7 +220,7 @@ public class AssociationEditorView extends AbstractView<AssociationEditorPresent
     /**
      * This method set the different combo boxes selection change handlers.
      * Mostly just finish editing once a value is selected, but in case of
-     * source and target also fires an event to notify that associated elements
+     * source and target also fires an eventbus to notify that associated elements
      * to the association have changed.
      */
     private void initComboBoxesSelectionChangeHandlers() {

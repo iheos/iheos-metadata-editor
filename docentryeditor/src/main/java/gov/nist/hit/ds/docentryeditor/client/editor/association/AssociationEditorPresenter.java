@@ -5,11 +5,10 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.ChangePlaceEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
-import gov.nist.hit.ds.docentryeditor.client.event.StartEditXdsAssociationEvent;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.ChangePlaceEvent;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.StartEditXdsAssociationEvent;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
-import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionMenuData;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsAssociation;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsModelElement;
 
@@ -53,10 +52,10 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
     }
 
     /**
-     * Method that ties actions and view together. It mostly handles gwt event form the event bus.
+     * Method that ties actions and view together. It mostly handles gwt eventbus form the eventbus bus.
      */
     private void bind() {
-        // this event provides the presenter a association to edit and triggers its display in the association editor view.
+        // this eventbus provides the presenter a association to edit and triggers its display in the association editor view.
         ((MetadataEditorEventBus) getEventBus()).addStartEditXdsAssociationHandler(new StartEditXdsAssociationEvent.StartEditXdsAssociationHandler() {
 
             @Override
@@ -71,7 +70,7 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
                 initDriver(event.getAssociation());
             }
         });
-        // this event tells the presenter the application Place is about to change.
+        // this eventbus tells the presenter the application Place is about to change.
         // TODO redesign this
         getEventBus().addHandler(ChangePlaceEvent.TYPE, new ChangePlaceEvent.ChangePlaceEventHandler() {
             @Override
@@ -130,7 +129,7 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
 
 
     /**
-     * This method fires an event to notify that the associated elements in the association have changed.
+     * This method fires an eventbus to notify that the associated elements in the association have changed.
      */
     public void fireAssociatedNodesChangedEvent() {
         ((MetadataEditorEventBus) getEventBus()).fireAssociatedElementsChanged(view.source.getText(), view.target.getText());

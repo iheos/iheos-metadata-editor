@@ -6,10 +6,11 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer.MetadataEditorAppDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
+import gov.nist.hit.ds.docentryeditor.client.utils.Services.MetadataEditorRequestFactory;
 import gov.nist.hit.ds.docentryeditor.client.widgets.StandardSelector;
 
 import javax.inject.Inject;
@@ -27,7 +28,7 @@ public class MetadataEditorGinModule extends AbstractGinModule {
     @Override
     protected void configure() {
         bind(com.google.web.bindery.event.shared.EventBus.class).to(MetadataEditorEventBus.class);
-        // bind(com.google.gwt.event.shared.EventBus.class).to(MetadataEditorEventBus.class);
+        // bind(com.google.gwt.eventbus.shared.EventBus.class).to(MetadataEditorEventBus.class);
         bind(MetadataEditorEventBus.class).in(Singleton.class);
 
         bind(com.google.web.bindery.requestfactory.shared.RequestFactory.class).to(MetadataEditorRequestFactory.class);

@@ -12,16 +12,22 @@ import javax.inject.Inject;
  */
 public class EnvironmentSelectionWidget extends ContentPanel {
     private SimpleComboBox<String> environmentSelector=new SimpleComboBox<String>(new StringLabelProvider<String>());
-    @Inject
     EnvironmentState environmentState;
 
-    public EnvironmentSelectionWidget(){
+    @Inject
+    public EnvironmentSelectionWidget(EnvironmentState environmentState){
+        this.environmentState=environmentState;
         this.setHeaderVisible(false);
         this.setBorders(false);
         this.setBodyBorder(false);
         FieldLabel envFieldLabel=new FieldLabel(environmentSelector,"Select environment");
         envFieldLabel.setLabelWidth(125);
         setWidget(envFieldLabel);
+        bindWidget();
+    }
+
+    private void bindWidget() {
+        environmentState.retrieveEnvironmentNames();
     }
 
 }

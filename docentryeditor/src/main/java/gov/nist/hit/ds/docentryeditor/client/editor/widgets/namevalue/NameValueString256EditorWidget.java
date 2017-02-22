@@ -62,11 +62,11 @@ public class NameValueString256EditorWidget extends GenericEditableListView<Stri
     private void bindUI() {
 //        editing.addCompleteEditHandler(new CompleteEditEvent.CompleteEditHandler<String256>() {
 //            @Override
-//            public void onCompleteEdit(CompleteEditEvent<String256> event) {
+//            public void onCompleteEdit(CompleteEditEvent<String256> eventbus) {
 //                tf.validate();
 //                if (tf.getValue() == null || !tf.isValid()) {
 //                    tf.clear();
-//                    editing.startEditing(event.getEditCell());
+//                    editing.startEditing(eventbus.getEditCell());
 ////                    editing.cancelEditing();
 ////                    view.refresh(false);
 //                }

@@ -1,7 +1,7 @@
 package gov.nist.hit.ds.docentryeditor.client.widgets;
 
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 
 import javax.inject.Inject;

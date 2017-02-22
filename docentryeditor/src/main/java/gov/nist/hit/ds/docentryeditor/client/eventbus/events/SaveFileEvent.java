@@ -1,8 +1,8 @@
-package gov.nist.hit.ds.docentryeditor.client.event;
+package gov.nist.hit.ds.docentryeditor.client.eventbus.events;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.SaveFileEvent.SaveFileEventHandler;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.SaveFileEvent.SaveFileEventHandler;
 
 public class SaveFileEvent extends GwtEvent<SaveFileEventHandler> {
 

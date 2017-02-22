@@ -2,8 +2,8 @@ package gov.nist.hit.ds.docentryeditor.client.widgets.uploader;
 
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.MetadataEditorEventBus;
-import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.NewFileLoadedEvent;
 
 import javax.inject.Inject;
 

@@ -1,8 +1,8 @@
-package gov.nist.hit.ds.docentryeditor.client.event;
+package gov.nist.hit.ds.docentryeditor.client.eventbus.events;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
-import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent.NewFileLoadedHandler;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.NewFileLoadedEvent.NewFileLoadedHandler;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 
 /**

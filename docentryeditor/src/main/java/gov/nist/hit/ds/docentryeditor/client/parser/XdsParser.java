@@ -337,7 +337,7 @@ public class XdsParser {
                     } else {
                         LOGGER.warning("AuthorRoles node is empty for author named " + authorPerson256
                                 + ".\nCheck your XML Document!");
-                        // TODO Fire an event for this error that could be handled in the view
+                        // TODO Fire an eventbus for this error that could be handled in the view
                     }
                     // Set authorSpecialities
                     NodeList specialtyNodes = ((Element) authorNodes.item(i))
@@ -354,7 +354,7 @@ public class XdsParser {
                     } else {
                         LOGGER.warning("AuthorSpecialities node is empty for author named " + authorPerson256
                                 + "!\nCheck your XML Document");
-                        // TODO fire an event to handle the issue in the view
+                        // TODO fire an eventbus to handle the issue in the view
                     }
                     // Set authorTelecommunications
                     NodeList telecommunicationNodes = ((Element) authorNodes.item(i))
@@ -371,7 +371,7 @@ public class XdsParser {
                     } else {
                         LOGGER.warning("AuthorTelecommunications node is empty for author named " + authorPerson256
                                 + ".\nCheck your XML Document!");
-                        // TODO fire an event to handle the issue in the view
+                        // TODO fire an eventbus to handle the issue in the view
                     }
                     // Add this Element to the model
                     authors.add(internTemp);
@@ -382,7 +382,7 @@ public class XdsParser {
         } else {
             xdsDocumentEntry.setAuthors(null);
             LOGGER.warning("Authors node is empty.\nCheck your XML Document!");
-            // TODO Fire an event for this error that could be handled in the view
+            // TODO Fire an eventbus for this error that could be handled in the view
         }
     }
 
@@ -439,7 +439,7 @@ public class XdsParser {
                 return null;
             }
         } else {
-            // TODO Fire an event for this error that could be handled in the view
+            // TODO Fire an eventbus for this error that could be handled in the view
             LOGGER.warning(node + " node is empty.\nCheck your XML Document!");
             return null;
         }
@@ -476,7 +476,7 @@ public class XdsParser {
             if (identifier256Value.verify()) {
                 identifier.setValue(identifier256Value);
             } else {
-                // FIXME should do something to raise an exception or fire event
+                // FIXME should do something to raise an exception or fire eventbus
                 return null;
             }
 
@@ -492,7 +492,7 @@ public class XdsParser {
             if (identifier256Type.verify()) {
                 identifier.setIdType(identifier256Type);
             } else {
-                // FIXME should do something to raise an exception or fire event
+                // FIXME should do something to raise an exception or fire eventbus
                 return null;
             }
 
@@ -533,7 +533,7 @@ public class XdsParser {
             if (identifier256Value.verify()) {
                 identifier.setValue(identifier256Value);
             } else {
-                // FIXME should do something to raise an exception or fire event
+                // FIXME should do something to raise an exception or fire eventbus
                 return null;
             }
 
@@ -549,7 +549,7 @@ public class XdsParser {
             if (identifier256Type.verify()) {
                 identifier.setIdType(identifier256Type);
             } else {
-                // FIXME should do something to raise an exception or fire event
+                // FIXME should do something to raise an exception or fire eventbus
                 return null;
             }
 
@@ -596,7 +596,7 @@ public class XdsParser {
                 if (international256Value.verify()) {
                     internationalString.setValue(international256Value);
                 }
-                // TODO else w/ exception and/or fire event
+                // TODO else w/ exception and/or fire eventbus
 
                 // Add this Element to the model
                 array.add(internationalString);

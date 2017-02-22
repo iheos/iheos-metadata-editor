@@ -144,11 +144,11 @@ public enum ToolTipResources {
 
     public ToolTipConfig getEventCodesTooltipConfig() {
         return new ToolTipConfig("Help on Event codes", "This list of codes represents the main clinical acts, such as a colonoscopy " +
-                "or an appendectomy, being documented. In some cases, the event is " +
+                "or an appendectomy, being documented. In some cases, the eventbus is " +
                 "inherent in the typeCode, such as a \"History and Physical Report\" in " +
                 "which the procedure being documented is necessarily a \"History and " +
                 "Physical\" act. " +
-                "An event can further specialize the act inherent in the typeCode, such as " +
+                "An eventbus can further specialize the act inherent in the typeCode, such as " +
                 "where it is simply \"Procedure Report\" and the procedure was a " +
                 "\"colonoscopy\". If one or more eventCodes are included, they shall not " +
                 "conflict with the values inherent in the classCode, practiceSettingCode or " +

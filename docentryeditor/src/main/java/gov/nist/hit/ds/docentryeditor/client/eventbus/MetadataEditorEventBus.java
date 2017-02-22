@@ -1,17 +1,17 @@
-package gov.nist.hit.ds.docentryeditor.client.event;
+package gov.nist.hit.ds.docentryeditor.client.eventbus;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.web.bindery.event.shared.SimpleEventBus;
-import gov.nist.hit.ds.docentryeditor.client.event.NewFileLoadedEvent.NewFileLoadedHandler;
-import gov.nist.hit.ds.docentryeditor.client.event.SaveFileEvent.SaveFileEventHandler;
-import gov.nist.hit.ds.docentryeditor.client.root.submission.SubmissionMenuData;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.NewFileLoadedEvent.NewFileLoadedHandler;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.SaveFileEvent.SaveFileEventHandler;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.events.*;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * This is the application event bus. It is used through the entire application.
+ * This is the application eventbus bus. It is used through the entire application.
  * It has its own personalized handlers.
  */
 public class MetadataEditorEventBus extends SimpleEventBus {
@@ -27,7 +27,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     }
 
     /**
-     * Method that signals to the event bus to the application that a new file has been loaded into the system.
+     * Method that signals to the eventbus bus to the application that a new file has been loaded into the system.
      * @param xdsMetadata
      */
     public void fireNewFileLoadedEvent(XdsMetadata xdsMetadata) {
@@ -44,7 +44,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     }
 
     /**
-     * This method signals to the event bus to the entire application that request to save a file has been made.
+     * This method signals to the eventbus bus to the entire application that request to save a file has been made.
      */
     public void fireSaveFileEvent() {
         fireEvent(new SaveFileEvent());
@@ -60,7 +60,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     }
 
     /**
-     * This methods signals to the event bus a request to start editing a specific document entry.
+     * This methods signals to the eventbus bus a request to start editing a specific document entry.
      * @param documentEntry
      */
     public void fireStartEditXdsDocumentEvent(XdsDocumentEntry documentEntry) {
@@ -77,7 +77,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     }
 
     /**
-     * This methods signals to the event bus a request to start editing a specific submission set.
+     * This methods signals to the eventbus bus a request to start editing a specific submission set.
      * @param submissionSet
      */
     public void fireStartEditXdsSubmissionSetEvent(XdsSubmissionSet submissionSet) {
@@ -103,7 +103,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     }
 
     /**
-     * This methods signals to the event bus that the Xds Document Entry Editor has loaded.
+     * This methods signals to the eventbus bus that the Xds Document Entry Editor has loaded.
      */
     public void fireXdsEditorLoadedEvent() {
         fireEvent(new XdsEditorLoadedEvent());
@@ -117,7 +117,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     }
 
     /**
-     * This method adds an event handler that will do the navigation to the home page.
+     * This method adds an eventbus handler that will do the navigation to the home page.
      * @param handler
      * @return
      */
@@ -126,14 +126,14 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     }
 
     /**
-     * This method signals to the event bus a request to navigate back to the home page of the application.
+     * This method signals to the eventbus bus a request to navigate back to the home page of the application.
      */
     public void fireBackToHomePageEvent() {
         fireEvent(new BackToHomePageEvent());
     }
 
     /**
-     * This method adds an event handler that will add the new document entry to the submission set tree.
+     * This method adds an eventbus handler that will add the new document entry to the submission set tree.
      * @param handler
      * @return
      */
@@ -142,7 +142,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     }
 
     /**
-     * This method signals to the event bus a request to create a new empty document entry.
+     * This method signals to the eventbus bus a request to create a new empty document entry.
      */
     public void fireCreateNewDocEntryEvent(XdsDocumentEntry documentEntry) {
         fireEvent(new CreateNewDocEntryEvent(documentEntry));
@@ -178,7 +178,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     }
 
     /**
-     * This methods signals to the event bus a request to start editing a specific association.
+     * This methods signals to the eventbus bus a request to start editing a specific association.
      * @param association
      */
     public void fireStartEditXdsAssociationEvent(XdsAssociation association,List<XdsModelElement> objectsAvailableInSubmission) {
@@ -194,7 +194,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
     }
 
     /**
-     * This method fire an event to notify that the selected standard for the editor has changed.
+     * This method fire an eventbus to notify that the selected standard for the editor has changed.
      * @param
      */
     public void fireSelectedStandardChangedEvent(Map<String,String> selectedStandardPropertiesMap) {
@@ -214,4 +214,7 @@ public class MetadataEditorEventBus extends SimpleEventBus {
         fireEvent(new SelectedStandardChangedEvent(std));
     }
 
+    public void fireEnvironmentNamesReloaded(List<String> envNames) {
+        fireEvent(new EnvironmentNamesReloadedEvent(envNames));
+    }
 }
