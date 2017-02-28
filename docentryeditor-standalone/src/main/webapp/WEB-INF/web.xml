@@ -6,35 +6,6 @@
 
     <!-- Servlets -->
     <servlet>
-        <servlet-name>xdsParserServices</servlet-name>
-        <servlet-class>gov.nist.hit.ds.docentryeditor.server.XdsMetadataParserServicesImpl</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>xdsParserServices</servlet-name>
-        <url-pattern>/xdseditor/xdsparser</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>uploadServlet</servlet-name>
-        <!-- servlet path -->
-        <servlet-class>gov.nist.hit.ds.docentryeditor.server.UploadFileServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>stdpropServices</servlet-name>
-        <servlet-class>gov.nist.hit.ds.docentryeditor.server.StandardPropertiesServiceImpl</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>uploadServlet</servlet-name>
-        <!-- Ce qu'on a mis dans la vue à uploadForm.setAction -->
-        <url-pattern>/ServletUpload</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>stdpropServices</servlet-name>
-        <url-pattern>/xdseditor/stdprop</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>requestFactoryServlet</servlet-name>
         <servlet-class>com.google.web.bindery.requestfactory.server.RequestFactoryServlet</servlet-class>
         <init-param>
@@ -44,7 +15,42 @@
             <param-value>WEB-INF/classes/symbolMaps/</param-value>
         </init-param>
     </servlet>
+    <servlet>
+        <servlet-name>xdsParserServices</servlet-name>
+        <servlet-class>gov.nist.hit.ds.docentryeditor.server.XdsMetadataParserServicesImpl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>uploadServlet</servlet-name>
+        <!-- servlet path -->
+        <servlet-class>gov.nist.hit.ds.docentryeditor.server.UploadFileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>stdpropServices</servlet-name>
+        <servlet-class>gov.nist.hit.ds.docentryeditor.server.StandardPropertiesServiceImpl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>envServices</servlet-name>
+        <servlet-class>gov.nist.hit.ds.docentryeditor.server.EnvironmentServicesImpl</servlet-class>
+    </servlet>
 
+    <!-- Servlets mapping -->
+    <servlet-mapping>
+        <servlet-name>xdsParserServices</servlet-name>
+        <url-pattern>/xdseditor/xdsparser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>uploadServlet</servlet-name>
+        <!-- Ce qu'on a mis dans la vue à uploadForm.setAction -->
+        <url-pattern>/ServletUpload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>stdpropServices</servlet-name>
+        <url-pattern>/xdseditor/stdprop</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>envServices</servlet-name>
+        <url-pattern>/xdseditor/envServices</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>requestFactoryServlet</servlet-name>
         <url-pattern>/gwtRequest</url-pattern>
