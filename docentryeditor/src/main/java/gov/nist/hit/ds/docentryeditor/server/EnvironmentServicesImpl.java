@@ -3,6 +3,7 @@ package gov.nist.hit.ds.docentryeditor.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import gov.nist.hit.ds.docentryeditor.client.utils.Services.EnvironmentServices;
 import gov.nist.toolkit.installation.Installation;
+import gov.nist.toolkit.session.server.Session;
 
 import java.io.File;
 import java.io.InputStream;
@@ -19,78 +20,43 @@ public class EnvironmentServicesImpl extends RemoteServiceServlet implements Env
     private final static Properties PROPERTIES=new Properties();
     private final static String PROPERTIES_FILENAME="toolkit.properties";
 
+    private Session session;
+
     public EnvironmentServicesImpl(){
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILENAME);
             PROPERTIES.load(inputStream);
-            Installation.instance().warHome(new File(getClass().getResource("/war/war.txt").getFile()).getParentFile());
+            Installation.instance().warHome(Installation.instance().warHome());
         } catch (Throwable t) {
             t.printStackTrace();
         }
     }
 
-    @Override
-    public List<String> retrieveEnvironmentNames() {
-        return getEnvironmentNames();
-    }
-
-    /**
-     * Code taken out of Session module.
-\     * @return
-     */
-    private List<String> getEnvironmentNames() {
-        LOGGER.info( ": " + "getEnvironmentNames");
-        List<String> names = new ArrayList<String>();
-
-        File k = Installation.instance().environmentFile();     //propertyServiceManager().getPropertyManager().getExternalCache() + File.separator + "environment");
-        if (!k.exists() || !k.isDirectory())
-            return names;
-        File[] files = k.listFiles();
-        for (File file : files)
-            if (file.isDirectory() && !(file.getName().equals("TestLogCache"))) {
-                names.add(file.getName());
-            }
-        return names;
+    private Session session(){
+        if (session==null){
+            session = new Session(Installation.instance().warHome());
+        }
+        return session;
     }
 
     @Override
-    public List<String> retrieveSessionNames() {
-        return getMesaTestSessionNames();
+    public List<String> retrieveEnvironmentNames() {
+        return Session.getEnvironmentNames();
     }
 
-    /**
-     * Code taken out of Session module.
-     * @return
-     */
-    private List<String> getMesaTestSessionNames() {
-        LOGGER.info( ": " + "getMesaSessionNames");
-        List<String> names = new ArrayList<String>();
-        File cache;
-        try {
-            cache = Installation.instance().propertyServiceManager().getTestLogCache();
-        } catch (Exception e) {
-            LOGGER.warning("getMesaTestSessionNames "+ e.getMessage());
-            //  throw new Exception(e.getMessage());
-            return new ArrayList<String>();
-        }
-
-        String[] namea = cache.list();
-
-        for (int i=0; i<namea.length; i++) {
-            File dir = new File(cache, namea[i]);
-            if (!dir.isDirectory()) continue;
-            if (!namea[i].startsWith("."))
-                names.add(namea[i]);
-
-        }
-
-        if (names.size() == 0) {
-            names.add("default");
-            File def = new File(cache, "default");
-            def.mkdirs();
-        }
-
-        LOGGER.info("testSession names are " + names);
-        return names;
+    @Override
+    public List<String> retrieveSessionNames() throws Exception {
+        return session().xdsTestServiceManager().getMesaTestSessionNames();
     }
+
+    @Override
+    public String retrieveExternalCachePathProperty() {
+        return Installation.instance().propertyServiceManager().getPropertyManager().getExternalCache();
+    }
+
+    @Override
+    public void saveExternalCachePath(String extCachePathText) {
+        Installation.instance().propertyServiceManager().getPropertyManager().saveProperties();
+    }
+
 }

@@ -24,6 +24,8 @@ public class ApiConfigurationView extends AbstractView<ApiConfigurationPresenter
     private TextField contextName; //(/xdstools2)
     @Inject
     private TextField portNumber;
+    @Inject
+    private TextField extCachePath;
 
     private TextButton saveBtn;
     private TextButton cancelBtn;
@@ -48,6 +50,8 @@ public class ApiConfigurationView extends AbstractView<ApiConfigurationPresenter
         EditorFieldLabel portNumberFL = new EditorFieldLabel(portNumber, "Port number");
         portNumber.setWidth(60);
         container.add(portNumberFL);
+        EditorFieldLabel extCacheFL = new EditorFieldLabel(extCachePath,"Ext. Cache");
+        container.add(extCacheFL,new VerticalLayoutContainer.VerticalLayoutData(1,-1));
 
         saveBtn = new TextButton("Save");
         cancelBtn = new TextButton("Cancel");
@@ -64,12 +68,11 @@ public class ApiConfigurationView extends AbstractView<ApiConfigurationPresenter
             @Override
             public void onSelect(SelectEvent event) {
                 presenter.saveApiConfiguration(hostName.getText(), contextName.getText(), portNumber.getText());
+                presenter.saveExtCachePath(extCachePath.getText());
             }
         });
-        ApiConfigurationData config=presenter.retrieveConfigurationData();
-        hostName.setText(config.getHost());
-        contextName.setText(config.getContext());
-        portNumber.setText(config.getPort());
+        presenter.retrieveConfigurationData();
+        presenter.retrieveExtCachePathProperty();
     }
 
     public TextButton getSaveButton() {
@@ -78,5 +81,15 @@ public class ApiConfigurationView extends AbstractView<ApiConfigurationPresenter
 
     public TextButton getCancelButton() {
         return cancelBtn;
+    }
+
+    public void setExtCacheFieldValue(String extCacheText) {
+        extCachePath.setText(extCacheText);
+    }
+
+    public void setApiConfigurationFieldValues(ApiConfigurationData config) {
+        hostName.setText(config.getHost());
+        contextName.setText(config.getContext());
+        portNumber.setText(config.getPort());
     }
 }

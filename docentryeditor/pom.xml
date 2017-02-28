@@ -197,6 +197,11 @@
             <artifactId>installation</artifactId>
             <version>4.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>gov.nist.toolkit</groupId>
+            <artifactId>session</artifactId>
+            <version>4.2.1</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.ws.commons.axiom</groupId>
