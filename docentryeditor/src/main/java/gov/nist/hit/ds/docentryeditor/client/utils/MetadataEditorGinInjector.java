@@ -18,7 +18,7 @@ import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomeActivity;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.*;
 import gov.nist.hit.ds.docentryeditor.client.utils.Services.MetadataEditorRequestFactory;
 import gov.nist.hit.ds.docentryeditor.client.widgets.EditorToolbar;
-import gov.nist.hit.ds.docentryeditor.client.widgets.EnvironmentSelectionWidget;
+import gov.nist.hit.ds.docentryeditor.client.widgets.environment.EnvironmentSelectionWidget;
 import gov.nist.hit.ds.docentryeditor.client.widgets.StandardSelector;
 import gov.nist.hit.ds.docentryeditor.client.widgets.uploader.FileUploadMVP;
 

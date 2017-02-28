@@ -1,4 +1,4 @@
-package gov.nist.hit.ds.docentryeditor.client.widgets;
+package gov.nist.hit.ds.docentryeditor.client.widgets.environment;
 
 
 import com.google.gwt.core.client.GWT;
@@ -20,6 +20,7 @@ public class EnvironmentState {
     private final EnvironmentServicesAsync services = GWT.create(EnvironmentServices.class);
     private final EventBus eventBus;
     private List<String> environmentNames=new ArrayList<>();
+    private String selectedEnvironment;
 
     @Inject
     public EnvironmentState(EventBus eventBus){
@@ -41,4 +42,11 @@ public class EnvironmentState {
         });
     }
 
+    public String getSelectedEnvironment(){
+        return selectedEnvironment;
+    }
+
+    public void setSelectedEnvironment(String selectedEnvironment) {
+        this.selectedEnvironment = selectedEnvironment;
+    }
 }

@@ -214,7 +214,23 @@ public class MetadataEditorEventBus extends SimpleEventBus {
         fireEvent(new SelectedStandardChangedEvent(std));
     }
 
+    /**
+     * Fire an event that notify the entire app that the list of environment names has been reloaded.
+     * @param envNames - new list of environment names
+     */
     public void fireEnvironmentNamesReloaded(List<String> envNames) {
         fireEvent(new EnvironmentNamesReloadedEvent(envNames));
+    }
+
+    public HandlerRegistration addEnvironmentNamesReloadHandler(EnvironmentNamesReloadedEvent.EnvironmentNamesReloadedEventHandler handler) {
+        return addHandler(EnvironmentNamesReloadedEvent.TYPE,handler);
+    }
+
+    public void fireSessionNamesReloaded(List<String> sessionNames) {
+        fireEvent(new SessionNamesReloadedEvent(sessionNames));
+    }
+
+    public HandlerRegistration addSessionNamesReloadHandler(SessionNamesReloadedEvent.SessionNamesReloadedEventHandler handler) {
+        return addHandler(SessionNamesReloadedEvent.TYPE,handler);
     }
 }

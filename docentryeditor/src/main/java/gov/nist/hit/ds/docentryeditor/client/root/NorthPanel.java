@@ -10,8 +10,8 @@ import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import gov.nist.hit.ds.docentryeditor.client.resources.AppImages;
 import gov.nist.hit.ds.docentryeditor.client.widgets.configuration.ConfigurationDialog;
-import gov.nist.hit.ds.docentryeditor.client.widgets.EnvironmentSelectionWidget;
-import gov.nist.hit.ds.docentryeditor.client.widgets.SessionSelectionWidget;
+import gov.nist.hit.ds.docentryeditor.client.widgets.environment.EnvironmentSelectionWidget;
+import gov.nist.hit.ds.docentryeditor.client.widgets.session.SessionSelectionWidget;
 
 import javax.inject.Inject;
 

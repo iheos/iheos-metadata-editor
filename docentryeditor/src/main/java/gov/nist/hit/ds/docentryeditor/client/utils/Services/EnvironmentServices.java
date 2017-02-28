@@ -11,4 +11,5 @@ import java.util.List;
 @RemoteServiceRelativePath("envServices")
 public interface EnvironmentServices extends RemoteService{
     List<String> retrieveEnvironmentNames();
+    List<String> retrieveSessionNames();
 }

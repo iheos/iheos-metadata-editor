@@ -11,7 +11,9 @@ import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer.MetadataEditorAppDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
 import gov.nist.hit.ds.docentryeditor.client.utils.Services.MetadataEditorRequestFactory;
+import gov.nist.hit.ds.docentryeditor.client.widgets.environment.EnvironmentState;
 import gov.nist.hit.ds.docentryeditor.client.widgets.StandardSelector;
+import gov.nist.hit.ds.docentryeditor.client.widgets.session.SessionState;
 
 import javax.inject.Inject;
 
@@ -37,7 +39,10 @@ public class MetadataEditorGinModule extends AbstractGinModule {
 
         bind(ActivityDisplayer.class).to(MetadataEditorAppDisplayer.class).in(Singleton.class);
         bind(MetadataEditorAppView.class).in(Singleton.class);
+
         bind(StandardSelector.class).in(Singleton.class);
+//        bind(EnvironmentState.class).in(Singleton.class);
+//        bind(SessionState.class).in(Singleton.class);
     }
 
     /**

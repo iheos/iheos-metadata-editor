@@ -10,4 +10,5 @@ import java.util.Map;
  */
 public interface EnvironmentServicesAsync {
     void retrieveEnvironmentNames(AsyncCallback<List<String>> result);
+    void retrieveSessionNames(AsyncCallback<List<String>> result);
 }
