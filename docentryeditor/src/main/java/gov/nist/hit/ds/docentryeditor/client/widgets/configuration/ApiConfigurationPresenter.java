@@ -15,7 +15,6 @@ import gov.nist.hit.ds.docentryeditor.client.utils.Services.EnvironmentServicesA
  */
 public class ApiConfigurationPresenter extends AbstractPresenter<ApiConfigurationView>{
     private final EnvironmentServicesAsync services = GWT.create(EnvironmentServices.class);
-    private CookiesManager cookiesManager;
     private ApiConfigurationData config;
 
     @Override
@@ -25,7 +24,7 @@ public class ApiConfigurationPresenter extends AbstractPresenter<ApiConfiguratio
 
     public void saveApiConfiguration(String hostName, String contextName, String portNumber) {
         config=new ApiConfigurationData(hostName,contextName,portNumber);
-        cookiesManager.saveApiConfiguration(config);
+        CookiesManager.saveApiConfiguration(config);
     }
 
     public void saveExtCachePath(String extCachePathText) {
@@ -42,7 +41,7 @@ public class ApiConfigurationPresenter extends AbstractPresenter<ApiConfiguratio
     }
 
     public void retrieveConfigurationData() {
-        config=cookiesManager.getApiConfiguration();
+        config=CookiesManager.getApiConfiguration();
         view.setApiConfigurationFieldValues(config);
     }
 

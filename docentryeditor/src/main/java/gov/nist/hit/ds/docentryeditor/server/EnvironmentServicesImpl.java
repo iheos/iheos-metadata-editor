@@ -64,7 +64,7 @@ public class EnvironmentServicesImpl extends RemoteServiceServlet implements Env
      */
     @Override
     public void saveExternalCachePath(String extCachePathText) {
-        Installation.instance().propertyServiceManager().getPropertyManager().saveProperties();
+        Installation.instance().propertyServiceManager().getPropertyManager().setExternalCache(extCachePathText);
     }
 
 }
