@@ -119,10 +119,8 @@ public class SaveFileService implements Serializable {
         }
 
         FileOutputStream out;
-//
 //        // TODO Remove hard coded xml when submission set and association are done
 //        String outS= fileContent.replace("displayName","name");
-//
         try {
             out = new FileOutputStream(new File(testFile, "index.idx"));
             LOGGER.info("... writing file (" + "index.idx" + ") in " + testFile.getAbsolutePath() + "...");
@@ -159,13 +157,13 @@ public class SaveFileService implements Serializable {
         testplanBuilder.append("<Test>"+testName+"</Test>\n");
         testplanBuilder.append("<TestStep id=\"submit\">\n");
         testplanBuilder.append("<ExpectedStatus>Success</ExpectedStatus>\n");
-        testplanBuilder.append("<"+type.toString()+"Transaction>\n");
+        testplanBuilder.append("<"+type.toString()+">\n");
         testplanBuilder.append("<XDSb/>\n");
         testplanBuilder.append("<MetadataFile>metadata.xml</MetadataFile>\n");
         if (type.equals(TestDefinition.TransactionType.PnR)) {
             testplanBuilder.append("<Document id=\"Document01\">readme.txt</Document>\n");
         }
-        testplanBuilder.append("</"+type.toString()+"Transaction>\n");
+        testplanBuilder.append("</"+type.toString()+">\n");
         testplanBuilder.append("</TestStep>\n");
         testplanBuilder.append("</TestPlan>\n");
         return testplanBuilder.toString();
