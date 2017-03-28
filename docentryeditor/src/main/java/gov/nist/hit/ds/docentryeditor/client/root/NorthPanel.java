@@ -17,7 +17,7 @@ import javax.inject.Inject;
 
 // not used anymore
 public class NorthPanel extends ContentPanel {
-    private TextButton configBtn=new TextButton("Configure",AppImages.INSTANCE.delete());
+    private TextButton configBtn=new TextButton("Configure",AppImages.INSTANCE.config());
     private EnvironmentSelectionWidget environmentSelector;
     private SessionSelectionWidget sessionSelector;
     @Inject

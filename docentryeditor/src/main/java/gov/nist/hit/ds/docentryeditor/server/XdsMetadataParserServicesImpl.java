@@ -352,32 +352,19 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
      */
     public String toEbRim(XdsMetadata metadata){
         metadataTemp = new Metadata();
+        // ////////////////
         // Submission Set
+        // ////////////////
         XdsSubmissionSet subSet=metadata.getSubmissionSet();
         OMElement regPackage = metadataTemp.mkSubmissionSet(subSet.getEntryUUID().toString());
-        if (subSet.getPatientId()!=null && subSet.getPatientId().getValue()!=null) {
-            metadataTemp.addSubmissionSetPatientId(regPackage, subSet.getPatientId().getValue().toString());
-        }
-        if (subSet.getUniqueId()!=null && subSet.getUniqueId().getValue()!=null) {
-            metadataTemp.addSubmissionSetUniqueId(regPackage, subSet.getUniqueId().getValue().toString());
-        }
-        if (!subSet.getSubmissionTime().getValues().isEmpty()) {
-            metadataTemp.addSlot(regPackage, "submissionTime", formatDate(subSet.getSubmissionTime().getValues().get(0).getDtm()));
-        }
-        if (subSet.getContentTypeCode()!=null && subSet.getContentTypeCode().getCode()!=null && subSet.getContentTypeCode().getCodingScheme()!=null && subSet.getContentTypeCode().getDisplayName()!=null) {
-            metadataTemp.addExtClassification(regPackage, MetadataSupport.XDSSubmissionSet_contentTypeCode_uuid,
-                    subSet.getContentTypeCode().getCodingScheme().toString(),
-                    subSet.getContentTypeCode().getDisplayName().toString(),
-                    subSet.getContentTypeCode().getCode().toString());
-        }
-        if (subSet.getSourceId().getValue()!=null) {
-            metadataTemp.addSourceId(regPackage, subSet.getSourceId().getValue().toString());
-        }
         if (subSet.getHomeCommunityId()!=null && !subSet.getHomeCommunityId().toString().isEmpty()){
             metadataTemp.setHome(regPackage, subSet.getHomeCommunityId().toString());
         }
         if (subSet.getAvailabilityStatus()!=null && !subSet.getAvailabilityStatus().toString().isEmpty()){
             metadataTemp.setStatus(regPackage, subSet.getAvailabilityStatus().toString());
+        }
+        if (!subSet.getSubmissionTime().getValues().isEmpty()) {
+            metadataTemp.addSlot(regPackage, "submissionTime", formatDate(subSet.getSubmissionTime().getValues().get(0).getDtm()));
         }
         if (!subSet.getIntendedRecipient().getValues().isEmpty()) {
             OMElement intendedRecipient = metadataTemp.addSlot(regPackage, "intendedRecipient");
@@ -391,26 +378,73 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         for (InternationalString intStr:subSet.getComments()){
             metadataTemp.addDescription(regPackage, intStr.getLangCode().toString(), intStr.getValue().toString());
         }
+        if (subSet.getContentTypeCode()!=null && subSet.getContentTypeCode().getCode()!=null && subSet.getContentTypeCode().getCodingScheme()!=null && subSet.getContentTypeCode().getDisplayName()!=null) {
+            metadataTemp.addExtClassification(regPackage, MetadataSupport.XDSSubmissionSet_contentTypeCode_uuid,
+                    subSet.getContentTypeCode().getCodingScheme().toString(),
+                    subSet.getContentTypeCode().getDisplayName().toString(),
+                    subSet.getContentTypeCode().getCode().toString());
+        }
         for (Author author : subSet.getAuthors()) {
             OMElement authorClassification = metadataTemp.addExtClassification(regPackage, MetadataSupport.XDSSubmissionSet_author_uuid);
             addAuthor(authorClassification,author);
         }
+        if (subSet.getPatientId()!=null && subSet.getPatientId().getValue()!=null) {
+            metadataTemp.addSubmissionSetPatientId(regPackage, subSet.getPatientId().getValue().toString());
+        }
+        if (subSet.getUniqueId()!=null && subSet.getUniqueId().getValue()!=null) {
+            // FIXME duplicate?
+            metadataTemp.addSubmissionSetUniqueId(regPackage, subSet.getUniqueId().getValue().toString());
+            metadataTemp.addExternalId(regPackage,MetadataSupport.XDSSubmissionSet_uniqueid_uuid,subSet.getUniqueId().getValue().toString(),"XDSSubmissionSet.uniqueId");
+        }
+        if (subSet.getSourceId().getValue()!=null) {
+            metadataTemp.addSubmissionSetSourceId(regPackage, subSet.getSourceId().getValue().toString());
+        }
+        // //////////////
         // DocEntries
+        // //////////////
         for (XdsDocumentEntry documentEntry : metadata.getDocumentEntries()) {
             String mimeType = new String();
             if (documentEntry.getMimeType() != null) {
                 mimeType = documentEntry.getMimeType().toString();
             }
             OMElement extObj = metadataTemp.mkExtrinsicObject(documentEntry.getId().toString(), mimeType);
-            if (documentEntry.getPatientID() != null) {
-                metadataTemp.addDocumentEntryPatientId(extObj, documentEntry.getPatientID().getValue().toString());
-            }
-            if (documentEntry.getUniqueId() != null && documentEntry.getUniqueId().getValue() != null) {
-                metadataTemp.addDocumentEntryUniqueId(extObj, documentEntry.getUniqueId().getValue().toString());
-            }
+            // Slots
             if (documentEntry.getLanguageCode() != null) {
                 metadataTemp.addSlot(extObj, "languageCode", documentEntry.getLanguageCode().toString());
             }
+            if (documentEntry.getSize() != null) {
+                metadataTemp.addSlot(extObj, "size", documentEntry.getSize().toString());
+            }
+            if (documentEntry.getRepoUId() != null && !documentEntry.getRepoUId().toString().isEmpty()) {
+                metadataTemp.addSlot(extObj, "repositoryUniqueId", documentEntry.getRepoUId().toString());
+            }
+            if (documentEntry.getCreationTime().getValues().get(0) != null) {
+                metadataTemp.addSlot(extObj, "creationTime", formatDate(documentEntry.getCreationTime().getValues().get(0).getDtm()));
+            }
+            if (!documentEntry.getSourcePatientId().getValues().isEmpty()) {
+                metadataTemp.addSlot(extObj, "sourcePatientId", documentEntry.getSourcePatientId().getValues().get(0).getString());
+            }
+            if (!documentEntry.getSourcePatientInfo().getValues().isEmpty()) {
+                OMElement sourcePatientInfo = metadataTemp.addSlot(extObj, "sourcePatientInfo");
+                for (String256 value : documentEntry.getSourcePatientInfo().getValues()) {
+                    metadataTemp.addSlotValue(sourcePatientInfo, value.toString());
+                }
+            }
+            if (documentEntry.getServiceStartTime().getValues().get(0) != null) {
+                metadataTemp.addSlot(extObj, "serviceStartTime", formatDate(documentEntry.getServiceStartTime().getValues().get(0).getDtm()));
+            }
+            if (documentEntry.getServiceStopTime().getValues().get(0) != null) {
+                metadataTemp.addSlot(extObj, "serviceStopTime", formatDate(documentEntry.getServiceStopTime().getValues().get(0).getDtm()));
+            }
+            // name
+            for (InternationalString intStr:documentEntry.getTitles()){
+                metadataTemp.addName(extObj, intStr.getLangCode().toString(), intStr.getValue().toString());
+            }
+            // Description
+            for (InternationalString intStr:documentEntry.getComments()){
+                metadataTemp.addDescription(extObj, intStr.getLangCode().toString(), intStr.getValue().toString());
+            }
+
             if (documentEntry.getClassCode() != null) {
                 metadataTemp.addExtClassification(extObj, MetadataSupport.XDSDocumentEntry_classCode_uuid, documentEntry.getClassCode().getCodingScheme().toString(), documentEntry.getClassCode().getDisplayName().toString(), documentEntry.getClassCode().getCode().toString());
             }
@@ -426,17 +460,8 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             if (documentEntry.getPracticeSettingCode() != null){
                 metadataTemp.addExtClassification(extObj, MetadataSupport.XDSDocumentEntry_psCode_uuid, documentEntry.getPracticeSettingCode().getCodingScheme().toString(), documentEntry.getPracticeSettingCode().getDisplayName().toString(), documentEntry.getPracticeSettingCode().getCode().toString());
             }
-            if (documentEntry.getCreationTime().getValues().get(0) != null) {
-                metadataTemp.addSlot(extObj, "creationTime", formatDate(documentEntry.getCreationTime().getValues().get(0).getDtm()));
-            }
             if (documentEntry.getHash() != null && !documentEntry.getHash().toString().isEmpty()) {
                 metadataTemp.addSlot(extObj, "hash", documentEntry.getHash().toString());
-            }
-            if (documentEntry.getSize() != null) {
-                metadataTemp.addSlot(extObj, "size", documentEntry.getSize().toString());
-            }
-            if (documentEntry.getRepoUId() != null && !documentEntry.getRepoUId().toString().isEmpty()) {
-                metadataTemp.addSlot(extObj, "repositoryUniqueId", documentEntry.getRepoUId().toString());
             }
             if (documentEntry.getUri() != null && !documentEntry.getUri().toString().isEmpty()) {
                 metadataTemp.addSlot(extObj, "URI", documentEntry.getUri().toString());
@@ -447,17 +472,8 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             if (documentEntry.getAvailabilityStatus() != null && !documentEntry.getAvailabilityStatus().toString().isEmpty()) {
                 metadataTemp.setStatus(extObj, documentEntry.getAvailabilityStatus().toString());
             }
-            if (!documentEntry.getLegalAuthenticator().getValues().isEmpty()) {
+            if (!documentEntry.getLegalAuthenticator().getValues().isEmpty() && !("".equals(documentEntry.getLegalAuthenticator().getValues().get(0).getString()))) {
                 metadataTemp.addSlot(extObj, "legalAuthenticator", documentEntry.getLegalAuthenticator().getValues().get(0).toString());
-            }
-            if (!documentEntry.getSourcePatientId().getValues().isEmpty()) {
-                metadataTemp.addSlot(extObj, "sourcePatientId", documentEntry.getSourcePatientId().getValues().get(0).getString());
-            }
-            if (!documentEntry.getSourcePatientInfo().getValues().isEmpty()) {
-                OMElement sourcePatientInfo = metadataTemp.addSlot(extObj, "sourcePatientInfo");
-                for (String256 value : documentEntry.getSourcePatientInfo().getValues()) {
-                    metadataTemp.addSlotValue(sourcePatientInfo, value.toString());
-                }
             }
             for (CodedTerm ct : documentEntry.getEventCode()) {
                 metadataTemp.addExtClassification(extObj, MetadataSupport.XDSDocumentEntry_eventCode_uuid, ct.getCodingScheme().toString(), ct.getDisplayName().toString(), ct.getCode().toString());
@@ -465,21 +481,15 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             for (CodedTerm ct : documentEntry.getConfidentialityCodes()) {
                 metadataTemp.addExtClassification(extObj, MetadataSupport.XDSDocumentEntry_confCode_uuid, ct.getCodingScheme().toString(), ct.getDisplayName().toString(), ct.getCode().toString());
             }
-            if (documentEntry.getServiceStartTime().getValues().get(0) != null) {
-                metadataTemp.addSlot(extObj, "serviceStartTime", formatDate(documentEntry.getServiceStartTime().getValues().get(0).getDtm()));
-            }
-            if (documentEntry.getServiceStopTime().getValues().get(0) != null) {
-                metadataTemp.addSlot(extObj, "serviceStopTime", formatDate(documentEntry.getServiceStopTime().getValues().get(0).getDtm()));
-            }
             for (Author author : documentEntry.getAuthors()) {
                 OMElement authorClassification = metadataTemp.addExtClassification(extObj, MetadataSupport.XDSDocumentEntry_author_uuid);
                 addAuthor(authorClassification, author);
             }
-            for (InternationalString intStr:documentEntry.getTitles()){
-                metadataTemp.addName(extObj, intStr.getLangCode().toString(), intStr.getValue().toString());
+            if (documentEntry.getPatientID() != null) {
+                metadataTemp.addDocumentEntryPatientId(extObj, documentEntry.getPatientID().getValue().toString());
             }
-            for (InternationalString intStr:documentEntry.getComments()){
-                metadataTemp.addDescription(extObj, intStr.getLangCode().toString(), intStr.getValue().toString());
+            if (documentEntry.getUniqueId() != null && documentEntry.getUniqueId().getValue() != null) {
+                metadataTemp.addDocumentEntryUniqueId(extObj, documentEntry.getUniqueId().getValue().toString());
             }
         }
         for (XdsAssociation asso:metadata.getAssociations()){
@@ -491,15 +501,15 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                 metadataTemp.addAssociation(assoElement);
             }
         }
-        String result="<xdsb:ProvideAndRegisterDocumentSetRequest xmlns:xdsb=\"urn:ihe:iti:xds-b:2007\">\n" +
-                "    <lcm:SubmitObjectsRequest xmlns:lcm=\"urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0\">\n" +
-                "        <rim:RegistryObjectList xmlns:rim=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\">";
-        result+= metadataTemp.format();
-        result+="</rim:RegistryObjectList>\n" +
-                "    </lcm:SubmitObjectsRequest>\n" +
-                "</xdsb:ProvideAndRegisterDocumentSetRequest>";
+//        String result="<xdsb:ProvideAndRegisterDocumentSetRequest xmlns:xdsb=\"urn:ihe:iti:xds-b:2007\">\n" +
+//                "    <lcm:SubmitObjectsRequest xmlns:lcm=\"urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0\">\n" +
+//                "        <rim:RegistryObjectList xmlns:rim=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\">";
+//        result+= metadataTemp.format();
+//        result+="</rim:RegistryObjectList>\n" +
+//                "    </lcm:SubmitObjectsRequest>\n" +
+//                "</xdsb:ProvideAndRegisterDocumentSetRequest>";
 
-        return result;
+        return metadataTemp.format();
     }
 
     private void addAuthor(OMElement authorClassification, Author author) {

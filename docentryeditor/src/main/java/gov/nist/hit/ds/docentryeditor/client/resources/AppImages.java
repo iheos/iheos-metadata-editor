@@ -78,4 +78,7 @@ public interface AppImages extends ClientBundle {
 
     @Source("baseResources/expand.png")
     ImageResource expand();
+
+    @Source("baseResources/config.png")
+    ImageResource config();
 }
