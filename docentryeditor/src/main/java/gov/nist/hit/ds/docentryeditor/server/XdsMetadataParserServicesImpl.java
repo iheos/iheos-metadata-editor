@@ -392,9 +392,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             metadataTemp.addSubmissionSetPatientId(regPackage, subSet.getPatientId().getValue().toString());
         }
         if (subSet.getUniqueId()!=null && subSet.getUniqueId().getValue()!=null) {
-            // FIXME duplicate?
             metadataTemp.addSubmissionSetUniqueId(regPackage, subSet.getUniqueId().getValue().toString());
-            metadataTemp.addExternalId(regPackage,MetadataSupport.XDSSubmissionSet_uniqueid_uuid,subSet.getUniqueId().getValue().toString(),"XDSSubmissionSet.uniqueId");
         }
         if (subSet.getSourceId().getValue()!=null) {
             metadataTemp.addSubmissionSetSourceId(regPackage, subSet.getSourceId().getValue().toString());
