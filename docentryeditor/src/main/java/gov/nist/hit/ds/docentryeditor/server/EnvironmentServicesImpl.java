@@ -18,7 +18,7 @@ public class EnvironmentServicesImpl extends RemoteServiceServlet implements Env
 
     // Class constructor to init ext. cache location
     public EnvironmentServicesImpl(){
-        LOGGER.info("hello");Installation.instance().warHome(Installation.instance().warHome());
+        Installation.instance().warHome(Installation.instance().warHome());
     }
 
     // method to provide a Session object (from toolkit project, Session module)

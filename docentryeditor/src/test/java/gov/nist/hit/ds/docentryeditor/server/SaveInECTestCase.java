@@ -5,46 +5,66 @@ import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 import gov.nist.toolkit.installation.Installation;
 import gov.nist.toolkit.testkitutilities.TestDefinition;
-import junit.framework.TestCase;
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static org.junit.Assert.*;
+
 /**
  * Created by onh2 on 3/23/17.
  */
-public class SaveInECTestCase extends TestCase {
+public class SaveInECTestCase {
+    private String extCacheLocation;
+    private static  final String ENVIRONMENT_NAME ="TestCase";
+    private static final String SESSION_NAME="TestCase";
+    private static final String TEST_NAME="SaveFromEditorTestCase";
+    private static final XdsMetadataParserServicesImpl SERVICES = new XdsMetadataParserServicesImpl();
+
+    @Before
+    public void setUp() throws Exception {
+        Installation.instance().warHome(Installation.instance().warHome());
+        extCacheLocation=Installation.instance().propertyServiceManager().getPropertyManager().getExternalCache();
+    }
+
     @Test
     public void testSave() {
-        XdsMetadataParserServicesImpl service = new XdsMetadataParserServicesImpl();
-        String extCacheLocation="/Users/onh2/external_cache/";
-        String environmentName="NA2015";
-        String sessionName="default";
-        String testName="OlivierCreationTest";
-
-        Installation.instance().warHome(Installation.instance().warHome());
-        File metadataFile=new File(getClass().getResource("/PnR1Doc.xml").getPath());
-        XdsMetadataParserServicesImpl parserServices=new XdsMetadataParserServicesImpl();
+        File metadataFile = new File(getClass().getResource("/PnR1Doc.xml").getPath());
+        XdsMetadataParserServicesImpl parserServices = new XdsMetadataParserServicesImpl();
         try {
-            XdsMetadata metadata=parserServices.parseXdsMetadata(IOUtils.toString(new FileReader(metadataFile)));
-            service.saveInExternalCache(new SaveInExtCacheRequest(new RequestContext(environmentName,sessionName,extCacheLocation),metadata, TestDefinition.TransactionType.PnR.toString(),testName));
+            XdsMetadata metadata = parserServices.parseXdsMetadata(IOUtils.toString(new FileReader(metadataFile)));
+            SERVICES.saveInExternalCache(new SaveInExtCacheRequest(new RequestContext(ENVIRONMENT_NAME, SESSION_NAME, extCacheLocation),
+                    metadata, TestDefinition.TransactionType.PnR.toString(), TEST_NAME));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //        service.saveInExternalCache(new RequestContext(environmentName,sessionName,extCacheLocation),);
-//        String filename = service.saveAsXMLFile("test.xml", ServerTestHelper.INSTANCE.docEntryToXML(ServerTestHelper.INSTANCE.getDocEntry()));
-//        assertNotNull("No written filename return from server.", filename);
-//        assertFalse("Filename returned from server is empty", filename.isEmpty());
-//        assertTrue("Filename's extension is wrong (not .xml)", filename.contains(".xml"));
-//        String rootDirPath = System.getProperty("user.dir");
-//        assertNotNull("Impossible to locate file directory", rootDirPath);
-//        assertFalse("Impossible to locate file directory", rootDirPath.isEmpty());
-//        File fileFolder = new File(new File(rootDirPath), "/files/");
-//        File file = new File(fileFolder + "/test.xml");
-//        assertNotNull("File is not found on server", file);
-//        assertTrue("File does not exists on server", file.exists());
+
+        assertTrue("The test file structure wasn't created properly.", isTestFileStructureCorrect(TestDefinition.TransactionType.PnR));
+        File testfile=new File(new File(new File(new File(Installation.instance().environmentFile(ENVIRONMENT_NAME),"testkits"),
+                SESSION_NAME), TestDefinition.TransactionType.PnR.getTransactionTypeTestRepositoryName()),TEST_NAME);
+        File savedMetadataFile=new File(new File(testfile,"submit"),"metadata.xml");
+        try {
+            assertTrue("The metadata file created is empty",(IOUtils.toString(new FileReader(savedMetadataFile))!=null && !IOUtils.toString(new FileReader(savedMetadataFile)).isEmpty()));
+            assertFalse("The metadata file created is not properly formated.",SERVICES.parseXdsMetadata(IOUtils.toString(new FileReader(savedMetadataFile)))==null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    private boolean isTestFileStructureCorrect(TestDefinition.TransactionType transactionType){
+        File testkitsFile=new File(Installation.instance().environmentFile(ENVIRONMENT_NAME),"testkits");
+        if (!testkitsFile.exists()) return false;
+        File sessionFile=new File(testkitsFile,SESSION_NAME);
+        if (!sessionFile.exists()) return false;
+        File testFile = new File(new File(sessionFile, transactionType.getTransactionTypeTestRepositoryName()),TEST_NAME);
+        if (!testFile.exists()) return false;
+        if (!(new File(testFile,"index.idx")).exists()) return false;
+        File testStepFile = new File(testFile,"submit");
+        if (!testStepFile.exists() || !(new File(testStepFile,"testplan.xml")).exists() || !(new File(testStepFile,"metadata.xml")).exists()) return false;
+        return true;
+    }
+
 }
