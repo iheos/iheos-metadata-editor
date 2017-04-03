@@ -2,16 +2,22 @@ package gov.nist.hit.ds.docentryeditor.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
+import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 import gov.nist.toolkit.commondatatypes.MetadataSupport;
+import gov.nist.toolkit.installation.Installation;
 import gov.nist.toolkit.registrymetadata.Metadata;
 import gov.nist.toolkit.registrymetadata.MetadataParser;
+import gov.nist.toolkit.testkitutilities.TestDefinition;
 import gov.nist.toolkit.utilities.xml.OMFormatter;
 import gov.nist.toolkit.utilities.xml.XmlUtil;
 import gov.nist.toolkit.xdsexception.client.MetadataException;
 import gov.nist.toolkit.xdsexception.client.XdsInternalException;
 import org.apache.axiom.om.OMElement;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -551,5 +557,71 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
             return "";
         }
         return in;
+    }
+
+    public void saveInExternalCache(SaveInExtCacheRequest context){
+        TestDefinition.TransactionType transType= TestDefinition.TransactionType.fromString(context.getTransactionType());
+        File testkitFile=new File(Installation.instance().environmentFile(context.getEnvironmentName()),"testkits");
+        File testFile=new File(new File(new File(testkitFile,context.getSessionName()), transType.getTransactionTypeTestRepositoryName()),context.getTestName());
+
+        if (!testFile.exists()){
+            testFile.mkdirs();
+        }
+
+        FileOutputStream out;
+//        // TODO Remove hard coded xml when submission set and association are done
+//        String outS= fileContent.replace("displayName","name");
+        try {
+            out = new FileOutputStream(new File(testFile, "index.idx"));
+            LOGGER.info("... writing file (" + "index.idx" + ") in " + testFile.getAbsolutePath() + "...");
+            out.write("submit".getBytes());
+            out.close();
+            File submitFile=new File(testFile,"submit");
+            submitFile.mkdir();
+            out = new FileOutputStream(new File(submitFile, "testplan.xml"));
+            LOGGER.info("... writing file (" + "testplan.xml" + ") in " + submitFile.getAbsolutePath() + "...");
+            out.write(createTestplanTemplate(transType,context.getTestName()).getBytes());
+            out.close();
+            out = new FileOutputStream(new File(submitFile, "readme.txt"));
+            LOGGER.info("... writing file (" + "readme.txt" + ") in " + submitFile.getAbsolutePath() + "...");
+            out.write(createTemplateReadmeDocument().getBytes());
+            out.close();
+            out = new FileOutputStream(new File(submitFile, "metadata.xml"));
+            XdsMetadataParserServicesImpl metadataParserServices=new XdsMetadataParserServicesImpl();
+            LOGGER.info("... writing file (" + "metadata.xml" + ") in " + submitFile.getAbsolutePath() + "...");
+            String m="<lcm:SubmitObjectsRequest xmlns:lcm=\"urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0\">\n" +
+                    "        <rim:RegistryObjectList xmlns:rim=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\">";
+            m+=metadataParserServices.toEbRim(context.getMetadata());
+            m+="</rim:RegistryObjectList>\n" +
+                    "    </lcm:SubmitObjectsRequest>";
+            out.write(m.getBytes());
+            out.close();
+        } catch (IOException e) {
+            LOGGER.warning("Error when writing metadata file on server.\n" + e.getMessage());
+        }
+    }
+
+    private String createTestplanTemplate(TestDefinition.TransactionType type, String testName) {
+        StringBuilder testplanBuilder=new StringBuilder();
+        testplanBuilder.append("<TestPlan>\n");
+        testplanBuilder.append("<Test>"+testName+"</Test>\n");
+        testplanBuilder.append("<TestStep id=\"submit\">\n");
+        testplanBuilder.append("<ExpectedStatus>Success</ExpectedStatus>\n");
+        testplanBuilder.append("<"+type.toString()+">\n");
+        testplanBuilder.append("<XDSb/>\n");
+        testplanBuilder.append("<MetadataFile>metadata.xml</MetadataFile>\n");
+        if (type.equals(TestDefinition.TransactionType.PnR)) {
+            testplanBuilder.append("<Document id=\"Document01\">readme.txt</Document>\n");
+        }
+        testplanBuilder.append("</"+type.toString()+">\n");
+        testplanBuilder.append("</TestStep>\n");
+        testplanBuilder.append("</TestPlan>\n");
+        return testplanBuilder.toString();
+    }
+
+    private String createTemplateReadmeDocument(){
+        String readmeFileContent="This is my document.\n\n"+
+                "It is great!\n\n";
+        return readmeFileContent;
     }
 }

@@ -1,6 +1,7 @@
 package gov.nist.hit.ds.docentryeditor.server;
 
 import gov.nist.hit.ds.docentryeditor.shared.RequestContext;
+import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 import gov.nist.toolkit.installation.Installation;
 import gov.nist.toolkit.testkitutilities.TestDefinition;
@@ -18,7 +19,7 @@ import java.io.IOException;
 public class SaveInECTestCase extends TestCase {
     @Test
     public void testSave() {
-        SaveFileService service = new SaveFileService();
+        XdsMetadataParserServicesImpl service = new XdsMetadataParserServicesImpl();
         String extCacheLocation="/Users/onh2/external_cache/";
         String environmentName="NA2015";
         String sessionName="default";
@@ -29,7 +30,7 @@ public class SaveInECTestCase extends TestCase {
         XdsMetadataParserServicesImpl parserServices=new XdsMetadataParserServicesImpl();
         try {
             XdsMetadata metadata=parserServices.parseXdsMetadata(IOUtils.toString(new FileReader(metadataFile)));
-            service.saveInExternalCache(new RequestContext(environmentName,sessionName,extCacheLocation),metadata, TestDefinition.TransactionType.PnR,testName);
+            service.saveInExternalCache(new SaveInExtCacheRequest(new RequestContext(environmentName,sessionName,extCacheLocation),metadata, TestDefinition.TransactionType.PnR.toString(),testName));
         } catch (IOException e) {
             e.printStackTrace();
         }

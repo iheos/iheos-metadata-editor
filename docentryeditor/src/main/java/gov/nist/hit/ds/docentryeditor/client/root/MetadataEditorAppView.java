@@ -25,7 +25,7 @@ public class MetadataEditorAppView extends Viewport {
     private static final int PANELS_MARGINS = 5;
     // main panel
     private CenterPanel center;
-    private NorthPanel north;
+    private EditorConfigurationHeader north;
     private GenericMVP<SubmissionMenuData, SubmissionPanelView, SubmissionPanelPresenter> submissionMVP;
 
     private SimpleContainer simpleContainer;
@@ -33,7 +33,7 @@ public class MetadataEditorAppView extends Viewport {
     private SubmissionPanelPresenter submissionPanelPresenter;
 
     @Inject
-    public MetadataEditorAppView(SubmissionPanelView submissionPanelView,SubmissionPanelPresenter submissionPanelPresenter,NorthPanel north) {
+    public MetadataEditorAppView(SubmissionPanelView submissionPanelView,SubmissionPanelPresenter submissionPanelPresenter,EditorConfigurationHeader north) {
         super();
 
         this.submissionPanelPresenter = submissionPanelPresenter;

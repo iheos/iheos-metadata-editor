@@ -1,7 +1,9 @@
 package gov.nist.hit.ds.docentryeditor.server;
 
 import com.google.web.bindery.requestfactory.server.RequestFactoryServlet;
+import gov.nist.hit.ds.docentryeditor.client.utils.Services.SaveFileRequestContext;
 import gov.nist.hit.ds.docentryeditor.shared.RequestContext;
+import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 import gov.nist.toolkit.installation.Installation;
 import gov.nist.toolkit.testkitutilities.TestDefinition;
@@ -108,71 +110,6 @@ public class SaveFileService implements Serializable {
 
         // return created file's name
         return fileName;
-    }
-
-    public void saveInExternalCache(RequestContext context, XdsMetadata metadata, TestDefinition.TransactionType type, String testName){
-        File testkitFile=new File(Installation.instance().environmentFile(context.getEnvironmentName()),"testkits");
-        File testFile=new File(new File(new File(testkitFile,context.getSessionName()), type.getTransactionTypeTestRepositoryName()),testName);
-
-        if (!testFile.exists()){
-            testFile.mkdirs();
-        }
-
-        FileOutputStream out;
-//        // TODO Remove hard coded xml when submission set and association are done
-//        String outS= fileContent.replace("displayName","name");
-        try {
-            out = new FileOutputStream(new File(testFile, "index.idx"));
-            LOGGER.info("... writing file (" + "index.idx" + ") in " + testFile.getAbsolutePath() + "...");
-            out.write("submit".getBytes());
-            out.close();
-            File submitFile=new File(testFile,"submit");
-            submitFile.mkdir();
-            out = new FileOutputStream(new File(submitFile, "testplan.xml"));
-            LOGGER.info("... writing file (" + "testplan.xml" + ") in " + submitFile.getAbsolutePath() + "...");
-            out.write(createTestplanTemplate(type,testName).getBytes());
-            out.close();
-            out = new FileOutputStream(new File(submitFile, "readme.txt"));
-            LOGGER.info("... writing file (" + "readme.txt" + ") in " + submitFile.getAbsolutePath() + "...");
-            out.write(createTemplateReadmeDocument().getBytes());
-            out.close();
-            out = new FileOutputStream(new File(submitFile, "metadata.xml"));
-            XdsMetadataParserServicesImpl metadataParserServices=new XdsMetadataParserServicesImpl();
-            LOGGER.info("... writing file (" + "metadata.xml" + ") in " + submitFile.getAbsolutePath() + "...");
-            String m="<lcm:SubmitObjectsRequest xmlns:lcm=\"urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0\">\n" +
-                    "        <rim:RegistryObjectList xmlns:rim=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\">";
-            m+=metadataParserServices.toEbRim(metadata);
-            m+="</rim:RegistryObjectList>\n" +
-                    "    </lcm:SubmitObjectsRequest>";
-            out.write(m.getBytes());
-            out.close();
-        } catch (IOException e) {
-            LOGGER.warning("Error when writing metadata file on server.\n" + e.getMessage());
-        }
-    }
-
-    private String createTestplanTemplate(TestDefinition.TransactionType type, String testName) {
-        StringBuilder testplanBuilder=new StringBuilder();
-        testplanBuilder.append("<TestPlan>\n");
-        testplanBuilder.append("<Test>"+testName+"</Test>\n");
-        testplanBuilder.append("<TestStep id=\"submit\">\n");
-        testplanBuilder.append("<ExpectedStatus>Success</ExpectedStatus>\n");
-        testplanBuilder.append("<"+type.toString()+">\n");
-        testplanBuilder.append("<XDSb/>\n");
-        testplanBuilder.append("<MetadataFile>metadata.xml</MetadataFile>\n");
-        if (type.equals(TestDefinition.TransactionType.PnR)) {
-            testplanBuilder.append("<Document id=\"Document01\">readme.txt</Document>\n");
-        }
-        testplanBuilder.append("</"+type.toString()+">\n");
-        testplanBuilder.append("</TestStep>\n");
-        testplanBuilder.append("</TestPlan>\n");
-        return testplanBuilder.toString();
-    }
-
-    private String createTemplateReadmeDocument(){
-        String readmeFileContent="This is my document.\n\n"+
-                "It is great!\n\n";
-        return readmeFileContent;
     }
 
 }

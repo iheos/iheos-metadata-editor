@@ -107,7 +107,7 @@ public class SubmissionSetEditorPresenter extends AbstractPresenter<SubmissionSe
                 save();
             }
         } else {
-            final ConfirmMessageBox cmb = new ConfirmMessageBox("Are you sure?", "Data has not changed. Are you sure you want to download a copy of this metadata entry?");
+            final ConfirmMessageBox cmb = new ConfirmMessageBox("Are you sure?", "Data has not changed in this submission set object. Are you sure you want to save these metadata?");
             cmb.show();
             cmb.addDialogHideHandler(new SaveDialogHideHandler());
         }

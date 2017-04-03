@@ -2,6 +2,7 @@ package gov.nist.hit.ds.docentryeditor.client.parser;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 
 /**
@@ -12,4 +13,5 @@ public interface XdsParserServices extends RemoteService{
     public XdsMetadata parseXdsMetadata(String fileContent);
 
     public String toEbRim(XdsMetadata xdsDocumentEntry);
+    public void saveInExternalCache(SaveInExtCacheRequest context);
 }

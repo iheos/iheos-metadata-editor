@@ -9,14 +9,14 @@ import gov.nist.toolkit.testkitutilities.TestDefinition;
 public class SaveInExtCacheRequest extends RequestContext {
     private XdsMetadata metadata;
     private String testName;
-    private TestDefinition.TransactionType transactionType;
+    private String transactionType;
 
     /**
      * This constructor is mandatory when using Serializable class.
      * Prefer to use the other constructor.
      */
     public SaveInExtCacheRequest(){}
-    public SaveInExtCacheRequest(RequestContext context, XdsMetadata metadata, TestDefinition.TransactionType transactionType, String testName){
+    public SaveInExtCacheRequest(RequestContext context, XdsMetadata metadata, String transactionType, String testName){
         setEnvironmentName(context.getEnvironmentName());
         setSessionName(context.getSessionName());
         this.metadata=metadata;
@@ -40,11 +40,11 @@ public class SaveInExtCacheRequest extends RequestContext {
         this.testName = testName;
     }
 
-    public TestDefinition.TransactionType getTransactionType() {
+    public String getTransactionType() {
         return transactionType;
     }
 
-    public void setTransactionType(TestDefinition.TransactionType transactionType) {
+    public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
     }
 }

@@ -1,6 +1,7 @@
 package gov.nist.hit.ds.docentryeditor.client.parser;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 
 /**
@@ -15,4 +16,5 @@ public interface XdsParserServicesAsync {
      */
     public void parseXdsMetadata(String fileContent, AsyncCallback<XdsMetadata> async);
     public void toEbRim(XdsMetadata xdsDocumentEntry,AsyncCallback<String> async);
+    public void saveInExternalCache(SaveInExtCacheRequest context,AsyncCallback<Void> async);
 }

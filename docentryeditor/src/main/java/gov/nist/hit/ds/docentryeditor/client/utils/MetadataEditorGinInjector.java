@@ -13,7 +13,7 @@ import gov.nist.hit.ds.docentryeditor.client.generics.ActivityDisplayer;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
 import gov.nist.hit.ds.docentryeditor.client.root.CenterPanel;
 import gov.nist.hit.ds.docentryeditor.client.root.MetadataEditorAppView;
-import gov.nist.hit.ds.docentryeditor.client.root.NorthPanel;
+import gov.nist.hit.ds.docentryeditor.client.root.EditorConfigurationHeader;
 import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomeActivity;
 import gov.nist.hit.ds.docentryeditor.client.root.submission.*;
 import gov.nist.hit.ds.docentryeditor.client.utils.Services.MetadataEditorRequestFactory;
@@ -48,7 +48,7 @@ public interface MetadataEditorGinInjector extends Ginjector {
     // ~ Root
     MetadataEditorAppView getMetadataEditorAppView();
     CenterPanel getCenterPanel();
-    NorthPanel getNorthPanel();
+    EditorConfigurationHeader getNorthPanel();
 
     // ------------------------------------------
     // ~ Various widgets

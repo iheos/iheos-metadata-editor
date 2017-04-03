@@ -41,8 +41,8 @@ public class MetadataEditorGinModule extends AbstractGinModule {
         bind(MetadataEditorAppView.class).in(Singleton.class);
 
         bind(StandardSelector.class).in(Singleton.class);
-//        bind(EnvironmentState.class).in(Singleton.class);
-//        bind(SessionState.class).in(Singleton.class);
+        bind(EnvironmentState.class).in(Singleton.class);
+        bind(SessionState.class).in(Singleton.class);
     }
 
     /**

@@ -1,22 +1,21 @@
 package gov.nist.hit.ds.docentryeditor.client.root.submission;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.sencha.gxt.widget.core.client.info.Info;
 import gov.nist.hit.ds.docentryeditor.client.editor.association.AssociationEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.docentry.DocEntryEditorPlace;
 import gov.nist.hit.ds.docentryeditor.client.editor.subset.SubmissionSetEditorPlace;
-import gov.nist.hit.ds.docentryeditor.client.eventbus.*;
+import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.eventbus.events.*;
 import gov.nist.hit.ds.docentryeditor.client.generics.abstracts.AbstractPresenter;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParser;
-import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
-import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
 import gov.nist.hit.ds.docentryeditor.client.root.home.WelcomePlace;
 import gov.nist.hit.ds.docentryeditor.client.utils.Services.MetadataEditorRequestFactory;
+import gov.nist.hit.ds.docentryeditor.client.widgets.SaveDialog;
+import gov.nist.hit.ds.docentryeditor.client.widgets.environment.EnvironmentState;
+import gov.nist.hit.ds.docentryeditor.client.widgets.session.SessionState;
+import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 
 import javax.inject.Inject;
@@ -37,15 +36,18 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
     private XdsParser xdsParser;
     @Inject
     private MetadataEditorRequestFactory requestFactory;
+    @Inject
+    private SaveDialog saveDialog;
+    @Inject
+    private EnvironmentState environmentState;
+    @Inject
+    private SessionState sessionState;
 
     private final SubmissionMenuData submissionSetTreeNode = new SubmissionMenuData("subSet", "Submission set",new XdsSubmissionSet());
 
     private SubmissionMenuData currentlyEdited;
     private int nextIndex = 1;
     private int associationIndex=1;
-
-    // RPC services declaration
-    private final XdsParserServicesAsync xdsParserServices = GWT.create(XdsParserServices.class);
 
     @Override
     public void init() {
@@ -87,11 +89,6 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         ((MetadataEditorEventBus) getEventBus()).addCreateNewDocEntryEventHandler(new CreateNewDocEntryEvent.CreateNewDocEntryEventHandler() {
             @Override
             public void onCreateNewDocumentEntry(CreateNewDocEntryEvent event) {
-//                currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, eventbus.getDocument());
-//                nextIndex++;
-//                view.getSubmissionTreeStore().add(view.getSubmissionTreeStore().getRootItems().get(0), currentlyEdited);
-//                view.getSubmissionTree().expandAll();
-//                view.getSubmissionTree().getSelectionModel().select(currentlyEdited, false);
                 createNewDocumentEntry();
             }
         });
@@ -300,27 +297,12 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         for (XdsAssociation association:view.getAssociationStore().getAll()){
             m.getAssociations().add(association);
         }
-        // rpc server call to translate metadata java object into an ebRim xml String.
-        xdsParserServices.toEbRim(m, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable throwable) {
-                logger.warning(throwable.getMessage());
-            }
-
-            @Override
-            public void onSuccess(String s) {
-                // request factory server call to physically save the file on the server.
-                requestFactory.saveFileRequestContext().saveAsXMLFile(s).fire(new Receiver<String>() {
-                    @Override
-                    public void onSuccess(String response) {
-                        logger.info("saveAsXMLFile call succeed");
-                        logger.info("Generated filename sent to the client \n" + response);
-                        logger.info("File's URL: " + GWT.getHostPageBaseURL() + "files/" + response);
-                        view.openFileSavedPopup(response);
-                    }
-                });
-            }
-        });
+        SaveInExtCacheRequest saveRequest=new SaveInExtCacheRequest();
+        saveRequest.setEnvironmentName(environmentState.getSelectedEnvironment());
+        saveRequest.setSessionName(sessionState.getSelectedSession());
+        saveRequest.setMetadata(m);
+        saveDialog.setSaveRequest(saveRequest);
+        saveDialog.show();
     }
 
     /**

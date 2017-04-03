@@ -1,12 +1,14 @@
 package gov.nist.hit.ds.docentryeditor.shared;
 
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import java.io.Serializable;
 
 /**
  * Created by onh2 on 3/20/17.
  */
-public class RequestContext implements Serializable{
+public class RequestContext implements Serializable, IsSerializable{
     private String environmentName;
     private String sessionName;
     private String externalCache;

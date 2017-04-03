@@ -114,7 +114,7 @@ public class AssociationEditorPresenter extends AbstractPresenter<AssociationEdi
                 save();
             }
         } else {
-            final ConfirmMessageBox cmb = new ConfirmMessageBox("", "Data has not changed. Are you sure you want to download a copy of this metadata entry?");
+            final ConfirmMessageBox cmb = new ConfirmMessageBox("", "Data has not changed in this association object. Are you sure you want to save these metadata?");
             cmb.show();
             cmb.addDialogHideHandler(new SaveDialogHandler(model));
         }
