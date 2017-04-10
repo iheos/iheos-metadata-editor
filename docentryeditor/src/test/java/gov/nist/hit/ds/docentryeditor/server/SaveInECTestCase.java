@@ -5,6 +5,7 @@ import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 import gov.nist.toolkit.installation.Installation;
 import gov.nist.toolkit.testkitutilities.TestDefinition;
+import gov.nist.toolkit.xdsexception.client.MetadataException;
 import org.apache.commons.io.IOUtils;
 import org.junit.*;
 

@@ -351,12 +351,12 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
     }
 
     /**
-     * This method generates formatted ebRim xml as a String for the metadata given in parameter.
+     * This method generates formatted ebRim xml (V3) as a String for the metadata given in parameter.
      *
      * @param metadata XdsMetadata object to be translated to ebRim xml.
      * @return ebRim xml of the metadata given in parameter as a String.
      */
-    public String toEbRim(XdsMetadata metadata){
+    public String toEbRim(XdsMetadata metadata)  {
         metadataTemp = new Metadata();
         // ////////////////
         // Submission Set
@@ -505,14 +505,11 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                 metadataTemp.addAssociation(assoElement);
             }
         }
-//        String result="<xdsb:ProvideAndRegisterDocumentSetRequest xmlns:xdsb=\"urn:ihe:iti:xds-b:2007\">\n" +
-//                "    <lcm:SubmitObjectsRequest xmlns:lcm=\"urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0\">\n" +
-//                "        <rim:RegistryObjectList xmlns:rim=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\">";
-//        result+= metadataTemp.format();
-//        result+="</rim:RegistryObjectList>\n" +
-//                "    </lcm:SubmitObjectsRequest>\n" +
-//                "</xdsb:ProvideAndRegisterDocumentSetRequest>";
-
+        try {
+            metadataTemp.reorderRegistryPackageElements(metadataTemp.getSubmissionSet());
+        } catch (MetadataException e) {
+            e.printStackTrace();
+        }
         return metadataTemp.format();
     }
 
@@ -559,7 +556,7 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         return in;
     }
 
-    public void saveInExternalCache(SaveInExtCacheRequest context){
+    public void saveInExternalCache(SaveInExtCacheRequest context)  {
         TestDefinition.TransactionType transType= TestDefinition.TransactionType.fromString(context.getTransactionType());
         File testkitFile=new File(Installation.instance().environmentFile(context.getEnvironmentName()),"testkits");
         File testFile=new File(new File(new File(testkitFile,context.getSessionName()), transType.getTransactionTypeTestRepositoryName()),context.getTestName());
@@ -624,4 +621,32 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
                 "It is great!\n\n";
         return readmeFileContent;
     }
+    private Metadata reorder(Metadata m){
+        OMElement submissionSet=m.getSubmissionSet();
+        try {
+            List<OMElement> subSetSlots=m.getSlots(submissionSet);
+            OMElement subSetsName=m.getNameElement(submissionSet);
+            OMElement subSetDescription=m.getDescriptionElement(submissionSet);
+            List<OMElement> subSetClassifications=m.getClassifications(submissionSet);
+            List<OMElement> subSetExtIds=m.getExtIdentifiers(submissionSet);
+            submissionSet.removeChildren();
+            for (OMElement slot:subSetSlots){
+                submissionSet.addChild(slot);
+            }
+            submissionSet.addChild(subSetsName);
+            submissionSet.addChild(subSetDescription);
+            for (OMElement classification:subSetClassifications){
+                submissionSet.addChild(classification);
+            }
+            for (OMElement extId:subSetExtIds){
+                submissionSet.addChild(extId);
+            }
+            System.out.println("Hello");
+        } catch (MetadataException e) {
+            e.printStackTrace();
+        }
+        return m;
+    }
+
+
 }
