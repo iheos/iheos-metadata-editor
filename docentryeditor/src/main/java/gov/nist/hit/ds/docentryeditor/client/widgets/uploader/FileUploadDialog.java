@@ -1,6 +1,8 @@
 package gov.nist.hit.ds.docentryeditor.client.widgets.uploader;
 
 import com.sencha.gxt.widget.core.client.Dialog;
+import com.sencha.gxt.widget.core.client.TabItemConfig;
+import com.sencha.gxt.widget.core.client.TabPanel;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import gov.nist.hit.ds.docentryeditor.client.eventbus.MetadataEditorEventBus;
 import gov.nist.hit.ds.docentryeditor.client.eventbus.events.NewFileLoadedEvent;
@@ -16,7 +18,10 @@ public class FileUploadDialog extends Dialog {
     @Inject
     private FileUploadMVP fileUploadMVP;
     @Inject
+    private ExtCacheFileLoaderMVP extCacheLoaderMVP;
+    @Inject
     private MetadataEditorEventBus eventBus;
+
 
     public FileUploadDialog() {
         super();
@@ -31,7 +36,16 @@ public class FileUploadDialog extends Dialog {
 
     public void init() {
         fileUploadMVP.init();
-        add(fileUploadMVP.getDisplay());
+        extCacheLoaderMVP.init();
+
+        // tab panel to choose from file upload from user's machine or file loading from ext. cache.
+        TabPanel tabPanel = new TabPanel();
+        tabPanel.setWidth(500);
+        TabItemConfig fileUploadTab=new TabItemConfig("Upload from computer");
+        tabPanel.add(fileUploadMVP.getDisplay(),fileUploadTab);
+        TabItemConfig extCacheLoaderTab=new TabItemConfig("Load from external cache");
+        tabPanel.add(extCacheLoaderMVP.getDisplay(),extCacheLoaderTab);
+        add(tabPanel);
         bind();
     }
 

@@ -1,15 +1,6 @@
 package gov.nist.hit.ds.docentryeditor.server;
 
 import com.google.web.bindery.requestfactory.server.RequestFactoryServlet;
-import gov.nist.hit.ds.docentryeditor.client.utils.Services.SaveFileRequestContext;
-import gov.nist.hit.ds.docentryeditor.shared.RequestContext;
-import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
-import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
-import gov.nist.toolkit.installation.Installation;
-import gov.nist.toolkit.testkitutilities.TestDefinition;
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -64,7 +64,7 @@ public class SaveDialog extends Dialog {
         super();
         this.requestFactory=requestFactory;
         setBodyBorder(false);
-        setHeadingText("File Upload");
+        setHeadingText("Save");
         setHideOnButtonClick(true);
         setHeight(180);
 
@@ -151,7 +151,7 @@ public class SaveDialog extends Dialog {
         xdsParserServices.saveInExternalCache(saveRequest, new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("Failure!");
+                Window.alert("Failure while saving file!");
             }
 
             @Override
@@ -210,8 +210,11 @@ public class SaveDialog extends Dialog {
         d.show();
     }
 
+    /**
+     * Request values for the transaction type section.
+     */
     private void populateTransactionTypeCombo() {
-        requestFactory.transactionTypeRequestContext().getTransactionTypes().fire(new Receiver<List<String>>() {
+        requestFactory.extCacheRequestContext().getTransactionTypes().fire(new Receiver<List<String>>() {
             @Override
             public void onSuccess(List<String> response) {
                 for (String s:response) {

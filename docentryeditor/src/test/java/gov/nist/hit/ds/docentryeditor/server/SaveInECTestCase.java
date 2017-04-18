@@ -1,11 +1,10 @@
 package gov.nist.hit.ds.docentryeditor.server;
 
-import gov.nist.hit.ds.docentryeditor.shared.RequestContext;
+import gov.nist.hit.ds.docentryeditor.shared.EnvSessionRequestContext;
 import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 import gov.nist.toolkit.installation.Installation;
 import gov.nist.toolkit.testkitutilities.TestDefinition;
-import gov.nist.toolkit.xdsexception.client.MetadataException;
 import org.apache.commons.io.IOUtils;
 import org.junit.*;
 
@@ -37,7 +36,7 @@ public class SaveInECTestCase {
         XdsMetadataParserServicesImpl parserServices = new XdsMetadataParserServicesImpl();
         try {
             XdsMetadata metadata = parserServices.parseXdsMetadata(IOUtils.toString(new FileReader(metadataFile)));
-            SERVICES.saveInExternalCache(new SaveInExtCacheRequest(new RequestContext(ENVIRONMENT_NAME, SESSION_NAME, extCacheLocation),
+            SERVICES.saveInExternalCache(new SaveInExtCacheRequest(new EnvSessionRequestContext(ENVIRONMENT_NAME, SESSION_NAME, extCacheLocation),
                     metadata, TestDefinition.TransactionType.PnR.toString(), TEST_NAME));
         } catch (IOException e) {
             e.printStackTrace();

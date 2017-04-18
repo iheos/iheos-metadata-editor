@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by onh2 on 3/20/17.
  */
-public class RequestContext implements Serializable, IsSerializable{
+public class EnvSessionRequestContext implements Serializable, IsSerializable{
     private String environmentName;
     private String sessionName;
     private String externalCache;
@@ -17,15 +17,15 @@ public class RequestContext implements Serializable, IsSerializable{
      * This constructor is mandatory when using Serializable class.
      * Prefer to use the other constructor.
      */
-    public RequestContext() {
+    public EnvSessionRequestContext() {
     }
 
-    public RequestContext(String environmentName, String sessionName){
+    public EnvSessionRequestContext(String environmentName, String sessionName){
         this.environmentName=environmentName;
         this.sessionName=sessionName;
     }
 
-    public RequestContext(String environmentName, String sessionName, String externalCachePath){
+    public EnvSessionRequestContext(String environmentName, String sessionName, String externalCachePath){
         this(environmentName,sessionName);
         this.externalCache=externalCachePath;
     }

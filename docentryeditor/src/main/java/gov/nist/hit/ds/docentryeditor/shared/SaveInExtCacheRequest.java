@@ -1,12 +1,11 @@
 package gov.nist.hit.ds.docentryeditor.shared;
 
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
-import gov.nist.toolkit.testkitutilities.TestDefinition;
 
 /**
  * Created by onh2 on 3/20/17.
  */
-public class SaveInExtCacheRequest extends RequestContext {
+public class SaveInExtCacheRequest extends EnvSessionRequestContext {
     private XdsMetadata metadata;
     private String testName;
     private String transactionType;
@@ -16,7 +15,7 @@ public class SaveInExtCacheRequest extends RequestContext {
      * Prefer to use the other constructor.
      */
     public SaveInExtCacheRequest(){}
-    public SaveInExtCacheRequest(RequestContext context, XdsMetadata metadata, String transactionType, String testName){
+    public SaveInExtCacheRequest(EnvSessionRequestContext context, XdsMetadata metadata, String transactionType, String testName){
         setEnvironmentName(context.getEnvironmentName());
         setSessionName(context.getSessionName());
         this.metadata=metadata;
