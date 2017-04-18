@@ -52,6 +52,8 @@ public class SaveInECTestCase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        File env=Installation.instance().environmentFile(ENVIRONMENT_NAME);
+        assertTrue("Test files couldn't be deleted",deleteDirectory(env));
     }
 
     private boolean isTestFileStructureCorrect(TestDefinition.TransactionType transactionType){
@@ -67,4 +69,17 @@ public class SaveInECTestCase {
         return true;
     }
 
+    private boolean deleteDirectory(File path) {
+        if (path.exists()) {
+            File[] files = path.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    deleteDirectory(files[i]);
+                } else {
+                    files[i].delete();
+                }
+            }
+        }
+        return (path.delete());
+    }
 }
