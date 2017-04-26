@@ -7,6 +7,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.data.shared.StringLabelProvider;
@@ -59,7 +60,6 @@ public class ExtCacheFileLoaderView extends AbstractView<ExtCacheFileLoaderPrese
         panel.setButtonAlign(BoxLayoutContainer.BoxLayoutPack.CENTER);
         panel.setWidth(UPLOADER_WIDTH);
         panel.setHeight(UPLOADER_HEIGHT);
-//        panel.getElement().setMargins(FORM_MARGIN);
         panel.setBorders(false);
 
         form = new FormPanel();
@@ -75,7 +75,11 @@ public class ExtCacheFileLoaderView extends AbstractView<ExtCacheFileLoaderPrese
         vcontainer.add(transactionTypeFieldLabel,new VerticalLayoutContainer.VerticalLayoutData(-1, -1, new Margins(UP_N_DOWN_LBL_MARGIN/2, RIGHT_N_LEFT_LBL_MARGIN+RIGHT_N_LEFT_LBL_MARGIN,0, RIGHT_N_LEFT_LBL_MARGIN+RIGHT_N_LEFT_LBL_MARGIN)));
         EditorFieldLabel testFilesComboFL=new EditorFieldLabel(testNamesCombo,"Select testdata instance");
         vcontainer.add(testFilesComboFL,new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(UP_N_DOWN_LBL_MARGIN/2, RIGHT_N_LEFT_LBL_MARGIN+RIGHT_N_LEFT_LBL_MARGIN,0, RIGHT_N_LEFT_LBL_MARGIN+RIGHT_N_LEFT_LBL_MARGIN)));
-        vcontainer.add(sectionsContainer,new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(UP_N_DOWN_LBL_MARGIN/2, RIGHT_N_LEFT_LBL_MARGIN+RIGHT_N_LEFT_LBL_MARGIN,0, RIGHT_N_LEFT_LBL_MARGIN+RIGHT_N_LEFT_LBL_MARGIN)));
+        EditorFieldLabel sectionsComboFL=new EditorFieldLabel(sectionsCombo,"Select section");
+        vcontainer.add(sectionsComboFL,new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(UP_N_DOWN_LBL_MARGIN/2, RIGHT_N_LEFT_LBL_MARGIN+RIGHT_N_LEFT_LBL_MARGIN,0, RIGHT_N_LEFT_LBL_MARGIN+RIGHT_N_LEFT_LBL_MARGIN)));
+
+        testNamesCombo.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
+        sectionsCombo.setTriggerAction(ComboBoxCell.TriggerAction.ALL);
 
         btnSubmit = new TextButton("Open");
         btnSubmit.disable();
@@ -94,24 +98,37 @@ public class ExtCacheFileLoaderView extends AbstractView<ExtCacheFileLoaderPrese
         radioGroup.addValueChangeHandler(new ValueChangeHandler<HasValue<Boolean>>() {
             @Override
             public void onValueChange(ValueChangeEvent<HasValue<Boolean>> event) {
-                testNamesCombo.clear();
+                testNamesCombo.getStore().clear();
+                sectionsCombo.getStore().clear();
+                sectionsCombo.clear();
+                btnSubmit.disable();
                 ToggleGroup group = (ToggleGroup) event.getSource();
                 Radio radio = (Radio) group.getValue();
                 String selectedTransactionType=radio.getBoxLabel();
-                testNamesCombo.clear();
                 presenter.retrieveTestdataInstanceNames(selectedTransactionType);
             }
         });
         testNamesCombo.addSelectionHandler(new SelectionHandler<String>() {
             @Override
             public void onSelection(SelectionEvent<String> event) {
+                sectionsCombo.getStore().clear();
                 presenter.retrieveSections(event.getSelectedItem());
+                if (sectionsCombo.getStore().getAll().isEmpty()){
+                    btnSubmit.enable();
+                }
+            }
+        });
+        sectionsCombo.addSelectionHandler(new SelectionHandler<String>() {
+            @Override
+            public void onSelection(SelectionEvent<String> event) {
+                presenter.setSelectedSession(event.getSelectedItem());
+                btnSubmit.enable();
             }
         });
         btnSubmit.addSelectHandler(new SelectEvent.SelectHandler() {
-
             @Override
             public void onSelect(SelectEvent event) {
+                presenter.loadMetadataFile();
             }
 
         });
@@ -127,18 +144,28 @@ public class ExtCacheFileLoaderView extends AbstractView<ExtCacheFileLoaderPrese
 
     public void clearTransactionTypeRadioGroup() {
         radioContainer.clear();
-        radioContainer.clear();
+        radioGroup.clear();
     }
 
     public void populateTestdataCombo(List<String> instances) {
+        testNamesCombo.getStore().clear();
+        testNamesCombo.clear();
         testNamesCombo.add(instances);
-        sectionsContainer.clear();
     }
 
     public void showSections(List<String> sections) {
-        sectionsCombo.add(sections);
-        EditorFieldLabel sectionsComboFL=new EditorFieldLabel(sectionsCombo,"Select section");
-        sectionsContainer.add(sectionsComboFL,new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(UP_N_DOWN_LBL_MARGIN/2, RIGHT_N_LEFT_LBL_MARGIN+RIGHT_N_LEFT_LBL_MARGIN,0, RIGHT_N_LEFT_LBL_MARGIN+RIGHT_N_LEFT_LBL_MARGIN)));
+        sectionsCombo.getStore().clear();
+        sectionsCombo.clear();
+        if (sections.isEmpty()){
+            sectionsCombo.disable();
+        }else {
+            sectionsCombo.enable();
+            sectionsCombo.add(sections);
+        }
+    }
+
+    public TextButton getBtnCancel() {
+        return btnCancel;
     }
 
     @Override

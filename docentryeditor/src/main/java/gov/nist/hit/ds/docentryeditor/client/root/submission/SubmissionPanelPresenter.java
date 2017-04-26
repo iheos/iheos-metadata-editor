@@ -42,6 +42,7 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
     private EnvironmentState environmentState;
     @Inject
     private SessionState sessionState;
+    static String metadataFileInEditionPath=null;
 
     private final SubmissionMenuData submissionSetTreeNode = new SubmissionMenuData("subSet", "Submission set",new XdsSubmissionSet());
 
@@ -71,6 +72,8 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
             @Override
             public void onNewFileLoaded(NewFileLoadedEvent event) {
                 clearSubmissionSet();
+                XdsMetadata xdsMetadata=event.getMetadata();
+                metadataFileInEditionPath=event.getMetadata().getFilePath();
                 view.getSubmissionTreeStore().getRootItems().get(0).setModel(event.getMetadata().getSubmissionSet());
                 for (XdsDocumentEntry docEntry : event.getMetadata().getDocumentEntries()) {
                     currentlyEdited = new SubmissionMenuData("DocEntry" + nextIndex, "Document Entry " + nextIndex, docEntry);
@@ -301,6 +304,9 @@ public class SubmissionPanelPresenter extends AbstractPresenter<SubmissionPanelV
         saveRequest.setEnvironmentName(environmentState.getSelectedEnvironment());
         saveRequest.setSessionName(sessionState.getSelectedSession());
         saveRequest.setMetadata(m);
+        if (metadataFileInEditionPath!=null) {
+            saveRequest.setFilePath(metadataFileInEditionPath);
+        }
         saveDialog.setSaveRequest(saveRequest);
         saveDialog.show();
     }

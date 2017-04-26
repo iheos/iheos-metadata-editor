@@ -2,17 +2,20 @@ package gov.nist.hit.ds.docentryeditor.client.parser;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import gov.nist.hit.ds.docentryeditor.shared.EnvSessionRequestContext;
 import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
-import gov.nist.toolkit.xdsexception.client.MetadataException;
+
+import java.io.IOException;
 
 /**
  * RPC Services interface to parse an XDS document (ebRim XML File).
  */
 @RemoteServiceRelativePath("xdsparser")
 public interface XdsParserServices extends RemoteService{
-    public XdsMetadata parseXdsMetadata(String fileContent);
-
-    public String toEbRim(XdsMetadata xdsDocumentEntry) ;
-    public void saveInExternalCache(SaveInExtCacheRequest context) ;
+    XdsMetadata parseXdsMetadata(String fileContent);
+    String toEbRim(XdsMetadata xdsDocumentEntry) ;
+    void saveInExternalCache(SaveInExtCacheRequest context) ;
+    XdsMetadata retrieveFromExtCache(EnvSessionRequestContext context, String selectedTransactionType, String selectedTestdata, String selectedSection) throws Exception;
+    void updateMetadataInExtCache(SaveInExtCacheRequest saveRequest) throws IOException;
 }

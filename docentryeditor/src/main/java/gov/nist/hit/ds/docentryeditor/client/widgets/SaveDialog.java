@@ -52,7 +52,8 @@ public class SaveDialog extends Dialog {
     private HorizontalLayoutContainer radioContainer=new HorizontalLayoutContainer();
     ToggleGroup radioGroup=new ToggleGroup();
 
-    private TextButton saveButton = new TextButton("Save in Ext. Cache");
+    private TextButton overwriteButton = new TextButton("Update existing data in Ext. Cache");
+    private TextButton saveAsButton = new TextButton("Save as a new file in Ext. Cache");
     private TextButton downloadButton = new TextButton("Open file");
     private TextButton cancelButton = new TextButton("Cancel");
 
@@ -78,7 +79,7 @@ public class SaveDialog extends Dialog {
 
     private void buildDialog() {
         VerticalLayoutContainer container=new VerticalLayoutContainer();
-        container.add(new HtmlLayoutContainer("Complete the following fields to save in the external cache, or click download to just visualize the XML file."),new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(UP_N_DOWN_LBL_MARGIN, RIGHT_N_LEFT_LBL_MARGIN, UP_N_DOWN_LBL_MARGIN/2, RIGHT_N_LEFT_LBL_MARGIN)));
+        container.add(new HtmlLayoutContainer("Complete the following fields to saveAs in the external cache, or click download to just visualize the XML file."),new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(UP_N_DOWN_LBL_MARGIN, RIGHT_N_LEFT_LBL_MARGIN, UP_N_DOWN_LBL_MARGIN/2, RIGHT_N_LEFT_LBL_MARGIN)));
 
         EditorFieldLabel testNameFieldLabel=new EditorFieldLabel(testNameTF,"Test name");
         testNameTF.setAllowBlank(false);
@@ -92,8 +93,10 @@ public class SaveDialog extends Dialog {
     }
 
     private void addButtons(){
-        addButton(saveButton);
-        saveButton.disable();
+        addButton(overwriteButton);
+        overwriteButton.disable();
+        addButton(saveAsButton);
+        saveAsButton.disable();
         addButton(downloadButton);
         addButton(cancelButton);
     }
@@ -113,12 +116,12 @@ public class SaveDialog extends Dialog {
                 hide();
             }
         });
-        saveButton.addSelectHandler(new SelectEvent.SelectHandler() {
+        saveAsButton.addSelectHandler(new SelectEvent.SelectHandler() {
             @Override
             public void onSelect(SelectEvent event) {
                 saveRequest.setTransactionType(selectedTransactionType);
                 saveRequest.setTestName(testNameTF.getText());
-                save(saveRequest);
+                saveAs(saveRequest);
                 hide();
             }
         });
@@ -126,9 +129,9 @@ public class SaveDialog extends Dialog {
             @Override
             public void onKeyUp(KeyUpEvent event) {
                 if (!(testNameTF.getText().isEmpty() || "".equals(testNameTF.getText())) && selectedTransactionType!=null){
-                    saveButton.enable();
+                    saveAsButton.enable();
                 }else {
-                    saveButton.disable();
+                    saveAsButton.disable();
                 }
             }
         });
@@ -139,15 +142,35 @@ public class SaveDialog extends Dialog {
                 Radio radio = (Radio) group.getValue();
                 selectedTransactionType=radio.getBoxLabel();
                 if (!testNameTF.getText().isEmpty() && selectedTransactionType!=null){
-                    saveButton.enable();
+                    saveAsButton.enable();
                 }else {
-                    saveButton.disable();
+                    saveAsButton.disable();
                 }
+            }
+        });
+        overwriteButton.addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+                overwriteMetadata();
             }
         });
     }
 
-    private void save(SaveInExtCacheRequest saveRequest) {
+    private void overwriteMetadata() {
+        xdsParserServices.updateMetadataInExtCache(saveRequest, new AsyncCallback<Void>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Failure while saving file!");
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+                logger.info("File saved successfully!");
+            }
+        });
+    }
+
+    private void saveAs(SaveInExtCacheRequest saveRequest) {
         xdsParserServices.saveInExternalCache(saveRequest, new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -172,7 +195,7 @@ public class SaveDialog extends Dialog {
 
             @Override
             public void onSuccess(String s) {
-                // request factory server call to physically save the file on the server.
+                // request factory server call to physically saveAs the file on the server.
                 requestFactory.saveFileRequestContext().saveAsXMLFile(s).fire(new Receiver<String>() {
                     @Override
                     public void onSuccess(String response) {
@@ -230,5 +253,8 @@ public class SaveDialog extends Dialog {
 
     public void setSaveRequest(SaveInExtCacheRequest saveRequest) {
         this.saveRequest = saveRequest;
+        if (saveRequest.getFilePath()!=null){
+            overwriteButton.enable();
+        }
     }
 }

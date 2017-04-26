@@ -107,22 +107,22 @@ public class XdsAssociation implements Serializable, XdsModelElement{
         }
 
         public static XdsAssociationType getValueOf(String value){
-            if (value.equals(HAS_MEMBER.toString())){
+            if (value.equals(HAS_MEMBER.toString()) || value.contains("HasMember") ){
                 return HAS_MEMBER;
             }
-            if (value.equals(APND.toString())){
+            if (value.equals(APND.toString()) || value.contains("APND") ){
                 return APND;
             }
-            if (value.equals(RPLC.toString())){
+            if (value.equals(RPLC.toString()) || value.contains("RPLC")){
                 return RPLC;
             }
-            if (value.equals(SIGNS.toString())){
+            if (value.equals(SIGNS.toString()) || value.contains("signs")){
                 return SIGNS;
             }
-            if (value.equals(XFRM.toString())){
+            if (value.equals(XFRM.toString()) || value.contains("XFRM")){
                 return XFRM;
             }
-            if (value.equals(XFRM_RPLC.toString())){
+            if (value.equals(XFRM_RPLC.toString()) || value.contains("XFRM_RPLC")){
                 return XFRM_RPLC;
             }
             return null;

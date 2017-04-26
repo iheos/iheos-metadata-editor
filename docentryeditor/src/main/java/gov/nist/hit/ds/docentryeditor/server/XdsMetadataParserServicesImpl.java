@@ -2,6 +2,7 @@ package gov.nist.hit.ds.docentryeditor.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
+import gov.nist.hit.ds.docentryeditor.shared.EnvSessionRequestContext;
 import gov.nist.hit.ds.docentryeditor.shared.SaveInExtCacheRequest;
 import gov.nist.hit.ds.docentryeditor.shared.model.*;
 import gov.nist.toolkit.commondatatypes.MetadataSupport;
@@ -10,14 +11,16 @@ import gov.nist.toolkit.registrymetadata.Metadata;
 import gov.nist.toolkit.registrymetadata.MetadataParser;
 import gov.nist.toolkit.testkitutilities.TestDefinition;
 import gov.nist.toolkit.utilities.xml.OMFormatter;
+import gov.nist.toolkit.utilities.xml.Util;
 import gov.nist.toolkit.utilities.xml.XmlUtil;
 import gov.nist.toolkit.xdsexception.client.MetadataException;
+import gov.nist.toolkit.xdsexception.client.XdsException;
 import gov.nist.toolkit.xdsexception.client.XdsInternalException;
 import org.apache.axiom.om.OMElement;
+import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -558,16 +561,13 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
 
     public void saveInExternalCache(SaveInExtCacheRequest context)  {
         TestDefinition.TransactionType transType= TestDefinition.TransactionType.fromString(context.getTransactionType());
-        File testkitFile=new File(Installation.instance().environmentFile(context.getEnvironmentName()),"testkits");
-        File testFile=new File(new File(new File(testkitFile,context.getSessionName()), transType.getTransactionTypeTestRepositoryName()),context.getTestName());
+        File testFile=findTestFile(context,transType,context.getTestName());
 
         if (!testFile.exists()){
             testFile.mkdirs();
         }
 
         FileOutputStream out;
-//        // TODO Remove hard coded xml when submission set and association are done
-//        String outS= fileContent.replace("displayName","name");
         try {
             out = new FileOutputStream(new File(testFile, "index.idx"));
             LOGGER.info("... writing file (" + "index.idx" + ") in " + testFile.getAbsolutePath() + "...");
@@ -596,6 +596,74 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
         } catch (IOException e) {
             LOGGER.warning("Error when writing metadata file on server.\n" + e.getMessage());
         }
+    }
+
+    @Override
+    public void updateMetadataInExtCache(SaveInExtCacheRequest saveRequest) throws IOException {
+        File metadataFile=new File(saveRequest.getFilePath());
+
+        if (!metadataFile.exists()){
+            throw new IOException("Metadata file not found! (Start again...)");
+        }
+
+        FileOutputStream out;
+        try {
+            out = new FileOutputStream(metadataFile);
+            XdsMetadataParserServicesImpl metadataParserServices=new XdsMetadataParserServicesImpl();
+            LOGGER.info("... writing file (" + "metadata.xml" + ") in " + metadataFile.getAbsolutePath() + "...");
+            String m="<lcm:SubmitObjectsRequest xmlns:lcm=\"urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0\">\n" +
+                    "        <rim:RegistryObjectList xmlns:rim=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\">";
+            m+=metadataParserServices.toEbRim(saveRequest.getMetadata());
+            m+="</rim:RegistryObjectList>\n" +
+                    "    </lcm:SubmitObjectsRequest>";
+            out.write(m.getBytes());
+            out.close();
+        } catch (IOException e) {
+            LOGGER.warning("Error when writing metadata file on server.\n" + e.getMessage());
+        }
+    }
+
+    @Override
+    public XdsMetadata retrieveFromExtCache(EnvSessionRequestContext context, String selectedTransactionType, String selectedTestdata, String selectedSection) throws XdsInternalException {
+        File testdataFile=findTestFile(context, TestDefinition.TransactionType.fromString(selectedTransactionType),selectedTestdata);
+        File metadataFileLocation=testdataFile;
+        if (selectedSection!=null){
+            metadataFileLocation=new File(testdataFile,selectedSection);
+        }
+        File testplan=new File(metadataFileLocation,"testplan.xml");
+        File metadataFile=getMetadataFile(testplan);
+        XdsMetadata xdsMetadata=new XdsMetadata();
+        try {
+            String metadataString=FileUtils.readFileToString(metadataFile);
+            xdsMetadata=parseXdsMetadata(metadataString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        xdsMetadata.setFilePath(metadataFile.getPath());
+
+        return xdsMetadata;
+    }
+
+    private static File getMetadataFile(File testPlanFile) {
+
+        OMElement testplanEle;
+        try {
+            testplanEle = Util.parse_xml(testPlanFile);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        List<OMElement> testSteps = XmlUtil.decendentsWithLocalName(testplanEle, "TestStep");
+        for (OMElement testStep : testSteps) {
+            String stepName = testStep.getAttributeValue(MetadataSupport.id_qname);
+            OMElement documentFileEle = XmlUtil.firstDecendentWithLocalName(testStep, "MetadataFile");
+            if (documentFileEle != null) {
+                String documentName = documentFileEle.getText();
+                return new File(testPlanFile.getParent(), documentName);
+            }
+
+        }
+
+        return null;
     }
 
     private String createTestplanTemplate(TestDefinition.TransactionType type, String testName) {
@@ -649,4 +717,8 @@ public class XdsMetadataParserServicesImpl extends RemoteServiceServlet implemen
     }
 
 
+    private File findTestFile(EnvSessionRequestContext context, TestDefinition.TransactionType type, String testName){
+        File testkitFile=new File(Installation.instance().environmentFile(context.getEnvironmentName()),"testkits");
+        return new File(new File(new File(testkitFile,context.getSessionName()), type.getTransactionTypeTestRepositoryName()),testName);
+    }
 }

@@ -18,6 +18,7 @@ public class XdsMetadata implements Serializable{
     private XdsSubmissionSet submissionSet;
     private List<XdsDocumentEntry> documentEntries;
     private List<XdsAssociation> associations;
+    private String filePath=null;
 
     public XdsMetadata(){
         documentEntries=new ArrayList<XdsDocumentEntry>();
@@ -46,5 +47,13 @@ public class XdsMetadata implements Serializable{
 
     public void setAssociations(List<XdsAssociation> associations) {
         this.associations = associations;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String path) {
+        this.filePath=path;
     }
 }

@@ -56,6 +56,12 @@ public class FileUploadDialog extends Dialog {
                 hide();
             }
         });
+        extCacheLoaderMVP.getView().getBtnCancel().addSelectHandler(new SelectEvent.SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent selectEvent) {
+                hide();
+            }
+        });
         eventBus.addNewFileLoadedHandler(new NewFileLoadedEvent.NewFileLoadedHandler() {
 
             @Override

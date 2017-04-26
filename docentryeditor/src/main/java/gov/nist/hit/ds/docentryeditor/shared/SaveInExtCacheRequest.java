@@ -1,5 +1,6 @@
 package gov.nist.hit.ds.docentryeditor.shared;
 
+import com.google.gwt.user.client.Window;
 import gov.nist.hit.ds.docentryeditor.shared.model.XdsMetadata;
 
 /**
@@ -9,6 +10,7 @@ public class SaveInExtCacheRequest extends EnvSessionRequestContext {
     private XdsMetadata metadata;
     private String testName;
     private String transactionType;
+    private String filePath=null;
 
     /**
      * This constructor is mandatory when using Serializable class.
@@ -45,5 +47,26 @@ public class SaveInExtCacheRequest extends EnvSessionRequestContext {
 
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String metadataFileInEditionPath) {
+        filePath=metadataFileInEditionPath;
+        Window.alert(filePath);
+        String[] split=null;
+        if (filePath.contains("testdata-registry")){
+            split=filePath.split("testdata-registry");
+            transactionType= "RegisterTransaction";
+        }else if (filePath.contains("testdata-repository")){
+            split=filePath.split("testdata-repository");
+            transactionType="ProvideAndRegisterTransaction";
+        }
+        if (split!=null) {
+            split = split[1].split("/");
+            testName = split[1];
+        }
     }
 }
