@@ -23,6 +23,7 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.Radio;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.info.Info;
 import gov.nist.hit.ds.docentryeditor.client.editor.widgets.EditorFieldLabel;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServices;
 import gov.nist.hit.ds.docentryeditor.client.parser.XdsParserServicesAsync;
@@ -166,6 +167,8 @@ public class SaveDialog extends Dialog {
             @Override
             public void onSuccess(Void result) {
                 logger.info("File saved successfully!");
+                Info.display("Metadata saved","Metadata in Ext. cache updated succesfully.");
+                hide();
             }
         });
     }
@@ -180,6 +183,7 @@ public class SaveDialog extends Dialog {
             @Override
             public void onSuccess(Void result) {
                 logger.info("File saved successfully!");
+                Info.display("Metadata saved","Metadata added successfully in Ext. cache");
             }
         });
     }
